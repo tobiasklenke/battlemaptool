@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Dialog_NewBattleMap</class>
+ <widget class="QDialog" name="Dialog_NewBattleMap">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1200</width>
+    <height>900</height>
+   </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>1200</width>
+    <height>900</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>1200</width>
+    <height>900</height>
+   </size>
+  </property>
+  <property name="baseSize">
+   <size>
+    <width>1200</width>
+    <height>900</height>
+   </size>
+  </property>
+  <property name="mouseTracking">
+   <bool>true</bool>
+  </property>
+  <property name="windowTitle">
+   <string>New Battle Map</string>
+  </property>
+  <widget class="QDialogButtonBox" name="DialogButtonBox">
+   <property name="geometry">
+    <rect>
+     <x>50</x>
+     <y>840</y>
+     <width>1100</width>
+     <height>50</height>
+    </rect>
+   </property>
+   <property name="orientation">
+    <enum>Qt::Horizontal</enum>
+   </property>
+   <property name="standardButtons">
+    <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
+   </property>
+   <property name="centerButtons">
+    <bool>false</bool>
+   </property>
+  </widget>
+  <widget class="QGroupBox" name="groupBox">
+   <property name="geometry">
+    <rect>
+     <x>50</x>
+     <y>10</y>
+     <width>1100</width>
+     <height>160</height>
+    </rect>
+   </property>
+   <property name="title">
+    <string>Select Battle Map Source</string>
+   </property>
+   <property name="flat">
+    <bool>false</bool>
+   </property>
+   <property name="checkable">
+    <bool>false</bool>
+   </property>
+   <widget class="QLineEdit" name="LineEdit_NumberRows">
+    <property name="geometry">
+     <rect>
+      <x>200</x>
+      <y>95</y>
+      <width>75</width>
+      <height>25</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="LineEdit_NumberColumns">
+    <property name="geometry">
+     <rect>
+      <x>200</x>
+      <y>125</y>
+      <width>75</width>
+      <height>25</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+    </property>
+   </widget>
+   <widget class="QLabel" name="Label_NumberRows">
+    <property name="geometry">
+     <rect>
+      <x>45</x>
+      <y>95</y>
+      <width>150</width>
+      <height>25</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Number of Rows</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="Label_NumberColumns">
+    <property name="geometry">
+     <rect>
+      <x>45</x>
+      <y>125</y>
+      <width>150</width>
+      <height>25</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Number of Columns</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="PushButton_SelectSource">
+    <property name="enabled">
+     <bool>true</bool>
+    </property>
+    <property name="geometry">
+     <rect>
+      <x>975</x>
+      <y>25</y>
+      <width>100</width>
+      <height>25</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Select Source</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="LineEdit_Source">
+    <property name="enabled">
+     <bool>true</bool>
+    </property>
+    <property name="geometry">
+     <rect>
+      <x>200</x>
+      <y>25</y>
+      <width>750</width>
+      <height>25</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QRadioButton" name="RadioButton_ImageBattleMap">
+    <property name="geometry">
+     <rect>
+      <x>25</x>
+      <y>25</y>
+      <width>170</width>
+      <height>25</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Image Battle Map</string>
+    </property>
+    <property name="checked">
+     <bool>false</bool>
+    </property>
+   </widget>
+   <widget class="QRadioButton" name="RadioButton_EmptyBattleMap">
+    <property name="geometry">
+     <rect>
+      <x>25</x>
+      <y>55</y>
+      <width>170</width>
+      <height>25</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Empty Battle Map</string>
+    </property>
+    <property name="checked">
+     <bool>true</bool>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="PushButton_DecrementNumberRows">
+    <property name="geometry">
+     <rect>
+      <x>285</x>
+      <y>95</y>
+      <width>25</width>
+      <height>25</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>-</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="PushButton_DecrementNumberColumns">
+    <property name="geometry">
+     <rect>
+      <x>285</x>
+      <y>125</y>
+      <width>25</width>
+      <height>25</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>-</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="PushButton_IncrementNumberRows">
+    <property name="geometry">
+     <rect>
+      <x>315</x>
+      <y>95</y>
+      <width>25</width>
+      <height>25</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>+</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="PushButton_IncrementNumberColumns">
+    <property name="geometry">
+     <rect>
+      <x>315</x>
+      <y>125</y>
+      <width>25</width>
+      <height>25</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>+</string>
+    </property>
+   </widget>
+  </widget>
+  <widget class="QGraphicsView" name="GraphicsView_BattleMap">
+   <property name="geometry">
+    <rect>
+     <x>50</x>
+     <y>200</y>
+     <width>1100</width>
+     <height>600</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <bold>false</bold>
+    </font>
+   </property>
+   <property name="mouseTracking">
+    <bool>false</bool>
+   </property>
+   <property name="interactive">
+    <bool>false</bool>
+   </property>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
