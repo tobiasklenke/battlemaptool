@@ -125,7 +125,7 @@ void BattleMapScene::drawBattleMapLine(QLineF battleMapLine)
 
     this->addItem(m_battleMapLinesToDraw.last());
     m_battleMapLinesToDraw.last()->setLine(battleMapLine);
-    m_battleMapLinesToDraw.last()->setPen(QPen(Qt::black, 3, Qt::SolidLine));
+    m_battleMapLinesToDraw.last()->setPen(QPen(Qt::black, 3, Qt::DashLine));
 }
 
 /*!
