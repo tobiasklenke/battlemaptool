@@ -264,6 +264,8 @@ void Dialog_NewBattleMap::selected_BattleMapSquare()
 {
     qDebug() << "..." << __func__;
 
+    QMessageBox msgBox(this);
+
     QPointF selectedSquareEdges =  pBattleMapScene->getScenePosRelease() - pBattleMapScene->getScenePosPress();
     qreal averageEdgeLength = (abs(selectedSquareEdges.rx()) + abs(selectedSquareEdges.ry())) / 2;
 
@@ -290,6 +292,14 @@ void Dialog_NewBattleMap::selected_BattleMapSquare()
     pUserInterface->LineEdit_NumberColumns->setText(QString::number(m_numberColumns));
 
     drawBattleMapGrid();
+
+    if (0 < averageEdgeLength)
+    {
+        msgBox.setWindowTitle("Control Battle Map grid");
+        msgBox.setText("Please control the Battle Map grid and readjust the number of rows and columns in case of mismatch.");
+        msgBox.setIcon(QMessageBox::Question);
+        msgBox.exec();
+    }
 }
 
 /*!
