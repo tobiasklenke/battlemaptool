@@ -117,14 +117,19 @@ private slots:
 private:
 
     /*!
-     * \brief This function shows the empty battle map image.
+     * \brief This function shows the empty Battle Map image.
      */
     void showEmptyBattleMapImage();
 
     /*!
-     * \brief This function shows the battle map image from selected source.
+     * \brief This function shows the Battle Map image from selected source.
      */
     void showSourceBattleMapImage();
+
+    /*!
+     * \brief This function draws the Battle Map grid.
+     */
+    void drawBattleMapGrid();
 
     /*!
      * \brief This is a pointer to the user interface of the class Dialog_NewBattleMap.
@@ -140,6 +145,11 @@ private:
      * \brief This is the image of the battle map that is added to pBattleMapScene.
      */
     QImage m_battleMapImage;
+
+    //TODO: place in battle map structure (to be stored)
+    qint32 m_numberRows;
+    qint32 m_numberColumns;
+    qint32 m_edgeLength;
 };
 
 #endif // DIALOG_NEWBATTLEMAP_H

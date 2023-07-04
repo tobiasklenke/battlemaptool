@@ -52,6 +52,16 @@ public:
      */
     void setScenePosRelease(QPointF newScenePosRelease);
 
+    /*!
+     * \brief This function draws a Battle Map line.
+     */
+    void drawBattleMapLine(QLineF battleMapLine);
+
+    /*!
+     * \brief This function removes all Battle Map lines.
+     */
+    void removeBattleMapLines();
+
 protected:
 
     /*!
@@ -83,6 +93,11 @@ private:
      * \brief This is the rectangle to be drawn while the selection of the Battle Map square.
      */
     QGraphicsRectItem *pBattleMapSquareToDraw;
+
+    /*!
+     * \brief This is a vector of grid lines to be drawn for control purposes.
+     */
+    QVector<QGraphicsLineItem*> m_battleMapLinesToDraw;
 
     /*!
      * \brief This is the position of the cursor while the mouse press event.

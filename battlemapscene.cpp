@@ -57,8 +57,7 @@ void BattleMapScene::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
         QPointF topLeft = QPointF(qMin(m_scenePosPress.rx(), event->scenePos().rx()), qMin(m_scenePosPress.y(), event->scenePos().ry()));
         QPointF bottomRight = QPointF(qMax(m_scenePosPress.rx(), event->scenePos().rx()), qMax(m_scenePosPress.y(), event->scenePos().ry()));
 
-        pBattleMapSquareToDraw->setPos(topLeft);
-        pBattleMapSquareToDraw->setRect(0, 0, (bottomRight - topLeft).rx(), (bottomRight - topLeft).ry());
+        pBattleMapSquareToDraw->setRect(topLeft.rx(), topLeft.ry(), (bottomRight - topLeft).rx(), (bottomRight - topLeft).ry());
     }
 }
 
@@ -111,4 +110,36 @@ void BattleMapScene::setScenePosRelease(QPointF newScenePosRelease)
 {
     qDebug() << "..." << __func__;
     m_scenePosRelease = newScenePosRelease;
+}
+
+/*!
+ * \brief This function draws a Battle Map line.
+ */
+void BattleMapScene::drawBattleMapLine(QLineF battleMapLine)
+{
+    //qDebug() << "..." << __func__;
+
+    QGraphicsLineItem * battleMapLineToDraw = new QGraphicsLineItem();
+
+    m_battleMapLinesToDraw.append(battleMapLineToDraw);
+
+    this->addItem(m_battleMapLinesToDraw.last());
+    m_battleMapLinesToDraw.last()->setLine(battleMapLine);
+    m_battleMapLinesToDraw.last()->setPen(QPen(Qt::black, 3, Qt::SolidLine));
+}
+
+/*!
+ * \brief This function removes all Battle Map lines.
+ */
+void BattleMapScene::removeBattleMapLines()
+{
+    qDebug() << "..." << __func__;
+
+    for(qint32 lineIdx = 0; lineIdx < m_battleMapLinesToDraw.count(); lineIdx++)
+    {
+        m_battleMapLinesToDraw.at(lineIdx)->setLine(0, 0, 0, 0);
+        this->removeItem(m_battleMapLinesToDraw.at(lineIdx));
+    }
+
+    m_battleMapLinesToDraw.clear();
 }

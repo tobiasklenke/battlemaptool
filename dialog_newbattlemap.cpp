@@ -151,6 +151,21 @@ void Dialog_NewBattleMap::editingFinished_LineEdit_NumberRows()
 {
     qDebug() << "..." << __func__;
 
+    bool validNumber;
+
+    m_numberRows = pUserInterface->LineEdit_NumberRows->text().toInt(&validNumber, 10);
+
+    if (!validNumber || 0 > m_numberRows)
+    {
+        m_numberRows = 0;
+        pUserInterface->LineEdit_NumberRows->setText(QString::number(m_numberRows));;
+    }
+
+    if (pUserInterface->RadioButton_ImageBattleMap->isChecked())
+    {
+        drawBattleMapGrid();
+    }
+
 }
 
 /*!
@@ -159,6 +174,21 @@ void Dialog_NewBattleMap::editingFinished_LineEdit_NumberRows()
 void Dialog_NewBattleMap::editingFinished_LineEdit_NumberColumns()
 {
     qDebug() << "..." << __func__;
+
+    bool validNumber;
+
+    m_numberColumns = pUserInterface->LineEdit_NumberColumns->text().toInt(&validNumber, 10);
+
+    if (!validNumber || 0 > m_numberColumns)
+    {
+        m_numberColumns = 0;
+        pUserInterface->LineEdit_NumberColumns->setText(QString::number(m_numberColumns));;
+    }
+
+    if (pUserInterface->RadioButton_ImageBattleMap->isChecked())
+    {
+        drawBattleMapGrid();
+    }
 }
 
 /*!
@@ -168,9 +198,11 @@ void Dialog_NewBattleMap::released_PushButton_DecrementNumberRows()
 {
     qDebug() << "..." << __func__;
 
-    if (0 <= pUserInterface->LineEdit_NumberRows->text().toInt() - 1)
+    if (0 <= m_numberRows - 1)
     {
-        pUserInterface->LineEdit_NumberRows->setText(QString::number(pUserInterface->LineEdit_NumberRows->text().toInt() - 1));
+        pUserInterface->LineEdit_NumberRows->setText(QString::number(--m_numberRows));
+
+        drawBattleMapGrid();
     }
 }
 
@@ -181,7 +213,9 @@ void Dialog_NewBattleMap::released_PushButton_IncrementNumberRows()
 {
     qDebug() << "..." << __func__;
 
-    pUserInterface->LineEdit_NumberRows->setText(QString::number(pUserInterface->LineEdit_NumberRows->text().toInt() + 1));
+    pUserInterface->LineEdit_NumberRows->setText(QString::number(++m_numberRows));
+
+    drawBattleMapGrid();
 }
 
 /*!
@@ -191,9 +225,11 @@ void Dialog_NewBattleMap::released_PushButton_DecrementNumberColumns()
 {
     qDebug() << "..." << __func__;
 
-    if (0 <= pUserInterface->LineEdit_NumberColumns->text().toInt() - 1)
+    if (0 <= m_numberColumns - 1)
     {
-        pUserInterface->LineEdit_NumberColumns->setText(QString::number(pUserInterface->LineEdit_NumberColumns->text().toInt() - 1));
+        pUserInterface->LineEdit_NumberColumns->setText(QString::number(--m_numberColumns));
+
+        drawBattleMapGrid();
     }
 }
 
@@ -204,7 +240,9 @@ void Dialog_NewBattleMap::released_PushButton_IncrementNumberColumns()
 {
     qDebug() << "..." << __func__;
 
-    pUserInterface->LineEdit_NumberColumns->setText(QString::number(pUserInterface->LineEdit_NumberColumns->text().toInt() + 1));
+    pUserInterface->LineEdit_NumberColumns->setText(QString::number(++m_numberColumns));
+
+    drawBattleMapGrid();
 }
 
 /*!
@@ -215,23 +253,31 @@ void Dialog_NewBattleMap::selected_BattleMapSquare()
     qDebug() << "..." << __func__;
 
     QPointF selectedSquareEdges =  pBattleMapScene->getScenePosRelease() - pBattleMapScene->getScenePosPress();
-    qreal averageEdgeLength = (selectedSquareEdges.rx() + selectedSquareEdges.ry()) / 2;
+    qreal averageEdgeLength = (abs(selectedSquareEdges.rx()) + abs(selectedSquareEdges.ry())) / 2;
 
-    qint8 numRows = abs(m_battleMapImage.size().height() / averageEdgeLength);
-    qint8 numCols = abs(m_battleMapImage.size().width() / averageEdgeLength);
+    if (0 < averageEdgeLength)
+    {
+        m_numberRows = m_battleMapImage.size().height() / averageEdgeLength;
+        m_numberColumns = m_battleMapImage.size().width() / averageEdgeLength;
 
-    /* Enable widgets for numbers of rows and columns */
-    pUserInterface->LineEdit_NumberRows->setEnabled(true);
-    pUserInterface->LineEdit_NumberColumns->setEnabled(true);
-    pUserInterface->PushButton_DecrementNumberRows->setEnabled(true);
-    pUserInterface->PushButton_IncrementNumberRows->setEnabled(true);
-    pUserInterface->PushButton_DecrementNumberColumns->setEnabled(true);
-    pUserInterface->PushButton_IncrementNumberColumns->setEnabled(true);
+        /* Enable widgets for numbers of rows and columns */
+        pUserInterface->LineEdit_NumberRows->setEnabled(true);
+        pUserInterface->LineEdit_NumberColumns->setEnabled(true);
+        pUserInterface->PushButton_DecrementNumberRows->setEnabled(true);
+        pUserInterface->PushButton_IncrementNumberRows->setEnabled(true);
+        pUserInterface->PushButton_DecrementNumberColumns->setEnabled(true);
+        pUserInterface->PushButton_IncrementNumberColumns->setEnabled(true);
+    }
+    else
+    {
+        m_numberRows = 0;
+        m_numberColumns = 0;
+    }
 
-    pUserInterface->LineEdit_NumberRows->setText(QString::number(numRows));
-    pUserInterface->LineEdit_NumberColumns->setText(QString::number(numCols));
+    pUserInterface->LineEdit_NumberRows->setText(QString::number(m_numberRows));
+    pUserInterface->LineEdit_NumberColumns->setText(QString::number(m_numberColumns));
 
-    //TODO Berechneten Square wieder in Scene einzeichnen zur Kontrolle
+    drawBattleMapGrid();
 }
 
 /*!
@@ -267,7 +313,7 @@ void Dialog_NewBattleMap::reject()
 }
 
 /*!
- * \brief This function shows the empty battle map image.
+ * \brief This function shows the empty Battle Map image.
  */
 void Dialog_NewBattleMap::showEmptyBattleMapImage()
 {
@@ -298,7 +344,7 @@ void Dialog_NewBattleMap::showEmptyBattleMapImage()
 }
 
 /*!
- * \brief This function shows the battle map image from selected source.
+ * \brief This function shows the Battle Map image from selected source.
  */
 void Dialog_NewBattleMap::showSourceBattleMapImage()
 {
@@ -334,5 +380,34 @@ void Dialog_NewBattleMap::showSourceBattleMapImage()
         msgBox.setWindowTitle("Select Battle Map square");
         msgBox.setText("Please select a Battle Map square in order to determine the number of rows and columns of the Battle Map.");
         msgBox.exec();
+    }
+}
+
+/*!
+ * \brief This function draws the Battle Map grid.
+ */
+void Dialog_NewBattleMap::drawBattleMapGrid()
+{
+    qDebug() << "..." << __func__;
+
+    qint32 edgeLength;
+
+    pBattleMapScene->removeBattleMapLines();
+
+    if (0 < m_numberRows && 0 < m_numberColumns)
+    {
+        edgeLength = m_battleMapImage.size().height() / m_numberRows;
+
+        for (qint32 rowIdx = 0; rowIdx < m_numberRows + 1; rowIdx++)
+        {
+            pBattleMapScene->drawBattleMapLine(QLineF(0, rowIdx * edgeLength, m_numberColumns * edgeLength, rowIdx * edgeLength));
+        }
+
+        edgeLength = m_battleMapImage.size().width() / m_numberColumns;
+
+        for (qint32 columnIdx = 0; columnIdx < m_numberColumns + 1; columnIdx++)
+        {
+            pBattleMapScene->drawBattleMapLine(QLineF(columnIdx * edgeLength, 0, columnIdx * edgeLength, m_numberRows * edgeLength));
+        }
     }
 }
