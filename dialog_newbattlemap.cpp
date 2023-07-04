@@ -152,11 +152,17 @@ void Dialog_NewBattleMap::editingFinished_LineEdit_NumberRows()
     qDebug() << "..." << __func__;
 
     bool validNumber;
+    QMessageBox msgBox(this);
 
     m_numberRows = pUserInterface->LineEdit_NumberRows->text().toInt(&validNumber, 10);
 
     if (!validNumber || 0 > m_numberRows)
     {
+        msgBox.setWindowTitle("Invalid input");
+        msgBox.setText("Input '" + pUserInterface->LineEdit_NumberRows->text() + "' is invalid.");
+        msgBox.setIcon(QMessageBox::Warning);
+        msgBox.exec();
+
         m_numberRows = 0;
         pUserInterface->LineEdit_NumberRows->setText(QString::number(m_numberRows));;
     }
@@ -176,11 +182,17 @@ void Dialog_NewBattleMap::editingFinished_LineEdit_NumberColumns()
     qDebug() << "..." << __func__;
 
     bool validNumber;
+    QMessageBox msgBox(this);
 
     m_numberColumns = pUserInterface->LineEdit_NumberColumns->text().toInt(&validNumber, 10);
 
     if (!validNumber || 0 > m_numberColumns)
-    {
+    { 
+        msgBox.setWindowTitle("Invalid input");
+        msgBox.setText("Input '" + pUserInterface->LineEdit_NumberColumns->text() + "' is invalid.");
+        msgBox.setIcon(QMessageBox::Warning);
+        msgBox.exec();
+
         m_numberColumns = 0;
         pUserInterface->LineEdit_NumberColumns->setText(QString::number(m_numberColumns));;
     }
@@ -319,6 +331,8 @@ void Dialog_NewBattleMap::showEmptyBattleMapImage()
 {
     qDebug() << "..." << __func__;
 
+    QMessageBox msgBox(this);
+
     pUserInterface->GraphicsView_BattleMap->setScene(pBattleMapScene);
     pUserInterface->GraphicsView_BattleMap->setInteractive(false);
     pUserInterface->GraphicsView_BattleMap->viewport()->setCursor(Qt::ArrowCursor);
@@ -329,6 +343,11 @@ void Dialog_NewBattleMap::showEmptyBattleMapImage()
 
     if (m_battleMapImage.isNull())
     {
+        msgBox.setWindowTitle("Invalid file");
+        msgBox.setText("Selected Battle Map Source is no image file.");
+        msgBox.setIcon(QMessageBox::Warning);
+        msgBox.exec();
+
         pBattleMapScene->clear();
         pBattleMapScene->setSceneRect(0, 0, 0, 0);
         pBattleMapScene->addText("Selected Battle Map Source is no image file!");
@@ -361,9 +380,14 @@ void Dialog_NewBattleMap::showSourceBattleMapImage()
 
     if (m_battleMapImage.isNull())
     {
+        msgBox.setWindowTitle("Invalid file");
+        msgBox.setText("Selected Battle Map Source is no image file.");
+        msgBox.setIcon(QMessageBox::Warning);
+        msgBox.exec();
+
         pBattleMapScene->clear();
         pBattleMapScene->setSceneRect(0, 0, 0, 0);
-        pBattleMapScene->addText("Selected Battle Map Source is no image file!");
+        pBattleMapScene->addText("Selected Battle Map Source is no image file.");
     }
     else
     {
@@ -379,6 +403,7 @@ void Dialog_NewBattleMap::showSourceBattleMapImage()
 
         msgBox.setWindowTitle("Select Battle Map square");
         msgBox.setText("Please select a Battle Map square in order to determine the number of rows and columns of the Battle Map.");
+        msgBox.setIcon(QMessageBox::Question);
         msgBox.exec();
     }
 }
