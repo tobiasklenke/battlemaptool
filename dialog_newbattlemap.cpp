@@ -151,20 +151,24 @@ void Dialog_NewBattleMap::editingFinished_LineEdit_NumberRows()
 {
     qDebug() << "..." << __func__;
 
+    qint32 inputValue;
     bool validNumber;
     QMessageBox msgBox(this);
 
-    m_numberRows = pUserInterface->LineEdit_NumberRows->text().toInt(&validNumber, 10);
+    inputValue = pUserInterface->LineEdit_NumberRows->text().toInt(&validNumber, 10);
 
-    if (!validNumber || 0 > m_numberRows)
+    if (!validNumber || 0 > inputValue)
     {
         msgBox.setWindowTitle("Invalid input");
         msgBox.setText("Input '" + pUserInterface->LineEdit_NumberRows->text() + "' is invalid.");
         msgBox.setIcon(QMessageBox::Warning);
         msgBox.exec();
 
-        m_numberRows = 0;
         pUserInterface->LineEdit_NumberRows->setText(QString::number(m_numberRows));;
+    }
+    else
+    {
+        m_numberRows = inputValue;
     }
 
     if (pUserInterface->RadioButton_ImageBattleMap->isChecked())
@@ -181,20 +185,24 @@ void Dialog_NewBattleMap::editingFinished_LineEdit_NumberColumns()
 {
     qDebug() << "..." << __func__;
 
+    qint32 inputValue;
     bool validNumber;
     QMessageBox msgBox(this);
 
-    m_numberColumns = pUserInterface->LineEdit_NumberColumns->text().toInt(&validNumber, 10);
+    inputValue = pUserInterface->LineEdit_NumberColumns->text().toInt(&validNumber, 10);
 
-    if (!validNumber || 0 > m_numberColumns)
+    if (!validNumber || 0 > inputValue)
     { 
         msgBox.setWindowTitle("Invalid input");
         msgBox.setText("Input '" + pUserInterface->LineEdit_NumberColumns->text() + "' is invalid.");
         msgBox.setIcon(QMessageBox::Warning);
         msgBox.exec();
 
-        m_numberColumns = 0;
         pUserInterface->LineEdit_NumberColumns->setText(QString::number(m_numberColumns));;
+    }
+    else
+    {
+        m_numberColumns = inputValue;
     }
 
     if (pUserInterface->RadioButton_ImageBattleMap->isChecked())
