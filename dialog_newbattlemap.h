@@ -127,6 +127,21 @@ private:
     void showSourceBattleMapImage();
 
     /*!
+     * \brief This function corrects the number of rowsconsidering the Battle Map squares aspect ratio.
+     */
+    void correctNumberOfRows();
+
+    /*!
+     * \brief This function corrects the number of columns considering the Battle Map squares aspect ratio.
+     */
+    void correctNumberOfColumns();
+
+    /*!
+     * \brief This function controls the number of rows and columns.
+     */
+    void controlNumberOfRowsAndColumns();
+
+    /*!
      * \brief This function draws the Battle Map grid.
      */
     void drawBattleMapGrid();
