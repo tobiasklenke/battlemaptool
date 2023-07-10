@@ -12,7 +12,10 @@
 /*!
  * \brief This function is the constructor of the class MainWindow.
  */
-MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), pUserInterface(new Ui::MainWindow)
+MainWindow::MainWindow(QWidget *parent) :
+    QMainWindow(parent),
+    pUserInterface(new Ui::MainWindow),
+    pDialog_NewBattleMap(new Dialog_NewBattleMap)
 {
     qDebug() << "..." << __func__;
 

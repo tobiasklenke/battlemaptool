@@ -12,14 +12,18 @@
 /*!
  * \brief This function is the constructor of the class Dialog_NewBattleMap.
  */
-Dialog_NewBattleMap::Dialog_NewBattleMap(QWidget *parent) : QDialog(parent), pUserInterface(new Ui::Dialog_NewBattleMap)
+Dialog_NewBattleMap::Dialog_NewBattleMap(QWidget *parent) :
+    QDialog(parent),
+    pUserInterface(new Ui::Dialog_NewBattleMap),
+    pBattleMapScene(new BattleMapScene),
+    m_battleMapImage(QImage()),
+    m_numberRows(0),
+    m_numberColumns(0),
+    m_edgeLength(0)
 {
     qDebug() << "..." << __func__;
 
     pUserInterface->setupUi(this);
-
-    /* Initialize member variables */
-    pBattleMapScene = new BattleMapScene();
 
     /* Set initial state */
     pUserInterface->RadioButton_ImageBattleMap->setChecked(false);
@@ -88,7 +92,6 @@ void Dialog_NewBattleMap::toggled_RadioButton_ImageBattleMap(bool checked)
         pUserInterface->LineEdit_NumberColumns->setText("0");
     }
 }
-
 
 /*!
  * \brief This function handles a toggle of RadioButton_EmptyBattleMap.
@@ -186,7 +189,6 @@ void Dialog_NewBattleMap::editingFinished_LineEdit_NumberRows()
         controlNumberOfRowsAndColumns();
         drawBattleMapGrid();
     }
-
 }
 
 /*!

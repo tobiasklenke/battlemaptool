@@ -11,11 +11,15 @@
 /*!
  * \brief This function is the constructor of the class BattleMapScene.
  */
-BattleMapScene::BattleMapScene(QObject *parent) : QGraphicsScene{parent}
+BattleMapScene::BattleMapScene(QObject *parent) :
+    QGraphicsScene(parent),
+    pBattleMapSquareToDraw(new QGraphicsRectItem),
+    m_battleMapLinesToDraw(QVector<QGraphicsLineItem*>()),
+    m_scenePosPress(QPointF()),
+    m_scenePosRelease(QPointF())
+
 {
     qDebug() << "..." << __func__;
-
-    pBattleMapSquareToDraw = new QGraphicsRectItem();
 }
 
 /*!
