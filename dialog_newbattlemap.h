@@ -156,15 +156,15 @@ private:
      */
     BattleMapScene *pBattleMapScene;
 
+    //TODO: place in battle map structure (to be stored)
+
     /*!
      * \brief This is the image of the battle map that is added to pBattleMapScene.
      */
     QImage m_battleMapImage;
 
-    //TODO: place in battle map structure (to be stored)
     qint32 m_numberRows;
     qint32 m_numberColumns;
-    qint32 m_edgeLength;
 };
 
 #endif // DIALOG_NEWBATTLEMAP_H

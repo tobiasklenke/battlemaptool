@@ -18,8 +18,7 @@ Dialog_NewBattleMap::Dialog_NewBattleMap(QWidget *parent) :
     pBattleMapScene(new BattleMapScene),
     m_battleMapImage(QImage()),
     m_numberRows(0),
-    m_numberColumns(0),
-    m_edgeLength(0)
+    m_numberColumns(0)
 {
     qDebug() << "..." << __func__;
 
@@ -88,8 +87,10 @@ void Dialog_NewBattleMap::toggled_RadioButton_ImageBattleMap(bool checked)
 
         /* Reset source file path, number of rows and columns */
         pUserInterface->LineEdit_Source->setText("");
-        pUserInterface->LineEdit_NumberRows->setText("0");
-        pUserInterface->LineEdit_NumberColumns->setText("0");
+        m_numberRows = 0;
+        m_numberColumns = 0;
+        pUserInterface->LineEdit_NumberRows->setText(QString::number(m_numberRows));
+        pUserInterface->LineEdit_NumberColumns->setText(QString::number(m_numberColumns));
     }
 }
 
@@ -119,8 +120,10 @@ void Dialog_NewBattleMap::toggled_RadioButton_EmptyBattleMap(bool checked)
 
         /* Reset source file path, number of rows and columns */
         pUserInterface->LineEdit_Source->setText("");
-        pUserInterface->LineEdit_NumberRows->setText("0");
-        pUserInterface->LineEdit_NumberColumns->setText("0");
+        m_numberRows = 0;
+        m_numberColumns = 0;
+        pUserInterface->LineEdit_NumberRows->setText(QString::number(m_numberRows));
+        pUserInterface->LineEdit_NumberColumns->setText(QString::number(m_numberColumns));
 
         /* Show empty battle map image */
         showEmptyBattleMapImage();
