@@ -95,9 +95,9 @@ private:
     QGraphicsRectItem *pBattleMapSquareToDraw;
 
     /*!
-     * \brief This is a vector of grid lines to be drawn for control purposes.
+     * \brief This is a list of grid lines to be drawn for control purposes.
      */
-    QVector<QGraphicsLineItem*> m_battleMapLinesToDraw;
+    QList<QGraphicsLineItem*> m_battleMapLinesToDraw;
 
     /*!
      * \brief This is the position of the cursor while the mouse press event.

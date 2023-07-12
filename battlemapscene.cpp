@@ -14,7 +14,7 @@
 BattleMapScene::BattleMapScene(QObject *parent) :
     QGraphicsScene(parent),
     pBattleMapSquareToDraw(new QGraphicsRectItem),
-    m_battleMapLinesToDraw(QVector<QGraphicsLineItem*>()),
+    m_battleMapLinesToDraw(QList<QGraphicsLineItem*>()),
     m_scenePosPress(QPointF()),
     m_scenePosRelease(QPointF())
 
