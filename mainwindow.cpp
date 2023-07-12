@@ -45,6 +45,39 @@ void MainWindow::open_Dialog_NewBattleMap()
 
     pDialog_NewBattleMap = new Dialog_NewBattleMap(this);
 
+    /* connections */
+    connect(pDialog_NewBattleMap, SIGNAL(accepted()), this, SLOT(accepted_Dialog_NewBattleMap()));
+    connect(pDialog_NewBattleMap, SIGNAL(rejected()), this, SLOT(rejected_Dialog_NewBattleMap()));
+
     pDialog_NewBattleMap->setWindowModality(Qt::WindowModal);
     pDialog_NewBattleMap->open();
+}
+
+/*!
+ * \brief This function handels the acceptance of the dialog Dialog_NewBattleMap.
+ */
+void MainWindow::accepted_Dialog_NewBattleMap()
+{
+    qDebug() << "..." << __func__;
+
+    //TODO: remove
+    qDebug() << pDialog_NewBattleMap->getBattleMapImageSelectedFromSource();
+    qDebug() << pDialog_NewBattleMap->getBattleMapImage();
+    qDebug() << pDialog_NewBattleMap->getNumberRows();
+    qDebug() << pDialog_NewBattleMap->getNumberColumns();
+
+    //TODO: Implement storation of data before deleting pDialog_NewBattleMap
+
+    delete pDialog_NewBattleMap;
+}
+
+
+/*!
+ * \brief This function handels the rejection of the dialog Dialog_NewBattleMap.
+ */
+void MainWindow::rejected_Dialog_NewBattleMap()
+{
+    qDebug() << "..." << __func__;
+
+    delete pDialog_NewBattleMap;
 }

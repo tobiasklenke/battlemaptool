@@ -46,6 +46,16 @@ private slots:
      */
     void open_Dialog_NewBattleMap();
 
+    /*!
+     * \brief This function handels the acceptance of the dialog Dialog_NewBattleMap.
+     */
+    void accepted_Dialog_NewBattleMap();
+
+    /*!
+     * \brief This function handels the rejection of the dialog Dialog_NewBattleMap.
+     */
+    void rejected_Dialog_NewBattleMap();
+
 private:
 
     /*!

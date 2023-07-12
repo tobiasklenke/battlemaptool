@@ -42,6 +42,26 @@ public:
      */
     ~Dialog_NewBattleMap();
 
+    /*!
+     * \brief This function returns the value of the member variable m_battleMapImageSelectedFromSource.
+     */
+    bool getBattleMapImageSelectedFromSource() const;
+
+    /*!
+     * \brief This function returns the image of the member variable m_battleMapImage.
+     */
+    QImage getBattleMapImage() const;
+
+    /*!
+     * \brief This function returns the value of the member variable m_numberRows.
+     */
+    qint32 getNumberRows() const;
+
+    /*!
+     * \brief This function returns the value of the member variable m_numberColumns.
+     */
+    qint32 getNumberColumns() const;
+
 private slots:
 
     /*!
@@ -99,21 +119,6 @@ private slots:
      */
     void selected_BattleMapSquare();
 
-    /*!
-     * \brief This function handles a click on the push button with AcceptRole.
-     */
-    void accepted_DialogButtonBox();
-
-    /*!
-     * \brief This function handles a click on the push button with RejectRole.
-     */
-    void rejected_DialogButtonBox();
-
-    /*!
-     * \brief This function handles a click on the X title bar button.
-     */
-    void reject();
-
 private:
 
     /*!
@@ -156,14 +161,24 @@ private:
      */
     BattleMapScene *pBattleMapScene;
 
-    //TODO: place in battle map structure (to be stored)
+    /*!
+     * \brief This is the information whether the Battle Map image has been selected from source.
+     */
+    bool m_battleMapImageSelectedFromSource;
 
     /*!
-     * \brief This is the image of the battle map that is added to pBattleMapScene.
+     * \brief This is the image of the Battle Map.
      */
     QImage m_battleMapImage;
 
+    /*!
+     * \brief This is the number of rows of the Battle Map.
+     */
     qint32 m_numberRows;
+
+    /*!
+     * \brief This is the number of columns of the Battle Map.
+     */
     qint32 m_numberColumns;
 };
 

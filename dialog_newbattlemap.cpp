@@ -16,6 +16,7 @@ Dialog_NewBattleMap::Dialog_NewBattleMap(QWidget *parent) :
     QDialog(parent),
     pUserInterface(new Ui::Dialog_NewBattleMap),
     pBattleMapScene(new BattleMapScene),
+    m_battleMapImageSelectedFromSource(false),
     m_battleMapImage(QImage()),
     m_numberRows(0),
     m_numberColumns(0)
@@ -46,8 +47,8 @@ Dialog_NewBattleMap::Dialog_NewBattleMap(QWidget *parent) :
     connect(pUserInterface->PushButton_DecrementNumberColumns, SIGNAL(released()), this, SLOT(released_PushButton_DecrementNumberColumns()));
     connect(pUserInterface->PushButton_IncrementNumberColumns, SIGNAL(released()), this, SLOT(released_PushButton_IncrementNumberColumns()));
     connect(pBattleMapScene, SIGNAL(selected_BattleMapSquare()), this, SLOT(selected_BattleMapSquare()));
-    connect(pUserInterface->DialogButtonBox, SIGNAL(accepted()), this, SLOT(accepted_DialogButtonBox()));
-    connect(pUserInterface->DialogButtonBox, SIGNAL(rejected()), this, SLOT(rejected_DialogButtonBox()));
+    connect(pUserInterface->DialogButtonBox, SIGNAL(accepted()), this, SLOT(accept()));
+    connect(pUserInterface->DialogButtonBox, SIGNAL(rejected()), this, SLOT(reject()));
 }
 
 /*!
@@ -59,6 +60,42 @@ Dialog_NewBattleMap::~Dialog_NewBattleMap()
 
     delete pUserInterface;
     delete pBattleMapScene;
+}
+
+/*!
+ * \brief This function returns the value of the member variable m_battleMapImageSelectedFromSource.
+ */
+bool Dialog_NewBattleMap::getBattleMapImageSelectedFromSource() const
+{
+    qDebug() << "..." << __func__;
+    return m_battleMapImageSelectedFromSource;
+}
+
+/*!
+ * \brief This function returns the image of the member variable m_battleMapImage.
+ */
+QImage Dialog_NewBattleMap::getBattleMapImage() const
+{
+    qDebug() << "..." << __func__;
+    return m_battleMapImage;
+}
+
+/*!
+ * \brief This function returns the value of the member variable m_numberRows.
+ */
+qint32 Dialog_NewBattleMap::getNumberRows() const
+{
+    qDebug() << "..." << __func__;
+    return m_numberRows;
+}
+
+/*!
+ * \brief This function returns the value of the member variable m_numberColumns.
+ */
+qint32 Dialog_NewBattleMap::getNumberColumns() const
+{
+    qDebug() << "..." << __func__;
+    return m_numberColumns;
 }
 
 /*!
@@ -91,6 +128,9 @@ void Dialog_NewBattleMap::toggled_RadioButton_ImageBattleMap(bool checked)
         m_numberColumns = 0;
         pUserInterface->LineEdit_NumberRows->setText(QString::number(m_numberRows));
         pUserInterface->LineEdit_NumberColumns->setText(QString::number(m_numberColumns));
+
+        /* Reset information whether the Battle Map image has been selected from source */
+        m_battleMapImageSelectedFromSource = false;
     }
 }
 
@@ -102,7 +142,7 @@ void Dialog_NewBattleMap::toggled_RadioButton_EmptyBattleMap(bool checked)
     qDebug() << "..." << __func__;
 
     if (checked)
-    {
+    {      
         /* Disable widgets for source selection */
         pUserInterface->LineEdit_Source->setEnabled(false);
         pUserInterface->PushButton_SelectSource->setEnabled(false);
@@ -124,6 +164,9 @@ void Dialog_NewBattleMap::toggled_RadioButton_EmptyBattleMap(bool checked)
         m_numberColumns = 0;
         pUserInterface->LineEdit_NumberRows->setText(QString::number(m_numberRows));
         pUserInterface->LineEdit_NumberColumns->setText(QString::number(m_numberColumns));
+
+        /* Reset information whether the Battle Map image has been selected from source */
+        m_battleMapImageSelectedFromSource = false;
 
         /* Show empty battle map image */
         showEmptyBattleMapImage();
@@ -366,6 +409,9 @@ void Dialog_NewBattleMap::selected_BattleMapSquare()
         pUserInterface->PushButton_DecrementNumberColumns->setEnabled(true);
         pUserInterface->PushButton_IncrementNumberColumns->setEnabled(true);
 
+        /* Set information whether the Battle Map image has been selected from source */
+        m_battleMapImageSelectedFromSource = true;
+
         /* Enable push button with AcceptRole */
         pUserInterface->DialogButtonBox->button(QDialogButtonBox::Ok)->setEnabled(true);
     }
@@ -390,38 +436,6 @@ void Dialog_NewBattleMap::selected_BattleMapSquare()
         msgBox.setIcon(QMessageBox::Question);
         msgBox.exec();
     }
-}
-
-/*!
- * \brief This function handles a click on the push button with AcceptRole.
- */
-void Dialog_NewBattleMap::accepted_DialogButtonBox()
-{
-    qDebug() << "..." << __func__;
-
-    //TODO: Implement storation of selected battle map image and number of rows and columns
-
-    delete this;
-}
-
-/*!
- * \brief This function handles a click on the push button with RejectRole.
- */
-void Dialog_NewBattleMap::rejected_DialogButtonBox()
-{
-    qDebug() << "..." << __func__;
-
-    delete this;
-}
-
-/*!
- * \brief This function handles a click on the X title bar button.
- */
-void Dialog_NewBattleMap::reject()
-{
-    qDebug() << "..." << __func__;
-
-    delete this;
 }
 
 /*!
@@ -459,6 +473,10 @@ void Dialog_NewBattleMap::showEmptyBattleMapImage()
         pBattleMapScene->setSceneRect(0, 0, m_battleMapImage.width(), m_battleMapImage.height());
 
         pUserInterface->GraphicsView_BattleMap->show();
+
+        //TODO: Must been done when the standard button with AcceptRole has been enabled for the empty map
+        /* Reset information whether the Battle Map image has been selected from source */
+        m_battleMapImageSelectedFromSource = false;
     }
 }
 
