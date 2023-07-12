@@ -533,9 +533,13 @@ void Dialog_NewBattleMap::correctNumberOfRows()
 {
     qDebug() << "..." << __func__;
 
-    qint32 edgeLength = m_battleMapImage.size().width() / m_numberColumns;
-    m_numberRows = m_battleMapImage.size().height() / edgeLength;
-    pUserInterface->LineEdit_NumberRows->setText(QString::number(m_numberRows));
+    if (0 < m_numberColumns)
+    {
+        qint32 edgeLength = m_battleMapImage.size().width() / m_numberColumns;
+        m_numberRows = m_battleMapImage.size().height() / edgeLength;
+        pUserInterface->LineEdit_NumberRows->setText(QString::number(m_numberRows));
+    }
+
 }
 
 /*!
@@ -545,9 +549,13 @@ void Dialog_NewBattleMap::correctNumberOfColumns()
 {
     qDebug() << "..." << __func__;
 
-    qint32 edgeLength = m_battleMapImage.size().height() / m_numberRows;
-    m_numberColumns = m_battleMapImage.size().width() / edgeLength;
-    pUserInterface->LineEdit_NumberColumns->setText(QString::number(m_numberColumns));
+    if (0 < m_numberRows)
+    {
+        qint32 edgeLength = m_battleMapImage.size().height() / m_numberRows;
+        m_numberColumns = m_battleMapImage.size().width() / edgeLength;
+        pUserInterface->LineEdit_NumberColumns->setText(QString::number(m_numberColumns));
+    }
+
 }
 
 /*!
@@ -557,40 +565,43 @@ void Dialog_NewBattleMap::controlNumberOfRowsAndColumns()
 {
     qDebug() << "..." << __func__;
 
-    bool invalidBattleMapGrid = false;
-    qint32 edgeLengthHeigth = m_battleMapImage.size().height() / m_numberRows;
-    qint32 edgeLengthWidth = m_battleMapImage.size().width() / m_numberColumns;
+    if ((0 < m_numberRows) && (0 < m_numberColumns))
+    {
+        bool invalidBattleMapGrid = false;
+        qint32 edgeLengthHeigth = m_battleMapImage.size().height() / m_numberRows;
+        qint32 edgeLengthWidth = m_battleMapImage.size().width() / m_numberColumns;
 
-    /* Set background color of LineEdit_NumberRows to red if m_numberRows does not match the image size */
-    if ((edgeLengthHeigth * m_numberRows) != m_battleMapImage.size().height())
-    {
-        pUserInterface->LineEdit_NumberRows->setStyleSheet(QString("#%1 { background-color: red; }").arg(pUserInterface->LineEdit_NumberRows->objectName()));
-        invalidBattleMapGrid = true;
-    }
-    else
-    {
-        pUserInterface->LineEdit_NumberRows->setStyleSheet("");
-    }
+        /* Set background color of LineEdit_NumberRows to red if m_numberRows does not match the image size */
+        if ((edgeLengthHeigth * m_numberRows) != m_battleMapImage.size().height())
+        {
+            pUserInterface->LineEdit_NumberRows->setStyleSheet(QString("#%1 { background-color: red; }").arg(pUserInterface->LineEdit_NumberRows->objectName()));
+            invalidBattleMapGrid = true;
+        }
+        else
+        {
+            pUserInterface->LineEdit_NumberRows->setStyleSheet("");
+        }
 
-    /* Set background color of LineEdit_NumberColumns to red if m_numberColumns does not match the image size */
-    if ((edgeLengthWidth * m_numberColumns) != m_battleMapImage.size().width())
-    {
-        pUserInterface->LineEdit_NumberColumns->setStyleSheet(QString("#%1 { background-color: red; }").arg(pUserInterface->LineEdit_NumberColumns->objectName()));
-        invalidBattleMapGrid = true;
-    }
-    else
-    {
-        pUserInterface->LineEdit_NumberColumns->setStyleSheet("");
-    }
+        /* Set background color of LineEdit_NumberColumns to red if m_numberColumns does not match the image size */
+        if ((edgeLengthWidth * m_numberColumns) != m_battleMapImage.size().width())
+        {
+            pUserInterface->LineEdit_NumberColumns->setStyleSheet(QString("#%1 { background-color: red; }").arg(pUserInterface->LineEdit_NumberColumns->objectName()));
+            invalidBattleMapGrid = true;
+        }
+        else
+        {
+            pUserInterface->LineEdit_NumberColumns->setStyleSheet("");
+        }
 
-    /* Enable or disable push button with AcceptRole */
-    if (invalidBattleMapGrid)
-    {
-        pUserInterface->DialogButtonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
-    }
-    else
-    {
-        pUserInterface->DialogButtonBox->button(QDialogButtonBox::Ok)->setEnabled(true);
+        /* Enable or disable push button with AcceptRole */
+        if (invalidBattleMapGrid)
+        {
+            pUserInterface->DialogButtonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
+        }
+        else
+        {
+            pUserInterface->DialogButtonBox->button(QDialogButtonBox::Ok)->setEnabled(true);
+        }
     }
 }
 
@@ -605,7 +616,7 @@ void Dialog_NewBattleMap::drawBattleMapGrid()
 
     pBattleMapScene->removeBattleMapLines();
 
-    if (0 < m_numberRows && 0 < m_numberColumns)
+    if ((0 < m_numberRows) && (0 < m_numberColumns))
     {
         edgeLength = m_battleMapImage.size().height() / m_numberRows;
 
