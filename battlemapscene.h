@@ -33,22 +33,27 @@ public:
     ~BattleMapScene();
 
     /*!
-     * \brief This function returns the value of the member variable scenePosPress.
+     * \brief This function returns the value of the member variable m_battleMapLinesToDraw.
+     */
+    QList<QGraphicsLineItem*> getBattleMapLinesToDraw() const;
+
+    /*!
+     * \brief This function returns the value of the member variable m_scenePosPress.
      */
     QPointF getScenePosPress() const;
 
     /*!
-     * \brief This function sets the value of the member variable scenePosPress.
+     * \brief This function sets the value of the member variable m_scenePosPress.
      */
     void setScenePosPress(QPointF newScenePosPress);
 
     /*!
-     * \brief This function returns the value of the member variable scenePosRelease.
+     * \brief This function returns the value of the member variable m_scenePosRelease.
      */
     QPointF getScenePosRelease() const;
 
     /*!
-     * \brief This function sets the value of the member variable scenePosRelease.
+     * \brief This function sets the value of the member variable m_scenePosRelease.
      */
     void setScenePosRelease(QPointF newScenePosRelease);
 

@@ -47,7 +47,7 @@ Dialog_NewBattleMap::Dialog_NewBattleMap(QWidget *parent) :
     connect(pUserInterface->PushButton_DecrementNumberColumns, SIGNAL(released()), this, SLOT(released_PushButton_DecrementNumberColumns()));
     connect(pUserInterface->PushButton_IncrementNumberColumns, SIGNAL(released()), this, SLOT(released_PushButton_IncrementNumberColumns()));
     connect(pBattleMapScene, SIGNAL(selected_BattleMapSquare()), this, SLOT(selected_BattleMapSquare()));
-    connect(pUserInterface->DialogButtonBox, SIGNAL(accepted()), this, SLOT(accept()));
+    connect(pUserInterface->DialogButtonBox, SIGNAL(accepted()), this, SLOT(accepted_DialogButtonBox()));
     connect(pUserInterface->DialogButtonBox, SIGNAL(rejected()), this, SLOT(reject()));
 }
 
@@ -436,6 +436,30 @@ void Dialog_NewBattleMap::selected_BattleMapSquare()
         msgBox.setIcon(QMessageBox::Question);
         msgBox.exec();
     }
+}
+
+/*!
+ * \brief This function handles a click on the push button with AcceptRole.
+ */
+void Dialog_NewBattleMap::accepted_DialogButtonBox()
+{
+    qDebug() << "..." << __func__;
+
+    /* Draw the selected Battle Map grid on the empty Battle Map image */
+    if (!m_battleMapImageSelectedFromSource)
+    {
+        QPainter painter;
+        painter.setPen(QPen(Qt::black, 3, Qt::SolidLine));
+        painter.begin(&m_battleMapImage);
+        QList<QGraphicsLineItem*> battleMapLinesToDraw = pBattleMapScene->getBattleMapLinesToDraw();
+        for (qint32 lineIdx = 0; lineIdx < battleMapLinesToDraw.count(); lineIdx++)
+        {
+            painter.drawLine(battleMapLinesToDraw.at(lineIdx)->line());
+        }
+        painter.end();
+    }
+
+    this->accept();
 }
 
 /*!

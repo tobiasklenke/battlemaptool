@@ -33,6 +33,14 @@ BattleMapScene::~BattleMapScene()
 }
 
 /*!
+ * \brief This function returns the value of the member variable m_battleMapLinesToDraw.
+ */
+QList<QGraphicsLineItem*> BattleMapScene::getBattleMapLinesToDraw() const
+{
+    qDebug() << "..." << __func__;
+    return m_battleMapLinesToDraw;
+}
+/*!
  * \brief This function handles a mouse press event on BattleMapScene.
  */
 void BattleMapScene::mousePressEvent(QGraphicsSceneMouseEvent *event)

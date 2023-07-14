@@ -119,6 +119,11 @@ private slots:
      */
     void selected_BattleMapSquare();
 
+    /*!
+     * \brief This function handles a click on the push button with AcceptRole.
+     */
+    void accepted_DialogButtonBox();
+
 private:
 
     /*!
