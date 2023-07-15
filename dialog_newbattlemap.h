@@ -139,17 +139,17 @@ private:
     /*!
      * \brief This function corrects the number of rowsconsidering the Battle Map squares aspect ratio.
      */
-    void correctNumberOfRows();
+    void correctNumberRows();
 
     /*!
      * \brief This function corrects the number of columns considering the Battle Map squares aspect ratio.
      */
-    void correctNumberOfColumns();
+    void correctNumberColumns();
 
     /*!
      * \brief This function controls the number of rows and columns.
      */
-    void controlNumberOfRowsAndColumns();
+    void controlNumberRowsAndColumns();
 
     /*!
      * \brief This function draws the Battle Map grid.
