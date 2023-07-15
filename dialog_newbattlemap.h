@@ -55,12 +55,12 @@ public:
     /*!
      * \brief This function returns the value of the member variable m_numberRows.
      */
-    qint32 getNumberRows() const;
+    quint32 getNumberRows() const;
 
     /*!
      * \brief This function returns the value of the member variable m_numberColumns.
      */
-    qint32 getNumberColumns() const;
+    quint32 getNumberColumns() const;
 
 private slots:
 
@@ -179,12 +179,12 @@ private:
     /*!
      * \brief This is the number of rows of the Battle Map.
      */
-    qint32 m_numberRows;
+    quint32 m_numberRows;
 
     /*!
      * \brief This is the number of columns of the Battle Map.
      */
-    qint32 m_numberColumns;
+    quint32 m_numberColumns;
 };
 
 #endif // DIALOG_NEWBATTLEMAP_H
