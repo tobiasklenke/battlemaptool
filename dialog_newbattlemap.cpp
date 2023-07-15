@@ -6,7 +6,7 @@
 #include "ui_dialog_newbattlemap.h"
 
 /****************************************************************************************************************************************************
- * Member Function Definition
+ * Definition of Public Functions
  ****************************************************************************************************************************************************/
 
 /*!
@@ -97,6 +97,16 @@ quint32 Dialog_NewBattleMap::getNumberColumns() const
     qDebug() << "..." << __func__;
     return m_numberColumns;
 }
+
+/****************************************************************************************************************************************************
+ * Definition of Protected Functions
+ ****************************************************************************************************************************************************/
+
+/* - */
+
+/****************************************************************************************************************************************************
+ * Definition of Private Slot Functions
+ ****************************************************************************************************************************************************/
 
 /*!
  * \brief This function handles a toggle of RadioButton_ImageBattleMap.
@@ -231,8 +241,8 @@ void Dialog_NewBattleMap::editingFinished_LineEdit_NumberRows()
 
     if (pUserInterface->RadioButton_ImageBattleMap->isChecked())
     {
-        correctNumberOfColumns();
-        controlNumberOfRowsAndColumns();
+        correctNumberColumns();
+        controlNumberRowsAndColumns();
         drawBattleMapGrid();
     }
 }
@@ -266,8 +276,8 @@ void Dialog_NewBattleMap::editingFinished_LineEdit_NumberColumns()
 
     if (pUserInterface->RadioButton_ImageBattleMap->isChecked())
     {
-        correctNumberOfRows();
-        controlNumberOfRowsAndColumns();
+        correctNumberRows();
+        controlNumberRowsAndColumns();
         drawBattleMapGrid();
     }
 }
@@ -285,8 +295,8 @@ void Dialog_NewBattleMap::released_PushButton_DecrementNumberRows()
 
         if (pUserInterface->RadioButton_ImageBattleMap->isChecked())
         {
-            correctNumberOfColumns();
-            controlNumberOfRowsAndColumns();
+            correctNumberColumns();
+            controlNumberRowsAndColumns();
             drawBattleMapGrid();
         }
     }
@@ -303,8 +313,8 @@ void Dialog_NewBattleMap::released_PushButton_IncrementNumberRows()
 
     if (pUserInterface->RadioButton_ImageBattleMap->isChecked())
     {
-        correctNumberOfColumns();
-        controlNumberOfRowsAndColumns();
+        correctNumberColumns();
+        controlNumberRowsAndColumns();
         drawBattleMapGrid();
     }
 }
@@ -322,8 +332,8 @@ void Dialog_NewBattleMap::released_PushButton_DecrementNumberColumns()
 
         if (pUserInterface->RadioButton_ImageBattleMap->isChecked())
         {
-            correctNumberOfRows();
-            controlNumberOfRowsAndColumns();
+            correctNumberRows();
+            controlNumberRowsAndColumns();
             drawBattleMapGrid();
         }
     }
@@ -340,8 +350,8 @@ void Dialog_NewBattleMap::released_PushButton_IncrementNumberColumns()
 
     if (pUserInterface->RadioButton_ImageBattleMap->isChecked())
     {
-        correctNumberOfRows();
-        controlNumberOfRowsAndColumns();
+        correctNumberRows();
+        controlNumberRowsAndColumns();
         drawBattleMapGrid();
     }
 }
@@ -462,6 +472,10 @@ void Dialog_NewBattleMap::accepted_DialogButtonBox()
     this->accept();
 }
 
+/****************************************************************************************************************************************************
+ * Definition of Private Functions
+ ****************************************************************************************************************************************************/
+
 /*!
  * \brief This function shows the empty Battle Map image.
  */
@@ -553,7 +567,7 @@ void Dialog_NewBattleMap::showSourceBattleMapImage()
 /*!
  * \brief This function corrects the number of rows considering the Battle Map squares aspect ratio.
  */
-void Dialog_NewBattleMap::correctNumberOfRows()
+void Dialog_NewBattleMap::correctNumberRows()
 {
     qDebug() << "..." << __func__;
 
@@ -569,7 +583,7 @@ void Dialog_NewBattleMap::correctNumberOfRows()
 /*!
  * \brief This function corrects the number of columns considering the Battle Map squares aspect ratio.
  */
-void Dialog_NewBattleMap::correctNumberOfColumns()
+void Dialog_NewBattleMap::correctNumberColumns()
 {
     qDebug() << "..." << __func__;
 
@@ -585,7 +599,7 @@ void Dialog_NewBattleMap::correctNumberOfColumns()
 /*!
  * \brief This function controls the number of rows and columns.
  */
-void Dialog_NewBattleMap::controlNumberOfRowsAndColumns()
+void Dialog_NewBattleMap::controlNumberRowsAndColumns()
 {
     qDebug() << "..." << __func__;
 

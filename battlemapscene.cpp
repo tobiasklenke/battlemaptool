@@ -5,7 +5,7 @@
 #include "battlemapscene.h"
 
 /****************************************************************************************************************************************************
- * Member Function Definition
+ * Definition of Public Functions
  ****************************************************************************************************************************************************/
 
 /*!
@@ -39,53 +39,6 @@ QList<QGraphicsLineItem*> BattleMapScene::getBattleMapLinesToDraw() const
 {
     qDebug() << "..." << __func__;
     return m_battleMapLinesToDraw;
-}
-/*!
- * \brief This function handles a mouse press event on BattleMapScene.
- */
-void BattleMapScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
-{
-    qDebug() << "..." << __func__;
-
-    /* Reset press and release positions */
-    m_scenePosPress = QPointF();
-    m_scenePosRelease = QPointF();
-
-    m_scenePosPress = event->scenePos();
-
-    this->addItem(pBattleMapSquareToDraw);
-    pBattleMapSquareToDraw->setPen(QPen(Qt::black, 3, Qt::DashLine));
-}
-
-/*!
- * \brief This function handles a mouse move event on BattleMapScene.
- */
-void BattleMapScene::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
-{
-    //qDebug() << "..." << __func__;
-
-    if (m_scenePosRelease.isNull())
-    {
-        QPointF topLeft = QPointF(qMin(m_scenePosPress.rx(), event->scenePos().rx()), qMin(m_scenePosPress.y(), event->scenePos().ry()));
-        QPointF bottomRight = QPointF(qMax(m_scenePosPress.rx(), event->scenePos().rx()), qMax(m_scenePosPress.y(), event->scenePos().ry()));
-
-        pBattleMapSquareToDraw->setRect(topLeft.rx(), topLeft.ry(), (bottomRight - topLeft).rx(), (bottomRight - topLeft).ry());
-    }
-}
-
-/*!
- * \brief This function handles a mouse release event on BattleMapScene.
- */
-void BattleMapScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
-{
-    qDebug() << "..." << __func__;
-
-    m_scenePosRelease = event->scenePos();
-
-    pBattleMapSquareToDraw->setRect(0, 0, 0, 0);
-    this->removeItem(pBattleMapSquareToDraw);
-
-    emit selected_BattleMapSquare();
 }
 
 /*!
@@ -155,3 +108,67 @@ void BattleMapScene::removeBattleMapLines()
 
     m_battleMapLinesToDraw.clear();
 }
+
+/****************************************************************************************************************************************************
+ * Definition of Protected Functions
+ ****************************************************************************************************************************************************/
+
+/*!
+ * \brief This function handles a mouse press event on BattleMapScene.
+ */
+void BattleMapScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
+{
+    qDebug() << "..." << __func__;
+
+    /* Reset press and release positions */
+    m_scenePosPress = QPointF();
+    m_scenePosRelease = QPointF();
+
+    m_scenePosPress = event->scenePos();
+
+    this->addItem(pBattleMapSquareToDraw);
+    pBattleMapSquareToDraw->setPen(QPen(Qt::black, 3, Qt::DashLine));
+}
+
+/*!
+ * \brief This function handles a mouse move event on BattleMapScene.
+ */
+void BattleMapScene::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
+{
+    //qDebug() << "..." << __func__;
+
+    if (m_scenePosRelease.isNull())
+    {
+        QPointF topLeft = QPointF(qMin(m_scenePosPress.rx(), event->scenePos().rx()), qMin(m_scenePosPress.y(), event->scenePos().ry()));
+        QPointF bottomRight = QPointF(qMax(m_scenePosPress.rx(), event->scenePos().rx()), qMax(m_scenePosPress.y(), event->scenePos().ry()));
+
+        pBattleMapSquareToDraw->setRect(topLeft.rx(), topLeft.ry(), (bottomRight - topLeft).rx(), (bottomRight - topLeft).ry());
+    }
+}
+
+/*!
+ * \brief This function handles a mouse release event on BattleMapScene.
+ */
+void BattleMapScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
+{
+    qDebug() << "..." << __func__;
+
+    m_scenePosRelease = event->scenePos();
+
+    pBattleMapSquareToDraw->setRect(0, 0, 0, 0);
+    this->removeItem(pBattleMapSquareToDraw);
+
+    emit selected_BattleMapSquare();
+}
+
+/****************************************************************************************************************************************************
+ * Definition of Private Slot Functions
+ ****************************************************************************************************************************************************/
+
+/* - */
+
+/****************************************************************************************************************************************************
+ * Definition of Private Functions
+ ****************************************************************************************************************************************************/
+
+/* - */
