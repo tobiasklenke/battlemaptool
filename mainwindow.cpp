@@ -72,7 +72,7 @@ void MainWindow::accepted_Dialog_NewBattleMap()
 
     //TODO: remove
     qDebug() << pDialog_NewBattleMap->getBattleMapImageSelectedFromSource();
-    qDebug() << pDialog_NewBattleMap->getBattleMapImage();
+    qDebug() << pDialog_NewBattleMap->getBattleMapPixmap();
     qDebug() << pDialog_NewBattleMap->getNumberRows();
     qDebug() << pDialog_NewBattleMap->getNumberColumns();
     //pDialog_NewBattleMap->getBattleMapImage().save("test.jpg");

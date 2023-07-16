@@ -48,9 +48,9 @@ public:
     bool getBattleMapImageSelectedFromSource() const;
 
     /*!
-     * \brief This function returns the image of the member variable m_battleMapImage.
+     * \brief This function returns the pixmap of the member variable pBattleMapImagePixMap.
      */
-    QImage getBattleMapImage() const;
+    QPixmap getBattleMapPixmap() const;
 
     /*!
      * \brief This function returns the value of the member variable m_numberRows.
@@ -172,9 +172,9 @@ private:
     bool m_battleMapImageSelectedFromSource;
 
     /*!
-     * \brief This is the image of the Battle Map.
+     * \brief This is the pixmap of the Battle Map image.
      */
-    QImage m_battleMapImage;
+    QGraphicsPixmapItem *pBattleMapImagePixMap;
 
     /*!
      * \brief This is the number of rows of the Battle Map.
