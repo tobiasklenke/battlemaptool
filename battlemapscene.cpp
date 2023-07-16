@@ -120,11 +120,9 @@ void BattleMapScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
     qDebug() << "..." << __func__;
 
-    /* Reset press and release positions */
-    m_scenePosPress = QPointF();
-    m_scenePosRelease = QPointF();
-
+    /* Set press position and reset release position */
     m_scenePosPress = event->scenePos();
+    m_scenePosRelease = QPointF();
 
     this->addItem(pBattleMapSquareToDraw);
     pBattleMapSquareToDraw->setPen(QPen(Qt::black, 3, Qt::DashLine));
@@ -137,7 +135,7 @@ void BattleMapScene::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
     //qDebug() << "..." << __func__;
 
-    if (m_scenePosRelease.isNull())
+    if (!m_scenePosPress.isNull() && m_scenePosRelease.isNull())
     {
         QPointF topLeft = QPointF(qMin(m_scenePosPress.rx(), event->scenePos().rx()), qMin(m_scenePosPress.y(), event->scenePos().ry()));
         QPointF bottomRight = QPointF(qMax(m_scenePosPress.rx(), event->scenePos().rx()), qMax(m_scenePosPress.y(), event->scenePos().ry()));
