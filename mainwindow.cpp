@@ -15,7 +15,7 @@
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     pUserInterface(new Ui::MainWindow),
-    pDialog_NewBattleMap(new Dialog_NewBattleMap)
+    pDialog_NewBattleMap(NULL)
 {
     qDebug() << "..." << __func__;
 
