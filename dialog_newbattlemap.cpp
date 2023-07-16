@@ -15,7 +15,7 @@
 Dialog_NewBattleMap::Dialog_NewBattleMap(QWidget *parent) :
     QDialog(parent),
     pUserInterface(new Ui::Dialog_NewBattleMap),
-    pBattleMapScene(new BattleMapScene),
+    pBattleMapScene(NULL),
     m_battleMapImageSelectedFromSource(false),
     m_battleMapImage(QImage()),
     m_numberRows(0U),
@@ -26,14 +26,13 @@ Dialog_NewBattleMap::Dialog_NewBattleMap(QWidget *parent) :
     pUserInterface->setupUi(this);
 
     /* Set initial state */
-    pUserInterface->RadioButton_ImageBattleMap->setChecked(false);
-    pUserInterface->RadioButton_EmptyBattleMap->setChecked(true);
-    pUserInterface->LineEdit_Source->setEnabled(false);
-    pUserInterface->PushButton_SelectSource->setEnabled(false);
+    pUserInterface->RadioButton_ImageBattleMap->setChecked(true);
+    pUserInterface->RadioButton_EmptyBattleMap->setChecked(false);
+    pUserInterface->LineEdit_Source->setEnabled(true);
+    pUserInterface->PushButton_SelectSource->setEnabled(true);
     pUserInterface->LineEdit_NumberRows->setText("0");
     pUserInterface->LineEdit_NumberColumns->setText("0");
     pUserInterface->DialogButtonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
-    showEmptyBattleMapImage();
 
     /* Set connections */
     connect(pUserInterface->RadioButton_ImageBattleMap, SIGNAL(toggled(bool)), this, SLOT(toggled_RadioButton_ImageBattleMap(bool)));
@@ -46,9 +45,10 @@ Dialog_NewBattleMap::Dialog_NewBattleMap(QWidget *parent) :
     connect(pUserInterface->PushButton_IncrementNumberRows, SIGNAL(released()), this, SLOT(released_PushButton_IncrementNumberRows()));
     connect(pUserInterface->PushButton_DecrementNumberColumns, SIGNAL(released()), this, SLOT(released_PushButton_DecrementNumberColumns()));
     connect(pUserInterface->PushButton_IncrementNumberColumns, SIGNAL(released()), this, SLOT(released_PushButton_IncrementNumberColumns()));
-    connect(pBattleMapScene, SIGNAL(selected_BattleMapSquare()), this, SLOT(selected_BattleMapSquare()));
     connect(pUserInterface->DialogButtonBox, SIGNAL(accepted()), this, SLOT(accepted_DialogButtonBox()));
     connect(pUserInterface->DialogButtonBox, SIGNAL(rejected()), this, SLOT(reject()));
+
+    emit pUserInterface->RadioButton_ImageBattleMap->toggled(true);
 }
 
 /*!
@@ -138,6 +138,14 @@ void Dialog_NewBattleMap::toggled_RadioButton_ImageBattleMap(bool checked)
         m_numberColumns = 0U;
         pUserInterface->LineEdit_NumberRows->setText(QString::number(m_numberRows));
         pUserInterface->LineEdit_NumberColumns->setText(QString::number(m_numberColumns));
+
+        /* Reset Battle Map scene */
+        delete pBattleMapScene;
+        pBattleMapScene = new BattleMapScene();
+        connect(pBattleMapScene, SIGNAL(selected_BattleMapSquare()), this, SLOT(selected_BattleMapSquare()));
+        pUserInterface->GraphicsView_BattleMap->setScene(pBattleMapScene);
+
+        pBattleMapScene->addText("Select Source.");
 
         /* Reset information whether the Battle Map image has been selected from source */
         m_battleMapImageSelectedFromSource = false;
@@ -485,7 +493,12 @@ void Dialog_NewBattleMap::showEmptyBattleMapImage()
 
     QMessageBox msgBox(this);
 
+    /* Reset Battle Map scene */
+    delete pBattleMapScene;
+    pBattleMapScene = new BattleMapScene();
+    connect(pBattleMapScene, SIGNAL(selected_BattleMapSquare()), this, SLOT(selected_BattleMapSquare()));
     pUserInterface->GraphicsView_BattleMap->setScene(pBattleMapScene);
+
     pUserInterface->GraphicsView_BattleMap->setInteractive(false);
     pUserInterface->GraphicsView_BattleMap->viewport()->setCursor(Qt::ArrowCursor);
     pUserInterface->GraphicsView_BattleMap->setToolTip("");
@@ -495,14 +508,12 @@ void Dialog_NewBattleMap::showEmptyBattleMapImage()
 
     if (m_battleMapImage.isNull())
     {
+        pBattleMapScene->addText("Empty Battle Map is no image file.");
+
         msgBox.setWindowTitle("Invalid file");
-        msgBox.setText("Selected Battle Map Source is no image file.");
+        msgBox.setText("Empty Battle Map is no image file.");
         msgBox.setIcon(QMessageBox::Warning);
         msgBox.exec();
-
-        pBattleMapScene->clear();
-        pBattleMapScene->setSceneRect(0, 0, 0, 0);
-        pBattleMapScene->addText("Selected Battle Map Source is no image file!");
     }
     else
     {
@@ -527,7 +538,12 @@ void Dialog_NewBattleMap::showSourceBattleMapImage()
 
     QMessageBox msgBox(this);
 
+    /* Reset Battle Map scene */
+    delete pBattleMapScene;
+    pBattleMapScene = new BattleMapScene();
+    connect(pBattleMapScene, SIGNAL(selected_BattleMapSquare()), this, SLOT(selected_BattleMapSquare()));
     pUserInterface->GraphicsView_BattleMap->setScene(pBattleMapScene);
+
     pUserInterface->GraphicsView_BattleMap->setInteractive(false);
     pUserInterface->GraphicsView_BattleMap->viewport()->setCursor(Qt::ArrowCursor);
     pUserInterface->GraphicsView_BattleMap->setToolTip("");
@@ -536,14 +552,12 @@ void Dialog_NewBattleMap::showSourceBattleMapImage()
 
     if (m_battleMapImage.isNull())
     {
+        pBattleMapScene->addText("Image Battle Map is no image file.");
+
         msgBox.setWindowTitle("Invalid file");
-        msgBox.setText("Selected Battle Map Source is no image file.");
+        msgBox.setText("Image Battle Map is no image file.");
         msgBox.setIcon(QMessageBox::Warning);
         msgBox.exec();
-
-        pBattleMapScene->clear();
-        pBattleMapScene->setSceneRect(0, 0, 0, 0);
-        pBattleMapScene->addText("Selected Battle Map Source is no image file.");
     }
     else
     {
