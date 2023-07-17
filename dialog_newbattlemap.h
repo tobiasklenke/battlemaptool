@@ -11,7 +11,9 @@
 #include <QGraphicsPixmapItem>
 #include <QMessageBox>
 
+#include "battlemap.h"
 #include "battlemapscene.h"
+
 #include "defines.h"
 
 /****************************************************************************************************************************************************
@@ -53,14 +55,9 @@ public:
     QPixmap getBattleMapPixmap() const;
 
     /*!
-     * \brief This function returns the value of the member variable m_numberRows.
+     * \brief This function returns the newly created Battle Map.
      */
-    quint32 getNumberRows() const;
-
-    /*!
-     * \brief This function returns the value of the member variable m_numberColumns.
-     */
-    quint32 getNumberColumns() const;
+    BattleMap getBattleMap() const;
 
 private slots:
 
@@ -177,14 +174,9 @@ private:
     QGraphicsPixmapItem *pBattleMapImagePixMap;
 
     /*!
-     * \brief This is the number of rows of the Battle Map.
+     * \brief This is the newly created Battle Map.
      */
-    quint32 m_numberRows;
-
-    /*!
-     * \brief This is the number of columns of the Battle Map.
-     */
-    quint32 m_numberColumns;
+    BattleMap m_battleMap;
 };
 
 #endif // DIALOG_NEWBATTLEMAP_H

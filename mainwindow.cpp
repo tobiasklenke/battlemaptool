@@ -73,8 +73,8 @@ void MainWindow::accepted_Dialog_NewBattleMap()
     //TODO: remove
     qDebug() << pDialog_NewBattleMap->getBattleMapImageSelectedFromSource();
     qDebug() << pDialog_NewBattleMap->getBattleMapPixmap();
-    qDebug() << pDialog_NewBattleMap->getNumberRows();
-    qDebug() << pDialog_NewBattleMap->getNumberColumns();
+    qDebug() << pDialog_NewBattleMap->getBattleMap().getNumberRows();
+    qDebug() << pDialog_NewBattleMap->getBattleMap().getNumberColumns();
     //pDialog_NewBattleMap->getBattleMapImage().save("test.jpg");
 
     //TODO: Implement storation of data before deleting pDialog_NewBattleMap
