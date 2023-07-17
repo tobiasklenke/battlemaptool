@@ -102,8 +102,8 @@ void BattleMapScene::removeBattleMapLines()
 
     for(quint32 lineIdx = 0U; lineIdx < m_battleMapLinesToDraw.count(); lineIdx++)
     {
-        m_battleMapLinesToDraw.at(lineIdx)->setLine(0, 0, 0, 0);
         this->removeItem(m_battleMapLinesToDraw.at(lineIdx));
+        delete m_battleMapLinesToDraw.at(lineIdx);
     }
 
     m_battleMapLinesToDraw.clear();
