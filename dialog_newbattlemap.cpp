@@ -124,6 +124,8 @@ void Dialog_NewBattleMap::toggled_RadioButton_ImageBattleMap(bool checked)
         /* Disable widgets for numbers of rows and columns */
         pUserInterface->LineEdit_NumberRows->setEnabled(false);
         pUserInterface->LineEdit_NumberColumns->setEnabled(false);
+        pUserInterface->LineEdit_NumberRows->setStyleSheet("");
+        pUserInterface->LineEdit_NumberColumns->setStyleSheet("");
         pUserInterface->PushButton_DecrementNumberRows->setEnabled(false);
         pUserInterface->PushButton_IncrementNumberRows->setEnabled(false);
         pUserInterface->PushButton_DecrementNumberColumns->setEnabled(false);
@@ -168,6 +170,8 @@ void Dialog_NewBattleMap::toggled_RadioButton_EmptyBattleMap(bool checked)
         /* Enable widgets for numbers of rows and columns */
         pUserInterface->LineEdit_NumberRows->setEnabled(true);
         pUserInterface->LineEdit_NumberColumns->setEnabled(true);
+        pUserInterface->LineEdit_NumberRows->setStyleSheet("");
+        pUserInterface->LineEdit_NumberColumns->setStyleSheet("");
         pUserInterface->PushButton_DecrementNumberRows->setEnabled(true);
         pUserInterface->PushButton_IncrementNumberRows->setEnabled(true);
         pUserInterface->PushButton_DecrementNumberColumns->setEnabled(true);
@@ -445,6 +449,7 @@ void Dialog_NewBattleMap::selected_BattleMapSquare()
     pUserInterface->LineEdit_NumberRows->setText(QString::number(m_numberRows));
     pUserInterface->LineEdit_NumberColumns->setText(QString::number(m_numberColumns));
 
+    controlNumberRowsAndColumns();
     drawBattleMapGrid();
 
     if (0U < averageEdgeLength)
@@ -621,26 +626,35 @@ void Dialog_NewBattleMap::controlNumberRowsAndColumns()
         quint32 edgeLengthHeigth = pBattleMapImagePixMap->pixmap().height() / m_numberRows;
         quint32 edgeLengthWidth = pBattleMapImagePixMap->pixmap().width() / m_numberColumns;
 
-        /* Set background color of LineEdit_NumberRows to red if m_numberRows does not match the image size */
-        if ((edgeLengthHeigth * m_numberRows) != static_cast<quint32>(pBattleMapImagePixMap->pixmap().height()))
+        if (edgeLengthHeigth == edgeLengthWidth)
+        {
+            /* Set background color of LineEdit_NumberRows to red if m_numberRows does not match the image size */
+            if ((edgeLengthHeigth * m_numberRows) != static_cast<quint32>(pBattleMapImagePixMap->pixmap().height()))
+            {
+                pUserInterface->LineEdit_NumberRows->setStyleSheet(QString("#%1 { background-color: red; }").arg(pUserInterface->LineEdit_NumberRows->objectName()));
+                invalidBattleMapGrid = true;
+            }
+            else
+            {
+                pUserInterface->LineEdit_NumberRows->setStyleSheet("");
+            }
+
+            /* Set background color of LineEdit_NumberColumns to red if m_numberColumns does not match the image size */
+            if ((edgeLengthWidth * m_numberColumns) != static_cast<quint32>(pBattleMapImagePixMap->pixmap().width()))
+            {
+                pUserInterface->LineEdit_NumberColumns->setStyleSheet(QString("#%1 { background-color: red; }").arg(pUserInterface->LineEdit_NumberColumns->objectName()));
+                invalidBattleMapGrid = true;
+            }
+            else
+            {
+                pUserInterface->LineEdit_NumberColumns->setStyleSheet("");
+            }
+        }
+        else
         {
             pUserInterface->LineEdit_NumberRows->setStyleSheet(QString("#%1 { background-color: red; }").arg(pUserInterface->LineEdit_NumberRows->objectName()));
-            invalidBattleMapGrid = true;
-        }
-        else
-        {
-            pUserInterface->LineEdit_NumberRows->setStyleSheet("");
-        }
-
-        /* Set background color of LineEdit_NumberColumns to red if m_numberColumns does not match the image size */
-        if ((edgeLengthWidth * m_numberColumns) != static_cast<quint32>(pBattleMapImagePixMap->pixmap().width()))
-        {
             pUserInterface->LineEdit_NumberColumns->setStyleSheet(QString("#%1 { background-color: red; }").arg(pUserInterface->LineEdit_NumberColumns->objectName()));
             invalidBattleMapGrid = true;
-        }
-        else
-        {
-            pUserInterface->LineEdit_NumberColumns->setStyleSheet("");
         }
 
         /* Enable or disable push button with AcceptRole */
@@ -668,15 +682,16 @@ void Dialog_NewBattleMap::drawBattleMapGrid()
 
     if ((0U < m_numberRows) && (0U < m_numberColumns))
     {
+        qDebug() << pBattleMapImagePixMap->pixmap().height() << m_numberRows;
         edgeLength = pBattleMapImagePixMap->pixmap().height() / m_numberRows;
-
+        qDebug() << edgeLength;
         for (quint32 rowIdx = 0U; rowIdx < m_numberRows + 1; rowIdx++)
         {
             pBattleMapScene->drawBattleMapLine(QLineF(0, rowIdx * edgeLength, m_numberColumns * edgeLength, rowIdx * edgeLength));
         }
-
+        qDebug() << pBattleMapImagePixMap->pixmap().width() << m_numberColumns;
         edgeLength = pBattleMapImagePixMap->pixmap().width() / m_numberColumns;
-
+        qDebug() << edgeLength;
         for (quint32 columnIdx = 0U; columnIdx < m_numberColumns + 1; columnIdx++)
         {
             pBattleMapScene->drawBattleMapLine(QLineF(columnIdx * edgeLength, 0, columnIdx * edgeLength, m_numberRows * edgeLength));
