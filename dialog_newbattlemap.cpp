@@ -60,7 +60,6 @@ Dialog_NewBattleMap::~Dialog_NewBattleMap()
 
     delete pUserInterface;
     delete pBattleMapScene;
-    delete pBattleMapImagePixMap;
 }
 
 /*!
