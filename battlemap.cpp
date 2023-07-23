@@ -72,7 +72,7 @@ void BattleMap::setNumberColumns(quint32 newNumberColumns)
 }
 
 /*!
- * \brief This function returns the value of the indexed member variable m_battleMapSquares.
+ * \brief This function returns the pixmap of the indexed member variable m_battleMapSquares.
  */
 QGraphicsPixmapItem *BattleMap::getIndexedBattleMapSquarePixmap(quint32 rowIdx, quint32 columnIdx) const
 {
@@ -81,9 +81,9 @@ QGraphicsPixmapItem *BattleMap::getIndexedBattleMapSquarePixmap(quint32 rowIdx, 
 }
 
 /*!
- * \brief This function appends a new Battle Map square with its pixmap to the member variable m_battleMapSquares.
+ * \brief This function sets the pixmap of the indexed member variable m_battleMapSquares.
  */
-void BattleMap::appendBattleMapSquare(quint32 rowIdx, QGraphicsPixmapItem *newBattleMapSquarePixmap)
+void BattleMap::setIndexedBattleMapSquarePixmap(quint32 rowIdx, QGraphicsPixmapItem *newBattleMapSquarePixmap)
 {
     //qDebug() << "..." << __func__;
 

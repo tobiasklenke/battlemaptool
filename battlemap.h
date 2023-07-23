@@ -55,9 +55,9 @@ public:
     QGraphicsPixmapItem *getIndexedBattleMapSquarePixmap(quint32 rowIdx, quint32 columnIdx) const;
 
     /*!
-     * \brief This function appends a new Battle Map square with its pixmap to the member variable m_battleMapSquares.
+     * \brief This function sets the pixmap of the indexed member variable m_battleMapSquares.
      */
-    void appendBattleMapSquare(quint32 rowIdx, QGraphicsPixmapItem *newBattleMapSquarePixmap);
+    void setIndexedBattleMapSquarePixmap(quint32 rowIdx, QGraphicsPixmapItem *newBattleMapSquarePixmap);
 
 private:
 
