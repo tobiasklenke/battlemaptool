@@ -488,6 +488,8 @@ void Dialog_NewBattleMap::accepted_DialogButtonBox()
         {
             QGraphicsPixmapItem * battleMapSquarePixmap = new QGraphicsPixmapItem();
             battleMapSquarePixmap->setPixmap(pBattleMapImagePixMap->pixmap().copy(QRect(columnIdx * edgeLength, rowIdx * edgeLength, edgeLength, edgeLength)));
+            //TODO: load size of Battle Map square pixmap from configuration data
+            battleMapSquarePixmap->setPixmap(battleMapSquarePixmap->pixmap().scaled(QSize(100, 100)));
             pBattleMap->setIndexedBattleMapSquarePixmap(rowIdx, battleMapSquarePixmap);
         }
     }
