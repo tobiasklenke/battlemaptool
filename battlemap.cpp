@@ -41,6 +41,7 @@ BattleMap::~BattleMap()
 quint32 BattleMap::getNumberRows() const
 {
     //qDebug() << "..." << __func__;
+
     return m_numberRows;
 }
 
@@ -50,6 +51,7 @@ quint32 BattleMap::getNumberRows() const
 void BattleMap::setNumberRows(quint32 newNumberRows)
 {
     //qDebug() << "..." << __func__;
+
     m_numberRows = newNumberRows;
 }
 
@@ -59,6 +61,7 @@ void BattleMap::setNumberRows(quint32 newNumberRows)
 quint32 BattleMap::getNumberColumns() const
 {
     //qDebug() << "..." << __func__;
+
     return m_numberColumns;
 }
 
@@ -68,6 +71,7 @@ quint32 BattleMap::getNumberColumns() const
 void BattleMap::setNumberColumns(quint32 newNumberColumns)
 {
     //qDebug() << "..." << __func__;
+
     m_numberColumns = newNumberColumns;
 }
 
@@ -77,6 +81,7 @@ void BattleMap::setNumberColumns(quint32 newNumberColumns)
 QGraphicsPixmapItem *BattleMap::getIndexedBattleMapSquarePixmap(quint32 rowIdx, quint32 columnIdx) const
 {
     //qDebug() << "..." << __func__;
+
     return m_battleMapSquares[rowIdx][columnIdx]->getBattleMapSquarePixMap();
 }
 
@@ -89,9 +94,7 @@ void BattleMap::setIndexedBattleMapSquarePixmap(quint32 rowIdx, QGraphicsPixmapI
 
     if (rowIdx + 1 > m_battleMapSquares.count())
     {
-        qDebug() << "rows: " << rowIdx << m_battleMapSquares.count();
         m_battleMapSquares.append(QList<BattleMapSquare*>());
-
     }
 
     BattleMapSquare * battleMapSquare = new BattleMapSquare();
