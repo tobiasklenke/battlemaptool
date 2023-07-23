@@ -46,7 +46,7 @@ QList<QGraphicsLineItem*> BattleMapScene::getBattleMapLinesToDraw() const
  */
 QPointF BattleMapScene::getScenePosPress() const
 {
-    qDebug() << "..." << __func__;
+    qDebug() << "..." << __func__;    
     return m_scenePosPress;
 }
 
@@ -120,12 +120,21 @@ void BattleMapScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
     qDebug() << "..." << __func__;
 
-    /* Set press position and reset release position */
-    m_scenePosPress = event->scenePos();
+    //TODO: remove
+    qDebug() << event->scenePos();
+
+    /* Reset press position and release position */
+    m_scenePosPress = QPointF();
     m_scenePosRelease = QPointF();
 
-    this->addItem(pBattleMapSquareToDraw);
-    pBattleMapSquareToDraw->setPen(QPen(Qt::black, 3, Qt::DashLine));
+    if ((0 <= event->scenePos().x()) && (event->scenePos().x() <= this->width()) && (0 <= event->scenePos().y()) && (event->scenePos().x() <= this->height()))
+    {
+        /* Set press position */
+        m_scenePosPress = event->scenePos();
+
+        this->addItem(pBattleMapSquareToDraw);
+        pBattleMapSquareToDraw->setPen(QPen(Qt::black, 3, Qt::DashLine));
+    }
 }
 
 /*!
@@ -151,12 +160,21 @@ void BattleMapScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
     qDebug() << "..." << __func__;
 
-    m_scenePosRelease = event->scenePos();
+    //TODO: remove
+    qDebug() << event->scenePos();
 
-    pBattleMapSquareToDraw->setRect(0, 0, 0, 0);
-    this->removeItem(pBattleMapSquareToDraw);
+    if (!m_scenePosPress.isNull())
+    {
+        pBattleMapSquareToDraw->setRect(0, 0, 0, 0);
+        this->removeItem(pBattleMapSquareToDraw);
 
-    emit selected_BattleMapSquare();
+        if ((0 <= event->scenePos().x()) && (event->scenePos().x() <= this->width()) && (0 <= event->scenePos().y()) && (event->scenePos().x() <= this->height()))
+        {
+            m_scenePosRelease = event->scenePos();
+
+            emit selected_BattleMapSquare();
+        }
+    }
 }
 
 /****************************************************************************************************************************************************
