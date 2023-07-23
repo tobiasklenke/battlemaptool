@@ -60,7 +60,7 @@ public:
     /*!
      * \brief This function draws a Battle Map line.
      */
-    void drawBattleMapLine(QLineF battleMapLine);
+    void drawBattleMapLine(QLineF battleMapLine, QPen pen);
 
     /*!
      * \brief This function removes all Battle Map lines.

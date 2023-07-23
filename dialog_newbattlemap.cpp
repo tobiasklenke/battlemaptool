@@ -31,6 +31,7 @@ Dialog_NewBattleMap::Dialog_NewBattleMap(QWidget *parent) :
     pUserInterface->PushButton_SelectSource->setEnabled(true);
     pUserInterface->LineEdit_NumberRows->setText("0");
     pUserInterface->LineEdit_NumberColumns->setText("0");
+    pUserInterface->CheckBox_DrawBattleMapGrid->setCheckState(Qt::Unchecked);
     pUserInterface->DialogButtonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
 
     /* Set connections */
@@ -44,6 +45,7 @@ Dialog_NewBattleMap::Dialog_NewBattleMap(QWidget *parent) :
     connect(pUserInterface->PushButton_IncrementNumberRows, SIGNAL(released()), this, SLOT(released_PushButton_IncrementNumberRows()));
     connect(pUserInterface->PushButton_DecrementNumberColumns, SIGNAL(released()), this, SLOT(released_PushButton_DecrementNumberColumns()));
     connect(pUserInterface->PushButton_IncrementNumberColumns, SIGNAL(released()), this, SLOT(released_PushButton_IncrementNumberColumns()));
+    connect(pUserInterface->CheckBox_DrawBattleMapGrid, SIGNAL(stateChanged(int)), this, SLOT(stateChanged_CheckBox_DrawBattleMapGrid(int)));
     connect(pUserInterface->DialogButtonBox, SIGNAL(accepted()), this, SLOT(accepted_DialogButtonBox()));
     connect(pUserInterface->DialogButtonBox, SIGNAL(rejected()), this, SLOT(reject()));
 
@@ -111,6 +113,7 @@ void Dialog_NewBattleMap::toggled_RadioButton_ImageBattleMap(bool checked)
         /* Enable widgets for source selection */
         pUserInterface->LineEdit_Source->setEnabled(true);
         pUserInterface->PushButton_SelectSource->setEnabled(true);
+        pUserInterface->CheckBox_DrawBattleMapGrid->setEnabled(true);
 
         /* Disable widgets for numbers of rows and columns */
         pUserInterface->LineEdit_NumberRows->setEnabled(false);
@@ -131,6 +134,7 @@ void Dialog_NewBattleMap::toggled_RadioButton_ImageBattleMap(bool checked)
         pBattleMap->setNumberColumns(0U);
         pUserInterface->LineEdit_NumberRows->setText(QString::number(pBattleMap->getNumberRows()));
         pUserInterface->LineEdit_NumberColumns->setText(QString::number(pBattleMap->getNumberRows()));
+        pUserInterface->CheckBox_DrawBattleMapGrid->setCheckState(Qt::Unchecked);
 
         /* Reset Battle Map scene */
         delete pBattleMapScene;
@@ -157,6 +161,7 @@ void Dialog_NewBattleMap::toggled_RadioButton_EmptyBattleMap(bool checked)
         /* Disable widgets for source selection */
         pUserInterface->LineEdit_Source->setEnabled(false);
         pUserInterface->PushButton_SelectSource->setEnabled(false);
+        pUserInterface->CheckBox_DrawBattleMapGrid->setEnabled(false);
 
         /* Enable widgets for numbers of rows and columns */
         pUserInterface->LineEdit_NumberRows->setEnabled(true);
@@ -177,6 +182,7 @@ void Dialog_NewBattleMap::toggled_RadioButton_EmptyBattleMap(bool checked)
         pBattleMap->setNumberColumns(0U);
         pUserInterface->LineEdit_NumberRows->setText(QString::number(pBattleMap->getNumberRows()));
         pUserInterface->LineEdit_NumberColumns->setText(QString::number(pBattleMap->getNumberColumns()));
+        pUserInterface->CheckBox_DrawBattleMapGrid->setCheckState(Qt::Checked);
 
         /* Reset information whether the Battle Map image has been selected from source */
         m_battleMapImageSelectedFromSource = false;
@@ -462,22 +468,36 @@ void Dialog_NewBattleMap::selected_BattleMapSquare()
 }
 
 /*!
+ * \brief This function handles the state change of CheckBox_DrawBattleMapGrid.
+ */
+void Dialog_NewBattleMap::stateChanged_CheckBox_DrawBattleMapGrid(int state)
+{
+    qDebug() << "..." << __func__;
+
+    drawBattleMapGrid();
+}
+
+/*!
  * \brief This function handles a click on the push button with AcceptRole.
  */
 void Dialog_NewBattleMap::accepted_DialogButtonBox()
 {
     qDebug() << "..." << __func__;
 
-    /* Draw the selected Battle Map grid on the empty Battle Map image */
-    if (!m_battleMapImageSelectedFromSource)
+    /* Draw the selected Battle Map grid on the Battle Map image */
+    if (pUserInterface->CheckBox_DrawBattleMapGrid->isChecked())
     {
-        QPainter painter;
-        painter.setPen(QPen(Qt::black, 3, Qt::SolidLine));
+        QPixmap pixmap(pBattleMapImagePixMap->pixmap());
+        QPainter *painter = new QPainter(&pixmap);
+        //TODO: load pen properties from configuration data
+        painter->setPen(QPen(Qt::black, 3, Qt::SolidLine));
         QList<QGraphicsLineItem*> battleMapLinesToDraw = pBattleMapScene->getBattleMapLinesToDraw();
         for (quint32 lineIdx = 0U; lineIdx < battleMapLinesToDraw.count(); lineIdx++)
         {
-            painter.drawLine(battleMapLinesToDraw.at(lineIdx)->line());
+            painter->drawLine(battleMapLinesToDraw.at(lineIdx)->line());
         }
+        delete painter;
+        pBattleMapImagePixMap->setPixmap(pixmap);
     }
 
     quint32 edgeLength = pBattleMapImagePixMap->pixmap().height() / pBattleMap->getNumberRows();
@@ -691,6 +711,16 @@ void Dialog_NewBattleMap::drawBattleMapGrid()
     qDebug() << "..." << __func__;
 
     quint32 edgeLength;
+    QPen pen;
+
+    if (pUserInterface->CheckBox_DrawBattleMapGrid->isChecked())
+    {
+        pen = QPen(Qt::black, 3, Qt::SolidLine);
+    }
+    else
+    {
+        pen = QPen(Qt::black, 3, Qt::DashLine);
+    }
 
     pBattleMapScene->removeBattleMapLines();
 
@@ -699,12 +729,12 @@ void Dialog_NewBattleMap::drawBattleMapGrid()
         edgeLength = pBattleMapImagePixMap->pixmap().height() / pBattleMap->getNumberRows();
         for (quint32 rowIdx = 0U; rowIdx < pBattleMap->getNumberRows() + 1; rowIdx++)
         {
-            pBattleMapScene->drawBattleMapLine(QLineF(0, rowIdx * edgeLength, pBattleMap->getNumberColumns() * edgeLength, rowIdx * edgeLength));
+            pBattleMapScene->drawBattleMapLine(QLineF(0, rowIdx * edgeLength, pBattleMap->getNumberColumns() * edgeLength, rowIdx * edgeLength), pen);
         }
         edgeLength = pBattleMapImagePixMap->pixmap().width() / pBattleMap->getNumberColumns();
         for (quint32 columnIdx = 0U; columnIdx < pBattleMap->getNumberColumns() + 1; columnIdx++)
         {
-            pBattleMapScene->drawBattleMapLine(QLineF(columnIdx * edgeLength, 0, columnIdx * edgeLength, pBattleMap->getNumberRows() * edgeLength));
+            pBattleMapScene->drawBattleMapLine(QLineF(columnIdx * edgeLength, 0, columnIdx * edgeLength, pBattleMap->getNumberRows() * edgeLength), pen);
         }
     }
 }

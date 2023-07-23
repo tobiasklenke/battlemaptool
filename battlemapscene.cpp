@@ -80,7 +80,7 @@ void BattleMapScene::setScenePosRelease(QPointF newScenePosRelease)
 /*!
  * \brief This function draws a Battle Map line.
  */
-void BattleMapScene::drawBattleMapLine(QLineF battleMapLine)
+void BattleMapScene::drawBattleMapLine(QLineF battleMapLine, QPen pen)
 {
     //qDebug() << "..." << __func__;
 
@@ -90,7 +90,7 @@ void BattleMapScene::drawBattleMapLine(QLineF battleMapLine)
 
     this->addItem(m_battleMapLinesToDraw.last());
     m_battleMapLinesToDraw.last()->setLine(battleMapLine);
-    m_battleMapLinesToDraw.last()->setPen(QPen(Qt::black, 3, Qt::DashLine));
+    m_battleMapLinesToDraw.last()->setPen(pen);
 }
 
 /*!

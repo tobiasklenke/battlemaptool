@@ -65,7 +65,7 @@
      <x>50</x>
      <y>10</y>
      <width>1100</width>
-     <height>160</height>
+     <height>200</height>
     </rect>
    </property>
    <property name="title">
@@ -81,7 +81,7 @@
     <property name="geometry">
      <rect>
       <x>200</x>
-      <y>95</y>
+      <y>135</y>
       <width>75</width>
       <height>25</height>
      </rect>
@@ -97,7 +97,7 @@
     <property name="geometry">
      <rect>
       <x>200</x>
-      <y>125</y>
+      <y>165</y>
       <width>75</width>
       <height>25</height>
      </rect>
@@ -113,7 +113,7 @@
     <property name="geometry">
      <rect>
       <x>45</x>
-      <y>95</y>
+      <y>135</y>
       <width>150</width>
       <height>25</height>
      </rect>
@@ -126,7 +126,7 @@
     <property name="geometry">
      <rect>
       <x>45</x>
-      <y>125</y>
+      <y>165</y>
       <width>150</width>
       <height>25</height>
      </rect>
@@ -200,7 +200,7 @@
     <property name="geometry">
      <rect>
       <x>285</x>
-      <y>95</y>
+      <y>135</y>
       <width>25</width>
       <height>25</height>
      </rect>
@@ -213,7 +213,7 @@
     <property name="geometry">
      <rect>
       <x>285</x>
-      <y>125</y>
+      <y>165</y>
       <width>25</width>
       <height>25</height>
      </rect>
@@ -226,7 +226,7 @@
     <property name="geometry">
      <rect>
       <x>315</x>
-      <y>95</y>
+      <y>135</y>
       <width>25</width>
       <height>25</height>
      </rect>
@@ -239,7 +239,7 @@
     <property name="geometry">
      <rect>
       <x>315</x>
-      <y>125</y>
+      <y>165</y>
       <width>25</width>
       <height>25</height>
      </rect>
@@ -248,14 +248,27 @@
      <string>+</string>
     </property>
    </widget>
+   <widget class="QCheckBox" name="CheckBox_DrawBattleMapGrid">
+    <property name="geometry">
+     <rect>
+      <x>25</x>
+      <y>95</y>
+      <width>170</width>
+      <height>25</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Draw Battle Map grid</string>
+    </property>
+   </widget>
   </widget>
   <widget class="QGraphicsView" name="GraphicsView_BattleMap">
    <property name="geometry">
     <rect>
-     <x>50</x>
-     <y>200</y>
-     <width>1100</width>
-     <height>600</height>
+     <x>120</x>
+     <y>250</y>
+     <width>960</width>
+     <height>540</height>
     </rect>
    </property>
    <property name="font">

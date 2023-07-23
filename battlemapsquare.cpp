@@ -22,7 +22,7 @@ BattleMapSquare::BattleMapSquare() :
  */
 BattleMapSquare::~BattleMapSquare()
 {
-    qDebug() << "..." << __func__;
+    //qDebug() << "..." << __func__;
     delete pBattleMapSquarePixMap;
 }
 
