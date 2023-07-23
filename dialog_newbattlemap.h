@@ -55,9 +55,9 @@ public:
     QPixmap getBattleMapPixmap() const;
 
     /*!
-     * \brief This function returns the newly created Battle Map.
+     * \brief This function returns the address of the newly created Battle Map.
      */
-    BattleMap getBattleMap() const;
+    BattleMap * getBattleMap() const;
 
 private slots:
 
@@ -174,9 +174,9 @@ private:
     QGraphicsPixmapItem *pBattleMapImagePixMap;
 
     /*!
-     * \brief This is the newly created Battle Map.
+     * \brief This is a pointer to the newly created Battle Map.
      */
-    BattleMap m_battleMap;
+    BattleMap * pBattleMap;
 };
 
 #endif // DIALOG_NEWBATTLEMAP_H
