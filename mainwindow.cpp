@@ -73,9 +73,19 @@ void MainWindow::accepted_Dialog_NewBattleMap()
     //TODO: remove
     qDebug() << pDialog_NewBattleMap->getBattleMapImageSelectedFromSource();
     qDebug() << pDialog_NewBattleMap->getBattleMapPixmap();
-    qDebug() << pDialog_NewBattleMap->getBattleMap().getNumberRows();
-    qDebug() << pDialog_NewBattleMap->getBattleMap().getNumberColumns();
-    //pDialog_NewBattleMap->getBattleMapImage().save("test.jpg");
+    qDebug() << pDialog_NewBattleMap->getBattleMap()->getNumberRows();
+    qDebug() << pDialog_NewBattleMap->getBattleMap()->getNumberColumns();
+
+//    quint32 numberRows = pDialog_NewBattleMap->getBattleMap()->getNumberRows();
+//    quint32 numberColumns = pDialog_NewBattleMap->getBattleMap()->getNumberColumns();
+
+//    for (quint32 rowIdx = 0U; rowIdx < numberRows; rowIdx++)
+//    {
+//        for (quint32 columnIdx = 0U; columnIdx < numberColumns; columnIdx++)
+//        {
+//            pDialog_NewBattleMap->getBattleMap()->getIndexedBattleMapSquarePixmap(rowIdx, columnIdx)->pixmap().save("test/test_" + QString::number(rowIdx) + "_" + QString::number(columnIdx) +".jpg");
+//        }
+//    }
 
     //TODO: Implement storation of data before deleting pDialog_NewBattleMap
 
