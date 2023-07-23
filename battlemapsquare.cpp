@@ -14,7 +14,7 @@
 BattleMapSquare::BattleMapSquare() :
     pBattleMapSquarePixMap(NULL)
 {
-    qDebug() << "..." << __func__;
+    //qDebug() << "..." << __func__;
 }
 
 /*!
@@ -23,6 +23,7 @@ BattleMapSquare::BattleMapSquare() :
 BattleMapSquare::~BattleMapSquare()
 {
     qDebug() << "..." << __func__;
+    delete pBattleMapSquarePixMap;
 }
 
 /*!
@@ -30,7 +31,7 @@ BattleMapSquare::~BattleMapSquare()
  */
 QGraphicsPixmapItem *BattleMapSquare::getBattleMapSquarePixMap() const
 {
-    qDebug() << "..." << __func__;
+    //qDebug() << "..." << __func__;
     return pBattleMapSquarePixMap;
 }
 
@@ -39,7 +40,7 @@ QGraphicsPixmapItem *BattleMapSquare::getBattleMapSquarePixMap() const
  */
 void BattleMapSquare::setBattleMapSquarePixMap(QGraphicsPixmapItem *newBattleMapSquarePixMap)
 {
-    qDebug() << "..." << __func__;
+    //qDebug() << "..." << __func__;
     pBattleMapSquarePixMap = newBattleMapSquarePixMap;
 }
 
