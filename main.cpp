@@ -29,12 +29,12 @@ int main(int argc, char *argv[])
 {
     qDebug() << "..." << __func__;
 
-    QApplication a(argc, argv);
-    MainWindow w;
+    QApplication battleMapTool(argc, argv);
+    MainWindow mainWindow;
 
-    /* show MainWindow and move it to the primary screen */
-    w.showFullScreen();
-    w.move(0,0);
+    /* show mainWindow and move it to the primary screen */
+    mainWindow.showFullScreen();
+    mainWindow.move(0,0);
 
-    return a.exec();
+    return battleMapTool.exec();
 }
