@@ -15,7 +15,8 @@
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     pUserInterface(new Ui::MainWindow),
-    pDialog_NewBattleMap(NULL)
+    pDialog_NewBattleMap(NULL),
+    pPlayerScreenWindow(new QGraphicsView)
 {
     qDebug() << "..." << __func__;
 
@@ -24,6 +25,10 @@ MainWindow::MainWindow(QWidget *parent) :
     /* connections */
     connect(pUserInterface->Action_NewBattleMap, SIGNAL(triggered()), this, SLOT(open_Dialog_NewBattleMap()));
     connect(pUserInterface->Action_Quit, SIGNAL(triggered()), QApplication::instance(), SLOT(quit()));
+
+    //TODO: show player window
+    //pPlayerScreenWindow->showFullScreen();
+    //pPlayerScreenWindow->move(1920, 0);
 }
 
 /*!
@@ -75,6 +80,8 @@ void MainWindow::accepted_Dialog_NewBattleMap()
     qDebug() << pDialog_NewBattleMap->getBattleMapPixmap();
     qDebug() << pDialog_NewBattleMap->getBattleMap()->getNumberRows();
     qDebug() << pDialog_NewBattleMap->getBattleMap()->getNumberColumns();
+
+//    pDialog_NewBattleMap->getBattleMapPixmap().save("test/test.jpg");
 
 //    quint32 numberRows = pDialog_NewBattleMap->getBattleMap()->getNumberRows();
 //    quint32 numberColumns = pDialog_NewBattleMap->getBattleMap()->getNumberColumns();

@@ -6,6 +6,7 @@
  ****************************************************************************************************************************************************/
 
 #include <QMainWindow>
+#include <QGraphicsView>
 
 #include "battlemap.h"
 #include "dialog_newbattlemap.h"
@@ -68,5 +69,10 @@ private:
      * \brief This is a pointer to the user interface of the class Dialog_NewBattleMap.
      */
     Dialog_NewBattleMap *pDialog_NewBattleMap;
+
+    /*!
+     * \brief This is a pointer to the graphics view shown on the player screen.
+     */
+    QGraphicsView *pPlayerScreenWindow;
 };
 #endif // MAINWINDOW_H
