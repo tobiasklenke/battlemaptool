@@ -536,7 +536,7 @@ void Dialog_NewBattleMap::accepted_DialogButtonBox()
             QGraphicsPixmapItem * battleMapSquarePixmap = new QGraphicsPixmapItem();
             battleMapSquarePixmap->setPixmap(pBattleMapImagePixMap->pixmap().copy(QRect(columnIdx * edgeLength, rowIdx * edgeLength, edgeLength, edgeLength)));
             //TODO: load size of Battle Map square pixmap from configuration data
-            battleMapSquarePixmap->setPixmap(battleMapSquarePixmap->pixmap().scaled(QSize(100, 100)));
+            battleMapSquarePixmap->setPixmap(battleMapSquarePixmap->pixmap().scaled(QSize(BATTLEMAPSQUARE_SIZE, BATTLEMAPSQUARE_SIZE)));
             pBattleMap->setIndexedBattleMapSquarePixmap(rowIdx, battleMapSquarePixmap);
         }
     }
@@ -569,7 +569,7 @@ void Dialog_NewBattleMap::showEmptyBattleMapImage()
 
     //TODO load from configuration data
     QImage emptyBattleMapSquare(EMPTY_BATTLEMAPSQUARE_SOURCE);
-    emptyBattleMapSquare = emptyBattleMapSquare.scaledToWidth(100);
+    emptyBattleMapSquare = emptyBattleMapSquare.scaledToWidth(BATTLEMAPSQUARE_SIZE);
 
     if (emptyBattleMapSquare.isNull())
     {
@@ -582,13 +582,13 @@ void Dialog_NewBattleMap::showEmptyBattleMapImage()
     }
     else
     {
-        QPixmap pixmap(QSize(pBattleMap->getNumberColumns()* 100U, pBattleMap->getNumberRows() * 100));
+        QPixmap pixmap(QSize(pBattleMap->getNumberColumns()* BATTLEMAPSQUARE_SIZE, pBattleMap->getNumberRows() * BATTLEMAPSQUARE_SIZE));
         QPainter *painter = new QPainter(&pixmap);
         for (quint32 rowIdx = 0U; rowIdx < pBattleMap->getNumberRows(); rowIdx++)
         {
             for (quint32 columnIdx = 0U; columnIdx < pBattleMap->getNumberColumns(); columnIdx++)
             {
-                QRect targetRect = QRect(columnIdx * 100, rowIdx * 100U, 100U, 100U);
+                QRect targetRect = QRect(columnIdx * BATTLEMAPSQUARE_SIZE, rowIdx * BATTLEMAPSQUARE_SIZE, BATTLEMAPSQUARE_SIZE, BATTLEMAPSQUARE_SIZE);
                 QRect sourceRect = emptyBattleMapSquare.rect();
                 painter->drawPixmap(targetRect, QPixmap::fromImage(emptyBattleMapSquare), sourceRect);
             }
