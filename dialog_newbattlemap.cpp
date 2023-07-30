@@ -173,16 +173,19 @@ void Dialog_NewBattleMap::toggled_RadioButton_EmptyBattleMap(bool checked)
         pUserInterface->PushButton_DecrementNumberColumns->setEnabled(true);
         pUserInterface->PushButton_IncrementNumberColumns->setEnabled(true);
 
-        /* Disable push button with AcceptRole */
-        pUserInterface->DialogButtonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
+        /* Enable push button with AcceptRole */
+        pUserInterface->DialogButtonBox->button(QDialogButtonBox::Ok)->setEnabled(true);
 
-        /* Reset source file path, number of rows and columns */
+        /* Reset source file path and check box state */
         pUserInterface->LineEdit_Source->setText("");
-        pBattleMap->setNumberRows(0U);
-        pBattleMap->setNumberColumns(0U);
+        pUserInterface->CheckBox_DrawBattleMapGrid->setCheckState(Qt::Checked);
+
+        quint32 maximumNumberRows = static_cast<quint32>(calcScreenHeightInInches(PLAYER_SCREEN_DIAGONAL, PLAYER_SCREEN_RESOLUTION.height(), PLAYER_SCREEN_RESOLUTION.width()));
+        quint32 maximumNumberColumns = static_cast<quint32>(calcScreenWidthInInches(PLAYER_SCREEN_DIAGONAL, PLAYER_SCREEN_RESOLUTION.height(), PLAYER_SCREEN_RESOLUTION.width()));
+        pBattleMap->setNumberRows(maximumNumberRows);
+        pBattleMap->setNumberColumns(maximumNumberColumns);
         pUserInterface->LineEdit_NumberRows->setText(QString::number(pBattleMap->getNumberRows()));
         pUserInterface->LineEdit_NumberColumns->setText(QString::number(pBattleMap->getNumberColumns()));
-        pUserInterface->CheckBox_DrawBattleMapGrid->setCheckState(Qt::Checked);
 
         /* Reset information whether the Battle Map image has been selected from source */
         m_battleMapImageSelectedFromSource = false;
@@ -254,6 +257,10 @@ void Dialog_NewBattleMap::editingFinished_LineEdit_NumberRows()
         controlNumberRowsAndColumns();
         drawBattleMapGrid();
     }
+    else
+    {
+        showEmptyBattleMapImage();
+    }
 }
 
 /*!
@@ -289,6 +296,10 @@ void Dialog_NewBattleMap::editingFinished_LineEdit_NumberColumns()
         controlNumberRowsAndColumns();
         drawBattleMapGrid();
     }
+    else
+    {
+        showEmptyBattleMapImage();
+    }
 }
 
 /*!
@@ -311,6 +322,10 @@ void Dialog_NewBattleMap::released_PushButton_DecrementNumberRows()
             controlNumberRowsAndColumns();
             drawBattleMapGrid();
         }
+        else
+        {
+            showEmptyBattleMapImage();
+        }
     }
 }
 
@@ -330,6 +345,10 @@ void Dialog_NewBattleMap::released_PushButton_IncrementNumberRows()
         correctNumberColumns();
         controlNumberRowsAndColumns();
         drawBattleMapGrid();
+    }
+    else
+    {
+        showEmptyBattleMapImage();
     }
 }
 
@@ -352,6 +371,10 @@ void Dialog_NewBattleMap::released_PushButton_DecrementNumberColumns()
             controlNumberRowsAndColumns();
             drawBattleMapGrid();
         }
+        else
+        {
+            showEmptyBattleMapImage();
+        }
     }
 }
 
@@ -371,6 +394,10 @@ void Dialog_NewBattleMap::released_PushButton_IncrementNumberColumns()
         correctNumberRows();
         controlNumberRowsAndColumns();
         drawBattleMapGrid();
+    }
+    else
+    {
+        showEmptyBattleMapImage();
     }
 }
 
@@ -468,7 +495,7 @@ void Dialog_NewBattleMap::selected_BattleMapSquare()
 }
 
 /*!
- * \brief This function handles the state change of CheckBox_DrawBattleMapGrid.
+ * \brief This function handles a state change of CheckBox_DrawBattleMapGrid.
  */
 void Dialog_NewBattleMap::stateChanged_CheckBox_DrawBattleMapGrid(int state)
 {
@@ -541,22 +568,40 @@ void Dialog_NewBattleMap::showEmptyBattleMapImage()
     pUserInterface->GraphicsView_BattleMap->setToolTip("");
 
     //TODO load from configuration data
-    QImage battleMapImage(EMPTY_BATTLEMAP_SOURCE);
+    QImage emptyBattleMapSquare(EMPTY_BATTLEMAPSQUARE_SOURCE);
+    emptyBattleMapSquare = emptyBattleMapSquare.scaledToWidth(100);
 
-    if (battleMapImage.isNull())
+    if (emptyBattleMapSquare.isNull())
     {
-        pBattleMapScene->addText("Empty Battle Map is no image file.");
+        pBattleMapScene->addText("Empty Battle Map square is no image file.");
 
         msgBox.setWindowTitle("Invalid file");
-        msgBox.setText("Empty Battle Map is no image file.");
+        msgBox.setText("Empty Battle Map square is no image file.");
         msgBox.setIcon(QMessageBox::Warning);
         msgBox.exec();
     }
     else
     {
-        pBattleMapImagePixMap = new QGraphicsPixmapItem(QPixmap::fromImage(battleMapImage));
+        QPixmap pixmap(QSize(pBattleMap->getNumberColumns()* 100U, pBattleMap->getNumberRows() * 100));
+        QPainter *painter = new QPainter(&pixmap);
+        for (quint32 rowIdx = 0U; rowIdx < pBattleMap->getNumberRows(); rowIdx++)
+        {
+            for (quint32 columnIdx = 0U; columnIdx < pBattleMap->getNumberColumns(); columnIdx++)
+            {
+                QRect targetRect = QRect(columnIdx * 100, rowIdx * 100U, 100U, 100U);
+                QRect sourceRect = emptyBattleMapSquare.rect();
+                painter->drawPixmap(targetRect, QPixmap::fromImage(emptyBattleMapSquare), sourceRect);
+            }
+        }
+        delete painter;
+
+        pBattleMapImagePixMap = new QGraphicsPixmapItem();
+        pBattleMapImagePixMap->setPixmap(pixmap);
+
         pBattleMapScene->addItem(pBattleMapImagePixMap);
         pBattleMapScene->setSceneRect(0, 0, pBattleMapImagePixMap->pixmap().width(), pBattleMapImagePixMap->pixmap().height());
+
+        drawBattleMapGrid();
 
         pUserInterface->GraphicsView_BattleMap->show();
 
