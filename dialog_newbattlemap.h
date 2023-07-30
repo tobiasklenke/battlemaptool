@@ -13,6 +13,7 @@
 
 #include "battlemap.h"
 #include "battlemapscene.h"
+#include "screencalc.h"
 
 #include "defines.h"
 
