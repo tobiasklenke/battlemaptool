@@ -76,7 +76,6 @@ void MainWindow::accepted_Dialog_NewBattleMap()
     qDebug() << "..." << __func__;
 
     //TODO: remove
-    qDebug() << pDialog_NewBattleMap->getBattleMapImageSelectedFromSource();
     qDebug() << pDialog_NewBattleMap->getBattleMapPixmap();
     qDebug() << pDialog_NewBattleMap->getBattleMap()->getNumberRows();
     qDebug() << pDialog_NewBattleMap->getBattleMap()->getNumberColumns();

@@ -16,7 +16,6 @@ Dialog_NewBattleMap::Dialog_NewBattleMap(QWidget *parent) :
     QDialog(parent),
     pUserInterface(new Ui::Dialog_NewBattleMap),
     pBattleMapScene(NULL),
-    m_battleMapImageSelectedFromSource(false),
     pBattleMapImagePixMap(NULL),
     pBattleMap(new BattleMap())
 {
@@ -62,15 +61,6 @@ Dialog_NewBattleMap::~Dialog_NewBattleMap()
     delete pUserInterface;
     delete pBattleMapScene;
     delete pBattleMap;
-}
-
-/*!
- * \brief This function returns the value of the member variable m_battleMapImageSelectedFromSource.
- */
-bool Dialog_NewBattleMap::getBattleMapImageSelectedFromSource() const
-{
-    qDebug() << "..." << __func__;
-    return m_battleMapImageSelectedFromSource;
 }
 
 /*!
@@ -143,9 +133,6 @@ void Dialog_NewBattleMap::toggled_RadioButton_ImageBattleMap(bool checked)
         pUserInterface->GraphicsView_BattleMap->setScene(pBattleMapScene);
 
         pBattleMapScene->addText("Select Source.");
-
-        /* Reset information whether the Battle Map image has been selected from source */
-        m_battleMapImageSelectedFromSource = false;
     }
 }
 
@@ -186,9 +173,6 @@ void Dialog_NewBattleMap::toggled_RadioButton_EmptyBattleMap(bool checked)
         pBattleMap->setNumberColumns(maximumNumberColumns);
         pUserInterface->LineEdit_NumberRows->setText(QString::number(pBattleMap->getNumberRows()));
         pUserInterface->LineEdit_NumberColumns->setText(QString::number(pBattleMap->getNumberColumns()));
-
-        /* Reset information whether the Battle Map image has been selected from source */
-        m_battleMapImageSelectedFromSource = false;
 
         /* Show empty battle map image */
         showEmptyBattleMapImage();
@@ -464,9 +448,6 @@ void Dialog_NewBattleMap::selected_BattleMapSquare()
         pUserInterface->PushButton_DecrementNumberColumns->setEnabled(true);
         pUserInterface->PushButton_IncrementNumberColumns->setEnabled(true);
 
-        /* Set information whether the Battle Map image has been selected from source */
-        m_battleMapImageSelectedFromSource = true;
-
         /* Enable push button with AcceptRole */
         pUserInterface->DialogButtonBox->button(QDialogButtonBox::Ok)->setEnabled(true);
     }
@@ -604,10 +585,6 @@ void Dialog_NewBattleMap::showEmptyBattleMapImage()
         drawBattleMapGrid();
 
         pUserInterface->GraphicsView_BattleMap->show();
-
-        //TODO: Must been done when the standard button with AcceptRole has been enabled for the empty map
-        /* Reset information whether the Battle Map image has been selected from source */
-        m_battleMapImageSelectedFromSource = false;
     }
 }
 

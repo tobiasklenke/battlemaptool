@@ -46,11 +46,6 @@ public:
     ~Dialog_NewBattleMap();
 
     /*!
-     * \brief This function returns the value of the member variable m_battleMapImageSelectedFromSource.
-     */
-    bool getBattleMapImageSelectedFromSource() const;
-
-    /*!
      * \brief This function returns the pixmap of the member variable pBattleMapImagePixMap.
      */
     QPixmap getBattleMapPixmap() const;
@@ -168,11 +163,6 @@ private:
      * \brief This is a pointer to the BattleMapScene object that is set to GraphicsView_BattleMap.
      */
     BattleMapScene *pBattleMapScene;
-
-    /*!
-     * \brief This is the information whether the Battle Map image has been selected from source.
-     */
-    bool m_battleMapImageSelectedFromSource;
 
     /*!
      * \brief This is the pixmap of the Battle Map image.
