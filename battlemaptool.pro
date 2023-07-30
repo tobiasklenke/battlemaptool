@@ -14,7 +14,8 @@ SOURCES += \
     battlemapsquare.cpp \
     dialog_newbattlemap.cpp \
     main.cpp \
-    mainwindow.cpp
+    mainwindow.cpp \
+    screencalc.cpp
 
 HEADERS += \
     battlemap.h \
@@ -22,7 +23,8 @@ HEADERS += \
     battlemapsquare.h \
     defines.h \
     dialog_newbattlemap.h \
-    mainwindow.h
+    mainwindow.h \
+    screencalc.h
 
 FORMS += \
     dialog_newbattlemap.ui \
