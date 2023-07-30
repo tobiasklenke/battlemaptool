@@ -10,7 +10,13 @@
  ****************************************************************************************************************************************************/
 
 /* CONFIGURATION PARAMETERS, TODO REMOVE */
-#define EMPTY_BATTLEMAP_SOURCE                             "maps/pergament.jpg"
+#define EMPTY_BATTLEMAPSQUARE_SOURCE                       "maps/emptysquare.jpg"
+
+#define MASTER_SCREEN_DIAGONAL                             23.8
+#define MASTER_SCREEN_RESOLUTION                           QSize(1920, 1080)
+
+#define PLAYER_SCREEN_DIAGONAL                             23.8
+#define PLAYER_SCREEN_RESOLUTION                           QSize(1920, 1080)
 
 /****************************************************************************************************************************************************
  * Macros
