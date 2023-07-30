@@ -535,6 +535,8 @@ void Dialog_NewBattleMap::stateChanged_CheckBox_DrawBattleMapGrid(int state)
 {
     qDebug() << "..." << __func__;
 
+    Q_UNUSED(state);
+
     drawBattleMapGrid();
 }
 
