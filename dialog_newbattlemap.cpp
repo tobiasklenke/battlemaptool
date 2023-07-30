@@ -601,7 +601,6 @@ void Dialog_NewBattleMap::showEmptyBattleMapImage()
     pUserInterface->GraphicsView_BattleMap->viewport()->setCursor(Qt::ArrowCursor);
     pUserInterface->GraphicsView_BattleMap->setToolTip("");
 
-    //TODO load from configuration data
     QImage emptyBattleMapSquare(EMPTY_BATTLEMAPSQUARE_SOURCE);
     emptyBattleMapSquare = emptyBattleMapSquare.scaledToWidth(BATTLEMAPSQUARE_SIZE);
 
@@ -611,6 +610,15 @@ void Dialog_NewBattleMap::showEmptyBattleMapImage()
 
         msgBox.setWindowTitle("Invalid file");
         msgBox.setText("Empty Battle Map square is no image file.");
+        msgBox.setIcon(QMessageBox::Warning);
+        msgBox.exec();
+    }
+    else if (emptyBattleMapSquare.width() != emptyBattleMapSquare.height())
+    {
+        pBattleMapScene->addText("Empty Battle Map square has no square format.");
+
+        msgBox.setWindowTitle("Invalid file");
+        msgBox.setText("Empty Battle Map square has no square format.");
         msgBox.setIcon(QMessageBox::Warning);
         msgBox.exec();
     }
