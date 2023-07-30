@@ -26,9 +26,9 @@ BattleMap::~BattleMap()
 {
     qDebug() << "..." << __func__;
 
-    for (quint32 rowIdx = 0U; rowIdx < m_numberRows; rowIdx++)
+    for (quint32 rowIdx = 0U; rowIdx < m_battleMapSquares.count(); rowIdx++)
     {
-        for (quint32 columnIdx = 0U; columnIdx < m_numberColumns; columnIdx++)
+        for (quint32 columnIdx = 0U; columnIdx < m_battleMapSquares[rowIdx].count(); columnIdx++)
         {
             delete m_battleMapSquares[rowIdx][columnIdx];
         }
