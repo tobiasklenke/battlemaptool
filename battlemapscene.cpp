@@ -120,9 +120,6 @@ void BattleMapScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
     qDebug() << "..." << __func__;
 
-    //TODO: remove
-    qDebug() << event->scenePos();
-
     /* Reset press position and release position */
     m_scenePosPress = QPointF();
     m_scenePosRelease = QPointF();
@@ -159,9 +156,6 @@ void BattleMapScene::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 void BattleMapScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
     qDebug() << "..." << __func__;
-
-    //TODO: remove
-    qDebug() << event->scenePos();
 
     if (!m_scenePosPress.isNull())
     {
