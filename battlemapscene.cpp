@@ -130,7 +130,7 @@ void BattleMapScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
         m_scenePosPress = event->scenePos();
 
         this->addItem(pBattleMapSquareToDraw);
-        pBattleMapSquareToDraw->setPen(QPen(Qt::black, 3, Qt::DashLine));
+        pBattleMapSquareToDraw->setPen(QPen(Qt::black, 3, Qt::DotLine));
     }
 }
 

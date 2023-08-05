@@ -828,7 +828,7 @@ void Dialog_NewBattleMap::drawBattleMapGrid()
     }
     else
     {
-        pen = QPen(Qt::black, 3, Qt::DashLine);
+        pen = QPen(Qt::black, 3, Qt::DotLine);
     }
 
     pBattleMapScene->removeBattleMapLines();
