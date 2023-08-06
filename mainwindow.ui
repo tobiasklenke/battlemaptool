@@ -40,7 +40,18 @@
   <property name="autoFillBackground">
    <bool>false</bool>
   </property>
-  <widget class="QWidget" name="centralwidget"/>
+  <widget class="QWidget" name="centralwidget">
+   <widget class="QGraphicsView" name="graphicsView">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>10</y>
+      <width>1860</width>
+      <height>1040</height>
+     </rect>
+    </property>
+   </widget>
+  </widget>
   <widget class="QMenuBar" name="MenuBar">
    <property name="geometry">
     <rect>
@@ -85,7 +96,31 @@
    <addaction name="Menu_Settings"/>
    <addaction name="Menu_Help"/>
   </widget>
+  <widget class="QToolBar" name="toolBar">
+   <property name="windowTitle">
+    <string>toolBar</string>
+   </property>
+   <property name="iconSize">
+    <size>
+     <width>25</width>
+     <height>25</height>
+    </size>
+   </property>
+   <attribute name="toolBarArea">
+    <enum>LeftToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
+   <addaction name="Action_NewBattleMap"/>
+   <addaction name="Action_OpenBattleMap"/>
+   <addaction name="separator"/>
+  </widget>
   <action name="Action_NewBattleMap">
+   <property name="icon">
+    <iconset resource="icons.qrc">
+     <normaloff>:/icon/icons/newbattlemap.png</normaloff>:/icon/icons/newbattlemap.png</iconset>
+   </property>
    <property name="text">
     <string>New Battle Map</string>
    </property>
@@ -94,6 +129,10 @@
    </property>
   </action>
   <action name="Action_Quit">
+   <property name="icon">
+    <iconset resource="icons.qrc">
+     <normaloff>:/icon/icons/quit.png</normaloff>:/icon/icons/quit.png</iconset>
+   </property>
    <property name="text">
     <string>Quit</string>
    </property>
@@ -102,6 +141,10 @@
    </property>
   </action>
   <action name="Action_OpenBattleMap">
+   <property name="icon">
+    <iconset resource="icons.qrc">
+     <normaloff>:/icon/icons/openbattlemap.png</normaloff>:/icon/icons/openbattlemap.png</iconset>
+   </property>
    <property name="text">
     <string>Open Battle Map</string>
    </property>
@@ -110,7 +153,9 @@
    </property>
   </action>
  </widget>
- <resources/>
+ <resources>
+  <include location="icons.qrc"/>
+ </resources>
  <connections/>
  <slots>
   <slot>buttonClick()</slot>
