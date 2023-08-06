@@ -13,7 +13,7 @@
  * \brief   This function is the constructor of the class MainWindow.                                                                               *
  *                                                                                                                                                  *
  * \details This function sets up the user interface of the class MainWindow and connects the signals and slots of the main window actions.         *
- *          Afterwards, it shows the player window in full screen mode and moves it to the secondary screen.                                        *
+ *          Afterwards, the function shows the player window in full screen mode and moves it to the secondary screen.                              *
  *                                                                                                                                                  *
  * \param   parent                        Parent of the class MainWindow                                                                            *
  *                                                                                                                                                  *
@@ -66,7 +66,7 @@ MainWindow::~MainWindow()
  * \brief   This function handles the action Action_NewBattleMap and opens the dialog Dialog_NewBattleMap.                                          *
  *                                                                                                                                                  *
  * \details This function creates a dialog Dialog_NewBattleMap and connects the signals and slots of the dialog button box actions of the dialog    *
- *          Dialog_NewBattleMap. Afterwards, it opens the dialog Dialog_NewBattleMap.                                                               *
+ *          Dialog_NewBattleMap. Afterwards, the function opens the dialog Dialog_NewBattleMap.                                                     *
  *                                                                                                                                                  *
  * \return  This function does not have any return value.                                                                                           *
  ****************************************************************************************************************************************************/
@@ -86,8 +86,8 @@ void MainWindow::open_Dialog_NewBattleMap()
 /*!**************************************************************************************************************************************************
  * \brief   This function handles the acceptance of the dialog Dialog_NewBattleMap.                                                                 *
  *                                                                                                                                                  *
- * \details This function stores the Battle Map object created via the dialog Dialog_NewBattleMap. Afterwards, it deletes the object pointed to by  *
- *          pDialog_NewBattleMap.                                                                                                                   *
+ * \details This function stores the Battle Map object created via the dialog Dialog_NewBattleMap. Afterwards, the function deletes the object      *
+ *          pointed to by pDialog_NewBattleMap.                                                                                                     *
  *                                                                                                                                                  *
  * \return  This function does not have any return value.                                                                                           *
  ****************************************************************************************************************************************************/

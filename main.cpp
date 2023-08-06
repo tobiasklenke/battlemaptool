@@ -31,13 +31,14 @@
 /*!**************************************************************************************************************************************************
  * \brief   This function is the entry function of the application.                                                                                 *
  *                                                                                                                                                  *
- * \details This function shows the main window in full screen mode and moves it to the primary screen. Afterwards, it executes the application.    *
+ * \details This function shows the main window in full screen mode and moves it to the primary screen. Afterwards, the function executes the       *
+ *          application.                                                                                                                            *
  *                                                                                                                                                  *
  * \param   argc                          Number of strings pointed to by parameter argv                                                            *
  * \param   argv                          Command line arguments                                                                                    *
  *                                                                                                                                                  *
- * \return  This function returns the value 0 if the application is quitted regularly. Otherwise, it returns a value unequal to 0 which indicates   *
- *          an error.                                                                                                                               *
+ * \return  This function returns the value 0 if the application is quitted regularly. Otherwise, the function returns a value unequal to 0 which   *
+ *          indicates an error.                                                                                                                     *
  ****************************************************************************************************************************************************/
 int main(int argc, char *argv[])
 {

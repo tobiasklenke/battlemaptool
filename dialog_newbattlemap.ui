@@ -164,7 +164,7 @@
      </rect>
     </property>
    </widget>
-   <widget class="QRadioButton" name="RadioButton_ImageBattleMap">
+   <widget class="QRadioButton" name="RadioButton_SourceBattleMap">
     <property name="geometry">
      <rect>
       <x>25</x>
@@ -174,7 +174,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>Image Battle Map</string>
+     <string>Source Battle Map</string>
     </property>
     <property name="checked">
      <bool>false</bool>
