@@ -10,8 +10,6 @@
  ****************************************************************************************************************************************************/
 
 /* CONFIGURATION PARAMETERS, TODO REMOVE */
-#define EMPTY_BATTLEMAPSQUARE_SOURCE                       "maps/emptysquare.jpg"
-
 #define MASTER_SCREEN_DIAGONAL                             23.8
 #define MASTER_SCREEN_RESOLUTION                           QSize(1920, 1080)
 
@@ -22,6 +20,9 @@
 
 #define BATTLEMAPGRID_COLOR                                Qt::black
 #define BATTLEMAPGRID_LINEWIDTH                            3
+
+/* ressource paths */
+#define EMPTY_BATTLEMAPSQUARE_SOURCE                       ":/images/images/emptysquare.png"
 
 /****************************************************************************************************************************************************
  * Macros
