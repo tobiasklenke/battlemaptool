@@ -136,7 +136,7 @@ void Dialog_NewBattleMap::toggled_RadioButton_SourceBattleMap(bool checked)
         pBattleMapScene = new BattleMapScene();
         connect(pBattleMapScene, SIGNAL(selected_BattleMapSquare()), this, SLOT(selected_BattleMapSquare()));
         pUserInterface->GraphicsView_BattleMap->setScene(pBattleMapScene);
-        pBattleMapScene->addText("Select Source.");
+        pBattleMapScene->addText("Select source.");
     }
 }
 
@@ -220,7 +220,7 @@ void Dialog_NewBattleMap::released_PushButton_SelectSource()
 {
     qDebug() << "..." << __func__;
 
-    QString selectedSource = QFileDialog::getOpenFileName(this, tr("Select Source"), ".", tr("Image Files (*.png *.jpg *.bmp)"));
+    QString selectedSource = QFileDialog::getOpenFileName(this, tr("Select source"), ".", tr("Image Files (*.png *.jpg *.bmp)"));
     pUserInterface->LineEdit_Source->setText(selectedSource);
 
     editingFinished_LineEdit_Source();
@@ -743,10 +743,10 @@ void Dialog_NewBattleMap::showSourceBattleMapImage()
 
     if (battleMapImage.isNull())
     {
-        pBattleMapScene->addText("Image Battle Map is no image file.");
+        pBattleMapScene->addText("Selected source file is no image file.");
 
         msgBox.setWindowTitle("Invalid file");
-        msgBox.setText("Image Battle Map is no image file.");
+        msgBox.setText("Selected source file is no image file.");
         msgBox.setIcon(QMessageBox::Warning);
         msgBox.exec();
     }

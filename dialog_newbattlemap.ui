@@ -90,7 +90,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>Battle Map Image from Source</string>
+    <string>Battle Map image from source</string>
    </property>
    <property name="checked">
     <bool>false</bool>
@@ -106,7 +106,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>Battle Map Image empty</string>
+    <string>Battle Map image empty</string>
    </property>
    <property name="checked">
     <bool>true</bool>
@@ -135,7 +135,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>Number of Rows</string>
+    <string>Number of rows</string>
    </property>
   </widget>
   <widget class="QLabel" name="Label_NumberColumns">
@@ -148,7 +148,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>Number of Columns</string>
+    <string>Number of columns</string>
    </property>
   </widget>
   <widget class="QLineEdit" name="LineEdit_NumberRows">
@@ -261,7 +261,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>Select Source</string>
+    <string>Select source</string>
    </property>
   </widget>
  </widget>
