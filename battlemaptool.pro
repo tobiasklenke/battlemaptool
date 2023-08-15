@@ -11,6 +11,7 @@ CONFIG += c++17
 SOURCES += \
     battlemap.cpp \
     battlemapscene.cpp \
+    battlemapscenesquareselection.cpp \
     battlemapsquare.cpp \
     dialog_newbattlemap.cpp \
     main.cpp \
@@ -20,6 +21,7 @@ SOURCES += \
 HEADERS += \
     battlemap.h \
     battlemapscene.h \
+    battlemapscenesquareselection.h \
     battlemapsquare.h \
     defines.h \
     dialog_newbattlemap.h \
