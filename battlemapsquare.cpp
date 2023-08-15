@@ -1,63 +1,77 @@
 /****************************************************************************************************************************************************
- * Includes
+ * INCLUDES                                                                                                                                         *
  ****************************************************************************************************************************************************/
 
 #include "battlemapsquare.h"
 
 /****************************************************************************************************************************************************
- * Definition of Public Functions
+ * DEFINITION OF PUBLIC FUNCTIONS                                                                                                                   *
  ****************************************************************************************************************************************************/
 
-/*!
- * \brief This function is the constructor of the class BattleMapSquare.
- */
+/*!**************************************************************************************************************************************************
+ * \brief   This function is the constructor of the class BattleMapSquare.                                                                          *
+ *                                                                                                                                                  *
+ * \details -                                                                                                                                       *
+ *                                                                                                                                                  *
+ * \return  This function does not have any return value.                                                                                           *
+ ****************************************************************************************************************************************************/
 BattleMapSquare::BattleMapSquare() :
     pBattleMapSquarePixMap(NULL)
 {
-    //qDebug() << "..." << __func__;
 }
 
-/*!
- * \brief This function is the destructor of the class BattleMapSquare.
- */
+/*!**************************************************************************************************************************************************
+ * \brief   This function is the destructor of the class BattleMapSquare.                                                                           *
+ *                                                                                                                                                  *
+ * \details This function deletes the object pointed to by pBattleMapSquarePixMap.                                                                  *
+ *                                                                                                                                                  *
+ * \return  This function does not have any return value.                                                                                           *
+ ****************************************************************************************************************************************************/
 BattleMapSquare::~BattleMapSquare()
 {
-    //qDebug() << "..." << __func__;
     delete pBattleMapSquarePixMap;
 }
 
-/*!
- * \brief This function returns the value of the member variable pBattleMapSquarePixMap.
- */
+/*!**************************************************************************************************************************************************
+ * \brief   This function returns the value of the member variable pBattleMapSquarePixMap.                                                          *
+ *                                                                                                                                                  *
+ * \details -                                                                                                                                       *
+ *                                                                                                                                                  *
+ * \return  This function returns the value of the member variable pBattleMapSquarePixMap.                                                          *
+ ****************************************************************************************************************************************************/
 QGraphicsPixmapItem *BattleMapSquare::getBattleMapSquarePixMap() const
 {
-    //qDebug() << "..." << __func__;
     return pBattleMapSquarePixMap;
 }
 
-/*!
- * \brief This function sets the value of the member variable pBattleMapSquarePixMap.
- */
-void BattleMapSquare::setBattleMapSquarePixMap(QGraphicsPixmapItem *newBattleMapSquarePixMap)
+/*!**************************************************************************************************************************************************
+ * \brief   This function sets the value of the member variable pBattleMapSquarePixMap.                                                             *
+ *                                                                                                                                                  *
+ * \details -                                                                                                                                       *
+ *                                                                                                                                                  *
+ * \param   battleMapSquarePixMap         Pixmap of the Battle Map square                                                                           *
+ *                                                                                                                                                  *
+ * \return  This function does not have any return value.                                                                                           *
+ ****************************************************************************************************************************************************/
+void BattleMapSquare::setBattleMapSquarePixMap(QGraphicsPixmapItem *battleMapSquarePixMap)
 {
-    //qDebug() << "..." << __func__;
-    pBattleMapSquarePixMap = newBattleMapSquarePixMap;
+    pBattleMapSquarePixMap = battleMapSquarePixMap;
 }
 
 /****************************************************************************************************************************************************
- * Definition of Protected Functions
+ * DEFINITION OF PROTECTED FUNCTIONS                                                                                                                *
  ****************************************************************************************************************************************************/
 
 /* - */
 
 /****************************************************************************************************************************************************
- * Definition of Private Slot Functions
+ * DEFINITION OF PRIVATE SLOT FUNCTIONS                                                                                                             *
  ****************************************************************************************************************************************************/
 
 /* - */
 
 /****************************************************************************************************************************************************
- * Definition of Private Functions
+ * DEFINITION OF PRIVATE FUNCTIONS                                                                                                                  *
  ****************************************************************************************************************************************************/
 
 /* - */
