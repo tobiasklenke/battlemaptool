@@ -11,13 +11,16 @@
 /*!**************************************************************************************************************************************************
  * \brief   This function is the constructor of the class BattleMapSquare.                                                                          *
  *                                                                                                                                                  *
- * \details -                                                                                                                                       *
+ * \details This function initializes the Battle Map square with the image of an empty Battle Map square.                                           *
  *                                                                                                                                                  *
  * \return  This function does not have any return value.                                                                                           *
  ****************************************************************************************************************************************************/
 BattleMapSquare::BattleMapSquare() :
-    pBattleMapSquarePixMap(NULL)
+    pBattleMapSquarePixMap(new QGraphicsPixmapItem())
 {
+    /* initialize Battle Map square with image of empty Battle Map square */
+    pBattleMapSquarePixMap->setPixmap(QPixmap::fromImage(QImage((EMPTY_BATTLEMAPSQUARE_SOURCE))));
+    pBattleMapSquarePixMap->setPixmap(pBattleMapSquarePixMap->pixmap().scaled(QSize(BATTLEMAPSQUARE_SIZE, BATTLEMAPSQUARE_SIZE)));
 }
 
 /*!**************************************************************************************************************************************************
