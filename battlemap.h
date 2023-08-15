@@ -55,7 +55,7 @@ public:
  *                                                                                                                                                  *
  * \return  This function does not have any return value.                                                                                           *
  ****************************************************************************************************************************************************/
-    void setNumberRows(quint32 newNumberRows);
+    void setNumberRows(quint32 numberRows);
 
 /*!**************************************************************************************************************************************************
  * \brief   This function returns the value of the member variable m_numberColumns.                                                                 *
@@ -71,11 +71,11 @@ public:
  *                                                                                                                                                  *
  * \details -                                                                                                                                       *
  *                                                                                                                                                  *
- * \param   m_numberColumns               Number of columns                                                                                         *
+ * \param   numberColumns                 Number of columns                                                                                         *
  *                                                                                                                                                  *
  * \return  This function does not have any return value.                                                                                           *
  ****************************************************************************************************************************************************/
-    void setNumberColumns(quint32 newNumberColumns);
+    void setNumberColumns(quint32 numberColumns);
 
 /*!**************************************************************************************************************************************************
  * \brief   This function returns the pixmap of an indexed entry of the nested QList member variable m_battleMapSquares.                            *
@@ -102,7 +102,7 @@ public:
  *                                                                                                                                                  *
  * \return  This function does not have any return value.                                                                                           *
  ****************************************************************************************************************************************************/
-    void setIndexedBattleMapSquarePixmap(quint32 rowIdx, QGraphicsPixmapItem *newBattleMapSquarePixmap);
+    void setIndexedBattleMapSquarePixmap(quint32 rowIdx, QGraphicsPixmapItem *battleMapSquarePixmap);
 
 private:
 
