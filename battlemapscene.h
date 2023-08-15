@@ -13,7 +13,7 @@
  ****************************************************************************************************************************************************/
 
 /*!
- * \brief This class implements the functionality needed for the selection of a Battle Map square.
+ * \brief This class implements the base functionality needed for the display of a Battle Map image.
  */
 class BattleMapScene : public QGraphicsScene
 {
