@@ -547,29 +547,32 @@ void Dialog_NewBattleMap::showEmptyBattleMapImage()
     {
         emptyBattleMapSquare = emptyBattleMapSquare.scaledToWidth(BATTLEMAPSQUARE_SIZE);
 
-        /* construct the empty Battle Map image from a number of empty Battle Map squares according to the number of rows and columns */
-        QPixmap temporaryPixmap(QSize(pBattleMap->getNumberColumns()* BATTLEMAPSQUARE_SIZE, pBattleMap->getNumberRows() * BATTLEMAPSQUARE_SIZE));
-        QPainter *painter = new QPainter(&temporaryPixmap);
-        for (quint32 rowIdx = 0U; rowIdx < pBattleMap->getNumberRows(); rowIdx++)
+        if ((0U < pBattleMap->getNumberRows()) && (0U < pBattleMap->getNumberColumns()))
         {
-            for (quint32 columnIdx = 0U; columnIdx < pBattleMap->getNumberColumns(); columnIdx++)
+            /* construct the empty Battle Map image from a number of empty Battle Map squares according to the number of rows and columns */
+            QPixmap temporaryPixmap(QSize(pBattleMap->getNumberColumns()* BATTLEMAPSQUARE_SIZE, pBattleMap->getNumberRows() * BATTLEMAPSQUARE_SIZE));
+            QPainter *painter = new QPainter(&temporaryPixmap);
+            for (quint32 rowIdx = 0U; rowIdx < pBattleMap->getNumberRows(); rowIdx++)
             {
-                QRect targetRect = QRect(columnIdx * BATTLEMAPSQUARE_SIZE, rowIdx * BATTLEMAPSQUARE_SIZE, BATTLEMAPSQUARE_SIZE, BATTLEMAPSQUARE_SIZE);
-                QRect sourceRect = emptyBattleMapSquare.rect();
-                painter->drawPixmap(targetRect, QPixmap::fromImage(emptyBattleMapSquare), sourceRect);
+                for (quint32 columnIdx = 0U; columnIdx < pBattleMap->getNumberColumns(); columnIdx++)
+                {
+                    QRect targetRect = QRect(columnIdx * BATTLEMAPSQUARE_SIZE, rowIdx * BATTLEMAPSQUARE_SIZE, BATTLEMAPSQUARE_SIZE, BATTLEMAPSQUARE_SIZE);
+                    QRect sourceRect = emptyBattleMapSquare.rect();
+                    painter->drawPixmap(targetRect, QPixmap::fromImage(emptyBattleMapSquare), sourceRect);
+                }
             }
+            delete painter;
+
+            pBattleMapImagePixMap = new QGraphicsPixmapItem();
+            pBattleMapImagePixMap->setPixmap(temporaryPixmap);
+
+            pBattleMapSceneSquareSelection->addItem(pBattleMapImagePixMap);
+            pBattleMapSceneSquareSelection->setSceneRect(0, 0, pBattleMapImagePixMap->pixmap().width(), pBattleMapImagePixMap->pixmap().height());
+
+            drawBattleMapGrid();
+
+            pUserInterface->GraphicsView_BattleMap->show();
         }
-        delete painter;
-
-        pBattleMapImagePixMap = new QGraphicsPixmapItem();
-        pBattleMapImagePixMap->setPixmap(temporaryPixmap);
-
-        pBattleMapSceneSquareSelection->addItem(pBattleMapImagePixMap);
-        pBattleMapSceneSquareSelection->setSceneRect(0, 0, pBattleMapImagePixMap->pixmap().width(), pBattleMapImagePixMap->pixmap().height());
-
-        drawBattleMapGrid();
-
-        pUserInterface->GraphicsView_BattleMap->show();
     }
 }
 
