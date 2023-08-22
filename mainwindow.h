@@ -37,11 +37,12 @@ public:
      * \details This function sets up the user interface of the class MainWindow and connects the signals and slots of the main window actions.     *
      *          Afterwards, the function shows the player window in full screen mode and moves it to the secondary screen.                          *
      *                                                                                                                                              *
+     * \param   playerWindow                  Address of the QGraphicsView to display the players window                                            *
      * \param   parent                        Parent of the class MainWindow                                                                        *
      *                                                                                                                                              *
      * \return  This function does not have any return value.                                                                                       *
      ************************************************************************************************************************************************/
-    MainWindow(QWidget *parent = nullptr);
+    MainWindow(QGraphicsView *playerWindow, QWidget *parent = nullptr);
 
     /*! *********************************************************************************************************************************************
      * \brief   This function is the destructor of the class MainWindow.                                                                            *

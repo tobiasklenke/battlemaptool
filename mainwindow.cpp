@@ -12,21 +12,17 @@
 /*!
  * \brief This function is the constructor of the class MainWindow.
  */
-MainWindow::MainWindow(QWidget *parent) :
+MainWindow::MainWindow(QGraphicsView *playerWindow, QWidget *parent) :
     QMainWindow(parent),
     pUserInterface(new Ui::MainWindow),
     pDialog_NewBattleMap(nullptr),
-    pPlayerScreenWindow(new QGraphicsView)
+    pPlayerScreenWindow(playerWindow)
 {
     pUserInterface->setupUi(this);
 
     /* connect signals and slots of the main window actions */
     connect(pUserInterface->Action_NewBattleMap, SIGNAL(triggered()), this, SLOT(open_Dialog_NewBattleMap()));
     connect(pUserInterface->Action_Quit, SIGNAL(triggered()), QApplication::instance(), SLOT(quit()));
-
-    /* show the player window in full screen mode and move it to the secondary screen */
-    pPlayerScreenWindow->showFullScreen();
-    pPlayerScreenWindow->move(MASTER_SCREEN_RESOLUTION.width(), 0);
 }
 
 /*!
