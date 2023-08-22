@@ -18,10 +18,21 @@
 #define BATTLEMAPGRID_COLOR                                Qt::black
 #define BATTLEMAPGRID_LINEWIDTH                            3
 
+
+/*!
+ * \brief This is the resource file path of the QSplashScreen image.
+ */
+#define SPLASHSCREENIMAGE_SOURCE                           ":/images/images/splashscreenimage.png"
+
 /*!
  * \brief This is the resource file path of the empty Battle Map square image.
  */
-#define EMPTY_BATTLEMAPSQUARE_SOURCE                       ":/images/images/emptysquare.png"
+#define EMPTYBATTLEMAPSQUARE_SOURCE                       ":/images/images/emptysquare.png"
+
+/*!
+ * \brief This is the period of time that the splash screens at application start are shown.
+ */
+#define SPLASHSCREENDURATION                              3000
 
 /****************************************************************************************************************************************************
  * MACROS                                                                                                                                           *
