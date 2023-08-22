@@ -27,7 +27,7 @@
 /*!
  * \brief This is the resource file path of the empty Battle Map square image.
  */
-#define EMPTYBATTLEMAPSQUARE_SOURCE                       ":/images/images/emptysquare.png"
+#define EMPTYBATTLEMAPSQUAREIMAGE_SOURCE                   ":/images/images/emptybattlemapsquareimage.png"
 
 /*!
  * \brief This is the period of time that the splash screens at application start are shown.

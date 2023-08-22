@@ -522,7 +522,7 @@ void Dialog_NewBattleMap::showEmptyBattleMapImage()
     connect(pBattleMapSceneSquareSelection, SIGNAL(selected_BattleMapSquare()), this, SLOT(selected_BattleMapSquare()));
     pUserInterface->GraphicsView_BattleMap->setScene(pBattleMapSceneSquareSelection);
 
-    QImage emptyBattleMapSquare(EMPTYBATTLEMAPSQUARE_SOURCE);
+    QImage emptyBattleMapSquare(EMPTYBATTLEMAPSQUAREIMAGE_SOURCE);
 
     if (emptyBattleMapSquare.isNull())
     {

@@ -15,7 +15,7 @@ BattleMapSquare::BattleMapSquare() :
     pBattleMapSquarePixMap(new QGraphicsPixmapItem())
 {
     /* initialize Battle Map square with image of empty Battle Map square */
-    pBattleMapSquarePixMap->setPixmap(QPixmap::fromImage(QImage((EMPTYBATTLEMAPSQUARE_SOURCE))));
+    pBattleMapSquarePixMap->setPixmap(QPixmap::fromImage(QImage((EMPTYBATTLEMAPSQUAREIMAGE_SOURCE))));
     pBattleMapSquarePixMap->setPixmap(pBattleMapSquarePixMap->pixmap().scaled(QSize(BATTLEMAPSQUARE_SIZE, BATTLEMAPSQUARE_SIZE)));
 }
 
