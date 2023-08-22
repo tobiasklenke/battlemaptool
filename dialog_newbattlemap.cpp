@@ -522,7 +522,7 @@ void Dialog_NewBattleMap::showEmptyBattleMapImage()
     connect(pBattleMapSceneSquareSelection, SIGNAL(selected_BattleMapSquare()), this, SLOT(selected_BattleMapSquare()));
     pUserInterface->GraphicsView_BattleMap->setScene(pBattleMapSceneSquareSelection);
 
-    QImage emptyBattleMapSquare(EMPTY_BATTLEMAPSQUARE_SOURCE);
+    QImage emptyBattleMapSquare(EMPTYBATTLEMAPSQUARE_SOURCE);
 
     if (emptyBattleMapSquare.isNull())
     {
@@ -545,10 +545,10 @@ void Dialog_NewBattleMap::showEmptyBattleMapImage()
     }
     else
     {
-        emptyBattleMapSquare = emptyBattleMapSquare.scaledToWidth(BATTLEMAPSQUARE_SIZE);
-
         if ((0U < pBattleMap->getNumberRows()) && (0U < pBattleMap->getNumberColumns()))
         {
+            emptyBattleMapSquare = emptyBattleMapSquare.scaledToWidth(BATTLEMAPSQUARE_SIZE);
+
             /* construct the empty Battle Map image from a number of empty Battle Map squares according to the number of rows and columns */
             QPixmap temporaryPixmap(QSize(pBattleMap->getNumberColumns()* BATTLEMAPSQUARE_SIZE, pBattleMap->getNumberRows() * BATTLEMAPSQUARE_SIZE));
             QPainter *painter = new QPainter(&temporaryPixmap);
