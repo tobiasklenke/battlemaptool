@@ -29,11 +29,6 @@
  */
 #define EMPTYBATTLEMAPSQUAREIMAGE_SOURCE                   ":/images/images/emptybattlemapsquareimage.png"
 
-/*!
- * \brief This is the period of time that the splash screens at application start are shown.
- */
-#define SPLASHSCREENDURATION                              3000
-
 /****************************************************************************************************************************************************
  * MACROS                                                                                                                                           *
  ****************************************************************************************************************************************************/
