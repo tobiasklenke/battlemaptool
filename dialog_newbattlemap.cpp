@@ -471,6 +471,8 @@ void Dialog_NewBattleMap::stateChanged_CheckBox_DrawBattleMapGrid(int state)
  */
 void Dialog_NewBattleMap::accepted_DialogButtonBox()
 {
+    setCursor(Qt::WaitCursor);
+
     /* draw the selected Battle Map grid on the Battle Map image */
     if (pUserInterface->CheckBox_DrawBattleMapGrid->isChecked())
     {

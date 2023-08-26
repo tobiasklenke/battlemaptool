@@ -18,7 +18,7 @@ MainWindow::MainWindow(QGraphicsView *playerWindow, QWidget *parent) :
     pDialog_NewBattleMap(nullptr),
     pPlayerScreenWindow(playerWindow),
     pBattleMapSceneMasterScreen(new BattleMapSceneMasterScreen()),
-    pBattleMap(nullptr)
+    pBattleMap(new BattleMap())
 {
     pUserInterface->setupUi(this);
 
@@ -70,10 +70,15 @@ void MainWindow::open_Dialog_NewBattleMap()
  */
 void MainWindow::accepted_Dialog_NewBattleMap()
 {
+    setCursor(Qt::WaitCursor);
+
+    delete pBattleMap;
     pBattleMap = new BattleMap(*pDialog_NewBattleMap->getBattleMap());
     delete pDialog_NewBattleMap;
 
     showBattleMapImageOnMasterScreen();
+
+    setCursor(Qt::ArrowCursor);
 }
 
 /*!
