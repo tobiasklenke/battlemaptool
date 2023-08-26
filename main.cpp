@@ -23,6 +23,11 @@ const QString applicationName = QString("Battle Map Tool");
  */
 const QString applicationVersion = QString("0.9.1");
 
+/*!
+ * \brief This is the period of time in milliseconds that the splash screens at application start are shown.
+ */
+const int splashScreenDuration = 1000;
+
 /****************************************************************************************************************************************************
  * GLOBAL VARIABLES                                                                                                                                 *
  ****************************************************************************************************************************************************/
@@ -61,7 +66,7 @@ int main(int argc, char *argv[])
 
     int splashScreen1PosX = (MASTER_SCREEN_RESOLUTION.width() - splashScreenPixmap.width()) / 2;
     int splashScreen1PosY = (MASTER_SCREEN_RESOLUTION.height() - splashScreenPixmap.height()) / 2;
-    int splashScreen2PosX = MASTER_SCREEN_RESOLUTION.width() + (PLAYER_SCREEN_RESOLUTION.width() - splashScreenPixmap.width()) / 2;
+    int splashScreen2PosX = (PLAYER_SCREEN_RESOLUTION.width() - splashScreenPixmap.width()) / 2 + MASTER_SCREEN_RESOLUTION.width();
     int splashScreen2PosY = (PLAYER_SCREEN_RESOLUTION.height() - splashScreenPixmap.height()) / 2;
     splashScreen1.move(splashScreen1PosX, splashScreen1PosY);
     splashScreen2.move(splashScreen2PosX, splashScreen2PosY);
@@ -72,10 +77,10 @@ int main(int argc, char *argv[])
     MainWindow mainWindow(playerWindow);
 
     /* close the splash screen windows, show the main window and player window in full screen mode and move them to the respective screen */
-    QTimer::singleShot(SPLASHSCREENDURATION, &splashScreen1, SLOT(close()));
-    QTimer::singleShot(SPLASHSCREENDURATION, &splashScreen2, SLOT(close()));
-    QTimer::singleShot(SPLASHSCREENDURATION, &mainWindow, SLOT(showFullScreen()));
-    QTimer::singleShot(SPLASHSCREENDURATION, playerWindow, SLOT(showFullScreen()));
+    QTimer::singleShot(splashScreenDuration, &splashScreen1, SLOT(close()));
+    QTimer::singleShot(splashScreenDuration, &splashScreen2, SLOT(close()));
+    QTimer::singleShot(splashScreenDuration, &mainWindow, SLOT(showFullScreen()));
+    QTimer::singleShot(splashScreenDuration, playerWindow, SLOT(showFullScreen()));
     mainWindow.move(0, 0);
     playerWindow->move(MASTER_SCREEN_RESOLUTION.width(), 0);
 
