@@ -33,31 +33,40 @@ public:
     /*! *********************************************************************************************************************************************
      * \brief   This function is the destructor of the class BattleMapSquare.                                                                       *
      *                                                                                                                                              *
-     * \details This function deletes the object pointed to by pBattleMapSquarePixMap.                                                              *
+     * \details This function deletes the object pointed to by pBattleMapSquarePixmap.                                                              *
      *                                                                                                                                              *
      * \return  This function does not have any return value.                                                                                       *
      ************************************************************************************************************************************************/
     ~BattleMapSquare();
 
     /*! *********************************************************************************************************************************************
-     * \brief   This function returns the value of the member variable pBattleMapSquarePixMap.                                                      *
+     * \brief   This function returns the member variable pBattleMapSquarePixmap                                                                    *
      *                                                                                                                                              *
      * \details -                                                                                                                                   *
      *                                                                                                                                              *
-     * \return  This function returns the value of the member variable pBattleMapSquarePixMap.                                                      *
+     * \return  This function returns the member variable pBattleMapSquarePixmap.                                                                   *
      ************************************************************************************************************************************************/
-    QGraphicsPixmapItem *getBattleMapSquarePixMap() const;
+    QGraphicsPixmapItem * getBattleMapSquare() const;
 
     /*! *********************************************************************************************************************************************
-     * \brief   This function sets the value of the member variable pBattleMapSquarePixMap.                                                         *
+     * \brief   This function returns the pixmap of the member variable pBattleMapSquarePixmap                                                      *
      *                                                                                                                                              *
      * \details -                                                                                                                                   *
      *                                                                                                                                              *
-     * \param   battleMapSquarePixMap         Pixmap of the Battle Map square                                                                       *
+     * \return  This function returns the pixmap of the member variable pBattleMapSquarePixmap.                                                     *
+     ************************************************************************************************************************************************/
+    QPixmap getBattleMapSquarePixmap() const;
+
+    /*! *********************************************************************************************************************************************
+     * \brief   This function sets the pixmap of the member variable pBattleMapSquarePixmap                                                         *
+     *                                                                                                                                              *
+     * \details -                                                                                                                                   *
+     *                                                                                                                                              *
+     * \param   battleMapSquarePixmap         Pixmap of the Battle Map square                                                                       *
      *                                                                                                                                              *
      * \return  This function does not have any return value.                                                                                       *
      ************************************************************************************************************************************************/
-    void setBattleMapSquarePixMap(QGraphicsPixmapItem *battleMapSquarePixMap);
+    void setBattleMapSquarePixmap(QPixmap battleMapSquarePixmap);
 
 protected: /* - */
 
@@ -68,9 +77,9 @@ private slots: /* - */
 private:
 
     /*!
-     * \brief This is the pixmap of the Battle Map square.
+     * \brief This is the graphics item of the Battle Map square.
      */
-    QGraphicsPixmapItem *pBattleMapSquarePixMap;
+    QGraphicsPixmapItem * pBattleMapSquarePixmap;
 };
 
 #endif // BATTLEMAPSQUARE_H

@@ -19,6 +19,23 @@ BattleMap::BattleMap() :
 }
 
 /*!
+ * \brief This function is the copy constructor of the class BattleMap.
+ */
+BattleMap::BattleMap(BattleMap &battleMap) :
+    m_numberRows(battleMap.getNumberRows()),
+    m_numberColumns(battleMap.getNumberColumns()),
+    m_battleMapSquares(QList<QList<BattleMapSquare*>>())
+{
+    for (quint32 rowIdx = 0U; rowIdx < m_numberRows; rowIdx++)
+    {
+        for (quint32 columnIdx = 0U; columnIdx < m_numberColumns; columnIdx++)
+        {
+            setIndexedBattleMapSquarePixmap(rowIdx, battleMap.getIndexedBattleMapSquarePixmap(rowIdx, columnIdx));
+        }
+    }
+}
+
+/*!
  * \brief This function is the destructor of the class BattleMap.
  */
 BattleMap::~BattleMap()
@@ -65,17 +82,25 @@ void BattleMap::setNumberColumns(quint32 numberColumns)
 }
 
 /*!
+ * \brief This function returns the indexed entry of the nested QList member variable m_battleMapSquares.
+ */
+QGraphicsPixmapItem * BattleMap::getIndexedBattleMapSquare(quint32 rowIdx, quint32 columnIdx) const
+{
+    return m_battleMapSquares[rowIdx][columnIdx]->getBattleMapSquare();
+}
+
+/*!
  * \brief This function returns the pixmap of an indexed entry of the nested QList member variable m_battleMapSquares.
  */
-QGraphicsPixmapItem *BattleMap::getIndexedBattleMapSquarePixmap(quint32 rowIdx, quint32 columnIdx) const
+QPixmap BattleMap::getIndexedBattleMapSquarePixmap(quint32 rowIdx, quint32 columnIdx) const
 {
-    return m_battleMapSquares[rowIdx][columnIdx]->getBattleMapSquarePixMap();
+    return m_battleMapSquares[rowIdx][columnIdx]->getBattleMapSquarePixmap();
 }
 
 /*!
  * \brief This function sets the pixmap of an indexed entry of the nested QList member variable m_battleMapSquares.
  */
-void BattleMap::setIndexedBattleMapSquarePixmap(quint32 rowIdx, QGraphicsPixmapItem *battleMapSquarePixmap)
+void BattleMap::setIndexedBattleMapSquarePixmap(quint32 rowIdx, QPixmap battleMapSquarePixmap)
 {
     /* append row to nested QList member variable m_battleMapSquares if row does not already exist */
     if (rowIdx + 1 > m_battleMapSquares.count())
@@ -84,7 +109,7 @@ void BattleMap::setIndexedBattleMapSquarePixmap(quint32 rowIdx, QGraphicsPixmapI
     }
 
     BattleMapSquare * battleMapSquare = new BattleMapSquare();
-    battleMapSquare->setBattleMapSquarePixMap(battleMapSquarePixmap);
+    battleMapSquare->setBattleMapSquarePixmap(battleMapSquarePixmap);
 
     /* append Battle Map square to row of nested QList member variable m_battleMapSquares */
     m_battleMapSquares[rowIdx].append(battleMapSquare);

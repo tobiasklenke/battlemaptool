@@ -29,6 +29,15 @@ public:
     BattleMap();
 
     /*! *********************************************************************************************************************************************
+     * \brief   This function is the copy constructor of the class BattleMap.                                                                       *
+     *                                                                                                                                              *
+     * \details -                                                                                                                                   *
+     *                                                                                                                                              *
+     * \return  This function does not have any return value.                                                                                       *
+     ************************************************************************************************************************************************/
+    BattleMap(BattleMap &battleMap);
+
+    /*! *********************************************************************************************************************************************
      * \brief   This function is the destructor of the class BattleMap.                                                                             *
      *                                                                                                                                              *
      * \details This function deletes the objects pointed to by the nested QList member variable m_battleMapSquares.                                *
@@ -78,6 +87,18 @@ public:
     void setNumberColumns(quint32 numberColumns);
 
     /*! *********************************************************************************************************************************************
+     * \brief   This function returns the indexed entry of the nested QList member variable m_battleMapSquares.                                     *
+     *                                                                                                                                              *
+     * \details -                                                                                                                                   *
+     *                                                                                                                                              *
+     * \param   rowIdx                        Index of the row                                                                                      *
+     * \param   columnIdx                     Index of the column                                                                                   *
+     *                                                                                                                                              *
+     * \return  This function returns the indexed entry of the nested QList member variable m_battleMapSquares.                                     *
+     ************************************************************************************************************************************************/
+    QGraphicsPixmapItem * getIndexedBattleMapSquare(quint32 rowIdx, quint32 columnIdx) const;
+
+    /*! *********************************************************************************************************************************************
      * \brief   This function returns the pixmap of an indexed entry of the nested QList member variable m_battleMapSquares.                        *
      *                                                                                                                                              *
      * \details -                                                                                                                                   *
@@ -87,7 +108,7 @@ public:
      *                                                                                                                                              *
      * \return  This function returns the pixmap of an indexed entry of the nested QList member variable m_battleMapSquares.                        *
      ************************************************************************************************************************************************/
-    QGraphicsPixmapItem *getIndexedBattleMapSquarePixmap(quint32 rowIdx, quint32 columnIdx) const;
+    QPixmap getIndexedBattleMapSquarePixmap(quint32 rowIdx, quint32 columnIdx) const;
 
     /*! *********************************************************************************************************************************************
      * \brief   This function sets the pixmap of an indexed entry of the nested QList member variable m_battleMapSquares.                           *
@@ -102,7 +123,7 @@ public:
      *                                                                                                                                              *
      * \return  This function does not have any return value.                                                                                       *
      ************************************************************************************************************************************************/
-    void setIndexedBattleMapSquarePixmap(quint32 rowIdx, QGraphicsPixmapItem *battleMapSquarePixmap);
+    void setIndexedBattleMapSquarePixmap(quint32 rowIdx, QPixmap battleMapSquarePixmap);
 
 protected: /* - */
 

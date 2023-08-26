@@ -11,12 +11,12 @@
 /*!
  * \brief This function is the constructor of the class BattleMapSquare.
  */
-BattleMapSquare::BattleMapSquare() :
-    pBattleMapSquarePixMap(new QGraphicsPixmapItem())
+BattleMapSquare::BattleMapSquare():
+    pBattleMapSquarePixmap(new QGraphicsPixmapItem())
 {
     /* initialize Battle Map square with image of empty Battle Map square */
-    pBattleMapSquarePixMap->setPixmap(QPixmap::fromImage(QImage((EMPTYBATTLEMAPSQUAREIMAGE_SOURCE))));
-    pBattleMapSquarePixMap->setPixmap(pBattleMapSquarePixMap->pixmap().scaled(QSize(BATTLEMAPSQUARE_SIZE, BATTLEMAPSQUARE_SIZE)));
+    pBattleMapSquarePixmap->setPixmap(QPixmap::fromImage(QImage((EMPTYBATTLEMAPSQUAREIMAGE_SOURCE))));
+    pBattleMapSquarePixmap->setPixmap(pBattleMapSquarePixmap->pixmap().scaled(QSize(BATTLEMAPSQUARE_SIZE, BATTLEMAPSQUARE_SIZE)));
 }
 
 /*!
@@ -24,23 +24,31 @@ BattleMapSquare::BattleMapSquare() :
  */
 BattleMapSquare::~BattleMapSquare()
 {
-    delete pBattleMapSquarePixMap;
+    delete pBattleMapSquarePixmap;
 }
 
 /*!
- * \brief This function returns the value of the member variable pBattleMapSquarePixMap.
+ * \brief This function returns the member variable pBattleMapSquarePixmap.
  */
-QGraphicsPixmapItem *BattleMapSquare::getBattleMapSquarePixMap() const
+QGraphicsPixmapItem * BattleMapSquare::getBattleMapSquare() const
 {
-    return pBattleMapSquarePixMap;
+    return pBattleMapSquarePixmap;
 }
 
 /*!
- * \brief This function sets the value of the member variable pBattleMapSquarePixMap.
+ * \brief This function returns the pixmap of the member variable pBattleMapSquarePixmap.
  */
-void BattleMapSquare::setBattleMapSquarePixMap(QGraphicsPixmapItem *battleMapSquarePixMap)
+QPixmap BattleMapSquare::getBattleMapSquarePixmap() const
 {
-    pBattleMapSquarePixMap = battleMapSquarePixMap;
+    return pBattleMapSquarePixmap->pixmap();
+}
+
+/*!
+ * \brief This function sets the pixmap of the member variable pBattleMapSquarePixmap.
+ */
+void BattleMapSquare::setBattleMapSquarePixmap(QPixmap battleMapSquarePixMap)
+{
+    pBattleMapSquarePixmap->setPixmap(battleMapSquarePixMap);
 }
 
 /****************************************************************************************************************************************************
