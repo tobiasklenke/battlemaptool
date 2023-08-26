@@ -5,10 +5,12 @@
  * INCLUDES                                                                                                                                         *
  ****************************************************************************************************************************************************/
 
+#include <QGraphicsPixmapItem>
 #include <QGraphicsView>
 #include <QMainWindow>
 
 #include "battlemap.h"
+#include "battlemapscenemasterscreen.h"
 #include "dialog_newbattlemap.h"
 
 /****************************************************************************************************************************************************
@@ -35,7 +37,6 @@ public:
      * \brief   This function is the constructor of the class MainWindow.                                                                           *
      *                                                                                                                                              *
      * \details This function sets up the user interface of the class MainWindow and connects the signals and slots of the main window actions.     *
-     *          Afterwards, the function shows the player window in full screen mode and moves it to the secondary screen.                          *
      *                                                                                                                                              *
      * \param   playerWindow                  Address of the QGraphicsView to display the players window                                            *
      * \param   parent                        Parent of the class MainWindow                                                                        *
@@ -90,6 +91,15 @@ private slots:
 
 private:
 
+    /*! *********************************************************************************************************************************************
+     * \brief   This function shows the Battle Map image on the master screen.                                                                            *
+     *                                                                                                                                              *
+     * \details TODO                                                                                                                                *
+     *                                                                                                                                              *
+     * \return  This function does not have any return value.                                                                                       *
+     ************************************************************************************************************************************************/
+    void showBattleMapImageOnMasterScreen();
+
     /*!
      * \brief This is a pointer to the user interface of the class MainWindow.
      */
@@ -104,5 +114,15 @@ private:
      * \brief This is a pointer to the graphics view shown on the player screen.
      */
     QGraphicsView *pPlayerScreenWindow;
+
+    /*!
+     * \brief This is a pointer to the BattleMapSceneMasterScreen object that is set to pPlayerScreenWindow.
+     */
+    BattleMapSceneMasterScreen *pBattleMapSceneMasterScreen;
+
+    /*!
+     * \brief This is a pointer to the Battle Map.
+     */
+    BattleMap * pBattleMap;
 };
 #endif // MAINWINDOW_H

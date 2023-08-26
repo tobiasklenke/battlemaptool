@@ -16,13 +16,19 @@ MainWindow::MainWindow(QGraphicsView *playerWindow, QWidget *parent) :
     QMainWindow(parent),
     pUserInterface(new Ui::MainWindow),
     pDialog_NewBattleMap(nullptr),
-    pPlayerScreenWindow(playerWindow)
+    pPlayerScreenWindow(playerWindow),
+    pBattleMapSceneMasterScreen(new BattleMapSceneMasterScreen()),
+    pBattleMap(nullptr)
 {
     pUserInterface->setupUi(this);
 
     /* connect signals and slots of the main window actions */
     connect(pUserInterface->Action_NewBattleMap, SIGNAL(triggered()), this, SLOT(open_Dialog_NewBattleMap()));
     connect(pUserInterface->Action_Quit, SIGNAL(triggered()), QApplication::instance(), SLOT(quit()));
+
+    pUserInterface->GraphicsView_BattleMap->setScene(pBattleMapSceneMasterScreen);
+    pBattleMapSceneMasterScreen->addText("New Battle Map\t[Ctrl+N]\nOpen Battle Map\t[Ctrl+O]");
+    pBattleMapSceneMasterScreen->setBackgroundBrush(QBrush(Qt::lightGray));
 }
 
 /*!
@@ -32,6 +38,7 @@ MainWindow::~MainWindow()
 {
     delete pUserInterface;
     delete pPlayerScreenWindow;
+    delete pBattleMap;
 }
 
 /****************************************************************************************************************************************************
@@ -63,9 +70,10 @@ void MainWindow::open_Dialog_NewBattleMap()
  */
 void MainWindow::accepted_Dialog_NewBattleMap()
 {
-    //TODO: Implement storation of data before deleting pDialog_NewBattleMap
-
+    pBattleMap = new BattleMap(*pDialog_NewBattleMap->getBattleMap());
     delete pDialog_NewBattleMap;
+
+    showBattleMapImageOnMasterScreen();
 }
 
 /*!
@@ -80,4 +88,24 @@ void MainWindow::rejected_Dialog_NewBattleMap()
  * DEFINITION OF PRIVATE FUNCTIONS                                                                                                                  *
  ****************************************************************************************************************************************************/
 
-/* - */
+/*!
+ * \brief This function shows the Battle Map image on the master screen.
+ */
+void MainWindow::showBattleMapImageOnMasterScreen()
+{
+    /* reset Battle Map scene */
+    delete pBattleMapSceneMasterScreen;
+    pBattleMapSceneMasterScreen = new BattleMapSceneMasterScreen();
+    pUserInterface->GraphicsView_BattleMap->setScene(pBattleMapSceneMasterScreen);
+
+    for (quint32 rowIdx = 0U; rowIdx < pBattleMap->getNumberRows(); rowIdx++)
+    {
+        for (quint32 columnIdx = 0U; columnIdx < pBattleMap->getNumberColumns(); columnIdx++)
+        {
+            pBattleMap->getIndexedBattleMapSquare(rowIdx, columnIdx)->setPos(columnIdx * BATTLEMAPSQUARE_SIZE, rowIdx * BATTLEMAPSQUARE_SIZE);
+            pBattleMapSceneMasterScreen->addItem(pBattleMap->getIndexedBattleMapSquare(rowIdx, columnIdx));
+        }
+    }
+
+    pBattleMapSceneMasterScreen->setSceneRect(0, 0, pBattleMap->getNumberColumns()* BATTLEMAPSQUARE_SIZE, pBattleMap->getNumberRows() * BATTLEMAPSQUARE_SIZE);
+}
