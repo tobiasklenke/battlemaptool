@@ -105,7 +105,7 @@ void Dialog_NewBattleMap::toggled_RadioButton_SourceBattleMap(bool checked)
         pBattleMapSceneSquareSelection = new BattleMapSceneSquareSelection();
         connect(pBattleMapSceneSquareSelection, SIGNAL(selected_BattleMapSquare()), this, SLOT(selected_BattleMapSquare()));
         pUserInterface->GraphicsView_BattleMap->setScene(pBattleMapSceneSquareSelection);
-        pBattleMapSceneSquareSelection->addText("Select source.");
+        pBattleMapSceneSquareSelection->addText("Select source");
         pBattleMapSceneSquareSelection->setBackgroundBrush(QBrush(Qt::lightGray));
     }
 }
@@ -494,11 +494,11 @@ void Dialog_NewBattleMap::accepted_DialogButtonBox()
         for (quint32 columnIdx = 0U; columnIdx < pBattleMap->getNumberColumns(); columnIdx++)
         {
             /* extract Battle Map square and scale it to configured size */
-            QGraphicsPixmapItem * temporaryGraphicsPixmapItem = new QGraphicsPixmapItem();
-            temporaryGraphicsPixmapItem->setPixmap(pBattleMapImagePixMap->pixmap().copy(QRect(columnIdx * edgeLength, rowIdx * edgeLength, edgeLength, edgeLength)));
-            temporaryGraphicsPixmapItem->setPixmap(temporaryGraphicsPixmapItem->pixmap().scaled(QSize(BATTLEMAPSQUARE_SIZE, BATTLEMAPSQUARE_SIZE)));
+            QGraphicsPixmapItem temporaryGraphicsPixmapItem;
+            temporaryGraphicsPixmapItem.setPixmap(pBattleMapImagePixMap->pixmap().copy(QRect(columnIdx * edgeLength, rowIdx * edgeLength, edgeLength, edgeLength)));
+            temporaryGraphicsPixmapItem.setPixmap(temporaryGraphicsPixmapItem.pixmap().scaled(QSize(BATTLEMAPSQUARE_SIZE, BATTLEMAPSQUARE_SIZE)));
 
-            pBattleMap->setIndexedBattleMapSquarePixmap(rowIdx, temporaryGraphicsPixmapItem);
+            pBattleMap->setIndexedBattleMapSquarePixmap(rowIdx, temporaryGraphicsPixmapItem.pixmap());
         }
     }
 
@@ -570,8 +570,6 @@ void Dialog_NewBattleMap::showEmptyBattleMapImage()
             pBattleMapSceneSquareSelection->setSceneRect(0, 0, pBattleMapImagePixMap->pixmap().width(), pBattleMapImagePixMap->pixmap().height());
 
             drawBattleMapGrid();
-
-            pUserInterface->GraphicsView_BattleMap->show();
         }
     }
 }
@@ -610,8 +608,6 @@ void Dialog_NewBattleMap::showSourceBattleMapImage()
         pBattleMapImagePixMap = new QGraphicsPixmapItem(QPixmap::fromImage(battleMapImage));
         pBattleMapSceneSquareSelection->addItem(pBattleMapImagePixMap);
         pBattleMapSceneSquareSelection->setSceneRect(0, 0, pBattleMapImagePixMap->pixmap().width(), pBattleMapImagePixMap->pixmap().height());
-
-        pUserInterface->GraphicsView_BattleMap->show();
 
         msgBox.setWindowTitle("Select Battle Map square");
         msgBox.setText("Please select a Battle Map square in order to determine the number of rows and columns of the Battle Map.");
