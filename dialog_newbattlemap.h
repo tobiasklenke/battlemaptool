@@ -299,6 +299,16 @@ private:
      ************************************************************************************************************************************************/
     void drawBattleMapGrid();
 
+    /*! *********************************************************************************************************************************************
+     * \brief   This function removes the Battle Map grid.                                                                                          *
+     *                                                                                                                                              *
+     * \details This function removes the current Battle Map grid from the Battle Map scene and deletes it from the member variable                 *
+     *          m_battleMapLinesToDraw.                                                                                                             *
+     *                                                                                                                                              *
+     * \return  This function does not have any return value.                                                                                       *
+     ************************************************************************************************************************************************/
+    void removeBattleMapGrid();
+
     /*!
      * \brief This is a pointer to the user interface of the class Dialog_NewBattleMap.
      */
@@ -312,7 +322,12 @@ private:
     /*!
      * \brief This is the pixmap of the Battle Map image.
      */
-    QGraphicsPixmapItem *pBattleMapImagePixMap;
+    QGraphicsPixmapItem m_battleMapImagePixMap;
+
+    /*!
+     * \brief This is a list of Battle Map lines building the Battle Map grid to be drawn for control purposes.
+     */
+    QList<QGraphicsLineItem*> m_battleMapLinesToDraw;
 
     /*!
      * \brief This is a pointer to the newly created Battle Map.

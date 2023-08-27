@@ -15,8 +15,7 @@
 Dialog_NewBattleMap::Dialog_NewBattleMap(QWidget *parent) :
     QDialog(parent),
     pUserInterface(new Ui::Dialog_NewBattleMap),
-    pBattleMapSceneSquareSelection(nullptr),
-    pBattleMapImagePixMap(nullptr),
+    pBattleMapSceneSquareSelection(new BattleMapSceneSquareSelection()),
     pBattleMap(new BattleMap())
 {
     pUserInterface->setupUi(this);
@@ -46,6 +45,8 @@ Dialog_NewBattleMap::Dialog_NewBattleMap(QWidget *parent) :
 Dialog_NewBattleMap::~Dialog_NewBattleMap()
 {
     delete pUserInterface;
+    pBattleMapSceneSquareSelection->removeItem(&m_battleMapImagePixMap);
+    removeBattleMapGrid();
     delete pBattleMapSceneSquareSelection;
     delete pBattleMap;
 }
@@ -384,7 +385,7 @@ void Dialog_NewBattleMap::selected_BattleMapSquare()
         /* optimize the edge length by performing a modulo operation with the height of the Battle Map image and the edge length */
         do
         {
-            residual = (pBattleMapImagePixMap->pixmap().height() % averageEdgeLengthIncrement);
+            residual = (m_battleMapImagePixMap.pixmap().height() % averageEdgeLengthIncrement);
 
             if (0U != residual)
             {
@@ -395,7 +396,7 @@ void Dialog_NewBattleMap::selected_BattleMapSquare()
         } while (0U != residual);
         do
         {
-            residual = (pBattleMapImagePixMap->pixmap().height() % averageEdgeLengthDecrement);
+            residual = (m_battleMapImagePixMap.pixmap().height() % averageEdgeLengthDecrement);
 
             if (0U != residual)
             {
@@ -416,8 +417,8 @@ void Dialog_NewBattleMap::selected_BattleMapSquare()
             averageEdgeLength = averageEdgeLengthDecrement;
         }
 
-        pBattleMap->setNumberRows(pBattleMapImagePixMap->pixmap().height() / averageEdgeLength);
-        pBattleMap->setNumberColumns(pBattleMapImagePixMap->pixmap().width() / averageEdgeLength);
+        pBattleMap->setNumberRows(m_battleMapImagePixMap.pixmap().height() / averageEdgeLength);
+        pBattleMap->setNumberColumns(m_battleMapImagePixMap.pixmap().width() / averageEdgeLength);
         pUserInterface->LineEdit_NumberRows->setText(QString::number(pBattleMap->getNumberRows()));
         pUserInterface->LineEdit_NumberColumns->setText(QString::number(pBattleMap->getNumberColumns()));
 
@@ -452,7 +453,7 @@ void Dialog_NewBattleMap::selected_BattleMapSquare()
         /* disable push button from DialogButtonBox with AcceptRole */
         pUserInterface->DialogButtonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
 
-        pBattleMapSceneSquareSelection->removeBattleMapLines();
+        removeBattleMapGrid();
     }
 }
 
@@ -476,20 +477,19 @@ void Dialog_NewBattleMap::accepted_DialogButtonBox()
     /* draw the selected Battle Map grid on the Battle Map image */
     if (pUserInterface->CheckBox_DrawBattleMapGrid->isChecked())
     {
-        QPixmap temporaryPixmap(pBattleMapImagePixMap->pixmap());
+        QPixmap temporaryPixmap(m_battleMapImagePixMap.pixmap());
         QPainter *painter = new QPainter(&temporaryPixmap);
         painter->setPen(QPen(BATTLEMAPGRID_COLOR, BATTLEMAPGRID_LINEWIDTH, Qt::SolidLine));
-        QList<QGraphicsLineItem*> battleMapLinesToDraw = pBattleMapSceneSquareSelection->getBattleMapLinesToDraw();
-        for (quint32 lineIdx = 0U; lineIdx < battleMapLinesToDraw.count(); lineIdx++)
+        for (quint32 lineIdx = 0U; lineIdx < m_battleMapLinesToDraw.count(); lineIdx++)
         {
-            painter->drawLine(battleMapLinesToDraw.at(lineIdx)->line());
+            painter->drawLine(m_battleMapLinesToDraw.at(lineIdx)->line());
         }
         delete painter;
 
-        pBattleMapImagePixMap->setPixmap(temporaryPixmap);
+        m_battleMapImagePixMap.setPixmap(temporaryPixmap);
     }
 
-    quint32 edgeLength = pBattleMapImagePixMap->pixmap().height() / pBattleMap->getNumberRows();
+    quint32 edgeLength = m_battleMapImagePixMap.pixmap().height() / pBattleMap->getNumberRows();
 
     for (quint32 rowIdx = 0U; rowIdx < pBattleMap->getNumberRows(); rowIdx++)
     {
@@ -497,7 +497,7 @@ void Dialog_NewBattleMap::accepted_DialogButtonBox()
         {
             /* extract Battle Map square and scale it to configured size */
             QGraphicsPixmapItem temporaryGraphicsPixmapItem;
-            temporaryGraphicsPixmapItem.setPixmap(pBattleMapImagePixMap->pixmap().copy(QRect(columnIdx * edgeLength, rowIdx * edgeLength, edgeLength, edgeLength)));
+            temporaryGraphicsPixmapItem.setPixmap(m_battleMapImagePixMap.pixmap().copy(QRect(columnIdx * edgeLength, rowIdx * edgeLength, edgeLength, edgeLength)));
             temporaryGraphicsPixmapItem.setPixmap(temporaryGraphicsPixmapItem.pixmap().scaled(QSize(BATTLEMAPSQUARE_SIZE, BATTLEMAPSQUARE_SIZE)));
 
             pBattleMap->setIndexedBattleMapSquarePixmap(rowIdx, temporaryGraphicsPixmapItem.pixmap());
@@ -565,11 +565,10 @@ void Dialog_NewBattleMap::showEmptyBattleMapImage()
             }
             delete painter;
 
-            pBattleMapImagePixMap = new QGraphicsPixmapItem();
-            pBattleMapImagePixMap->setPixmap(temporaryPixmap);
+            m_battleMapImagePixMap.setPixmap(temporaryPixmap);
 
-            pBattleMapSceneSquareSelection->addItem(pBattleMapImagePixMap);
-            pBattleMapSceneSquareSelection->setSceneRect(0, 0, pBattleMapImagePixMap->pixmap().width(), pBattleMapImagePixMap->pixmap().height());
+            pBattleMapSceneSquareSelection->addItem(&m_battleMapImagePixMap);
+            pBattleMapSceneSquareSelection->setSceneRect(0, 0, m_battleMapImagePixMap.pixmap().width(), m_battleMapImagePixMap.pixmap().height());
 
             drawBattleMapGrid();
         }
@@ -607,9 +606,9 @@ void Dialog_NewBattleMap::showSourceBattleMapImage()
         pUserInterface->GraphicsView_BattleMap->viewport()->setCursor(Qt::CrossCursor);
         pUserInterface->GraphicsView_BattleMap->setToolTip("Select Battle Map square");
 
-        pBattleMapImagePixMap = new QGraphicsPixmapItem(QPixmap::fromImage(battleMapImage));
-        pBattleMapSceneSquareSelection->addItem(pBattleMapImagePixMap);
-        pBattleMapSceneSquareSelection->setSceneRect(0, 0, pBattleMapImagePixMap->pixmap().width(), pBattleMapImagePixMap->pixmap().height());
+        m_battleMapImagePixMap.setPixmap(QPixmap::fromImage(battleMapImage));
+        pBattleMapSceneSquareSelection->addItem(&m_battleMapImagePixMap);
+        pBattleMapSceneSquareSelection->setSceneRect(0, 0, m_battleMapImagePixMap.pixmap().width(), m_battleMapImagePixMap.pixmap().height());
 
         msgBox.setWindowTitle("Select Battle Map square");
         msgBox.setText("Please select a Battle Map square in order to determine the number of rows and columns of the Battle Map.");
@@ -625,8 +624,8 @@ void Dialog_NewBattleMap::correctNumberRows()
 {
     if (0 < pBattleMap->getNumberColumns())
     {
-        quint32 edgeLength = pBattleMapImagePixMap->pixmap().size().width() / pBattleMap->getNumberColumns();
-        pBattleMap->setNumberRows(pBattleMapImagePixMap->pixmap().height() / edgeLength);
+        quint32 edgeLength = m_battleMapImagePixMap.pixmap().size().width() / pBattleMap->getNumberColumns();
+        pBattleMap->setNumberRows(m_battleMapImagePixMap.pixmap().height() / edgeLength);
         pUserInterface->LineEdit_NumberRows->setText(QString::number(pBattleMap->getNumberRows()));
     }
 
@@ -647,8 +646,8 @@ void Dialog_NewBattleMap::correctNumberColumns()
 {
     if (0 < pBattleMap->getNumberRows())
     {
-        quint32 edgeLength = pBattleMapImagePixMap->pixmap().height() / pBattleMap->getNumberRows();
-        pBattleMap->setNumberColumns(pBattleMapImagePixMap->pixmap().width() / edgeLength);
+        quint32 edgeLength = m_battleMapImagePixMap.pixmap().height() / pBattleMap->getNumberRows();
+        pBattleMap->setNumberColumns(m_battleMapImagePixMap.pixmap().width() / edgeLength);
         pUserInterface->LineEdit_NumberColumns->setText(QString::number(pBattleMap->getNumberColumns()));
     }
 
@@ -673,13 +672,13 @@ void Dialog_NewBattleMap::checkBattleMapGrid()
     {
         if (pUserInterface->RadioButton_SourceBattleMap->isChecked())
         {
-            quint32 edgeLengthHeigth = pBattleMapImagePixMap->pixmap().height() / pBattleMap->getNumberRows();
-            quint32 edgeLengthWidth = pBattleMapImagePixMap->pixmap().width() / pBattleMap->getNumberColumns();
+            quint32 edgeLengthHeigth = m_battleMapImagePixMap.pixmap().height() / pBattleMap->getNumberRows();
+            quint32 edgeLengthWidth = m_battleMapImagePixMap.pixmap().width() / pBattleMap->getNumberColumns();
 
             if (edgeLengthHeigth == edgeLengthWidth)
             {
                 /* set background color of LineEdit_NumberRows to red if number of rows does not match the Battle Map image size */
-                if ((edgeLengthHeigth * pBattleMap->getNumberRows()) != static_cast<quint32>(pBattleMapImagePixMap->pixmap().height()))
+                if ((edgeLengthHeigth * pBattleMap->getNumberRows()) != static_cast<quint32>(m_battleMapImagePixMap.pixmap().height()))
                 {
                     pUserInterface->LineEdit_NumberRows->setStyleSheet(QString("#%1 { background-color: red; }").arg(pUserInterface->LineEdit_NumberRows->objectName()));
                     validBattleMapGrid = false;
@@ -690,7 +689,7 @@ void Dialog_NewBattleMap::checkBattleMapGrid()
                 }
 
                 /* set background color of LineEdit_NumberColumns to red if number of columns does not match the Battle Map image size */
-                if ((edgeLengthWidth * pBattleMap->getNumberColumns()) != static_cast<quint32>(pBattleMapImagePixMap->pixmap().width()))
+                if ((edgeLengthWidth * pBattleMap->getNumberColumns()) != static_cast<quint32>(m_battleMapImagePixMap.pixmap().width()))
                 {
                     pUserInterface->LineEdit_NumberColumns->setStyleSheet(QString("#%1 { background-color: red; }").arg(pUserInterface->LineEdit_NumberColumns->objectName()));
                     validBattleMapGrid = false;
@@ -725,7 +724,7 @@ void Dialog_NewBattleMap::drawBattleMapGrid()
     QPen pen;
     quint32 edgeLength;
 
-    pBattleMapSceneSquareSelection->removeBattleMapLines();
+    removeBattleMapGrid();
 
     if (pUserInterface->CheckBox_DrawBattleMapGrid->isChecked())
     {
@@ -738,15 +737,35 @@ void Dialog_NewBattleMap::drawBattleMapGrid()
 
     if ((0U < pBattleMap->getNumberRows()) && (0U < pBattleMap->getNumberColumns()))
     {
-        edgeLength = pBattleMapImagePixMap->pixmap().height() / pBattleMap->getNumberRows();
+        edgeLength = m_battleMapImagePixMap.pixmap().height() / pBattleMap->getNumberRows();
         for (quint32 rowIdx = 0U; rowIdx < pBattleMap->getNumberRows() + 1; rowIdx++)
         {
-            pBattleMapSceneSquareSelection->drawBattleMapLine(QLineF(0, rowIdx * edgeLength, pBattleMap->getNumberColumns() * edgeLength, rowIdx * edgeLength), pen);
+            QGraphicsLineItem * battleMapLineToDraw = new QGraphicsLineItem(QLineF(0, rowIdx * edgeLength, pBattleMap->getNumberColumns() * edgeLength, rowIdx * edgeLength));
+            battleMapLineToDraw->setPen(pen);
+            m_battleMapLinesToDraw.append(battleMapLineToDraw);
+            pBattleMapSceneSquareSelection->addItem(m_battleMapLinesToDraw.last());
         }
-        edgeLength = pBattleMapImagePixMap->pixmap().width() / pBattleMap->getNumberColumns();
+        edgeLength = m_battleMapImagePixMap.pixmap().width() / pBattleMap->getNumberColumns();
         for (quint32 columnIdx = 0U; columnIdx < pBattleMap->getNumberColumns() + 1; columnIdx++)
         {
-            pBattleMapSceneSquareSelection->drawBattleMapLine(QLineF(columnIdx * edgeLength, 0, columnIdx * edgeLength, pBattleMap->getNumberRows() * edgeLength), pen);
+            QGraphicsLineItem * battleMapLineToDraw = new QGraphicsLineItem(QLineF(columnIdx * edgeLength, 0, columnIdx * edgeLength, pBattleMap->getNumberRows() * edgeLength));
+            battleMapLineToDraw->setPen(pen);
+            m_battleMapLinesToDraw.append(battleMapLineToDraw);
+            pBattleMapSceneSquareSelection->addItem(m_battleMapLinesToDraw.last());
         }
     }
+}
+
+/*!
+ * \brief This function removes the Battle Map grid.
+ */
+void Dialog_NewBattleMap::removeBattleMapGrid()
+{
+    for(quint32 lineIdx = 0U; lineIdx < m_battleMapLinesToDraw.count(); lineIdx++)
+    {
+        pBattleMapSceneSquareSelection->removeItem(m_battleMapLinesToDraw.at(lineIdx));
+        delete m_battleMapLinesToDraw.at(lineIdx);
+    }
+
+    m_battleMapLinesToDraw.clear();
 }

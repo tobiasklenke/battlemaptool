@@ -42,39 +42,6 @@ public:
      ************************************************************************************************************************************************/
     ~BattleMapSceneSquareSelection();
 
-    /*! *********************************************************************************************************************************************
-     * \brief   This function returns the value of the member variable m_battleMapLinesToDraw.                                                      *
-     *                                                                                                                                              *
-     * \details -                                                                                                                                   *
-     *                                                                                                                                              *
-     * \return  This function returns the value of the member variable m_battleMapLinesToDraw.                                                      *
-     ************************************************************************************************************************************************/
-    QList<QGraphicsLineItem*> getBattleMapLinesToDraw() const;
-
-    /*! *********************************************************************************************************************************************
-     * \brief   This function draws a Battle Map line.                                                                                              *
-     *                                                                                                                                              *
-     * \details This function creates a graphics item from the parameter battleMapLine and appends it to the member variable                        *
-     *          m_battleMapLinesToDraw. Afterwards, the graphics item is added to the Battle Map scene and the pen properties are set according to  *
-     *          the parameter pen.                                                                                                                  *
-     *                                                                                                                                              *
-     * \param   battleMapLine                 Battle Map line to be drawn                                                                           *
-     * \param   pen                           Pen properties                                                                                        *
-     *                                                                                                                                              *
-     * \return  This function does not have any return value.                                                                                       *
-     ************************************************************************************************************************************************/
-    void drawBattleMapLine(QLineF battleMapLine, QPen pen);
-
-    /*! *********************************************************************************************************************************************
-     * \brief   This function removes all Battle Map lines.                                                                                         *
-     *                                                                                                                                              *
-     * \details This function removes all Battle Map lines from the Battle Map scene and deletes them from the member variable                      *
-     *          m_battleMapLinesToDraw.                                                                                                             *
-     *                                                                                                                                              *
-     * \return  This function does not have any return value.                                                                                       *
-     ************************************************************************************************************************************************/
-    void removeBattleMapLines();
-
 protected:
 
     /*! *********************************************************************************************************************************************
@@ -133,12 +100,7 @@ private:
     /*!
      * \brief This is the rectangle to be drawn while the selection of the Battle Map square.
      */
-    QGraphicsRectItem *pBattleMapSquareToDraw;
-
-    /*!
-     * \brief This is a list of Battle Map lines building the Battle Map grid to be drawn for control purposes.
-     */
-    QList<QGraphicsLineItem*> m_battleMapLinesToDraw;
+    QGraphicsRectItem  m_battleMapSquareToDraw;
 };
 
 #endif // BATTLEMAPSCENESQUARESELECTION_H
