@@ -51,6 +51,14 @@ void BattleMapSquare::setBattleMapSquarePixmap(QPixmap battleMapSquarePixMap)
     pBattleMapSquarePixmap->setPixmap(battleMapSquarePixMap);
 }
 
+/*!
+ * \brief This function scales the pixmap of the member variable pBattleMapSquarePixmap.
+ */
+void BattleMapSquare::scaleBattleMapSquarePixmap(quint32 newSize)
+{
+    pBattleMapSquarePixmap->setPixmap(pBattleMapSquarePixmap->pixmap().scaled(QSize(newSize, newSize)));
+}
+
 /****************************************************************************************************************************************************
  * DEFINITION OF PROTECTED FUNCTIONS                                                                                                                *
  ****************************************************************************************************************************************************/

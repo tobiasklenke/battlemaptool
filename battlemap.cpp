@@ -115,6 +115,14 @@ void BattleMap::setIndexedBattleMapSquarePixmap(quint32 rowIdx, QPixmap battleMa
     m_battleMapSquares[rowIdx].append(battleMapSquare);
 }
 
+/*!
+ * \brief This function scales the pixmap of an indexed entry of the nested QList member variable m_battleMapSquares.
+ */
+void BattleMap::scaleIndexedBattleMapSquarePixmap(quint32 rowIdx, quint32 columnIdx, quint32 newSize)
+{
+    m_battleMapSquares[rowIdx][columnIdx]->scaleBattleMapSquarePixmap(newSize);
+}
+
 /****************************************************************************************************************************************************
  * DEFINITION OF PROTECTED FUNCTIONS                                                                                                                *
  ****************************************************************************************************************************************************/

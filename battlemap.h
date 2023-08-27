@@ -125,6 +125,19 @@ public:
      ************************************************************************************************************************************************/
     void setIndexedBattleMapSquarePixmap(quint32 rowIdx, QPixmap battleMapSquarePixmap);
 
+    /*! *********************************************************************************************************************************************
+     * \brief   This function scales the pixmap of an indexed entry of the nested QList member variable m_battleMapSquares.                         *
+     *                                                                                                                                              *
+     * \details -                                                                                                                                   *
+     *                                                                                                                                              *
+     * \param   rowIdx                        Index of the row                                                                                      *
+     * \param   columnIdx                     Index of the column                                                                                   *
+     * \param   newSize                       New size of the pixmap of the Battle Map square                                                       *
+     *                                                                                                                                              *
+     * \return  This function does not have any return value.                                                                                       *
+     ************************************************************************************************************************************************/
+    void scaleIndexedBattleMapSquarePixmap(quint32 rowIdx, quint32 columnIdx, quint32 newSize);
+
 protected: /* - */
 
 signals: /* - */

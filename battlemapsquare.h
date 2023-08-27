@@ -68,6 +68,17 @@ public:
      ************************************************************************************************************************************************/
     void setBattleMapSquarePixmap(QPixmap battleMapSquarePixmap);
 
+    /*! *********************************************************************************************************************************************
+     * \brief   This function scales the pixmap of the member variable pBattleMapSquarePixmap                                                       *
+     *                                                                                                                                              *
+     * \details -                                                                                                                                   *
+     *                                                                                                                                              *
+     * \param   newSize                       New size of the pixmap of the Battle Map square                                                       *
+     *                                                                                                                                              *
+     * \return  This function does not have any return value.                                                                                       *
+     ************************************************************************************************************************************************/
+    void scaleBattleMapSquarePixmap(quint32 newSize);
+
 protected: /* - */
 
 signals: /* - */
