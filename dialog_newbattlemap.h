@@ -309,6 +309,15 @@ private:
      ************************************************************************************************************************************************/
     void removeBattleMapGrid();
 
+    /*! *********************************************************************************************************************************************
+     * \brief   This function resets the Battle Map scene.                                                                                          *
+     *                                                                                                                                              *
+     * \details -                                                                                                                                   *
+     *                                                                                                                                              *
+     * \return  This function resets the Battle Map scene.                                                                                          *
+     ************************************************************************************************************************************************/
+    void resetBattleMapSceneSquareSelection();
+
     /*!
      * \brief This is a pointer to the user interface of the class Dialog_NewBattleMap.
      */

@@ -45,9 +45,7 @@ Dialog_NewBattleMap::Dialog_NewBattleMap(QWidget *parent) :
 Dialog_NewBattleMap::~Dialog_NewBattleMap()
 {
     delete pUserInterface;
-    pBattleMapSceneSquareSelection->removeItem(&m_battleMapImagePixMap);
-    removeBattleMapGrid();
-    delete pBattleMapSceneSquareSelection;
+    resetBattleMapSceneSquareSelection();
     delete pBattleMap;
 }
 
@@ -102,7 +100,7 @@ void Dialog_NewBattleMap::toggled_RadioButton_SourceBattleMap(bool checked)
         pUserInterface->GraphicsView_BattleMap->setToolTip("");
 
         /* reset and reconnect Battle Map scene */
-        delete pBattleMapSceneSquareSelection;
+        resetBattleMapSceneSquareSelection();
         pBattleMapSceneSquareSelection = new BattleMapSceneSquareSelection();
         connect(pBattleMapSceneSquareSelection, SIGNAL(selected_BattleMapSquare()), this, SLOT(selected_BattleMapSquare()));
         pUserInterface->GraphicsView_BattleMap->setScene(pBattleMapSceneSquareSelection);
@@ -504,7 +502,7 @@ void Dialog_NewBattleMap::accepted_DialogButtonBox()
         }
     }
 
-    this->accept();
+    emit accepted();
 }
 
 /****************************************************************************************************************************************************
@@ -519,7 +517,7 @@ void Dialog_NewBattleMap::showEmptyBattleMapImage()
     QMessageBox msgBox(this);
 
     /* reset and reconnect Battle Map scene */
-    delete pBattleMapSceneSquareSelection;
+    resetBattleMapSceneSquareSelection();
     pBattleMapSceneSquareSelection = new BattleMapSceneSquareSelection();
     connect(pBattleMapSceneSquareSelection, SIGNAL(selected_BattleMapSquare()), this, SLOT(selected_BattleMapSquare()));
     pUserInterface->GraphicsView_BattleMap->setScene(pBattleMapSceneSquareSelection);
@@ -583,7 +581,7 @@ void Dialog_NewBattleMap::showSourceBattleMapImage()
     QMessageBox msgBox(this);
 
     /* reset and reconnect Battle Map scene */
-    delete pBattleMapSceneSquareSelection;
+    resetBattleMapSceneSquareSelection();
     pBattleMapSceneSquareSelection = new BattleMapSceneSquareSelection();
     connect(pBattleMapSceneSquareSelection, SIGNAL(selected_BattleMapSquare()), this, SLOT(selected_BattleMapSquare()));
     pUserInterface->GraphicsView_BattleMap->setScene(pBattleMapSceneSquareSelection);
@@ -768,4 +766,19 @@ void Dialog_NewBattleMap::removeBattleMapGrid()
     }
 
     m_battleMapLinesToDraw.clear();
+}
+
+/*!
+ * \brief This function resets the Battle Map scene.
+ */
+void Dialog_NewBattleMap::resetBattleMapSceneSquareSelection()
+{
+    removeBattleMapGrid();
+
+    for (quint32 itemIdx = 0U; pBattleMapSceneSquareSelection->items().count(); itemIdx++)
+    {
+        pBattleMapSceneSquareSelection->removeItem(pBattleMapSceneSquareSelection->items().at(itemIdx));
+    }
+
+    delete pBattleMapSceneSquareSelection;
 }
