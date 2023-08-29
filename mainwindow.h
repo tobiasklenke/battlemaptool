@@ -5,13 +5,16 @@
  * INCLUDES                                                                                                                                         *
  ****************************************************************************************************************************************************/
 
+#include <QFrame>
 #include <QGraphicsPixmapItem>
 #include <QGraphicsView>
 #include <QMainWindow>
+#include <QPalette>
 
 #include "battlemap.h"
 #include "battlemapscenemasterscreen.h"
 #include "dialog_newbattlemap.h"
+#include "screencalc.h"
 
 /****************************************************************************************************************************************************
  * CLASS DECLARATION                                                                                                                                *
@@ -100,6 +103,15 @@ private:
      ************************************************************************************************************************************************/
     void showBattleMapImageOnMasterScreen();
 
+    /*! *********************************************************************************************************************************************
+     * \brief   This function resets the Battle Map scene.                                                                                          *
+     *                                                                                                                                              *
+     * \details -                                                                                                                                   *
+     *                                                                                                                                              *
+     * \return  This function resets the Battle Map scene.                                                                                          *
+     ************************************************************************************************************************************************/
+    void resetBattleMapSceneMasterScreen();
+
     /*!
      * \brief This is a pointer to the user interface of the class MainWindow.
      */
@@ -116,9 +128,24 @@ private:
     QGraphicsView *pPlayerScreenWindow;
 
     /*!
+     * \brief This is the maximum number of rows displayable on the player screen.
+     */
+    quint32 m_maximumNumberRowsOnPlayerScreen;
+
+    /*!
+     * \brief This is the maximum number of columns displayable on the player screen.
+     */
+    quint32 m_maximumNumberColumnsOnPlayerScreen;
+
+    /*!
      * \brief This is a pointer to the BattleMapSceneMasterScreen object that is set to pPlayerScreenWindow.
      */
     BattleMapSceneMasterScreen *pBattleMapSceneMasterScreen;
+
+    /*!
+     * \brief This is the size of a Battle Map square on the master screen.
+     */
+    quint32 m_battleMapSquareSizeOnMasterScreen;
 
     /*!
      * \brief This is a pointer to the Battle Map.

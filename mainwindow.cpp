@@ -22,13 +22,37 @@ MainWindow::MainWindow(QGraphicsView *playerWindow, QWidget *parent) :
 {
     pUserInterface->setupUi(this);
 
+    QPalette palette;
+    pUserInterface->GraphicsView_BattleMap->setBackgroundBrush(QBrush(palette.color(QPalette::Window)));
+
     /* connect signals and slots of the main window actions */
     connect(pUserInterface->Action_NewBattleMap, SIGNAL(triggered()), this, SLOT(open_Dialog_NewBattleMap()));
     connect(pUserInterface->Action_Quit, SIGNAL(triggered()), QApplication::instance(), SLOT(quit()));
 
     pUserInterface->GraphicsView_BattleMap->setScene(pBattleMapSceneMasterScreen);
     pBattleMapSceneMasterScreen->addText("New Battle Map\t[Ctrl+N]\nOpen Battle Map\t[Ctrl+O]");
-    pBattleMapSceneMasterScreen->setBackgroundBrush(QBrush(Qt::lightGray));
+
+    //TODO: OUTSOURCE IN FUNCTION ->->->
+
+    /* calculate maximum number of rows and columns displayable on the player screen (each square is one inch high and one inch wide) */
+    m_maximumNumberRowsOnPlayerScreen = static_cast<quint32>(calcScreenHeightInInches(PLAYER_SCREEN_DIAGONAL, PLAYER_SCREEN_RESOLUTION.height(), PLAYER_SCREEN_RESOLUTION.width()));
+    m_maximumNumberColumnsOnPlayerScreen = static_cast<quint32>(calcScreenWidthInInches(PLAYER_SCREEN_DIAGONAL, PLAYER_SCREEN_RESOLUTION.height(), PLAYER_SCREEN_RESOLUTION.width()));
+
+    /* calculate maximum Battle Map square size which allows to display the complete Battle Map section on the master screen that is displayable on the player screen */
+    if ((pUserInterface->GraphicsView_BattleMap->height() / m_maximumNumberRowsOnPlayerScreen) > (pUserInterface->GraphicsView_BattleMap->width() / m_maximumNumberColumnsOnPlayerScreen))
+    {
+        m_battleMapSquareSizeOnMasterScreen = pUserInterface->GraphicsView_BattleMap->width() / m_maximumNumberColumnsOnPlayerScreen;
+    }
+    else
+    {
+        m_battleMapSquareSizeOnMasterScreen = pUserInterface->GraphicsView_BattleMap->height() / m_maximumNumberRowsOnPlayerScreen;
+    }
+
+    /* round off maximum Battle Map square size to second decimal place */
+    m_battleMapSquareSizeOnMasterScreen = m_battleMapSquareSizeOnMasterScreen / 10U;
+    m_battleMapSquareSizeOnMasterScreen = m_battleMapSquareSizeOnMasterScreen * 10U;
+
+    //TODO: OUTSOURCE IN FUNCTION <-<-<-
 }
 
 /*!
@@ -38,6 +62,7 @@ MainWindow::~MainWindow()
 {
     delete pUserInterface;
     delete pPlayerScreenWindow;
+    resetBattleMapSceneMasterScreen();
     delete pBattleMap;
 }
 
@@ -72,6 +97,7 @@ void MainWindow::accepted_Dialog_NewBattleMap()
 {
     setCursor(Qt::WaitCursor);
 
+    /* reset Battle Map */
     delete pBattleMap;
     pBattleMap = new BattleMap(*pDialog_NewBattleMap->getBattleMap());
     delete pDialog_NewBattleMap;
@@ -107,10 +133,24 @@ void MainWindow::showBattleMapImageOnMasterScreen()
     {
         for (quint32 columnIdx = 0U; columnIdx < pBattleMap->getNumberColumns(); columnIdx++)
         {
-            pBattleMap->getIndexedBattleMapSquare(rowIdx, columnIdx)->setPos(columnIdx * BATTLEMAPSQUARE_SIZE, rowIdx * BATTLEMAPSQUARE_SIZE);
+            pBattleMap->scaleIndexedBattleMapSquarePixmap(rowIdx, columnIdx, m_battleMapSquareSizeOnMasterScreen);
+            pBattleMap->getIndexedBattleMapSquare(rowIdx, columnIdx)->setPos(columnIdx * m_battleMapSquareSizeOnMasterScreen, rowIdx * m_battleMapSquareSizeOnMasterScreen);
             pBattleMapSceneMasterScreen->addItem(pBattleMap->getIndexedBattleMapSquare(rowIdx, columnIdx));
         }
     }
 
-    pBattleMapSceneMasterScreen->setSceneRect(0, 0, pBattleMap->getNumberColumns()* BATTLEMAPSQUARE_SIZE, pBattleMap->getNumberRows() * BATTLEMAPSQUARE_SIZE);
+    pBattleMapSceneMasterScreen->setSceneRect(0, 0, pBattleMap->getNumberColumns() * m_battleMapSquareSizeOnMasterScreen, pBattleMap->getNumberRows() * m_battleMapSquareSizeOnMasterScreen);
+}
+
+/*!
+ * \brief This function resets the Battle Map scene.
+ */
+void MainWindow::resetBattleMapSceneMasterScreen()
+{
+    for (QGraphicsItem * item : pBattleMapSceneMasterScreen->items())
+    {
+        pBattleMapSceneMasterScreen->removeItem(item);
+    }
+
+    delete pBattleMapSceneMasterScreen;
 }

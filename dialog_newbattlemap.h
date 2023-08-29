@@ -7,9 +7,11 @@
 
 #include <QDialog>
 #include <QFileDialog>
+#include <QFrame>
 #include <QGraphicsPixmapItem>
 #include <QGraphicsScene>
 #include <QMessageBox>
+#include <QPalette>
 
 #include "battlemap.h"
 #include "battlemapscenesquareselection.h"
