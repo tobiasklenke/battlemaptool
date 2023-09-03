@@ -37,7 +37,8 @@ void BattleMapSceneSquareSelection::mousePressEvent(QGraphicsSceneMouseEvent *ev
         BattleMapScene::mousePressEvent(event);
 
         /* check whether the mouse press event is positioned at the Battle Map scene */
-        if ((0 <= event->scenePos().x()) && (event->scenePos().x() <= this->width()) && (0 <= event->scenePos().y()) && (event->scenePos().x() <= this->height()))
+        if ((0 <= event->scenePos().x()) && (event->scenePos().x() <= this->width()) &&
+                (0 <= event->scenePos().y()) && (event->scenePos().y() <= this->height()))
         {
             addItem(&m_battleMapSquareToDraw);
             m_battleMapSquareToDraw.setPen(QPen(Qt::black, 3, Qt::DotLine));
@@ -73,7 +74,8 @@ void BattleMapSceneSquareSelection::mouseReleaseEvent(QGraphicsSceneMouseEvent *
         BattleMapScene::mouseReleaseEvent(event);
 
         /* check whether the mouse release event is positioned at the Battle Map scene */
-        if ((0 <= event->scenePos().x()) && (event->scenePos().x() <= this->width()) && (0 <= event->scenePos().y()) && (event->scenePos().x() <= this->height()))
+        if ((0 <= event->scenePos().x()) && (event->scenePos().x() <= this->width()) &&
+                (0 <= event->scenePos().y()) && (event->scenePos().y() <= this->height()))
         {
             emit selected_BattleMapSquare();
         }
