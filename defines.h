@@ -12,7 +12,7 @@
 /* CONFIGURATION PARAMETERS, TODO REMOVE */
 #define MASTER_SCREEN_DIAGONAL                             23.8
 #define MASTER_SCREEN_RESOLUTION                           QSize(1920, 1080)
-#define PLAYER_SCREEN_DIAGONAL                             23.8
+#define PLAYER_SCREEN_DIAGONAL                             32
 #define PLAYER_SCREEN_RESOLUTION                           QSize(1920, 1080)
 #define BATTLEMAPSQUARE_SIZE                               100
 #define BATTLEMAPGRID_COLOR                                Qt::black
