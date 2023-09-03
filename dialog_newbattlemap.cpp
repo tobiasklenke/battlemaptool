@@ -482,9 +482,9 @@ void Dialog_NewBattleMap::accepted_DialogButtonBox()
         QPixmap temporaryPixmap(m_battleMapImagePixMap.pixmap());
         QPainter *painter = new QPainter(&temporaryPixmap);
         painter->setPen(QPen(BATTLEMAPGRID_COLOR, BATTLEMAPGRID_LINEWIDTH, Qt::SolidLine));
-        for (quint32 lineIdx = 0U; lineIdx < m_battleMapLinesToDraw.count(); lineIdx++)
+        for (QGraphicsLineItem * item : m_battleMapLinesToDraw)
         {
-            painter->drawLine(m_battleMapLinesToDraw.at(lineIdx)->line());
+            painter->drawLine(item->line());
         }
         delete painter;
 
