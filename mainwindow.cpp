@@ -48,10 +48,6 @@ MainWindow::MainWindow(QGraphicsView *playerWindow, QWidget *parent) :
         m_battleMapSquareSizeOnMasterScreen = pUserInterface->GraphicsView_BattleMap->height() / m_maximumNumberRowsOnPlayerScreen;
     }
 
-    /* round off maximum Battle Map square size to second decimal place */
-    m_battleMapSquareSizeOnMasterScreen = m_battleMapSquareSizeOnMasterScreen / 10U;
-    m_battleMapSquareSizeOnMasterScreen = m_battleMapSquareSizeOnMasterScreen * 10U;
-
     //TODO: OUTSOURCE IN FUNCTION <-<-<-
 }
 
@@ -140,6 +136,7 @@ void MainWindow::showBattleMapImageOnMasterScreen()
     }
 
     pBattleMapSceneMasterScreen->setSceneRect(0, 0, pBattleMap->getNumberColumns() * m_battleMapSquareSizeOnMasterScreen, pBattleMap->getNumberRows() * m_battleMapSquareSizeOnMasterScreen);
+    pBattleMapSceneMasterScreen->addRect(pBattleMapSceneMasterScreen->sceneRect(), QPen(BATTLEMAPGRID_COLOR, BATTLEMAPGRID_LINEWIDTH, Qt::SolidLine));
 }
 
 /*!
