@@ -15,6 +15,7 @@ SOURCES += \
     battlemapscenesquareselection.cpp \
     battlemapsquare.cpp \
     dialog_newbattlemap.cpp \
+    graphicsview_battlemap.cpp \
     main.cpp \
     mainwindow.cpp \
     screencalc.cpp
@@ -27,6 +28,7 @@ HEADERS += \
     battlemapsquare.h \
     defines.h \
     dialog_newbattlemap.h \
+    graphicsview_battlemap.h \
     mainwindow.h \
     screencalc.h
 
