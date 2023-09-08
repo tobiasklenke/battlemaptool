@@ -7,13 +7,13 @@
 
 #include <QFrame>
 #include <QGraphicsPixmapItem>
-#include <QGraphicsView>
 #include <QMainWindow>
 #include <QPalette>
 
 #include "battlemap.h"
 #include "battlemapscenemasterscreen.h"
 #include "dialog_newbattlemap.h"
+#include "graphicsview_battlemap.h"
 #include "screencalc.h"
 
 /****************************************************************************************************************************************************
@@ -92,12 +92,21 @@ private slots:
      ************************************************************************************************************************************************/
     void rejected_Dialog_NewBattleMap();
 
+    /*! *********************************************************************************************************************************************
+     * \brief   This function updates the label that shows the value of the scale factor.                                                           *
+     *                                                                                                                                              *
+     * \details -                                                                                                                                   *
+     *                                                                                                                                              *
+     * \return  This function does not have any return value.                                                                                       *
+     ************************************************************************************************************************************************/
+    void changed_ScaleFactor(qreal scaleFactor);
+
 private:
 
     /*! *********************************************************************************************************************************************
-     * \brief   This function shows the Battle Map image on the master screen.                                                                            *
+     * \brief   This function shows the Battle Map image on the master screen.                                                                      *
      *                                                                                                                                              *
-     * \details TODO                                                                                                                                *
+     * \details This function resets the Battle Map scene and adds all the Battle Map squares from the Battle Map to the Battle Map scene.          *
      *                                                                                                                                              *
      * \return  This function does not have any return value.                                                                                       *
      ************************************************************************************************************************************************/
@@ -143,13 +152,8 @@ private:
     BattleMapSceneMasterScreen *pBattleMapSceneMasterScreen;
 
     /*!
-     * \brief This is the size of a Battle Map square on the master screen.
-     */
-    quint32 m_battleMapSquareSizeOnMasterScreen;
-
-    /*!
      * \brief This is a pointer to the Battle Map.
      */
-    BattleMap * pBattleMap;
+    BattleMap *pBattleMap;
 };
 #endif // MAINWINDOW_H

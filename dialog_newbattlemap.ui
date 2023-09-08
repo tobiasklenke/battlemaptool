@@ -59,7 +59,7 @@
     <bool>false</bool>
    </property>
   </widget>
-  <widget class="QGraphicsView" name="GraphicsView_BattleMap">
+  <widget class="GraphicsView_BattleMap" name="GraphicsView_NewBattleMap">
    <property name="geometry">
     <rect>
      <x>25</x>
@@ -283,6 +283,13 @@
    </property>
   </widget>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>GraphicsView_BattleMap</class>
+   <extends>QGraphicsView</extends>
+   <header location="global">graphicsview_battlemap.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

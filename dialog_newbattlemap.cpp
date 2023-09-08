@@ -21,7 +21,7 @@ Dialog_NewBattleMap::Dialog_NewBattleMap(QWidget *parent) :
     pUserInterface->setupUi(this);
 
     QPalette palette;
-    pUserInterface->GraphicsView_BattleMap->setBackgroundBrush(QBrush(palette.color(QPalette::Window)));
+    pUserInterface->GraphicsView_NewBattleMap->setBackgroundBrush(QBrush(palette.color(QPalette::Window)));
 
     /* connect signals and slots of the user interface widgets */
     connect(pUserInterface->RadioButton_SourceBattleMap, SIGNAL(toggled(bool)), this, SLOT(toggled_RadioButton_SourceBattleMap(bool)));
@@ -47,8 +47,8 @@ Dialog_NewBattleMap::Dialog_NewBattleMap(QWidget *parent) :
  */
 Dialog_NewBattleMap::~Dialog_NewBattleMap()
 {
-    delete pUserInterface;
     resetBattleMapSceneSquareSelection();
+    delete pUserInterface;
     delete pBattleMap;
 }
 
@@ -98,16 +98,16 @@ void Dialog_NewBattleMap::toggled_RadioButton_SourceBattleMap(bool checked)
         pUserInterface->LineEdit_NumberRows->setText(QString::number(pBattleMap->getNumberRows()));
         pUserInterface->LineEdit_NumberColumns->setText(QString::number(pBattleMap->getNumberRows()));
         pUserInterface->CheckBox_DrawBattleMapGrid->setCheckState(Qt::Unchecked);
-        pUserInterface->GraphicsView_BattleMap->setInteractive(false);
-        pUserInterface->GraphicsView_BattleMap->viewport()->setCursor(Qt::ArrowCursor);
-        pUserInterface->GraphicsView_BattleMap->setToolTip("");
-        pUserInterface->GraphicsView_BattleMap->setFrameShape(QFrame::Box);
+        pUserInterface->GraphicsView_NewBattleMap->setInteractive(false);
+        pUserInterface->GraphicsView_NewBattleMap->viewport()->setCursor(Qt::ArrowCursor);
+        pUserInterface->GraphicsView_NewBattleMap->setToolTip("");
+        pUserInterface->GraphicsView_NewBattleMap->setFrameShape(QFrame::Box);
 
         /* reset and reconnect Battle Map scene */
         resetBattleMapSceneSquareSelection();
         pBattleMapSceneSquareSelection = new BattleMapSceneSquareSelection();
         connect(pBattleMapSceneSquareSelection, SIGNAL(selected_BattleMapSquare()), this, SLOT(selected_BattleMapSquare()));
-        pUserInterface->GraphicsView_BattleMap->setScene(pBattleMapSceneSquareSelection);
+        pUserInterface->GraphicsView_NewBattleMap->setScene(pBattleMapSceneSquareSelection);
         pBattleMapSceneSquareSelection->addText("Select source");
     }
 }
@@ -136,10 +136,10 @@ void Dialog_NewBattleMap::toggled_RadioButton_EmptyBattleMap(bool checked)
         /* reset widgets according to their functional role for the creation of an empty Battle Map */
         pUserInterface->LineEdit_Source->setText("");
         pUserInterface->CheckBox_DrawBattleMapGrid->setCheckState(Qt::Checked);
-        pUserInterface->GraphicsView_BattleMap->setInteractive(false);
-        pUserInterface->GraphicsView_BattleMap->viewport()->setCursor(Qt::ArrowCursor);
-        pUserInterface->GraphicsView_BattleMap->setToolTip("");
-        pUserInterface->GraphicsView_BattleMap->setFrameShape(QFrame::Box);
+        pUserInterface->GraphicsView_NewBattleMap->setInteractive(false);
+        pUserInterface->GraphicsView_NewBattleMap->viewport()->setCursor(Qt::ArrowCursor);
+        pUserInterface->GraphicsView_NewBattleMap->setToolTip("");
+        pUserInterface->GraphicsView_NewBattleMap->setFrameShape(QFrame::Box);
 
         /* calculate maximum number of rows and columns displayable on the player screen (each square is one inch high and one inch wide) */
         quint32 maximumNumberRows = static_cast<quint32>(calcScreenHeightInInches(PLAYER_SCREEN_DIAGONAL, PLAYER_SCREEN_RESOLUTION.height(), PLAYER_SCREEN_RESOLUTION.width()));
@@ -523,9 +523,8 @@ void Dialog_NewBattleMap::showEmptyBattleMapImage()
     /* reset and reconnect Battle Map scene */
     resetBattleMapSceneSquareSelection();
     pBattleMapSceneSquareSelection = new BattleMapSceneSquareSelection();
-    connect(pBattleMapSceneSquareSelection, SIGNAL(selected_BattleMapSquare()), this, SLOT(selected_BattleMapSquare()));
-    pUserInterface->GraphicsView_BattleMap->setScene(pBattleMapSceneSquareSelection);
-    pUserInterface->GraphicsView_BattleMap->setFrameShape(QFrame::NoFrame);
+    pUserInterface->GraphicsView_NewBattleMap->setScene(pBattleMapSceneSquareSelection);
+    pUserInterface->GraphicsView_NewBattleMap->setFrameShape(QFrame::NoFrame);
 
     QImage emptyBattleMapSquare(EMPTYBATTLEMAPSQUAREIMAGE_SOURCE);
 
@@ -588,8 +587,8 @@ void Dialog_NewBattleMap::showSourceBattleMapImage()
     resetBattleMapSceneSquareSelection();
     pBattleMapSceneSquareSelection = new BattleMapSceneSquareSelection();
     connect(pBattleMapSceneSquareSelection, SIGNAL(selected_BattleMapSquare()), this, SLOT(selected_BattleMapSquare()));
-    pUserInterface->GraphicsView_BattleMap->setScene(pBattleMapSceneSquareSelection);
-    pUserInterface->GraphicsView_BattleMap->setFrameShape(QFrame::NoFrame);
+    pUserInterface->GraphicsView_NewBattleMap->setScene(pBattleMapSceneSquareSelection);
+    pUserInterface->GraphicsView_NewBattleMap->setFrameShape(QFrame::NoFrame);
 
     QImage battleMapImage(pUserInterface->LineEdit_Source->text());
 
@@ -604,9 +603,9 @@ void Dialog_NewBattleMap::showSourceBattleMapImage()
     }
     else
     {
-        pUserInterface->GraphicsView_BattleMap->setInteractive(true);
-        pUserInterface->GraphicsView_BattleMap->viewport()->setCursor(Qt::CrossCursor);
-        pUserInterface->GraphicsView_BattleMap->setToolTip("Select Battle Map square");
+        pUserInterface->GraphicsView_NewBattleMap->setInteractive(true);
+        pUserInterface->GraphicsView_NewBattleMap->viewport()->setCursor(Qt::CrossCursor);
+        pUserInterface->GraphicsView_NewBattleMap->setToolTip("Select Battle Map square");
 
         m_battleMapImagePixMap.setPixmap(QPixmap::fromImage(battleMapImage));
         pBattleMapSceneSquareSelection->addItem(&m_battleMapImagePixMap);

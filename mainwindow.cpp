@@ -23,13 +23,15 @@ MainWindow::MainWindow(QGraphicsView *playerWindow, QWidget *parent) :
     pUserInterface->setupUi(this);
 
     QPalette palette;
-    pUserInterface->GraphicsView_BattleMap->setBackgroundBrush(QBrush(palette.color(QPalette::Window)));
+    pUserInterface->GraphicsView_BattleMapMasterScreen->setBackgroundBrush(QBrush(palette.color(QPalette::Window)));
 
     /* connect signals and slots of the main window actions */
     connect(pUserInterface->Action_NewBattleMap, SIGNAL(triggered()), this, SLOT(open_Dialog_NewBattleMap()));
     connect(pUserInterface->Action_Quit, SIGNAL(triggered()), QApplication::instance(), SLOT(quit()));
+    connect(pUserInterface->GraphicsView_BattleMapMasterScreen, SIGNAL(changed_ScaleFactor(qreal)), this, SLOT(changed_ScaleFactor(qreal)));
 
-    pUserInterface->GraphicsView_BattleMap->setScene(pBattleMapSceneMasterScreen);
+    pUserInterface->Label_ScaleFactor->setVisible(false);
+    pUserInterface->GraphicsView_BattleMapMasterScreen->setScene(pBattleMapSceneMasterScreen);
     pBattleMapSceneMasterScreen->addText("New Battle Map\t[Ctrl+N]\nOpen Battle Map\t[Ctrl+O]");
 
     //TODO: OUTSOURCE IN FUNCTION ->->->
@@ -37,16 +39,6 @@ MainWindow::MainWindow(QGraphicsView *playerWindow, QWidget *parent) :
     /* calculate maximum number of rows and columns displayable on the player screen (each square is one inch high and one inch wide) */
     m_maximumNumberRowsOnPlayerScreen = static_cast<quint32>(calcScreenHeightInInches(PLAYER_SCREEN_DIAGONAL, PLAYER_SCREEN_RESOLUTION.height(), PLAYER_SCREEN_RESOLUTION.width()));
     m_maximumNumberColumnsOnPlayerScreen = static_cast<quint32>(calcScreenWidthInInches(PLAYER_SCREEN_DIAGONAL, PLAYER_SCREEN_RESOLUTION.height(), PLAYER_SCREEN_RESOLUTION.width()));
-
-    /* calculate maximum Battle Map square size which allows to display the complete Battle Map section on the master screen that is displayable on the player screen */
-    if ((pUserInterface->GraphicsView_BattleMap->height() / m_maximumNumberRowsOnPlayerScreen) > (pUserInterface->GraphicsView_BattleMap->width() / m_maximumNumberColumnsOnPlayerScreen))
-    {
-        m_battleMapSquareSizeOnMasterScreen = pUserInterface->GraphicsView_BattleMap->width() / m_maximumNumberColumnsOnPlayerScreen;
-    }
-    else
-    {
-        m_battleMapSquareSizeOnMasterScreen = pUserInterface->GraphicsView_BattleMap->height() / m_maximumNumberRowsOnPlayerScreen;
-    }
 
     //TODO: OUTSOURCE IN FUNCTION <-<-<-
 }
@@ -56,9 +48,9 @@ MainWindow::MainWindow(QGraphicsView *playerWindow, QWidget *parent) :
  */
 MainWindow::~MainWindow()
 {
+    resetBattleMapSceneMasterScreen();
     delete pUserInterface;
     delete pPlayerScreenWindow;
-    resetBattleMapSceneMasterScreen();
     delete pBattleMap;
 }
 
@@ -111,6 +103,14 @@ void MainWindow::rejected_Dialog_NewBattleMap()
     delete pDialog_NewBattleMap;
 }
 
+/*!
+ * \brief This function updates the label that shows the value of the scale factor.
+ */
+void MainWindow::changed_ScaleFactor(qreal scaleFactor)
+{
+    pUserInterface->Label_ScaleFactor->setText(QString::number(static_cast<quint32>(scaleFactor * 100)) + QString("%"));
+}
+
 /****************************************************************************************************************************************************
  * DEFINITION OF PRIVATE FUNCTIONS                                                                                                                  *
  ****************************************************************************************************************************************************/
@@ -121,21 +121,22 @@ void MainWindow::rejected_Dialog_NewBattleMap()
 void MainWindow::showBattleMapImageOnMasterScreen()
 {
     /* reset Battle Map scene */
-    delete pBattleMapSceneMasterScreen;
+    resetBattleMapSceneMasterScreen();
     pBattleMapSceneMasterScreen = new BattleMapSceneMasterScreen();
-    pUserInterface->GraphicsView_BattleMap->setScene(pBattleMapSceneMasterScreen);
+    pUserInterface->GraphicsView_BattleMapMasterScreen->resetScaling();
+    pUserInterface->GraphicsView_BattleMapMasterScreen->setScene(pBattleMapSceneMasterScreen);
+    pUserInterface->Label_ScaleFactor->setVisible(true);
 
     for (quint32 rowIdx = 0U; rowIdx < pBattleMap->getNumberRows(); rowIdx++)
     {
         for (quint32 columnIdx = 0U; columnIdx < pBattleMap->getNumberColumns(); columnIdx++)
         {
-            pBattleMap->scaleIndexedBattleMapSquarePixmap(rowIdx, columnIdx, m_battleMapSquareSizeOnMasterScreen);
-            pBattleMap->getIndexedBattleMapSquare(rowIdx, columnIdx)->setPos(columnIdx * m_battleMapSquareSizeOnMasterScreen, rowIdx * m_battleMapSquareSizeOnMasterScreen);
+            pBattleMap->getIndexedBattleMapSquare(rowIdx, columnIdx)->setPos(columnIdx * BATTLEMAPSQUARE_SIZE, rowIdx * BATTLEMAPSQUARE_SIZE);
             pBattleMapSceneMasterScreen->addItem(pBattleMap->getIndexedBattleMapSquare(rowIdx, columnIdx));
         }
     }
 
-    pBattleMapSceneMasterScreen->setSceneRect(0, 0, pBattleMap->getNumberColumns() * m_battleMapSquareSizeOnMasterScreen, pBattleMap->getNumberRows() * m_battleMapSquareSizeOnMasterScreen);
+    pBattleMapSceneMasterScreen->setSceneRect(0, 0, pBattleMap->getNumberColumns() * BATTLEMAPSQUARE_SIZE, pBattleMap->getNumberRows() * BATTLEMAPSQUARE_SIZE);
     pBattleMapSceneMasterScreen->addRect(pBattleMapSceneMasterScreen->sceneRect(), QPen(BATTLEMAPGRID_COLOR, BATTLEMAPGRID_LINEWIDTH, Qt::SolidLine));
 }
 

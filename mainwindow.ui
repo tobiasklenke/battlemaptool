@@ -41,7 +41,7 @@
    <bool>false</bool>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QGraphicsView" name="GraphicsView_BattleMap">
+   <widget class="GraphicsView_BattleMap" name="GraphicsView_BattleMapMasterScreen">
     <property name="geometry">
      <rect>
       <x>0</x>
@@ -61,6 +61,22 @@
     </property>
     <property name="horizontalScrollBarPolicy">
      <enum>Qt::ScrollBarAlwaysOff</enum>
+    </property>
+   </widget>
+   <widget class="QLabel" name="Label_ScaleFactor">
+    <property name="geometry">
+     <rect>
+      <x>1810</x>
+      <y>1020</y>
+      <width>60</width>
+      <height>30</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>%</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
     </property>
    </widget>
   </widget>
@@ -165,6 +181,13 @@
    </property>
   </action>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>GraphicsView_BattleMap</class>
+   <extends>QGraphicsView</extends>
+   <header location="global">graphicsview_battlemap.h</header>
+  </customwidget>
+ </customwidgets>
  <resources>
   <include location="icons.qrc"/>
  </resources>
