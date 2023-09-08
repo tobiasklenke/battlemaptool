@@ -11,7 +11,8 @@
 /*!
  * \brief This function is the constructor of the class BattleMapSceneSquareSelection.
  */
-BattleMapSceneSquareSelection::BattleMapSceneSquareSelection(QObject *parent) :
+BattleMapSceneSquareSelection::BattleMapSceneSquareSelection(qreal *scaleFactor, QObject *parent) :
+    pScaleFactor(scaleFactor),
     BattleMapScene(parent)
 {
 }
@@ -41,7 +42,7 @@ void BattleMapSceneSquareSelection::mousePressEvent(QGraphicsSceneMouseEvent *ev
                 (0 <= event->scenePos().y()) && (event->scenePos().y() <= this->height()))
         {
             addItem(&m_battleMapSquareToDraw);
-            m_battleMapSquareToDraw.setPen(QPen(Qt::black, 3, Qt::DotLine));
+            m_battleMapSquareToDraw.setPen(QPen(Qt::black, BATTLEMAPGRID_LINEWIDTH * (1 / *pScaleFactor), Qt::DotLine));
         }
     }
 }

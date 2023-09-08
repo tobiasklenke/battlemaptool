@@ -8,6 +8,7 @@
 #include <QGraphicsRectItem>
 
 #include "battlemapscene.h"
+#include "defines.h"
 
 /****************************************************************************************************************************************************
  * CLASS DECLARATION                                                                                                                                *
@@ -27,11 +28,12 @@ public:
      *                                                                                                                                              *
      * \details -                                                                                                                                   *
      *                                                                                                                                              *
+     * \param   scaleFactor                   Pointer to the scale factor                                                                           *
      * \param   parent                        Parent of the class BattleMapSceneSquareSelection                                                     *
      *                                                                                                                                              *
      * \return  This function does not have any return value.                                                                                       *
      ************************************************************************************************************************************************/
-    BattleMapSceneSquareSelection(QObject *parent = nullptr);
+    BattleMapSceneSquareSelection(qreal *scaleFactor, QObject *parent = nullptr);
 
     /*! *********************************************************************************************************************************************
      * \brief   This function is the destructor of the class BattleMapSceneSquareSelection.                                                         *
@@ -101,6 +103,11 @@ private:
      * \brief This is the rectangle to be drawn while the selection of the Battle Map square.
      */
     QGraphicsRectItem  m_battleMapSquareToDraw;
+
+    /*!
+     * \brief This is a pointer to the factor that is used for scaling the Battle Map view while scrolling.
+     */
+    qreal *pScaleFactor;
 };
 
 #endif // BATTLEMAPSCENESQUARESELECTION_H

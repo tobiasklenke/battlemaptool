@@ -230,6 +230,15 @@ private slots:
      ************************************************************************************************************************************************/
     void accepted_DialogButtonBox();
 
+    /*! *********************************************************************************************************************************************
+     * \brief   This function updates the member variable m_scaleFactor and redraws the Battle Map grid.                                            *
+     *                                                                                                                                              *
+     * \details -                                                                                                                                   *
+     *                                                                                                                                              *
+     * \return  This function does not have any return value.                                                                                       *
+     ************************************************************************************************************************************************/
+    void changed_ScaleFactor(qreal scaleFactor);
+
 private:
 
     /*! *********************************************************************************************************************************************
@@ -329,6 +338,11 @@ private:
      * \brief This is a pointer to the BattleMapSceneSquareSelection object that is set to GraphicsView_BattleMap.
      */
     BattleMapSceneSquareSelection *pBattleMapSceneSquareSelection;
+
+    /*!
+     * \brief This is the factor that is used for scaling the Battle Map view while scrolling.
+     */
+    qreal m_scaleFactor;
 
     /*!
      * \brief This is the pixmap of the Battle Map image.

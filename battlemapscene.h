@@ -101,6 +101,7 @@ signals: /* - */
 private slots: /* - */
 
 private: /* - */
+
 };
 
 #endif // BATTLEMAPSCENE_H

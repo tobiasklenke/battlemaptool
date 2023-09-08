@@ -15,7 +15,8 @@
 Dialog_NewBattleMap::Dialog_NewBattleMap(QWidget *parent) :
     QDialog(parent),
     pUserInterface(new Ui::Dialog_NewBattleMap),
-    pBattleMapSceneSquareSelection(new BattleMapSceneSquareSelection()),
+    pBattleMapSceneSquareSelection(new BattleMapSceneSquareSelection(&m_scaleFactor)),
+    m_scaleFactor(1.0),
     pBattleMap(new BattleMap())
 {
     pUserInterface->setupUi(this);
@@ -35,6 +36,7 @@ Dialog_NewBattleMap::Dialog_NewBattleMap(QWidget *parent) :
     connect(pUserInterface->PushButton_DecrementNumberColumns, SIGNAL(released()), this, SLOT(released_PushButton_DecrementNumberColumns()));
     connect(pUserInterface->PushButton_IncrementNumberColumns, SIGNAL(released()), this, SLOT(released_PushButton_IncrementNumberColumns()));
     connect(pUserInterface->CheckBox_DrawBattleMapGrid, SIGNAL(stateChanged(int)), this, SLOT(stateChanged_CheckBox_DrawBattleMapGrid(int)));
+    connect(pUserInterface->GraphicsView_NewBattleMap, SIGNAL(changed_ScaleFactor(qreal)), this, SLOT(changed_ScaleFactor(qreal)));
     connect(pUserInterface->DialogButtonBox, SIGNAL(accepted()), this, SLOT(accepted_DialogButtonBox()));
     connect(pUserInterface->DialogButtonBox, SIGNAL(rejected()), this, SLOT(reject()));
 
@@ -105,7 +107,7 @@ void Dialog_NewBattleMap::toggled_RadioButton_SourceBattleMap(bool checked)
 
         /* reset and reconnect Battle Map scene */
         resetBattleMapSceneSquareSelection();
-        pBattleMapSceneSquareSelection = new BattleMapSceneSquareSelection();
+        pBattleMapSceneSquareSelection = new BattleMapSceneSquareSelection(&m_scaleFactor);
         connect(pBattleMapSceneSquareSelection, SIGNAL(selected_BattleMapSquare()), this, SLOT(selected_BattleMapSquare()));
         pUserInterface->GraphicsView_NewBattleMap->setScene(pBattleMapSceneSquareSelection);
         pBattleMapSceneSquareSelection->addText("Select source");
@@ -509,6 +511,16 @@ void Dialog_NewBattleMap::accepted_DialogButtonBox()
     emit accepted();
 }
 
+/*!
+ * \brief This function updates the member variable m_scaleFactor and redraws the Battle Map grid.
+ */
+void Dialog_NewBattleMap::changed_ScaleFactor(qreal scaleFactor)
+{
+    m_scaleFactor = scaleFactor;
+
+    drawBattleMapGrid();
+}
+
 /****************************************************************************************************************************************************
  * DEFINITION OF PRIVATE FUNCTIONS                                                                                                                  *
  ****************************************************************************************************************************************************/
@@ -522,7 +534,7 @@ void Dialog_NewBattleMap::showEmptyBattleMapImage()
 
     /* reset and reconnect Battle Map scene */
     resetBattleMapSceneSquareSelection();
-    pBattleMapSceneSquareSelection = new BattleMapSceneSquareSelection();
+    pBattleMapSceneSquareSelection = new BattleMapSceneSquareSelection(&m_scaleFactor);
     pUserInterface->GraphicsView_NewBattleMap->setScene(pBattleMapSceneSquareSelection);
     pUserInterface->GraphicsView_NewBattleMap->setFrameShape(QFrame::NoFrame);
 
@@ -585,7 +597,7 @@ void Dialog_NewBattleMap::showSourceBattleMapImage()
 
     /* reset and reconnect Battle Map scene */
     resetBattleMapSceneSquareSelection();
-    pBattleMapSceneSquareSelection = new BattleMapSceneSquareSelection();
+    pBattleMapSceneSquareSelection = new BattleMapSceneSquareSelection(&m_scaleFactor);
     connect(pBattleMapSceneSquareSelection, SIGNAL(selected_BattleMapSquare()), this, SLOT(selected_BattleMapSquare()));
     pUserInterface->GraphicsView_NewBattleMap->setScene(pBattleMapSceneSquareSelection);
     pUserInterface->GraphicsView_NewBattleMap->setFrameShape(QFrame::NoFrame);
@@ -729,11 +741,11 @@ void Dialog_NewBattleMap::drawBattleMapGrid()
 
     if (pUserInterface->CheckBox_DrawBattleMapGrid->isChecked())
     {
-        pen = QPen(BATTLEMAPGRID_COLOR, BATTLEMAPGRID_LINEWIDTH, Qt::SolidLine);
+        pen = QPen(BATTLEMAPGRID_COLOR, BATTLEMAPGRID_LINEWIDTH * (1 / m_scaleFactor), Qt::SolidLine);
     }
     else
     {
-        pen = QPen(Qt::black, 3, Qt::DotLine);
+        pen = QPen(BATTLEMAPGRID_COLOR, BATTLEMAPGRID_LINEWIDTH * (1 / m_scaleFactor), Qt::DotLine);
     }
 
     if ((0U < pBattleMap->getNumberRows()) && (0U < pBattleMap->getNumberColumns()))
