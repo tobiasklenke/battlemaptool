@@ -14,10 +14,9 @@
 #define MASTER_SCREEN_RESOLUTION                           QSize(1920, 1080)
 #define PLAYER_SCREEN_DIAGONAL                             32
 #define PLAYER_SCREEN_RESOLUTION                           QSize(1920, 1080)
-#define BATTLEMAPSQUARE_SIZE                               100
+#define BATTLEMAPSQUARE_SIZE                               200
 #define BATTLEMAPGRID_COLOR                                Qt::black
 #define BATTLEMAPGRID_LINEWIDTH                            3
-
 
 /*!
  * \brief This is the resource file path of the QSplashScreen image.
