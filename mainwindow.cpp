@@ -37,8 +37,8 @@ MainWindow::MainWindow(QGraphicsView *playerWindow, QWidget *parent) :
     //TODO: OUTSOURCE IN FUNCTION ->->->
 
     /* calculate maximum number of rows and columns displayable on the player screen (each square is one inch high and one inch wide) */
-    m_maximumNumberRowsOnPlayerScreen = static_cast<quint32>(calcScreenHeightInInches(PLAYER_SCREEN_DIAGONAL, PLAYER_SCREEN_RESOLUTION.height(), PLAYER_SCREEN_RESOLUTION.width()));
-    m_maximumNumberColumnsOnPlayerScreen = static_cast<quint32>(calcScreenWidthInInches(PLAYER_SCREEN_DIAGONAL, PLAYER_SCREEN_RESOLUTION.height(), PLAYER_SCREEN_RESOLUTION.width()));
+    m_maximumNumberRowsOnPlayerScreen = static_cast<quint32>(calcScreenHeightInInches(CONFIG_PLAYER_SCREEN_DIAGONAL, CONFIG_PLAYER_SCREEN_RESOLUTION.height(), CONFIG_PLAYER_SCREEN_RESOLUTION.width()));
+    m_maximumNumberColumnsOnPlayerScreen = static_cast<quint32>(calcScreenWidthInInches(CONFIG_PLAYER_SCREEN_DIAGONAL, CONFIG_PLAYER_SCREEN_RESOLUTION.height(), CONFIG_PLAYER_SCREEN_RESOLUTION.width()));
 
     //TODO: OUTSOURCE IN FUNCTION <-<-<-
 }
@@ -131,13 +131,13 @@ void MainWindow::showBattleMapImageOnMasterScreen()
     {
         for (quint32 columnIdx = 0U; columnIdx < pBattleMap->getNumberColumns(); columnIdx++)
         {
-            pBattleMap->getIndexedBattleMapSquare(rowIdx, columnIdx)->setPos(columnIdx * BATTLEMAPSQUARE_SIZE, rowIdx * BATTLEMAPSQUARE_SIZE);
+            pBattleMap->getIndexedBattleMapSquare(rowIdx, columnIdx)->setPos(columnIdx * CONFIG_BATTLEMAPSQUARE_SIZE, rowIdx * CONFIG_BATTLEMAPSQUARE_SIZE);
             pBattleMapSceneMasterScreen->addItem(pBattleMap->getIndexedBattleMapSquare(rowIdx, columnIdx));
         }
     }
 
-    pBattleMapSceneMasterScreen->setSceneRect(0, 0, pBattleMap->getNumberColumns() * BATTLEMAPSQUARE_SIZE, pBattleMap->getNumberRows() * BATTLEMAPSQUARE_SIZE);
-    pBattleMapSceneMasterScreen->addRect(pBattleMapSceneMasterScreen->sceneRect(), QPen(BATTLEMAPGRID_COLOR, BATTLEMAPGRID_LINEWIDTH, Qt::SolidLine));
+    pBattleMapSceneMasterScreen->setSceneRect(0, 0, pBattleMap->getNumberColumns() * CONFIG_BATTLEMAPSQUARE_SIZE, pBattleMap->getNumberRows() * CONFIG_BATTLEMAPSQUARE_SIZE);
+    pBattleMapSceneMasterScreen->addRect(pBattleMapSceneMasterScreen->sceneRect(), QPen(Qt::black, BATTLEMAPGRID_LINEWIDTH, Qt::SolidLine));
 }
 
 /*!

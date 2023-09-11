@@ -15,7 +15,7 @@
 Dialog_NewBattleMap::Dialog_NewBattleMap(QWidget *parent) :
     QDialog(parent),
     pUserInterface(new Ui::Dialog_NewBattleMap),
-    pBattleMapSceneSquareSelection(new BattleMapSceneSquareSelection(&m_scaleFactor)),
+    pBattleMapSceneSquareSelection(new BattleMapSceneSquareSelection()),
     m_scaleFactor(1.0),
     pBattleMap(new BattleMap())
 {
@@ -107,7 +107,7 @@ void Dialog_NewBattleMap::toggled_RadioButton_SourceBattleMap(bool checked)
 
         /* reset and reconnect Battle Map scene */
         resetBattleMapSceneSquareSelection();
-        pBattleMapSceneSquareSelection = new BattleMapSceneSquareSelection(&m_scaleFactor);
+        pBattleMapSceneSquareSelection = new BattleMapSceneSquareSelection();
         connect(pBattleMapSceneSquareSelection, SIGNAL(selected_BattleMapSquare()), this, SLOT(selected_BattleMapSquare()));
         pUserInterface->GraphicsView_NewBattleMap->setScene(pBattleMapSceneSquareSelection);
         pBattleMapSceneSquareSelection->addText("Select source");
@@ -144,8 +144,8 @@ void Dialog_NewBattleMap::toggled_RadioButton_EmptyBattleMap(bool checked)
         pUserInterface->GraphicsView_NewBattleMap->setFrameShape(QFrame::Box);
 
         /* calculate maximum number of rows and columns displayable on the player screen (each square is one inch high and one inch wide) */
-        quint32 maximumNumberRows = static_cast<quint32>(calcScreenHeightInInches(PLAYER_SCREEN_DIAGONAL, PLAYER_SCREEN_RESOLUTION.height(), PLAYER_SCREEN_RESOLUTION.width()));
-        quint32 maximumNumberColumns = static_cast<quint32>(calcScreenWidthInInches(PLAYER_SCREEN_DIAGONAL, PLAYER_SCREEN_RESOLUTION.height(), PLAYER_SCREEN_RESOLUTION.width()));
+        quint32 maximumNumberRows = static_cast<quint32>(calcScreenHeightInInches(CONFIG_PLAYER_SCREEN_DIAGONAL, CONFIG_PLAYER_SCREEN_RESOLUTION.height(), CONFIG_PLAYER_SCREEN_RESOLUTION.width()));
+        quint32 maximumNumberColumns = static_cast<quint32>(calcScreenWidthInInches(CONFIG_PLAYER_SCREEN_DIAGONAL, CONFIG_PLAYER_SCREEN_RESOLUTION.height(), CONFIG_PLAYER_SCREEN_RESOLUTION.width()));
         pBattleMap->setNumberRows(maximumNumberRows);
         pBattleMap->setNumberColumns(maximumNumberColumns);
         pUserInterface->LineEdit_NumberRows->setText(QString::number(pBattleMap->getNumberRows()));
@@ -483,7 +483,7 @@ void Dialog_NewBattleMap::accepted_DialogButtonBox()
     {
         QPixmap temporaryPixmap(m_battleMapImagePixMap.pixmap());
         QPainter *painter = new QPainter(&temporaryPixmap);
-        painter->setPen(QPen(BATTLEMAPGRID_COLOR, BATTLEMAPGRID_LINEWIDTH, Qt::SolidLine));
+        painter->setPen(QPen(CONFIG_BATTLEMAPGRID_COLOR, CONFIG_BATTLEMAPGRID_LINEWIDTH, Qt::SolidLine));
         for (QGraphicsLineItem * item : m_battleMapLinesToDraw)
         {
             painter->drawLine(item->line());
@@ -502,7 +502,7 @@ void Dialog_NewBattleMap::accepted_DialogButtonBox()
             /* extract Battle Map square and scale it to configured size */
             QGraphicsPixmapItem temporaryGraphicsPixmapItem;
             temporaryGraphicsPixmapItem.setPixmap(m_battleMapImagePixMap.pixmap().copy(QRect(columnIdx * edgeLength, rowIdx * edgeLength, edgeLength, edgeLength)));
-            temporaryGraphicsPixmapItem.setPixmap(temporaryGraphicsPixmapItem.pixmap().scaled(QSize(BATTLEMAPSQUARE_SIZE, BATTLEMAPSQUARE_SIZE)));
+            temporaryGraphicsPixmapItem.setPixmap(temporaryGraphicsPixmapItem.pixmap().scaled(QSize(CONFIG_BATTLEMAPSQUARE_SIZE, CONFIG_BATTLEMAPSQUARE_SIZE)));
 
             pBattleMap->setIndexedBattleMapSquarePixmap(rowIdx, temporaryGraphicsPixmapItem.pixmap());
         }
@@ -519,6 +519,8 @@ void Dialog_NewBattleMap::changed_ScaleFactor(qreal scaleFactor)
     m_scaleFactor = scaleFactor;
 
     drawBattleMapGrid();
+
+    pBattleMapSceneSquareSelection->changed_ScaleFactor(scaleFactor);
 }
 
 /****************************************************************************************************************************************************
@@ -534,7 +536,7 @@ void Dialog_NewBattleMap::showEmptyBattleMapImage()
 
     /* reset and reconnect Battle Map scene */
     resetBattleMapSceneSquareSelection();
-    pBattleMapSceneSquareSelection = new BattleMapSceneSquareSelection(&m_scaleFactor);
+    pBattleMapSceneSquareSelection = new BattleMapSceneSquareSelection();
     pUserInterface->GraphicsView_NewBattleMap->setScene(pBattleMapSceneSquareSelection);
     pUserInterface->GraphicsView_NewBattleMap->setFrameShape(QFrame::NoFrame);
 
@@ -562,16 +564,16 @@ void Dialog_NewBattleMap::showEmptyBattleMapImage()
     {
         if ((0U < pBattleMap->getNumberRows()) && (0U < pBattleMap->getNumberColumns()))
         {
-            emptyBattleMapSquare = emptyBattleMapSquare.scaledToWidth(BATTLEMAPSQUARE_SIZE);
+            emptyBattleMapSquare = emptyBattleMapSquare.scaledToWidth(CONFIG_BATTLEMAPSQUARE_SIZE);
 
             /* construct the empty Battle Map image from a number of empty Battle Map squares according to the number of rows and columns */
-            QPixmap temporaryPixmap(QSize(pBattleMap->getNumberColumns()* BATTLEMAPSQUARE_SIZE, pBattleMap->getNumberRows() * BATTLEMAPSQUARE_SIZE));
+            QPixmap temporaryPixmap(QSize(pBattleMap->getNumberColumns()* CONFIG_BATTLEMAPSQUARE_SIZE, pBattleMap->getNumberRows() * CONFIG_BATTLEMAPSQUARE_SIZE));
             QPainter *painter = new QPainter(&temporaryPixmap);
             for (quint32 rowIdx = 0U; rowIdx < pBattleMap->getNumberRows(); rowIdx++)
             {
                 for (quint32 columnIdx = 0U; columnIdx < pBattleMap->getNumberColumns(); columnIdx++)
                 {
-                    QRect targetRect = QRect(columnIdx * BATTLEMAPSQUARE_SIZE, rowIdx * BATTLEMAPSQUARE_SIZE, BATTLEMAPSQUARE_SIZE, BATTLEMAPSQUARE_SIZE);
+                    QRect targetRect = QRect(columnIdx * CONFIG_BATTLEMAPSQUARE_SIZE, rowIdx * CONFIG_BATTLEMAPSQUARE_SIZE, CONFIG_BATTLEMAPSQUARE_SIZE, CONFIG_BATTLEMAPSQUARE_SIZE);
                     QRect sourceRect = emptyBattleMapSquare.rect();
                     painter->drawPixmap(targetRect, QPixmap::fromImage(emptyBattleMapSquare), sourceRect);
                 }
@@ -597,7 +599,7 @@ void Dialog_NewBattleMap::showSourceBattleMapImage()
 
     /* reset and reconnect Battle Map scene */
     resetBattleMapSceneSquareSelection();
-    pBattleMapSceneSquareSelection = new BattleMapSceneSquareSelection(&m_scaleFactor);
+    pBattleMapSceneSquareSelection = new BattleMapSceneSquareSelection();
     connect(pBattleMapSceneSquareSelection, SIGNAL(selected_BattleMapSquare()), this, SLOT(selected_BattleMapSquare()));
     pUserInterface->GraphicsView_NewBattleMap->setScene(pBattleMapSceneSquareSelection);
     pUserInterface->GraphicsView_NewBattleMap->setFrameShape(QFrame::NoFrame);
@@ -741,7 +743,7 @@ void Dialog_NewBattleMap::drawBattleMapGrid()
 
     if (pUserInterface->CheckBox_DrawBattleMapGrid->isChecked())
     {
-        pen = QPen(BATTLEMAPGRID_COLOR, BATTLEMAPGRID_LINEWIDTH * (1 / m_scaleFactor), Qt::SolidLine);
+        pen = QPen(CONFIG_BATTLEMAPGRID_COLOR, CONFIG_BATTLEMAPGRID_LINEWIDTH * (1 / m_scaleFactor), Qt::SolidLine);
     }
     else
     {

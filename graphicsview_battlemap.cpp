@@ -51,16 +51,16 @@ void GraphicsView_BattleMap::wheelEvent(QWheelEvent *event)
 
     if (0 < event->angleDelta().y())
     {
-        if (200U > static_cast<quint32>(m_scaleFactor * 100))
+        if (BATTLEMAPVIEW_SCALEFACTOR_MAXVALUE_PERCENTAGE > static_cast<quint32>(m_scaleFactor * HUNDRED_PERCENTAGE))
         {
-            m_scaleFactor = m_scaleFactor + 0.1;
+            m_scaleFactor = m_scaleFactor + BATTLEMAPVIEW_SCALEFACTOR_STEPSIZE;
         }
     }
     else
     {
-        if (10U < static_cast<quint32>(m_scaleFactor * 100))
+        if (BATTLEMAPVIEW_SCALEFACTOR_MINVALUE_PERCENTAGE < static_cast<quint32>(m_scaleFactor * HUNDRED_PERCENTAGE))
         {
-            m_scaleFactor = m_scaleFactor - 0.1;
+            m_scaleFactor = m_scaleFactor - BATTLEMAPVIEW_SCALEFACTOR_STEPSIZE;
         }
     }
 

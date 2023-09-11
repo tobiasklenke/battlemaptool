@@ -64,10 +64,10 @@ int main(int argc, char *argv[])
     QSplashScreen splashScreen1(splashScreenPixmap);
     QSplashScreen splashScreen2(splashScreenPixmap);
 
-    int splashScreen1PosX = (MASTER_SCREEN_RESOLUTION.width() - splashScreenPixmap.width()) / 2;
-    int splashScreen1PosY = (MASTER_SCREEN_RESOLUTION.height() - splashScreenPixmap.height()) / 2;
-    int splashScreen2PosX = (PLAYER_SCREEN_RESOLUTION.width() - splashScreenPixmap.width()) / 2 + MASTER_SCREEN_RESOLUTION.width();
-    int splashScreen2PosY = (PLAYER_SCREEN_RESOLUTION.height() - splashScreenPixmap.height()) / 2;
+    int splashScreen1PosX = (CONFIG_MASTER_SCREEN_RESOLUTION.width() - splashScreenPixmap.width()) / 2;
+    int splashScreen1PosY = (CONFIG_MASTER_SCREEN_RESOLUTION.height() - splashScreenPixmap.height()) / 2;
+    int splashScreen2PosX = (CONFIG_PLAYER_SCREEN_RESOLUTION.width() - splashScreenPixmap.width()) / 2 + CONFIG_MASTER_SCREEN_RESOLUTION.width();
+    int splashScreen2PosY = (CONFIG_PLAYER_SCREEN_RESOLUTION.height() - splashScreenPixmap.height()) / 2;
     splashScreen1.move(splashScreen1PosX, splashScreen1PosY);
     splashScreen2.move(splashScreen2PosX, splashScreen2PosY);
     splashScreen1.show();
@@ -82,7 +82,7 @@ int main(int argc, char *argv[])
     QTimer::singleShot(splashScreenDuration, &mainWindow, SLOT(showFullScreen()));
     QTimer::singleShot(splashScreenDuration, playerWindow, SLOT(showFullScreen()));
     mainWindow.move(0, 0);
-    playerWindow->move(MASTER_SCREEN_RESOLUTION.width(), 0);
+    playerWindow->move(CONFIG_MASTER_SCREEN_RESOLUTION.width(), 0);
 
     return battleMapTool.exec();
 }
