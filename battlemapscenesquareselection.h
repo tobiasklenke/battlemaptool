@@ -28,12 +28,11 @@ public:
      *                                                                                                                                              *
      * \details -                                                                                                                                   *
      *                                                                                                                                              *
-     * \param   scaleFactor                   Pointer to the scale factor                                                                           *
      * \param   parent                        Parent of the class BattleMapSceneSquareSelection                                                     *
      *                                                                                                                                              *
      * \return  This function does not have any return value.                                                                                       *
      ************************************************************************************************************************************************/
-    BattleMapSceneSquareSelection(qreal *scaleFactor, QObject *parent = nullptr);
+    BattleMapSceneSquareSelection(QObject *parent = nullptr);
 
     /*! *********************************************************************************************************************************************
      * \brief   This function is the destructor of the class BattleMapSceneSquareSelection.                                                         *
@@ -43,6 +42,15 @@ public:
      * \return  This function does not have any return value.                                                                                       *
      ************************************************************************************************************************************************/
     ~BattleMapSceneSquareSelection();
+
+    /*! *********************************************************************************************************************************************
+     * \brief   This function updates the member variable m_scaleFactor and the pen properties.                                                     *
+     *                                                                                                                                              *
+     * \details -                                                                                                                                   *
+     *                                                                                                                                              *
+     * \return  This function does not have any return value.                                                                                       *
+     ************************************************************************************************************************************************/
+    void changed_ScaleFactor(qreal scaleFactor);
 
 protected:
 
@@ -105,9 +113,9 @@ private:
     QGraphicsRectItem  m_battleMapSquareToDraw;
 
     /*!
-     * \brief This is a pointer to the factor that is used for scaling the Battle Map view while scrolling.
+     * \brief This is the factor that is used for scaling the Battle Map view while scrolling.
      */
-    qreal *pScaleFactor;
+    qreal m_scaleFactor;
 };
 
 #endif // BATTLEMAPSCENESQUARESELECTION_H

@@ -11,9 +11,9 @@
 /*!
  * \brief This function is the constructor of the class BattleMapSceneSquareSelection.
  */
-BattleMapSceneSquareSelection::BattleMapSceneSquareSelection(qreal *scaleFactor, QObject *parent) :
-    pScaleFactor(scaleFactor),
-    BattleMapScene(parent)
+BattleMapSceneSquareSelection::BattleMapSceneSquareSelection(QObject *parent) :
+    BattleMapScene(parent),
+    m_scaleFactor(1.0)
 {
 }
 
@@ -22,6 +22,16 @@ BattleMapSceneSquareSelection::BattleMapSceneSquareSelection(qreal *scaleFactor,
  */
 BattleMapSceneSquareSelection::~BattleMapSceneSquareSelection()
 {
+}
+
+/*!
+ * \brief This function updates the member variable m_scaleFactor and updated the pen properties.
+ */
+void BattleMapSceneSquareSelection::changed_ScaleFactor(qreal scaleFactor)
+{
+    m_scaleFactor = scaleFactor;
+
+    m_battleMapSquareToDraw.setPen(QPen(Qt::black, BATTLEMAPGRID_LINEWIDTH * (1 / m_scaleFactor), Qt::DotLine));
 }
 
 /****************************************************************************************************************************************************
@@ -42,7 +52,7 @@ void BattleMapSceneSquareSelection::mousePressEvent(QGraphicsSceneMouseEvent *ev
                 (0 <= event->scenePos().y()) && (event->scenePos().y() <= this->height()))
         {
             addItem(&m_battleMapSquareToDraw);
-            m_battleMapSquareToDraw.setPen(QPen(Qt::black, BATTLEMAPGRID_LINEWIDTH * (1 / *pScaleFactor), Qt::DotLine));
+            m_battleMapSquareToDraw.setPen(QPen(BATTLEMAPGRID_COLOR, BATTLEMAPGRID_LINEWIDTH * (1 / m_scaleFactor), Qt::DotLine));
         }
     }
 }
