@@ -32,7 +32,9 @@ MainWindow::MainWindow(QGraphicsView *playerWindow, QWidget *parent) :
 
     pUserInterface->Label_ScaleFactor->setVisible(false);
     pUserInterface->GraphicsView_BattleMapMasterScreen->setScene(pBattleMapSceneMasterScreen);
-    pBattleMapSceneMasterScreen->addText("New Battle Map\t[Ctrl+N]\nOpen Battle Map\t[Ctrl+O]");
+
+    m_sceneText.setPlainText("New Battle Map\t[Ctrl+N]\nOpen Battle Map\t[Ctrl+O]");
+    pBattleMapSceneMasterScreen->addItem(&m_sceneText);
 
     //TODO: OUTSOURCE IN FUNCTION ->->->
 
@@ -137,7 +139,9 @@ void MainWindow::showBattleMapImageOnMasterScreen()
     }
 
     pBattleMapSceneMasterScreen->setSceneRect(0, 0, pBattleMap->getNumberColumns() * CONFIG_BATTLEMAPSQUARE_SIZE, pBattleMap->getNumberRows() * CONFIG_BATTLEMAPSQUARE_SIZE);
-    pBattleMapSceneMasterScreen->addRect(pBattleMapSceneMasterScreen->sceneRect(), QPen(Qt::black, BATTLEMAPGRID_LINEWIDTH, Qt::SolidLine));
+    m_sceneRect.setRect(pBattleMapSceneMasterScreen->sceneRect());
+    m_sceneRect.setPen(QPen(Qt::black, BATTLEMAPGRID_LINEWIDTH, Qt::SolidLine));
+    pBattleMapSceneMasterScreen->addItem(&m_sceneRect);
 }
 
 /*!

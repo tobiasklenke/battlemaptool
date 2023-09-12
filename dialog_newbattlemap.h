@@ -340,9 +340,9 @@ private:
     BattleMapSceneSquareSelection *pBattleMapSceneSquareSelection;
 
     /*!
-     * \brief This is the factor that is used for scaling the Battle Map view while scrolling.
+     * \brief This is the text to be shown in the Battle Map scene.
      */
-    qreal m_scaleFactor;
+    QGraphicsTextItem m_sceneText;
 
     /*!
      * \brief This is the pixmap of the Battle Map image.
@@ -353,6 +353,11 @@ private:
      * \brief This is a list of Battle Map lines building the Battle Map grid to be drawn for control purposes.
      */
     QList<QGraphicsLineItem*> m_battleMapLinesToDraw;
+
+    /*!
+     * \brief This is the factor that is used for scaling the Battle Map view while scrolling.
+     */
+    qreal m_scaleFactor;
 
     /*!
      * \brief This is a pointer to the newly created Battle Map.

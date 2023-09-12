@@ -110,7 +110,9 @@ void Dialog_NewBattleMap::toggled_RadioButton_SourceBattleMap(bool checked)
         pBattleMapSceneSquareSelection = new BattleMapSceneSquareSelection();
         connect(pBattleMapSceneSquareSelection, SIGNAL(selected_BattleMapSquare()), this, SLOT(selected_BattleMapSquare()));
         pUserInterface->GraphicsView_NewBattleMap->setScene(pBattleMapSceneSquareSelection);
-        pBattleMapSceneSquareSelection->addText("Select source");
+
+        m_sceneText.setPlainText("Select source");
+        pBattleMapSceneSquareSelection->addItem(&m_sceneText);
     }
 }
 
@@ -544,7 +546,8 @@ void Dialog_NewBattleMap::showEmptyBattleMapImage()
 
     if (emptyBattleMapSquare.isNull())
     {
-        pBattleMapSceneSquareSelection->addText("Empty Battle Map square is no image file.");
+        m_sceneText.setPlainText("Empty Battle Map square is no image file.");
+        pBattleMapSceneSquareSelection->addItem(&m_sceneText);
 
         msgBox.setWindowTitle("Invalid file");
         msgBox.setText("Empty Battle Map square is no image file.");
@@ -553,7 +556,8 @@ void Dialog_NewBattleMap::showEmptyBattleMapImage()
     }
     else if (emptyBattleMapSquare.width() != emptyBattleMapSquare.height())
     {
-        pBattleMapSceneSquareSelection->addText("Empty Battle Map square has no square format.");
+        m_sceneText.setPlainText("Empty Battle Map square has no square format.");
+        pBattleMapSceneSquareSelection->addItem(&m_sceneText);
 
         msgBox.setWindowTitle("Invalid file");
         msgBox.setText("Empty Battle Map square has no square format.");
@@ -608,7 +612,8 @@ void Dialog_NewBattleMap::showSourceBattleMapImage()
 
     if (battleMapImage.isNull())
     {
-        pBattleMapSceneSquareSelection->addText("Selected source file is no image file.");
+        m_sceneText.setPlainText("Selected source file is no image file.");
+        pBattleMapSceneSquareSelection->addItem(&m_sceneText);
 
         msgBox.setWindowTitle("Invalid file");
         msgBox.setText("Selected source file is no image file.");

@@ -152,6 +152,16 @@ private:
     BattleMapSceneMasterScreen *pBattleMapSceneMasterScreen;
 
     /*!
+     * \brief This is the text to be shown in the Battle Map scene.
+     */
+    QGraphicsTextItem m_sceneText;
+
+    /*!
+     * \brief This is the rect to be shown in the Battle Map scene.
+     */
+    QGraphicsRectItem m_sceneRect;
+
+    /*!
      * \brief This is a pointer to the Battle Map.
      */
     BattleMap *pBattleMap;
