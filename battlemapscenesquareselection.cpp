@@ -25,7 +25,7 @@ BattleMapSceneSquareSelection::~BattleMapSceneSquareSelection()
 }
 
 /*!
- * \brief This function updates the member variable m_scaleFactor and updated the pen properties.
+ * \brief This function updates the member variable m_scaleFactor and the pen properties.
  */
 void BattleMapSceneSquareSelection::changed_ScaleFactor(qreal scaleFactor)
 {
