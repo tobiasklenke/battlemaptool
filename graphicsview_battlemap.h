@@ -67,6 +67,46 @@ protected:
      ************************************************************************************************************************************************/
     void wheelEvent(QWheelEvent *event);
 
+    /*! *********************************************************************************************************************************************
+     * \brief   This function handles a mouse press event on the Battle Map view.                                                                   *
+     *                                                                                                                                              *
+     * \details This function handles a mouse press event on the Battle Map view by enabling the drag mode, saving the current cursor in the member *
+     *          variable m_cursor and changing it. Afterwards, the member variable m_scenePosCenter is set according to the current position of the *
+     *          Battle Map scene center and the member variable m_viewPosPress is set according to the position of the parameter event. Finally,    *
+     *          the event is forwarded to the Battle Map scene.                                                                                     *
+     *                                                                                                                                              *
+     * \param   event                         Mouse press event to be handled                                                                       *
+     *                                                                                                                                              *
+     * \return  This function does not have any return value.                                                                                       *
+     ************************************************************************************************************************************************/
+    void mousePressEvent(QMouseEvent *event);
+
+    /*! *********************************************************************************************************************************************
+     * \brief   This function handles a mouse move event on the Battle Map view.                                                                    *
+     *                                                                                                                                              *
+     * \details This function handles a mouse move event on the Battle Map view by centering the Battle Map view on the new position of the Battle  *
+     *          Map scene center, resulting from the previous position of the Battle Map scene center from the member variable m_scenePosCenter and *
+     *          the vector from the previous position from the member variable m_viewPosPress to the new position of the parameter event. Finally,  *
+     *          the event is forwarded to the Battle Map scene.                                                                                     *
+     *                                                                                                                                              *
+     * \param   event                         Mouse move event to be handled                                                                        *
+     *                                                                                                                                              *
+     * \return  This function does not have any return value.                                                                                       *
+     ************************************************************************************************************************************************/
+    void mouseMoveEvent(QMouseEvent *event);
+
+    /*! *********************************************************************************************************************************************
+     * \brief   This function handles a mouse release event on the Battle Map view.                                                                 *
+     *                                                                                                                                              *
+     * \details This function handles a mouse release event on the Battle Map view by disabling the drag mode and resetting the cursor to the       *
+     *          previously saved cursor from the member variable m_cursor. Finally, the event is forwarded to the Battle Map scene.                 *
+     *                                                                                                                                              *
+     * \param   event                         Mouse press event to be handled                                                                       *
+     *                                                                                                                                              *
+     * \return  This function does not have any return value.                                                                                       *
+     ************************************************************************************************************************************************/
+    void mouseReleaseEvent(QMouseEvent *event);
+
 signals:
 
     /*! *********************************************************************************************************************************************
@@ -83,6 +123,25 @@ private:
      */
     qreal m_scaleFactor;
 
+    /*!
+     * \brief This is the information if the drag mode is enabled.
+     */
+    bool m_dragModeEnabled;
+
+    /*!
+     * \brief This is the cursor to be reset after the drag mode has been disabled.
+     */
+    QCursor m_cursor;
+
+    /*!
+     * \brief This is the position of the scene center while the mouse press event.
+     */
+    QPointF m_scenePosCenter;
+
+    /*!
+     * \brief This is the position of the cursor while the mouse press event.
+     */
+    QPoint m_viewPosPress;
 };
 
 #endif // GRAPHICSVIEW_BATTLEMAP_H
