@@ -38,7 +38,7 @@ Dialog_NewBattleMap::Dialog_NewBattleMap(QWidget *parent) :
     connect(pUserInterface->CheckBox_DrawBattleMapGrid, SIGNAL(stateChanged(int)), this, SLOT(stateChanged_CheckBox_DrawBattleMapGrid(int)));
     connect(pUserInterface->GraphicsView_NewBattleMap, SIGNAL(changed_ScaleFactor(qreal)), this, SLOT(changed_ScaleFactor(qreal)));
     connect(pUserInterface->DialogButtonBox, SIGNAL(accepted()), this, SLOT(accepted_DialogButtonBox()));
-    connect(pUserInterface->DialogButtonBox, SIGNAL(rejected()), this, SLOT(reject()));
+    connect(pUserInterface->DialogButtonBox, SIGNAL(rejected()), this, SLOT(rejected_DialogButtonBox()));
 
     pUserInterface->RadioButton_SourceBattleMap->setChecked(true);
     emit pUserInterface->RadioButton_SourceBattleMap->toggled(true);
@@ -122,7 +122,7 @@ void Dialog_NewBattleMap::toggled_RadioButton_SourceBattleMap(bool checked)
 void Dialog_NewBattleMap::toggled_RadioButton_EmptyBattleMap(bool checked)
 {
     if (checked)
-    {      
+    {
         /* enable and disable widgets according to their functional role for the creation of an empty Battle Map */
         pUserInterface->LineEdit_Source->setEnabled(false);
         pUserInterface->PushButton_SelectSource->setEnabled(false);
@@ -234,7 +234,7 @@ void Dialog_NewBattleMap::editingFinished_LineEdit_NumberColumns()
     QMessageBox msgBox(this);
 
     if (!validNumber || 0 > inputValue)
-    { 
+    {
         msgBox.setWindowTitle("Invalid input");
         msgBox.setText("Input '" + pUserInterface->LineEdit_NumberColumns->text() + "' is invalid.");
         msgBox.setIcon(QMessageBox::Warning);
@@ -511,6 +511,14 @@ void Dialog_NewBattleMap::accepted_DialogButtonBox()
     }
 
     emit accepted();
+}
+
+/*!
+ * \brief This function handles a click on the push button from DialogButtonBox with RejectRole.
+ */
+void Dialog_NewBattleMap::rejected_DialogButtonBox()
+{
+    emit rejected();
 }
 
 /*!

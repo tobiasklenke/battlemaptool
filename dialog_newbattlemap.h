@@ -231,6 +231,15 @@ private slots:
     void accepted_DialogButtonBox();
 
     /*! *********************************************************************************************************************************************
+     * \brief   This function handles a click on the push button from DialogButtonBox with RejectRole.                                              *
+     *                                                                                                                                              *
+     * \details -                                                                                                                                   *
+     *                                                                                                                                              *
+     * \return  This function does not have any return value.                                                                                       *
+     ************************************************************************************************************************************************/
+    void rejected_DialogButtonBox();
+
+    /*! *********************************************************************************************************************************************
      * \brief   This function updates the member variable m_scaleFactor and redraws the Battle Map grid.                                            *
      *                                                                                                                                              *
      * \details -                                                                                                                                   *
