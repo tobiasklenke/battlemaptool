@@ -11,12 +11,11 @@
 /*!
  * \brief This function is the constructor of the class BattleMapSquare.
  */
-BattleMapSquare::BattleMapSquare():
-    pBattleMapSquarePixmap(new QGraphicsPixmapItem())
+BattleMapSquare::BattleMapSquare()
 {
     /* initialize Battle Map square with image of empty Battle Map square */
-    pBattleMapSquarePixmap->setPixmap(QPixmap::fromImage(QImage((EMPTYBATTLEMAPSQUAREIMAGE_SOURCE))));
-    pBattleMapSquarePixmap->setPixmap(pBattleMapSquarePixmap->pixmap().scaled(QSize(CONFIG_BATTLEMAPSQUARE_SIZE, CONFIG_BATTLEMAPSQUARE_SIZE)));
+    m_battleMapSquarePixmap = QPixmap::fromImage(QImage((EMPTYBATTLEMAPSQUAREIMAGE_SOURCE)));
+    m_battleMapSquarePixmap = m_battleMapSquarePixmap.scaled(QSize(CONFIG_BATTLEMAPSQUARE_SIZE, CONFIG_BATTLEMAPSQUARE_SIZE));
 }
 
 /*!
@@ -24,23 +23,14 @@ BattleMapSquare::BattleMapSquare():
  */
 BattleMapSquare::~BattleMapSquare()
 {
-    delete pBattleMapSquarePixmap;
 }
 
 /*!
- * \brief This function returns the member variable pBattleMapSquarePixmap.
- */
-QGraphicsPixmapItem * BattleMapSquare::getBattleMapSquare() const
-{
-    return pBattleMapSquarePixmap;
-}
-
-/*!
- * \brief This function returns the pixmap of the member variable pBattleMapSquarePixmap.
+ * \brief This function returns the pixmap of the member variable m_battleMapSquarePixmap.
  */
 QPixmap BattleMapSquare::getBattleMapSquarePixmap() const
 {
-    return pBattleMapSquarePixmap->pixmap();
+    return m_battleMapSquarePixmap;
 }
 
 /*!
@@ -48,7 +38,7 @@ QPixmap BattleMapSquare::getBattleMapSquarePixmap() const
  */
 void BattleMapSquare::setBattleMapSquarePixmap(QPixmap battleMapSquarePixMap)
 {
-    pBattleMapSquarePixmap->setPixmap(battleMapSquarePixMap);
+    m_battleMapSquarePixmap = battleMapSquarePixMap;
 }
 
 /*!
@@ -56,7 +46,7 @@ void BattleMapSquare::setBattleMapSquarePixmap(QPixmap battleMapSquarePixMap)
  */
 void BattleMapSquare::scaleBattleMapSquarePixmap(quint32 newSize)
 {
-    pBattleMapSquarePixmap->setPixmap(pBattleMapSquarePixmap->pixmap().scaled(QSize(newSize, newSize)));
+    m_battleMapSquarePixmap = m_battleMapSquarePixmap.scaled(QSize(newSize, newSize));
 }
 
 /****************************************************************************************************************************************************

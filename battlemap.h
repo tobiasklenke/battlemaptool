@@ -87,31 +87,19 @@ public:
     void setNumberColumns(quint32 numberColumns);
 
     /*! *********************************************************************************************************************************************
-     * \brief   This function returns the indexed entry of the nested QList member variable m_battleMapSquares.                                     *
+     * \brief   This function returns the pixmap of an entry of the nested QList member variable m_battleMapSquares.                                *
      *                                                                                                                                              *
      * \details -                                                                                                                                   *
      *                                                                                                                                              *
      * \param   rowIdx                        Index of the row                                                                                      *
      * \param   columnIdx                     Index of the column                                                                                   *
      *                                                                                                                                              *
-     * \return  This function returns the indexed entry of the nested QList member variable m_battleMapSquares.                                     *
+     * \return  This function returns the pixmap of an entry of the nested QList member variable m_battleMapSquares.                                *
      ************************************************************************************************************************************************/
-    QGraphicsPixmapItem * getIndexedBattleMapSquare(quint32 rowIdx, quint32 columnIdx) const;
+    QPixmap getBattleMapSquarePixmap(quint32 rowIdx, quint32 columnIdx) const;
 
     /*! *********************************************************************************************************************************************
-     * \brief   This function returns the pixmap of an indexed entry of the nested QList member variable m_battleMapSquares.                        *
-     *                                                                                                                                              *
-     * \details -                                                                                                                                   *
-     *                                                                                                                                              *
-     * \param   rowIdx                        Index of the row                                                                                      *
-     * \param   columnIdx                     Index of the column                                                                                   *
-     *                                                                                                                                              *
-     * \return  This function returns the pixmap of an indexed entry of the nested QList member variable m_battleMapSquares.                        *
-     ************************************************************************************************************************************************/
-    QPixmap getIndexedBattleMapSquarePixmap(quint32 rowIdx, quint32 columnIdx) const;
-
-    /*! *********************************************************************************************************************************************
-     * \brief   This function sets the pixmap of an indexed entry of the nested QList member variable m_battleMapSquares.                           *
+     * \brief   This function sets the pixmap of an entry of the nested QList member variable m_battleMapSquares.                                   *
      *                                                                                                                                              *
      * \details This function checks if the parameter rowIdx exceeds the current number of rows in the nested QList member variable                 *
      *          m_battleMapSquares and appends a new row if this is the case. Afterwards, the function creates a new Battle Map square and sets its *
@@ -123,10 +111,10 @@ public:
      *                                                                                                                                              *
      * \return  This function does not have any return value.                                                                                       *
      ************************************************************************************************************************************************/
-    void setIndexedBattleMapSquarePixmap(quint32 rowIdx, QPixmap battleMapSquarePixmap);
+    void setBattleMapSquarePixmap(quint32 rowIdx, QPixmap battleMapSquarePixmap);
 
     /*! *********************************************************************************************************************************************
-     * \brief   This function scales the pixmap of an indexed entry of the nested QList member variable m_battleMapSquares.                         *
+     * \brief   This function scales the pixmap of an entry of the nested QList member variable m_battleMapSquares.                                 *
      *                                                                                                                                              *
      * \details -                                                                                                                                   *
      *                                                                                                                                              *
@@ -136,7 +124,7 @@ public:
      *                                                                                                                                              *
      * \return  This function does not have any return value.                                                                                       *
      ************************************************************************************************************************************************/
-    void scaleIndexedBattleMapSquarePixmap(quint32 rowIdx, quint32 columnIdx, quint32 newSize);
+    void scaleBattleMapSquarePixmap(quint32 rowIdx, quint32 columnIdx, quint32 newSize);
 
 protected: /* - */
 
