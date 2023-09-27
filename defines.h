@@ -21,29 +21,29 @@
 /* Scaling parameters */
 
 /*!
- * \This is the value representing hundred percentage.
+ * \brief This is the value representing hundred percentage.
  */
 #define HUNDRED_PERCENTAGE                                 100
 
 /*!
- * \This is the maximum value in percentage that is allowed for the scale factor of a Battle Map view.
- */
-#define BATTLEMAPVIEW_SCALEFACTOR_MAXVALUE_PERCENTAGE      200
-
-/*!
- * \This is the minimum value in percentage that is allowed for the scale factor of a Battle Map view.
+ * \brief This is the minimum value in percentage that is allowed for the scale factor of a Battle Map view.
  */
 #define BATTLEMAPVIEW_SCALEFACTOR_MINVALUE_PERCENTAGE      10
 
 /*!
- * \This is the step size of the scale factor of a Battle Map view while scrolling.
+ * \brief This is the maximum value in percentage that is allowed for the scale factor of a Battle Map view.
+ */
+#define BATTLEMAPVIEW_SCALEFACTOR_MAXVALUE_PERCENTAGE      200
+
+/*!
+ * \brief This is the step size of the scale factor of a Battle Map view while scrolling.
  */
 #define BATTLEMAPVIEW_SCALEFACTOR_STEPSIZE                 0.1
 
 /* Battle Map grid parameters */
 
 /*!
- * \brief This is the line width of the Battle Map grid.
+ * \brief This is the line color of the Battle Map grid.
  */
 #define BATTLEMAPGRID_COLOR                                Qt::black
 
