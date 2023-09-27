@@ -7,6 +7,7 @@
 
 #include <QGraphicsScene>
 #include <QGraphicsView>
+#include <QMouseEvent>
 #include <QWheelEvent>
 
 #include "defines.h"
@@ -73,7 +74,7 @@ protected:
      * \details This function handles a mouse press event on the Battle Map view by enabling the drag mode, saving the current cursor in the member *
      *          variable m_cursor and changing it. Afterwards, the member variable m_scenePosCenter is set according to the current position of the *
      *          Battle Map scene center and the member variable m_viewPosPress is set according to the position of the parameter event. Finally,    *
-     *          the event is forwarded to the Battle Map scene.                                                                                     *
+     *          the event is forwarded to the Battle Map scene by calling the base class implementation of the function mousePressEvent().          *
      *                                                                                                                                              *
      * \param   event                         Mouse press event to be handled                                                                       *
      *                                                                                                                                              *
@@ -87,7 +88,7 @@ protected:
      * \details This function handles a mouse move event on the Battle Map view by centering the Battle Map view on the new position of the Battle  *
      *          Map scene center, resulting from the previous position of the Battle Map scene center from the member variable m_scenePosCenter and *
      *          the vector from the previous position from the member variable m_viewPosPress to the new position of the parameter event. Finally,  *
-     *          the event is forwarded to the Battle Map scene.                                                                                     *
+     *          the event is forwarded to the Battle Map scene by calling the base class implementation of the function mouseMoveEvent().           *
      *                                                                                                                                              *
      * \param   event                         Mouse move event to be handled                                                                        *
      *                                                                                                                                              *
@@ -99,7 +100,8 @@ protected:
      * \brief   This function handles a mouse release event on the Battle Map view.                                                                 *
      *                                                                                                                                              *
      * \details This function handles a mouse release event on the Battle Map view by disabling the drag mode and resetting the cursor to the       *
-     *          previously saved cursor from the member variable m_cursor. Finally, the event is forwarded to the Battle Map scene.                 *
+     *          previously saved cursor from the member variable m_cursor. Finally, the event is forwarded to the Battle Map scene by calling the   *
+	 *          base class implementation of the function mouseReleaseEvent().                                                                      *
      *                                                                                                                                              *
      * \param   event                         Mouse press event to be handled                                                                       *
      *                                                                                                                                              *

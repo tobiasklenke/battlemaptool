@@ -53,6 +53,7 @@ void GraphicsView_BattleMap::wheelEvent(QWheelEvent *event)
 
     scale(1 / m_scaleFactor, 1 / m_scaleFactor);
 
+    /* incrementing or decrementing the scale factor by 10 percent, depending on the scrolling direction */
     if (0 < event->angleDelta().y())
     {
         if (BATTLEMAPVIEW_SCALEFACTOR_MAXVALUE_PERCENTAGE > static_cast<quint32>(m_scaleFactor * HUNDRED_PERCENTAGE))

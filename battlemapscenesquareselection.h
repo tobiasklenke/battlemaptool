@@ -37,7 +37,7 @@ public:
     /*! *********************************************************************************************************************************************
      * \brief   This function is the destructor of the class BattleMapSceneSquareSelection.                                                         *
      *                                                                                                                                              *
-     * \details This function deletes the object pointed to by pBattleMapSquareToDraw.                                                              *
+     * \details -                                                                                                                                   *
      *                                                                                                                                              *
      * \return  This function does not have any return value.                                                                                       *
      ************************************************************************************************************************************************/
@@ -57,10 +57,9 @@ protected:
     /*! *********************************************************************************************************************************************
      * \brief   This function handles a mouse press event on the Battle Map scene.                                                                  *
      *                                                                                                                                              *
-     * \details This function handles a mouse press event on the Battle Map scene by resetting the member variables m_scenePosPress and             *
-     *          m_scenePosRelease first. Afterwards, the function checks whether the mouse press event is positioned at the Battle Map scene and if *
-     *          so the member variable m_scenePosPress is set according to the position of the parameter event. Moreover, the function adds the     *
-     *          member variable pBattleMapSquareToDraw to the Battle Map scene and sets the pen properties.                                         *
+     * \details This function handles a mouse press event on the Battle Map scene by calling the base class implementation of the function          *
+	 *          mousePressEvent() first. Afterwards, the function checks whether the mouse press event is positioned at the Battle Map scene and if *
+     *          so the function adds the member variable m_battleMapSquareToDraw to the Battle Map scene and sets the pen properties.               *
      *                                                                                                                                              *
      * \param   event                         Mouse press event to be handled                                                                       *
      *                                                                                                                                              *
@@ -74,7 +73,7 @@ protected:
      * \details This function handles a mouse move event on the Battle Map scene and checks whether the mouse press event has already been handled  *
      *          while the mouse release event has not been handled. If so, the coordinates of the top left and the bottom right corners of the      *
      *          square that is built from the previous mouse press event position and the mouse move event position are determined. Afterwards, the *
-     *          function sets the rectangle of the member variable pBattleMapSquareToDraw according to the determined corners.                      *
+     *          function sets the rectangle of the member variable m_battleMapSquareToDraw according to the determined corners.                     *
      *                                                                                                                                              *
      * \param   event                         Mouse move event to be handled                                                                        *
      *                                                                                                                                              *
@@ -85,10 +84,10 @@ protected:
     /*! *********************************************************************************************************************************************
      * \brief   This function handles a mouse release event on the Battle Map scene.                                                                *
      *                                                                                                                                              *
-     * \details This function handles a mouse release event on the Battle Map scene and resets the member variable pBattleMapSquareToDraw and       *
-     *          removes it from the Battle Map scene. Afterwards, the function checks whether the mouse release event is positioned at the Battle   *
-     *          Map scene and if so the member variable m_scenePosRelease is set according to the position of the parameter event. Moreover, the    *
-     *          function emits the signal that a Battle Map square has been selected.                                                               *
+     * \details This function handles a mouse release event on the Battle Map scene and resets the member variable m_battleMapSquareToDraw and      *
+     *          removes it from the Battle Map scene. Afterwards, the function calls the base class implementation of the function                  *
+	 *          mousePressEvent() and checks whether the mouse release event is positioned at the Battle Map scene and if so, the function emits    *
+	 *          the signal that a Battle Map square has been selected.                                                                              *
      *                                                                                                                                              *
      * \param   event                         Mouse release event to be handled                                                                     *
      *                                                                                                                                              *
@@ -113,7 +112,7 @@ private:
     QGraphicsRectItem  m_battleMapSquareToDraw;
 
     /*!
-     * \brief This is the factor that is used for scaling the Battle Map view while scrolling.
+     * \brief This is the factor that is used for scaling the Battle Map scene while scrolling.
      */
     qreal m_scaleFactor;
 };

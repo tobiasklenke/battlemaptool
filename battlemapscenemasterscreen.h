@@ -34,9 +34,9 @@ public:
     BattleMapSceneMasterScreen(QObject *parent = nullptr);
 
     /*! *********************************************************************************************************************************************
-     * \brief   This function is the destructor of the class BattleMapSceneMasterScreen   .                                                         *
+     * \brief   This function is the destructor of the class BattleMapSceneMasterScreen.                                                            *
      *                                                                                                                                              *
-     * \details TODO                                                                                                                                *
+     * \details -                                                                                                                                   *
      *                                                                                                                                              *
      * \return  This function does not have any return value.                                                                                       *
      ************************************************************************************************************************************************/
@@ -47,7 +47,7 @@ protected:
     /*! *********************************************************************************************************************************************
      * \brief   This function handles a mouse press event on the Battle Map scene.                                                                  *
      *                                                                                                                                              *
-     * \details TODO                                                                                                                                *
+     * \details -                                                                                                                                   *
      *                                                                                                                                              *
      * \param   event                         Mouse press event to be handled                                                                       *
      *                                                                                                                                              *
@@ -58,7 +58,7 @@ protected:
     /*! *********************************************************************************************************************************************
      * \brief   This function handles a mouse move event on the Battle Map scene.                                                                   *
      *                                                                                                                                              *
-     * \details TODO                                                                                                                                *
+     * \details -                                                                                                                                   *
      *                                                                                                                                              *
      * \param   event                         Mouse move event to be handled                                                                        *
      *                                                                                                                                              *
@@ -69,7 +69,7 @@ protected:
     /*! *********************************************************************************************************************************************
      * \brief   This function handles a mouse release event on the Battle Map scene.                                                                *
      *                                                                                                                                              *
-     * \details TODO                                                                                                                                *
+     * \details -                                                                                                                                   *
      *                                                                                                                                              *
      * \param   event                         Mouse release event to be handled                                                                     *
      *                                                                                                                                              *

@@ -2,24 +2,24 @@
  * INCLUDES                                                                                                                                         *
  ****************************************************************************************************************************************************/
 
-#include "battlemapscenemasterscreen.h"
+#include "battlemapsceneplayerscreen.h"
 
 /****************************************************************************************************************************************************
  * DEFINITION OF PUBLIC FUNCTIONS                                                                                                                   *
  ****************************************************************************************************************************************************/
 
 /*!
- * \brief This function is the constructor of the class BattleMapSceneMasterScreen.
+ * \brief This function is the constructor of the class BattleMapScenePlayerScreen.
  */
-BattleMapSceneMasterScreen::BattleMapSceneMasterScreen(QObject *parent) :
+BattleMapScenePlayerScreen::BattleMapScenePlayerScreen(QObject *parent) :
     BattleMapScene(parent)
 {
 }
 
 /*!
- * \brief This function is the destructor of the class BattleMapSceneMasterScreen
+ * \brief This function is the destructor of the class BattleMapScenePlayerScreen
  */
-BattleMapSceneMasterScreen::~BattleMapSceneMasterScreen()
+BattleMapScenePlayerScreen::~BattleMapScenePlayerScreen()
 {
 }
 
@@ -30,7 +30,7 @@ BattleMapSceneMasterScreen::~BattleMapSceneMasterScreen()
 /*!
  * \brief This function handles a mouse press event on the Battle Map scene.
  */
-void BattleMapSceneMasterScreen::mousePressEvent(QGraphicsSceneMouseEvent *event)
+void BattleMapScenePlayerScreen::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
     BattleMapScene::mousePressEvent(event);
 }
@@ -38,7 +38,7 @@ void BattleMapSceneMasterScreen::mousePressEvent(QGraphicsSceneMouseEvent *event
 /*!
  * \brief This function handles a mouse move event on the Battle Map scene.
  */
-void BattleMapSceneMasterScreen::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
+void BattleMapScenePlayerScreen::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
     Q_UNUSED(event);
 }
@@ -46,7 +46,7 @@ void BattleMapSceneMasterScreen::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 /*!
  * \brief This function handles a mouse release event on the Battle Map scene.
  */
-void BattleMapSceneMasterScreen::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
+void BattleMapScenePlayerScreen::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
     BattleMapScene::mouseReleaseEvent(event);
 }
