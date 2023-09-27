@@ -16,14 +16,12 @@ MainWindow::MainWindow(QGraphicsView *playerWindow, QWidget *parent) :
     QMainWindow(parent),
     pUserInterface(new Ui::MainWindow),
     pDialog_NewBattleMap(nullptr),
-    pPlayerScreenWindow(playerWindow),
-    pBattleMapSceneMasterScreen(new BattleMapSceneMasterScreen()),
     pBattleMap(new BattleMap())
 {
     pUserInterface->setupUi(this);
 
-    QPalette palette;
-    pUserInterface->GraphicsView_BattleMapMasterScreen->setBackgroundBrush(QBrush(palette.color(QPalette::Window)));
+    m_masterScreenHandler.setGraphicsView(pUserInterface->GraphicsView_BattleMapMasterScreen);
+    m_playerScreenHandler.setGraphicsView(playerWindow);
 
     /* connect signals and slots of the main window actions */
     connect(pUserInterface->Action_NewBattleMap, SIGNAL(triggered()), this, SLOT(open_Dialog_NewBattleMap()));
@@ -31,18 +29,10 @@ MainWindow::MainWindow(QGraphicsView *playerWindow, QWidget *parent) :
     connect(pUserInterface->GraphicsView_BattleMapMasterScreen, SIGNAL(changed_ScaleFactor(qreal)), this, SLOT(changed_ScaleFactor(qreal)));
 
     pUserInterface->Label_ScaleFactor->setVisible(false);
-    pUserInterface->GraphicsView_BattleMapMasterScreen->setScene(pBattleMapSceneMasterScreen);
-
-    m_sceneText.setPlainText("New Battle Map\t[Ctrl+N]\nOpen Battle Map\t[Ctrl+O]");
-    pBattleMapSceneMasterScreen->addItem(&m_sceneText);
-
-    //TODO: OUTSOURCE IN FUNCTION ->->->
 
     /* calculate maximum number of rows and columns displayable on the player screen (each square is one inch high and one inch wide) */
     m_maximumNumberRowsOnPlayerScreen = static_cast<quint32>(calcScreenHeightInInches(CONFIG_PLAYER_SCREEN_DIAGONAL, CONFIG_PLAYER_SCREEN_RESOLUTION.height(), CONFIG_PLAYER_SCREEN_RESOLUTION.width()));
     m_maximumNumberColumnsOnPlayerScreen = static_cast<quint32>(calcScreenWidthInInches(CONFIG_PLAYER_SCREEN_DIAGONAL, CONFIG_PLAYER_SCREEN_RESOLUTION.height(), CONFIG_PLAYER_SCREEN_RESOLUTION.width()));
-
-    //TODO: OUTSOURCE IN FUNCTION <-<-<-
 }
 
 /*!
@@ -50,9 +40,7 @@ MainWindow::MainWindow(QGraphicsView *playerWindow, QWidget *parent) :
  */
 MainWindow::~MainWindow()
 {
-    resetBattleMapSceneMasterScreen();
     delete pUserInterface;
-    delete pPlayerScreenWindow;
     delete pBattleMap;
 }
 
@@ -92,7 +80,10 @@ void MainWindow::accepted_Dialog_NewBattleMap()
     pBattleMap = new BattleMap(*pDialog_NewBattleMap->getBattleMap());
     delete pDialog_NewBattleMap;
 
-    showBattleMapImageOnMasterScreen();
+    m_masterScreenHandler.setBattleMap(pBattleMap);
+    m_masterScreenHandler.showBattleMapImage();
+
+    pUserInterface->Label_ScaleFactor->setVisible(true);
 
     setCursor(Qt::ArrowCursor);
 }
@@ -110,49 +101,11 @@ void MainWindow::rejected_Dialog_NewBattleMap()
  */
 void MainWindow::changed_ScaleFactor(qreal scaleFactor)
 {
-    pUserInterface->Label_ScaleFactor->setText(QString::number(static_cast<quint32>(scaleFactor * 100)) + QString("%"));
+    pUserInterface->Label_ScaleFactor->setText(QString::number(static_cast<quint32>(scaleFactor * HUNDRED_PERCENTAGE)) + QString("%"));
 }
 
 /****************************************************************************************************************************************************
  * DEFINITION OF PRIVATE FUNCTIONS                                                                                                                  *
  ****************************************************************************************************************************************************/
 
-/*!
- * \brief This function shows the Battle Map image on the master screen.
- */
-void MainWindow::showBattleMapImageOnMasterScreen()
-{
-    /* reset Battle Map scene */
-    resetBattleMapSceneMasterScreen();
-    pBattleMapSceneMasterScreen = new BattleMapSceneMasterScreen();
-    pUserInterface->GraphicsView_BattleMapMasterScreen->resetScaling();
-    pUserInterface->GraphicsView_BattleMapMasterScreen->setScene(pBattleMapSceneMasterScreen);
-    pUserInterface->Label_ScaleFactor->setVisible(true);
-
-    for (quint32 rowIdx = 0U; rowIdx < pBattleMap->getNumberRows(); rowIdx++)
-    {
-        for (quint32 columnIdx = 0U; columnIdx < pBattleMap->getNumberColumns(); columnIdx++)
-        {
-            pBattleMap->getIndexedBattleMapSquare(rowIdx, columnIdx)->setPos(columnIdx * CONFIG_BATTLEMAPSQUARE_SIZE, rowIdx * CONFIG_BATTLEMAPSQUARE_SIZE);
-            pBattleMapSceneMasterScreen->addItem(pBattleMap->getIndexedBattleMapSquare(rowIdx, columnIdx));
-        }
-    }
-
-    pBattleMapSceneMasterScreen->setSceneRect(0, 0, pBattleMap->getNumberColumns() * CONFIG_BATTLEMAPSQUARE_SIZE, pBattleMap->getNumberRows() * CONFIG_BATTLEMAPSQUARE_SIZE);
-    m_sceneRect.setRect(pBattleMapSceneMasterScreen->sceneRect());
-    m_sceneRect.setPen(QPen(Qt::black, BATTLEMAPGRID_LINEWIDTH, Qt::SolidLine));
-    pBattleMapSceneMasterScreen->addItem(&m_sceneRect);
-}
-
-/*!
- * \brief This function resets the Battle Map scene.
- */
-void MainWindow::resetBattleMapSceneMasterScreen()
-{
-    for (QGraphicsItem * item : pBattleMapSceneMasterScreen->items())
-    {
-        pBattleMapSceneMasterScreen->removeItem(item);
-    }
-
-    delete pBattleMapSceneMasterScreen;
-}
+/* - */
