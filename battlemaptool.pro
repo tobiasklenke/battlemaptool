@@ -12,24 +12,30 @@ SOURCES += \
     battlemap.cpp \
     battlemapscene.cpp \
     battlemapscenemasterscreen.cpp \
+    battlemapsceneplayerscreen.cpp \
     battlemapscenesquareselection.cpp \
     battlemapsquare.cpp \
     dialog_newbattlemap.cpp \
     graphicsview_battlemap.cpp \
     main.cpp \
     mainwindow.cpp \
+    masterscreenhandler.cpp \
+    playerscreenhandler.cpp \
     screencalc.cpp
 
 HEADERS += \
     battlemap.h \
     battlemapscene.h \
     battlemapscenemasterscreen.h \
+    battlemapsceneplayerscreen.h \
     battlemapscenesquareselection.h \
     battlemapsquare.h \
     defines.h \
     dialog_newbattlemap.h \
     graphicsview_battlemap.h \
     mainwindow.h \
+    masterscreenhandler.h \
+    playerscreenhandler.h \
     screencalc.h
 
 FORMS += \
