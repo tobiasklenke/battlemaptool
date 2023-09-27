@@ -26,7 +26,17 @@ const QString applicationVersion = QString("0.9.1");
 /*!
  * \brief This is the period of time in milliseconds that the splash screens at application start are shown.
  */
-const int splashScreenDuration = 1000;
+const int splashScreenDuration = 3000;
+
+/*!
+ * \brief This is the font size of the application name shown on the splash screens.
+ */
+const int splashScreenFontSizeApplicationName = 24;
+
+/*!
+ * \brief This is the font size of the application version shown on the splash screens.
+ */
+const int splashScreenFontSizeApplicationVersion = 12;
 
 /****************************************************************************************************************************************************
  * GLOBAL VARIABLES                                                                                                                                 *
@@ -57,9 +67,9 @@ int main(int argc, char *argv[])
     QPixmap splashScreenPixmap(SPLASHSCREENIMAGE_SOURCE);
 
     QPainter painter(&splashScreenPixmap);
-    painter.setFont(QFont("Arial", 24, QFont::Bold));
+    painter.setFont(QFont("Arial", splashScreenFontSizeApplicationName, QFont::Bold));
     painter.drawText(splashScreenPixmap.rect(), Qt::AlignHCenter, battleMapTool.applicationName());
-    painter.setFont(QFont("Arial", 12, QFont::Bold));
+    painter.setFont(QFont("Arial", splashScreenFontSizeApplicationVersion, QFont::Bold));
     painter.drawText(splashScreenPixmap.rect(), Qt::AlignHCenter, QString("\n\n(Version ") + battleMapTool.applicationVersion() + QString(")"));
     QSplashScreen splashScreen1(splashScreenPixmap);
     QSplashScreen splashScreen2(splashScreenPixmap);
