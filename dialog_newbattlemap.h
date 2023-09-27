@@ -101,8 +101,8 @@ private slots:
     /*! *********************************************************************************************************************************************
      * \brief   This function handles the editing of LineEdit_Source.                                                                               *
      *                                                                                                                                              *
-     * \details If the text string of LineEdit_Source is not empty after editing, this function shows the Battle Map image from the selected        *
-     *          source.                                                                                                                             *
+     * \details If the text string of LineEdit_Source is not empty after editing, this function resets the number of Battle Map rows and columns    *
+     *          and shows the Battle Map image from the selected source.                                                                            *
      *                                                                                                                                              *
      * \return  This function does not have any return value.                                                                                       *
      ************************************************************************************************************************************************/

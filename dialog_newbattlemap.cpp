@@ -164,6 +164,12 @@ void Dialog_NewBattleMap::editingFinished_LineEdit_Source()
 {
     if (!pUserInterface->LineEdit_Source->text().isEmpty())
     {
+        /* reset number of Battle Map rows and columns */
+        pBattleMap->setNumberRows(0U);
+        pBattleMap->setNumberColumns(0U);
+        pUserInterface->LineEdit_NumberRows->setText(QString::number(pBattleMap->getNumberRows()));
+        pUserInterface->LineEdit_NumberColumns->setText(QString::number(pBattleMap->getNumberRows()));
+
         showSourceBattleMapImage();
     }
 }
@@ -607,6 +613,8 @@ void Dialog_NewBattleMap::showEmptyBattleMapImage()
  */
 void Dialog_NewBattleMap::showSourceBattleMapImage()
 {
+    qDebug() << __func__;
+
     QMessageBox msgBox(this);
 
     /* reset and reconnect Battle Map scene */
@@ -749,6 +757,8 @@ void Dialog_NewBattleMap::checkBattleMapGrid()
  */
 void Dialog_NewBattleMap::drawBattleMapGrid()
 {
+    qDebug() << __func__;
+
     QPen pen;
     quint32 edgeLength;
 
@@ -789,6 +799,8 @@ void Dialog_NewBattleMap::drawBattleMapGrid()
  */
 void Dialog_NewBattleMap::removeBattleMapGrid()
 {
+    qDebug() << __func__;
+
     for(QGraphicsLineItem * item : m_battleMapLinesToDraw)
     {
         pBattleMapScene->removeItem(item);
@@ -803,6 +815,8 @@ void Dialog_NewBattleMap::removeBattleMapGrid()
  */
 void Dialog_NewBattleMap::deleteBattleMapScene()
 {
+    qDebug() << __func__;
+
     removeBattleMapGrid();
 
     for (QGraphicsItem * item : pBattleMapScene->items())
