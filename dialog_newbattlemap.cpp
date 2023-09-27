@@ -15,7 +15,7 @@
 Dialog_NewBattleMap::Dialog_NewBattleMap(QWidget *parent) :
     QDialog(parent),
     pUserInterface(new Ui::Dialog_NewBattleMap),
-    pBattleMapSceneSquareSelection(new BattleMapSceneSquareSelection()),
+    pBattleMapScene(new BattleMapSceneSquareSelection()),
     m_scaleFactor(1.0),
     pBattleMap(new BattleMap())
 {
@@ -49,7 +49,7 @@ Dialog_NewBattleMap::Dialog_NewBattleMap(QWidget *parent) :
  */
 Dialog_NewBattleMap::~Dialog_NewBattleMap()
 {
-    resetBattleMapSceneSquareSelection();
+    deleteBattleMapScene();
     delete pUserInterface;
     delete pBattleMap;
 }
@@ -106,13 +106,13 @@ void Dialog_NewBattleMap::toggled_RadioButton_SourceBattleMap(bool checked)
         pUserInterface->GraphicsView_NewBattleMap->setFrameShape(QFrame::Box);
 
         /* reset and reconnect Battle Map scene */
-        resetBattleMapSceneSquareSelection();
-        pBattleMapSceneSquareSelection = new BattleMapSceneSquareSelection();
-        connect(pBattleMapSceneSquareSelection, SIGNAL(selected_BattleMapSquare()), this, SLOT(selected_BattleMapSquare()));
-        pUserInterface->GraphicsView_NewBattleMap->setScene(pBattleMapSceneSquareSelection);
+        deleteBattleMapScene();
+        pBattleMapScene = new BattleMapSceneSquareSelection();
+        connect(pBattleMapScene, SIGNAL(selected_BattleMapSquare()), this, SLOT(selected_BattleMapSquare()));
+        pUserInterface->GraphicsView_NewBattleMap->setScene(pBattleMapScene);
 
         m_sceneText.setPlainText("Select source");
-        pBattleMapSceneSquareSelection->addItem(&m_sceneText);
+        pBattleMapScene->addItem(&m_sceneText);
     }
 }
 
@@ -378,7 +378,7 @@ void Dialog_NewBattleMap::selected_BattleMapSquare()
 {
     QMessageBox msgBox(this);
 
-    QPointF edgeLengths =  pBattleMapSceneSquareSelection->getScenePosRelease() - pBattleMapSceneSquareSelection->getScenePosPress();
+    QPointF edgeLengths =  pBattleMapScene->getScenePosRelease() - pBattleMapScene->getScenePosPress();
     quint32 averageEdgeLength = static_cast<quint32>((abs(edgeLengths.rx()) + abs(edgeLengths.ry())) / 2U);
     quint32 averageEdgeLengthIncrement = averageEdgeLength;
     quint32 averageEdgeLengthDecrement = averageEdgeLength;
@@ -501,12 +501,12 @@ void Dialog_NewBattleMap::accepted_DialogButtonBox()
     {
         for (quint32 columnIdx = 0U; columnIdx < pBattleMap->getNumberColumns(); columnIdx++)
         {
-            /* extract Battle Map square and scale it to configured size */
-            QGraphicsPixmapItem temporaryGraphicsPixmapItem;
-            temporaryGraphicsPixmapItem.setPixmap(m_battleMapImagePixMap.pixmap().copy(QRect(columnIdx * edgeLength, rowIdx * edgeLength, edgeLength, edgeLength)));
-            temporaryGraphicsPixmapItem.setPixmap(temporaryGraphicsPixmapItem.pixmap().scaled(QSize(CONFIG_BATTLEMAPSQUARE_SIZE, CONFIG_BATTLEMAPSQUARE_SIZE)));
+            /* extract pixmap of Battle Map square and scale it to configured size */
+            QPixmap temporaryPixmap;
+            temporaryPixmap = m_battleMapImagePixMap.pixmap().copy(QRect(columnIdx * edgeLength, rowIdx * edgeLength, edgeLength, edgeLength));
+            temporaryPixmap = temporaryPixmap.scaled(QSize(CONFIG_BATTLEMAPSQUARE_SIZE, CONFIG_BATTLEMAPSQUARE_SIZE));
 
-            pBattleMap->setIndexedBattleMapSquarePixmap(rowIdx, temporaryGraphicsPixmapItem.pixmap());
+            pBattleMap->setBattleMapSquarePixmap(rowIdx, temporaryPixmap);
         }
     }
 
@@ -530,7 +530,7 @@ void Dialog_NewBattleMap::changed_ScaleFactor(qreal scaleFactor)
 
     drawBattleMapGrid();
 
-    pBattleMapSceneSquareSelection->changed_ScaleFactor(scaleFactor);
+    pBattleMapScene->changed_ScaleFactor(scaleFactor);
 }
 
 /****************************************************************************************************************************************************
@@ -545,9 +545,9 @@ void Dialog_NewBattleMap::showEmptyBattleMapImage()
     QMessageBox msgBox(this);
 
     /* reset and reconnect Battle Map scene */
-    resetBattleMapSceneSquareSelection();
-    pBattleMapSceneSquareSelection = new BattleMapSceneSquareSelection();
-    pUserInterface->GraphicsView_NewBattleMap->setScene(pBattleMapSceneSquareSelection);
+    deleteBattleMapScene();
+    pBattleMapScene = new BattleMapSceneSquareSelection();
+    pUserInterface->GraphicsView_NewBattleMap->setScene(pBattleMapScene);
     pUserInterface->GraphicsView_NewBattleMap->setFrameShape(QFrame::NoFrame);
 
     QImage emptyBattleMapSquare(EMPTYBATTLEMAPSQUAREIMAGE_SOURCE);
@@ -555,7 +555,7 @@ void Dialog_NewBattleMap::showEmptyBattleMapImage()
     if (emptyBattleMapSquare.isNull())
     {
         m_sceneText.setPlainText("Empty Battle Map square is no image file.");
-        pBattleMapSceneSquareSelection->addItem(&m_sceneText);
+        pBattleMapScene->addItem(&m_sceneText);
 
         msgBox.setWindowTitle("Invalid file");
         msgBox.setText("Empty Battle Map square is no image file.");
@@ -565,7 +565,7 @@ void Dialog_NewBattleMap::showEmptyBattleMapImage()
     else if (emptyBattleMapSquare.width() != emptyBattleMapSquare.height())
     {
         m_sceneText.setPlainText("Empty Battle Map square has no square format.");
-        pBattleMapSceneSquareSelection->addItem(&m_sceneText);
+        pBattleMapScene->addItem(&m_sceneText);
 
         msgBox.setWindowTitle("Invalid file");
         msgBox.setText("Empty Battle Map square has no square format.");
@@ -594,8 +594,8 @@ void Dialog_NewBattleMap::showEmptyBattleMapImage()
 
             m_battleMapImagePixMap.setPixmap(temporaryPixmap);
 
-            pBattleMapSceneSquareSelection->addItem(&m_battleMapImagePixMap);
-            pBattleMapSceneSquareSelection->setSceneRect(0, 0, m_battleMapImagePixMap.pixmap().width(), m_battleMapImagePixMap.pixmap().height());
+            pBattleMapScene->addItem(&m_battleMapImagePixMap);
+            pBattleMapScene->setSceneRect(0, 0, m_battleMapImagePixMap.pixmap().width(), m_battleMapImagePixMap.pixmap().height());
 
             drawBattleMapGrid();
         }
@@ -610,10 +610,10 @@ void Dialog_NewBattleMap::showSourceBattleMapImage()
     QMessageBox msgBox(this);
 
     /* reset and reconnect Battle Map scene */
-    resetBattleMapSceneSquareSelection();
-    pBattleMapSceneSquareSelection = new BattleMapSceneSquareSelection();
-    connect(pBattleMapSceneSquareSelection, SIGNAL(selected_BattleMapSquare()), this, SLOT(selected_BattleMapSquare()));
-    pUserInterface->GraphicsView_NewBattleMap->setScene(pBattleMapSceneSquareSelection);
+    deleteBattleMapScene();
+    pBattleMapScene = new BattleMapSceneSquareSelection();
+    connect(pBattleMapScene, SIGNAL(selected_BattleMapSquare()), this, SLOT(selected_BattleMapSquare()));
+    pUserInterface->GraphicsView_NewBattleMap->setScene(pBattleMapScene);
     pUserInterface->GraphicsView_NewBattleMap->setFrameShape(QFrame::NoFrame);
 
     QImage battleMapImage(pUserInterface->LineEdit_Source->text());
@@ -621,7 +621,7 @@ void Dialog_NewBattleMap::showSourceBattleMapImage()
     if (battleMapImage.isNull())
     {
         m_sceneText.setPlainText("Selected source file is no image file.");
-        pBattleMapSceneSquareSelection->addItem(&m_sceneText);
+        pBattleMapScene->addItem(&m_sceneText);
 
         msgBox.setWindowTitle("Invalid file");
         msgBox.setText("Selected source file is no image file.");
@@ -635,8 +635,8 @@ void Dialog_NewBattleMap::showSourceBattleMapImage()
         pUserInterface->GraphicsView_NewBattleMap->setToolTip("Select Battle Map square");
 
         m_battleMapImagePixMap.setPixmap(QPixmap::fromImage(battleMapImage));
-        pBattleMapSceneSquareSelection->addItem(&m_battleMapImagePixMap);
-        pBattleMapSceneSquareSelection->setSceneRect(0, 0, m_battleMapImagePixMap.pixmap().width(), m_battleMapImagePixMap.pixmap().height());
+        pBattleMapScene->addItem(&m_battleMapImagePixMap);
+        pBattleMapScene->setSceneRect(0, 0, m_battleMapImagePixMap.pixmap().width(), m_battleMapImagePixMap.pixmap().height());
 
         msgBox.setWindowTitle("Select Battle Map square");
         msgBox.setText("Please select a Battle Map square in order to determine the number of rows and columns of the Battle Map.");
@@ -771,7 +771,7 @@ void Dialog_NewBattleMap::drawBattleMapGrid()
             QGraphicsLineItem * battleMapLineToDraw = new QGraphicsLineItem(QLineF(0, rowIdx * edgeLength, pBattleMap->getNumberColumns() * edgeLength, rowIdx * edgeLength));
             battleMapLineToDraw->setPen(pen);
             m_battleMapLinesToDraw.append(battleMapLineToDraw);
-            pBattleMapSceneSquareSelection->addItem(m_battleMapLinesToDraw.last());
+            pBattleMapScene->addItem(m_battleMapLinesToDraw.last());
         }
         edgeLength = m_battleMapImagePixMap.pixmap().width() / pBattleMap->getNumberColumns();
         for (quint32 columnIdx = 0U; columnIdx < pBattleMap->getNumberColumns() + 1; columnIdx++)
@@ -779,7 +779,7 @@ void Dialog_NewBattleMap::drawBattleMapGrid()
             QGraphicsLineItem * battleMapLineToDraw = new QGraphicsLineItem(QLineF(columnIdx * edgeLength, 0, columnIdx * edgeLength, pBattleMap->getNumberRows() * edgeLength));
             battleMapLineToDraw->setPen(pen);
             m_battleMapLinesToDraw.append(battleMapLineToDraw);
-            pBattleMapSceneSquareSelection->addItem(m_battleMapLinesToDraw.last());
+            pBattleMapScene->addItem(m_battleMapLinesToDraw.last());
         }
     }
 }
@@ -791,7 +791,7 @@ void Dialog_NewBattleMap::removeBattleMapGrid()
 {
     for(QGraphicsLineItem * item : m_battleMapLinesToDraw)
     {
-        pBattleMapSceneSquareSelection->removeItem(item);
+        pBattleMapScene->removeItem(item);
         delete item;
     }
 
@@ -799,16 +799,16 @@ void Dialog_NewBattleMap::removeBattleMapGrid()
 }
 
 /*!
- * \brief This function resets the Battle Map scene.
+ * \brief This function deletes the Battle Map scene.
  */
-void Dialog_NewBattleMap::resetBattleMapSceneSquareSelection()
+void Dialog_NewBattleMap::deleteBattleMapScene()
 {
     removeBattleMapGrid();
 
-    for (QGraphicsItem * item : pBattleMapSceneSquareSelection->items())
+    for (QGraphicsItem * item : pBattleMapScene->items())
     {
-        pBattleMapSceneSquareSelection->removeItem(item);
+        pBattleMapScene->removeItem(item);
     }
 
-    delete pBattleMapSceneSquareSelection;
+    delete pBattleMapScene;
 }

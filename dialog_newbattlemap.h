@@ -8,7 +8,6 @@
 #include <QDialog>
 #include <QFileDialog>
 #include <QFrame>
-#include <QGraphicsPixmapItem>
 #include <QGraphicsScene>
 #include <QMessageBox>
 #include <QPalette>
@@ -52,7 +51,7 @@ public:
     /*! *********************************************************************************************************************************************
      * \brief   This function is the destructor of the class Dialog_NewBattleMap.                                                                   *
      *                                                                                                                                              *
-     * \details This function deletes the objects pointed to by pUserInterface, pBattleMapSceneSquareSelection and pBattleMap.                      *
+     * \details This function deletes the objects pointed to by pBattleMapSceneSquareSelection, pUserInterface and pBattleMap.                      *
      *                                                                                                                                              *
      * \return  This function does not have any return value.                                                                                       *
      ************************************************************************************************************************************************/
@@ -223,8 +222,8 @@ private slots:
      * \brief   This function handles a click on the push button from DialogButtonBox with AcceptRole.                                              *
      *                                                                                                                                              *
      * \details If the widget CheckBox_DrawBattleMapGrid is checked, this function draws the selected Battle Map on the Battle Map image.           *
-     *          Afterwards, it extracts each Battle Map square from the Battle Map image, scales it to the configured size and stores it in the     *
-     *          Battle Map object.                                                                                                                  *
+     *          Afterwards, it extracts the pixmap of each Battle Map square from the Battle Map image, scales it to the configured size and stores *
+	 *          it in the Battle Map object.                                                                                                        *
      *                                                                                                                                              *
      * \return  This function does not have any return value.                                                                                       *
      ************************************************************************************************************************************************/
@@ -330,13 +329,13 @@ private:
     void removeBattleMapGrid();
 
     /*! *********************************************************************************************************************************************
-     * \brief   This function resets the Battle Map scene.                                                                                          *
+     * \brief   This function deletes the Battle Map scene.                                                                                         *
      *                                                                                                                                              *
      * \details -                                                                                                                                   *
      *                                                                                                                                              *
-     * \return  This function resets the Battle Map scene.                                                                                          *
+     * \return  This function does not have any return value.                                                                                       *
      ************************************************************************************************************************************************/
-    void resetBattleMapSceneSquareSelection();
+    void deleteBattleMapScene();
 
     /*!
      * \brief This is a pointer to the user interface of the class Dialog_NewBattleMap.
@@ -344,9 +343,9 @@ private:
     Ui::Dialog_NewBattleMap *pUserInterface;
 
     /*!
-     * \brief This is a pointer to the BattleMapSceneSquareSelection object that is set to GraphicsView_BattleMap.
+     * \brief This is a pointer to the Battle Map scene that is set to GraphicsView_BattleMap.
      */
-    BattleMapSceneSquareSelection *pBattleMapSceneSquareSelection;
+    BattleMapSceneSquareSelection *pBattleMapScene;
 
     /*!
      * \brief This is the text to be shown in the Battle Map scene.
