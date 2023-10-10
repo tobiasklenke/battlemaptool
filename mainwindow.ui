@@ -45,7 +45,7 @@
     <property name="geometry">
      <rect>
       <x>0</x>
-      <y>0</y>
+      <y>-10</y>
       <width>1880</width>
       <height>1060</height>
      </rect>
@@ -140,9 +140,6 @@
    <attribute name="toolBarBreak">
     <bool>false</bool>
    </attribute>
-   <addaction name="Action_NewBattleMap"/>
-   <addaction name="Action_OpenBattleMap"/>
-   <addaction name="separator"/>
   </widget>
   <action name="Action_NewBattleMap">
    <property name="icon">
