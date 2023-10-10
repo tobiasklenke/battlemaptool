@@ -12,7 +12,7 @@
 /* CONFIGURATION PARAMETERS, TODO REMOVE */
 #define CONFIG_MASTER_SCREEN_DIAGONAL                      23.8
 #define CONFIG_MASTER_SCREEN_RESOLUTION                    QSize(1920, 1080)
-#define CONFIG_PLAYER_SCREEN_DIAGONAL                      32
+#define CONFIG_PLAYER_SCREEN_DIAGONAL                      23.8
 #define CONFIG_PLAYER_SCREEN_RESOLUTION                    QSize(1920, 1080)
 #define CONFIG_BATTLEMAPSQUARE_SIZE                        200
 #define CONFIG_BATTLEMAPGRID_COLOR                         Qt::black
@@ -40,7 +40,7 @@
  */
 #define BATTLEMAPVIEW_SCALEFACTOR_STEPSIZE                 0.1
 
-/* Battle Map grid parameters */
+/* Battle Map parameters */
 
 /*!
  * \brief This is the line color of the Battle Map grid.
@@ -51,6 +51,21 @@
  * \brief This is the line width of the Battle Map grid.
  */
 #define BATTLEMAPGRID_LINEWIDTH                            3
+
+/*!
+ * \brief This is the line width of the Battle Map section frame.
+ */
+#define BATTLEMAPSECTIONFRAME_LINEWIDTH                    6
+
+/*!
+ * \brief This is the opacity of Battle Map squares within the Battle Map section frame.
+ */
+#define BATTLEMAPSQUAREWITHINSECTIONFRAME_OPACITY          1.0
+
+/*!
+ * \brief This is the opacity of Battle Map squares outside the Battle Map section frame.
+ */
+#define BATTLEMAPSQUAREOUTSIDESECTIONFRAME_OPACITY         0.5
 
 /* Image resource paths */
 
