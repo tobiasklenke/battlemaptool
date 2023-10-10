@@ -29,10 +29,6 @@ MainWindow::MainWindow(QGraphicsView *playerWindow, QWidget *parent) :
     connect(pUserInterface->GraphicsView_BattleMapMasterScreen, SIGNAL(changed_ScaleFactor(qreal)), this, SLOT(changed_ScaleFactor(qreal)));
 
     pUserInterface->Label_ScaleFactor->setVisible(false);
-
-    /* calculate maximum number of rows and columns displayable on the player screen (each square is one inch high and one inch wide) */
-    m_maximumNumberRowsOnPlayerScreen = static_cast<quint32>(calcScreenHeightInInches(CONFIG_PLAYER_SCREEN_DIAGONAL, CONFIG_PLAYER_SCREEN_RESOLUTION.height(), CONFIG_PLAYER_SCREEN_RESOLUTION.width()));
-    m_maximumNumberColumnsOnPlayerScreen = static_cast<quint32>(calcScreenWidthInInches(CONFIG_PLAYER_SCREEN_DIAGONAL, CONFIG_PLAYER_SCREEN_RESOLUTION.height(), CONFIG_PLAYER_SCREEN_RESOLUTION.width()));
 }
 
 /*!

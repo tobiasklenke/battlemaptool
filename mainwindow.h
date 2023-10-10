@@ -11,7 +11,6 @@
 #include "dialog_newbattlemap.h"
 #include "playerscreenhandler.h"
 #include "masterscreenhandler.h"
-#include "screencalc.h"
 
 /****************************************************************************************************************************************************
  * CLASS DECLARATION                                                                                                                                *
@@ -37,8 +36,7 @@ public:
      * \brief   This function is the constructor of the class MainWindow.                                                                           *
      *                                                                                                                                              *
      * \details This function sets up the user interface of the class MainWindow, sets the respective graphics views to the master and player       *
-	 *          screen handlers and connects the signals and slots of the main window actions. Finally, it calculates the maximum number of rows    *
-	 *          and columns displayable on the player screen.                                                                                       *
+     *          screen handlers and connects the signals and slots of the main window actions.                                                      *
      *                                                                                                                                              *
      * \param   playerWindow                  Address of the graphics view to display the players window                                            *
      * \param   parent                        Parent of the class MainWindow                                                                        *
@@ -126,15 +124,5 @@ private:
      * \brief This is the handler for displaying the Battle Map scene on the player screen.
      */
     PlayerScreenHandler m_playerScreenHandler;
-
-    /*!
-     * \brief This is the maximum number of rows displayable on the player screen.
-     */
-    quint32 m_maximumNumberRowsOnPlayerScreen;
-
-    /*!
-     * \brief This is the maximum number of columns displayable on the player screen.
-     */
-    quint32 m_maximumNumberColumnsOnPlayerScreen;
 };
 #endif // MAINWINDOW_H
