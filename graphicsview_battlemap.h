@@ -103,11 +103,22 @@ protected:
      *          previously saved cursor from the member variable m_cursor. Finally, the event is forwarded to the Battle Map scene by calling the   *
 	 *          base class implementation of the function mouseReleaseEvent().                                                                      *
      *                                                                                                                                              *
-     * \param   event                         Mouse press event to be handled                                                                       *
+     * \param   event                         Mouse release event to be handled                                                                     *
      *                                                                                                                                              *
      * \return  This function does not have any return value.                                                                                       *
      ************************************************************************************************************************************************/
     void mouseReleaseEvent(QMouseEvent *event);
+
+    /*! *********************************************************************************************************************************************
+     * \brief   This function handles a key press event on the Battle Map view.                                                                     *
+     *                                                                                                                                              *
+     * \details TODO                                                                                                                                *
+     *                                                                                                                                              *
+     * \param   event                         Key press event to be handled                                                                         *
+     *                                                                                                                                              *
+     * \return  This function does not have any return value.                                                                                       *
+     ************************************************************************************************************************************************/
+    void keyPressEvent(QKeyEvent *event);
 
 signals:
 
@@ -115,6 +126,11 @@ signals:
      * \brief This signal is emitted as soon as the scale factor of the Battle Map view changes.                                                    *
      ************************************************************************************************************************************************/
     void changed_ScaleFactor(qreal m_scaleFactor);
+
+    /*! *********************************************************************************************************************************************
+     * \brief This signal is emitted as soon as a key is pressed.                                                                                   *
+     ************************************************************************************************************************************************/
+    void pressed_Key(Qt::Key key);
 
 private slots: /* - */
 

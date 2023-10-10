@@ -121,6 +121,14 @@ void GraphicsView_BattleMap::mouseReleaseEvent(QMouseEvent *event)
     QGraphicsView::mouseReleaseEvent(event);
 }
 
+/*!
+ * \brief This function handles a key press event on the Battle Map view.
+ */
+void GraphicsView_BattleMap::keyPressEvent(QKeyEvent *event)
+{
+    emit pressed_Key(static_cast<Qt::Key>(event->key()));
+}
+
 /****************************************************************************************************************************************************
  * DEFINITION OF PRIVATE SLOT FUNCTIONS                                                                                                             *
  ****************************************************************************************************************************************************/
