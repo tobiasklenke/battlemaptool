@@ -5,9 +5,13 @@
  * INCLUDES                                                                                                                                         *
  ****************************************************************************************************************************************************/
 
+#include <QImage>
+#include <QObject>
+
 #include "battlemap.h"
 #include "battlemapscenemasterscreen.h"
 #include "graphicsview_battlemap.h"
+#include "screencalc.h"
 
 /****************************************************************************************************************************************************
  * CLASS DECLARATION                                                                                                                                *
@@ -16,8 +20,9 @@
 /*!
  * \brief This class implements the functionality of the master screen handling.
  */
-class MasterScreenHandler
+class MasterScreenHandler : public QObject
 {
+    Q_OBJECT
 
 public:
 
@@ -75,7 +80,26 @@ protected: /* - */
 
 signals: /* - */
 
-private slots: /* - */
+private slots:
+
+    /*! *********************************************************************************************************************************************
+     * \brief   This function updates the member variable m_scaleFactor and redraws the Battle Map section rect.                                    *
+     *                                                                                                                                              *
+     * \details -                                                                                                                                   *
+     *                                                                                                                                              *
+     * \return  This function does not have any return value.                                                                                       *
+     ************************************************************************************************************************************************/
+    void changed_ScaleFactor(qreal scaleFactor);
+
+    /*! *********************************************************************************************************************************************
+     * \brief   This function updates the member variables m_indexFirstRowSceneSection and m_indexFirstColumnSceneSection and the Battle Map scene  *
+     *          section.                                                                                                                            *
+     *                                                                                                                                              *
+     * \details -                                                                                                                                   *
+     *                                                                                                                                              *
+     * \return  This function does not have any return value.                                                                                       *
+     ************************************************************************************************************************************************/
+    void pressed_Key(Qt::Key key);
 
 private:
 
@@ -96,6 +120,16 @@ private:
      * \return  This function does not have any return value.                                                                                       *
      ************************************************************************************************************************************************/
     void updateBattleMapSquaresGraphicsItems();
+
+    /*! *********************************************************************************************************************************************
+     * \brief   This function updates the Battle Map scene section.                                                                                 *
+     *                                                                                                                                              *
+     * \details This function updates the rect that frames the Battle Map scene section to be displayed on the player screen and the opacity of the *
+     *          Battle Map squares depending on whether they are displayed on the player screen.                                                    *
+     *                                                                                                                                              *
+     * \return  This function does not have any return value.                                                                                       *
+     ************************************************************************************************************************************************/
+    void updateBattleMapSceneSection();
 
     /*! *********************************************************************************************************************************************
      * \brief   This function deletes the Battle Map scene.                                                                                         *
@@ -127,14 +161,44 @@ private:
     QGraphicsTextItem m_sceneText;
 
     /*!
-     * \brief This is the rect to be shown in the Battle Map scene.
+     * \brief This is the graphics item of the rect to be shown in the Battle Map scene, that frames the whole Battle Map scene.
      */
-    QGraphicsRectItem m_sceneRect;
+    QGraphicsRectItem m_sceneFrameRect;
+
+    /*!
+     * \brief This is the graphics item of the rect to be shown in the Battle Map scene, that frames the Battle Map scene section to be displayed on the player screen.
+     */
+    QGraphicsRectItem m_sceneSectionRect;
 
     /*!
      * \brief This is the variable containing the graphics items of the Battle Map squares.
      */
     QList<QList<QGraphicsPixmapItem*>> m_battleMapSquaresGraphicsItems;
+
+    /*!
+     * \brief This is the factor that is used for scaling the Battle Map view while scrolling.
+     */
+    qreal m_scaleFactor;
+
+    /*!
+     * \brief This is the index of the first row to be displayed on the player screen.
+     */
+    quint32 m_indexFirstRowSceneSection;
+
+    /*!
+     * \brief This is the index of the first column to be displayed on the player screen.
+     */
+    quint32 m_indexFirstColumnSceneSection;
+
+    /*!
+     * \brief This is the number of rows to be displayed on the player screen.
+     */
+    quint32 m_numberRowsSceneSection;
+
+    /*!
+     * \brief This is the number of columns to be displayed on the player screen.
+     */
+    quint32 m_numberColumnsSceneSection;
 
 };
 
