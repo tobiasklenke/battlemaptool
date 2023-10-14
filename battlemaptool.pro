@@ -13,6 +13,7 @@ SOURCES += \
     battlemapscene.cpp \
     battlemapscenemasterscreen.cpp \
     battlemapsceneplayerscreen.cpp \
+    battlemapscenesection.cpp \
     battlemapscenesquareselection.cpp \
     battlemapsquare.cpp \
     dialog_newbattlemap.cpp \
@@ -28,6 +29,7 @@ HEADERS += \
     battlemapscene.h \
     battlemapscenemasterscreen.h \
     battlemapsceneplayerscreen.h \
+    battlemapscenesection.h \
     battlemapscenesquareselection.h \
     battlemapsquare.h \
     defines.h \
