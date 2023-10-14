@@ -9,6 +9,8 @@
 
 #include "battlemap.h"
 #include "battlemapsceneplayerscreen.h"
+#include "battlemapscenesection.h"
+#include "screencalc.h"
 
 /****************************************************************************************************************************************************
  * CLASS DECLARATION                                                                                                                                *
@@ -44,7 +46,7 @@ public:
     /*! *********************************************************************************************************************************************
      * \brief   This function sets the address of the member variable pGraphicsView.                                                                *
      *                                                                                                                                              *
-     * \details -                                                                                                                                   *
+     * \details This function sets the address of the member variable pGraphicsView and sets the Battle Map scene.                                  *
      *                                                                                                                                              *
      * \param   graphicsView                  Address of the graphics view to display the Battle Map scene on                                       *
      *                                                                                                                                              *
@@ -55,7 +57,7 @@ public:
     /*! *********************************************************************************************************************************************
      * \brief   This function sets the address of the member variable pBattleMap.                                                                   *
      *                                                                                                                                              *
-     * \details -                                                                                                                                   *
+     * \details This function sets the address of the member variable pBattleMap and updates the graphics items of the Battle Map squares.          *
      *                                                                                                                                              *
      * \param   battleMap                     Address of the Battle Map                                                                             *
      *                                                                                                                                              *
@@ -64,13 +66,34 @@ public:
     void setBattleMap(BattleMap *battleMap);
 
     /*! *********************************************************************************************************************************************
-     * \brief   This function shows the Battle Map image.                                                                                           *
+     * \brief   This function sets the address of the member variable pBattleMapSceneSection.                                                       *
      *                                                                                                                                              *
-     * \details This function resets the Battle Map scene and adds all the Battle Map squares from the Battle Map to the Battle Map scene.          *
+     * \details -                                                                                                                                   *
+     *                                                                                                                                              *
+     * \param   battleMapSceneSection         Address of the Battle Map scene section                                                               *
      *                                                                                                                                              *
      * \return  This function does not have any return value.                                                                                       *
      ************************************************************************************************************************************************/
-    void showBattleMapImage();
+    void setBattleMapSceneSection(BattleMapSceneSection *battleMapSceneSection);
+
+    /*! *********************************************************************************************************************************************
+     * \brief   This function initializes the Battle Map image without showing it.                                                                  *
+     *                                                                                                                                              *
+     * \details This function resets the Battle Map scene and adds all the Battle Map squares from the Battle Map to the Battle Map scene without   *
+     *          showing them.                                                                                                                       *
+     *                                                                                                                                              *
+     * \return  This function does not have any return value.                                                                                       *
+     ************************************************************************************************************************************************/
+    void initBattleMapImage();
+
+    /*! *********************************************************************************************************************************************
+     * \brief   This function updates the Battle Map image                   .                                                                      *
+     *                                                                                                                                              *
+     * \details This function updates the visibility of the Battle Map squares depending on whether they are displayed on the player screen.        *
+     *                                                                                                                                              *
+     * \return  This function does not have any return value.                                                                                       *
+     ************************************************************************************************************************************************/
+    void updateBattleMapImage();
 
 protected: /* - */
 
@@ -118,20 +141,24 @@ private:
     BattleMap *pBattleMap;
 
     /*!
+     * \brief This is a pointer to the Battle Map scene section.
+     */
+    BattleMapSceneSection *pBattleMapSceneSection;
+
+    /*!
      * \brief This is a pointer to the Battle Map scene.
      */
     BattleMapScenePlayerScreen *pBattleMapScene;
-
-    /*!
-     * \brief This is the rect to be shown in the Battle Map scene.
-     */
-    QGraphicsRectItem m_sceneRect;
 
     /*!
      * \brief This is the variable containing the graphics items of the Battle Map squares.
      */
     QList<QList<QGraphicsPixmapItem*>> m_battleMapSquaresGraphicsItems;
 
+    /*!
+     * \brief This is the number of pixels per Battle Map square.
+     */
+    quint32 m_pixelsPerBattleMapSquare;
 };
 
 #endif // PLAYERSCREENHANDLER_H

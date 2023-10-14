@@ -14,8 +14,10 @@
 PlayerScreenHandler::PlayerScreenHandler() :
     pGraphicsView(nullptr),
     pBattleMap(nullptr),
+    pBattleMapSceneSection(nullptr),
     pBattleMapScene(new BattleMapScenePlayerScreen()),
-    m_battleMapSquaresGraphicsItems(QList<QList<QGraphicsPixmapItem*>>())
+    m_battleMapSquaresGraphicsItems(QList<QList<QGraphicsPixmapItem*>>()),
+    m_pixelsPerBattleMapSquare(static_cast<quint32>(calcNumberPixelsPerInch(CONFIG_PLAYER_SCREEN_DIAGONAL, CONFIG_PLAYER_SCREEN_RESOLUTION.height(), CONFIG_PLAYER_SCREEN_RESOLUTION.width())))
 {
 }
 
@@ -37,6 +39,9 @@ void PlayerScreenHandler::setGraphicsView(QGraphicsView *graphicsView)
 
     pGraphicsView->setBackgroundBrush(QBrush(Qt::black));
     pGraphicsView->setFrameStyle(QFrame::NoFrame);
+    pGraphicsView->setEnabled(false);
+    pGraphicsView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    pGraphicsView->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     pGraphicsView->setScene(pBattleMapScene);
 }
 
@@ -51,11 +56,65 @@ void PlayerScreenHandler::setBattleMap(BattleMap *battleMap)
 }
 
 /*!
- * \brief This function shows the Battle Map image.
+ * \brief This function sets the address of the member variable pBattleMapSceneSection.
  */
-void PlayerScreenHandler::showBattleMapImage()
+void PlayerScreenHandler::setBattleMapSceneSection(BattleMapSceneSection *battleMapSceneSection)
 {
-    //TODO
+    pBattleMapSceneSection = battleMapSceneSection;
+}
+
+/*!
+ * \brief This function initializes the Battle Map image without showing it.
+ */
+void PlayerScreenHandler::initBattleMapImage()
+{
+    /* reset Battle Map scene */
+    deleteBattleMapScene();
+    pBattleMapScene = new BattleMapScenePlayerScreen();
+    pGraphicsView->setScene(pBattleMapScene);
+
+
+
+    for (quint32 rowIdx = 0U; rowIdx < pBattleMap->getNumberRows(); rowIdx++)
+    {
+        for (quint32 columnIdx = 0U; columnIdx < pBattleMap->getNumberColumns(); columnIdx++)
+        {
+            m_battleMapSquaresGraphicsItems[rowIdx][columnIdx]->setPos(columnIdx * m_pixelsPerBattleMapSquare, rowIdx * m_pixelsPerBattleMapSquare);
+            m_battleMapSquaresGraphicsItems[rowIdx][columnIdx]->setVisible(false);
+            pBattleMapScene->addItem(m_battleMapSquaresGraphicsItems[rowIdx][columnIdx]);
+        }
+    }
+
+    pBattleMapScene->setSceneRect(QRectF(QPointF(pBattleMapSceneSection->getIndexFirstColumnSceneSection(), pBattleMapSceneSection->getIndexFirstRowSceneSection()) * m_pixelsPerBattleMapSquare,
+                                         QSizeF(pBattleMapSceneSection->getNumberColumnsSceneSection(), pBattleMapSceneSection->getNumberRowsSceneSection()) * m_pixelsPerBattleMapSquare));
+}
+
+/*!
+ * \brief This function updates the Battle Map image.
+ */
+void PlayerScreenHandler::updateBattleMapImage()
+{
+    pGraphicsView->setEnabled(true);
+
+    /* Update the visibility of the Battle Map squares depending on whether they are displayed on the player screen */
+    for (quint32 rowIdx = 0U; rowIdx < pBattleMap->getNumberRows(); rowIdx++)
+    {
+        for (quint32 columnIdx = 0U; columnIdx < pBattleMap->getNumberColumns(); columnIdx++)
+        {
+            if ((rowIdx < pBattleMapSceneSection->getIndexFirstRowSceneSection()) || (pBattleMapSceneSection->getIndexFirstRowSceneSection() + pBattleMapSceneSection->getNumberRowsSceneSection() - 1U < rowIdx) ||
+                    (columnIdx < pBattleMapSceneSection->getIndexFirstColumnSceneSection()) || (pBattleMapSceneSection->getIndexFirstColumnSceneSection() + pBattleMapSceneSection->getNumberColumnsSceneSection() - 1U < columnIdx))
+            {
+                m_battleMapSquaresGraphicsItems[rowIdx][columnIdx]->setVisible(false);
+            }
+            else
+            {
+                m_battleMapSquaresGraphicsItems[rowIdx][columnIdx]->setVisible(true);
+            }
+        }
+    }
+
+    pBattleMapScene->setSceneRect(QRectF(QPointF(pBattleMapSceneSection->getIndexFirstColumnSceneSection(), pBattleMapSceneSection->getIndexFirstRowSceneSection()) * m_pixelsPerBattleMapSquare,
+                                         QSizeF(pBattleMapSceneSection->getNumberColumnsSceneSection(), pBattleMapSceneSection->getNumberRowsSceneSection()) * m_pixelsPerBattleMapSquare));
 }
 
 /****************************************************************************************************************************************************
@@ -108,7 +167,8 @@ void PlayerScreenHandler::updateBattleMapSquaresGraphicsItems()
         for (quint32 columnIdx = 0U; columnIdx < pBattleMap->getNumberColumns(); columnIdx++)
         {
             /* append graphics item of Battle Map square to row of nested QList member variable m_battleMapSquaresGraphicsItems */
-            m_battleMapSquaresGraphicsItems[rowIdx].append(new QGraphicsPixmapItem(pBattleMap->getBattleMapSquarePixmap(rowIdx, columnIdx)));
+            QPixmap scaledPixmap = pBattleMap->getBattleMapSquarePixmap(rowIdx, columnIdx).scaled(QSize(m_pixelsPerBattleMapSquare, m_pixelsPerBattleMapSquare));
+            m_battleMapSquaresGraphicsItems[rowIdx].append(new QGraphicsPixmapItem(scaledPixmap));
         }
     }
 }

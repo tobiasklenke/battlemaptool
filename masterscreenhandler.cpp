@@ -14,13 +14,10 @@
 MasterScreenHandler::MasterScreenHandler() :
     pGraphicsView(nullptr),
     pBattleMap(nullptr),
+    pBattleMapSceneSection(nullptr),
     pBattleMapScene(new BattleMapSceneMasterScreen()),
     m_battleMapSquaresGraphicsItems(QList<QList<QGraphicsPixmapItem*>>()),
-    m_scaleFactor(1.0),
-    m_indexFirstRowSceneSection(0U),
-    m_indexFirstColumnSceneSection(0U),
-    m_numberRowsSceneSection(static_cast<quint32>(calcScreenHeightInInches(CONFIG_PLAYER_SCREEN_DIAGONAL, CONFIG_PLAYER_SCREEN_RESOLUTION.height(), CONFIG_PLAYER_SCREEN_RESOLUTION.width()))),
-    m_numberColumnsSceneSection(static_cast<quint32>(calcScreenWidthInInches(CONFIG_PLAYER_SCREEN_DIAGONAL, CONFIG_PLAYER_SCREEN_RESOLUTION.height(), CONFIG_PLAYER_SCREEN_RESOLUTION.width())))
+    m_scaleFactor(1.0)
 {
 }
 
@@ -62,6 +59,14 @@ void MasterScreenHandler::setBattleMap(BattleMap *battleMap)
 }
 
 /*!
+ * \brief This function sets the address of the member variable pBattleMapSceneSection.
+ */
+void MasterScreenHandler::setBattleMapSceneSection(BattleMapSceneSection *battleMapSceneSection)
+{
+    pBattleMapSceneSection = battleMapSceneSection;
+}
+
+/*!
  * \brief This function shows the Battle Map image.
  */
 void MasterScreenHandler::showBattleMapImage()
@@ -71,31 +76,6 @@ void MasterScreenHandler::showBattleMapImage()
     pBattleMapScene = new BattleMapSceneMasterScreen();
     pGraphicsView->resetScaling();
     pGraphicsView->setScene(pBattleMapScene);
-
-    /* reset Battle Map scene section */
-    m_indexFirstRowSceneSection = 0U;
-    m_indexFirstColumnSceneSection = 0U;
-
-    quint32 numberRowsOnPlayerScreen = static_cast<quint32>(calcScreenHeightInInches(CONFIG_PLAYER_SCREEN_DIAGONAL, CONFIG_PLAYER_SCREEN_RESOLUTION.height(), CONFIG_PLAYER_SCREEN_RESOLUTION.width()));
-    quint32 numberColumnsOnPlayerScreen = static_cast<quint32>(calcScreenWidthInInches(CONFIG_PLAYER_SCREEN_DIAGONAL, CONFIG_PLAYER_SCREEN_RESOLUTION.height(), CONFIG_PLAYER_SCREEN_RESOLUTION.width()));
-
-    if (numberRowsOnPlayerScreen < pBattleMap->getNumberRows())
-    {
-        m_numberRowsSceneSection = numberRowsOnPlayerScreen;
-    }
-    else
-    {
-        m_numberRowsSceneSection = pBattleMap->getNumberRows();
-    }
-
-    if (numberColumnsOnPlayerScreen < pBattleMap->getNumberColumns())
-    {
-        m_numberColumnsSceneSection = numberColumnsOnPlayerScreen;
-    }
-    else
-    {
-        m_numberColumnsSceneSection = pBattleMap->getNumberColumns();
-    }
 
     for (quint32 rowIdx = 0U; rowIdx < pBattleMap->getNumberRows(); rowIdx++)
     {
@@ -140,43 +120,43 @@ void MasterScreenHandler::changed_ScaleFactor(qreal scaleFactor)
 }
 
 /*!
- * \brief This function updates the member variables m_indexFirstRowSceneSection and m_indexFirstColumnSceneSection and the Battle Map scene section.
+ * \brief This function updates the member variables of the Battle Map scene section in case of an appropriate key press.
  */
 void MasterScreenHandler::pressed_Key(Qt::Key key)
 {
     switch(key)
     {
     case Qt::Key_Left:
-        if (0U < m_indexFirstColumnSceneSection)
+        if (0U < pBattleMapSceneSection->getIndexFirstColumnSceneSection())
         {
-            m_indexFirstColumnSceneSection--;
+            pBattleMapSceneSection->setIndexFirstColumnSceneSection(pBattleMapSceneSection->getIndexFirstColumnSceneSection() - 1U);
             updateBattleMapSceneSection();
         }
 
         break;
 
     case Qt::Key_Up:
-        if (0U < m_indexFirstRowSceneSection)
+        if (0U < pBattleMapSceneSection->getIndexFirstRowSceneSection())
         {
-            m_indexFirstRowSceneSection--;
+            pBattleMapSceneSection->setIndexFirstRowSceneSection(pBattleMapSceneSection->getIndexFirstRowSceneSection() - 1U);
             updateBattleMapSceneSection();
         }
 
         break;
 
     case Qt::Key_Right:
-        if (pBattleMap->getNumberColumns() > m_indexFirstColumnSceneSection + m_numberColumnsSceneSection)
+        if (pBattleMap->getNumberColumns() > pBattleMapSceneSection->getIndexFirstColumnSceneSection() + pBattleMapSceneSection->getNumberColumnsSceneSection())
         {
-            m_indexFirstColumnSceneSection++;
+            pBattleMapSceneSection->setIndexFirstColumnSceneSection(pBattleMapSceneSection->getIndexFirstColumnSceneSection() + 1U);
             updateBattleMapSceneSection();
         }
 
         break;
 
     case Qt::Key_Down:
-        if (pBattleMap->getNumberRows() > m_indexFirstRowSceneSection + m_numberRowsSceneSection)
+        if (pBattleMap->getNumberRows() > pBattleMapSceneSection->getIndexFirstRowSceneSection() + pBattleMapSceneSection->getNumberRowsSceneSection())
         {
-            m_indexFirstRowSceneSection++;
+            pBattleMapSceneSection->setIndexFirstRowSceneSection(pBattleMapSceneSection->getIndexFirstRowSceneSection() + 1U);
             updateBattleMapSceneSection();
         }
 
@@ -236,16 +216,16 @@ void MasterScreenHandler::updateBattleMapSquaresGraphicsItems()
 void MasterScreenHandler::updateBattleMapSceneSection()
 {
     /* Update the rect that frames the Battle Map scene section to be displayed on the player screen */
-    m_sceneSectionRect.setRect(QRectF(QPointF(m_indexFirstColumnSceneSection, m_indexFirstRowSceneSection) * CONFIG_BATTLEMAPSQUARE_SIZE,
-                                      QSize(m_numberColumnsSceneSection, m_numberRowsSceneSection) * CONFIG_BATTLEMAPSQUARE_SIZE));
+    m_sceneSectionRect.setRect(QRectF(QPointF(pBattleMapSceneSection->getIndexFirstColumnSceneSection(), pBattleMapSceneSection->getIndexFirstRowSceneSection()) * CONFIG_BATTLEMAPSQUARE_SIZE,
+                                      QSize(pBattleMapSceneSection->getNumberColumnsSceneSection(), pBattleMapSceneSection->getNumberRowsSceneSection()) * CONFIG_BATTLEMAPSQUARE_SIZE));
 
     /* Update the opacity of the Battle Map squares depending on whether they are displayed on the player screen */
     for (quint32 rowIdx = 0U; rowIdx < pBattleMap->getNumberRows(); rowIdx++)
     {
         for (quint32 columnIdx = 0U; columnIdx < pBattleMap->getNumberColumns(); columnIdx++)
         {
-            if ((rowIdx < m_indexFirstRowSceneSection) || (m_indexFirstRowSceneSection + m_numberRowsSceneSection - 1U < rowIdx) ||
-                    (columnIdx < m_indexFirstColumnSceneSection) || (m_indexFirstColumnSceneSection + m_numberColumnsSceneSection - 1U < columnIdx))
+            if ((rowIdx < pBattleMapSceneSection->getIndexFirstRowSceneSection()) || (pBattleMapSceneSection->getIndexFirstRowSceneSection() + pBattleMapSceneSection->getNumberRowsSceneSection() - 1U < rowIdx) ||
+                    (columnIdx < pBattleMapSceneSection->getIndexFirstColumnSceneSection()) || (pBattleMapSceneSection->getIndexFirstColumnSceneSection() + pBattleMapSceneSection->getNumberColumnsSceneSection() - 1U < columnIdx))
             {
                 m_battleMapSquaresGraphicsItems[rowIdx][columnIdx]->setOpacity(BATTLEMAPSQUAREOUTSIDESECTIONFRAME_OPACITY);
             }

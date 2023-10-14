@@ -8,6 +8,7 @@
 #include <QMainWindow>
 
 #include "battlemap.h"
+#include "battlemapscenesection.h"
 #include "dialog_newbattlemap.h"
 #include "playerscreenhandler.h"
 #include "masterscreenhandler.h"
@@ -48,7 +49,7 @@ public:
     /*! *********************************************************************************************************************************************
      * \brief   This function is the destructor of the class MainWindow.                                                                            *
      *                                                                                                                                              *
-     * \details This function deletes the objects pointed to by pUserInterface and pBattleMap.                                                      *
+     * \details This function deletes the objects pointed to by pUserInterface, pBattleMap and pBattleMapSceneSection.                              *
      *                                                                                                                                              *
      * \return  This function does not have any return value.                                                                                       *
      ************************************************************************************************************************************************/
@@ -74,7 +75,8 @@ private slots:
      * \brief   This function handles the acceptance of the dialog Dialog_NewBattleMap.                                                             *
      *                                                                                                                                              *
      * \details This function stores the Battle Map object created via the dialog Dialog_NewBattleMap. Afterwards, the function deletes the object  *
-     *          pointed to by pDialog_NewBattleMap.                                                                                                 *
+     *          pointed to by pDialog_NewBattleMap, sets the parameters of the Battle Map scene section, shares the Battle Map with the screen      *
+     *          handlers, shows the Battle Map image on the master screen and initializes the Battle Map image on the player screen.                *
      *                                                                                                                                              *
      * \return  This function does not have any return value.                                                                                       *
      ************************************************************************************************************************************************/
@@ -88,6 +90,15 @@ private slots:
      * \return  This function does not have any return value.                                                                                       *
      ************************************************************************************************************************************************/
     void rejected_Dialog_NewBattleMap();
+
+    /*! *********************************************************************************************************************************************
+     * \brief   This function handles the update of the player screen.                                                                              *
+     *                                                                                                                                              *
+     * \details -                                                                                                                                   *
+     *                                                                                                                                              *
+     * \return  This function does not have any return value.                                                                                       *
+     ************************************************************************************************************************************************/
+    void updatePlayerScreen();
 
     /*! *********************************************************************************************************************************************
      * \brief   This function updates the label that shows the value of the scale factor.                                                           *
@@ -114,6 +125,11 @@ private:
      * \brief This is a pointer to the Battle Map.
      */
     BattleMap *pBattleMap;
+
+    /*!
+     * \brief This the Battle Map scene section.
+     */
+    BattleMapSceneSection m_battleMapSceneSection;
 
     /*!
      * \brief This is the handler for displaying the Battle Map scene on the master screen.

@@ -10,6 +10,7 @@
 
 #include "battlemap.h"
 #include "battlemapscenemasterscreen.h"
+#include "battlemapscenesection.h"
 #include "graphicsview_battlemap.h"
 #include "screencalc.h"
 
@@ -48,7 +49,7 @@ public:
     /*! *********************************************************************************************************************************************
      * \brief   This function sets the address of the member variable pGraphicsView.                                                                *
      *                                                                                                                                              *
-     * \details -                                                                                                                                   *
+     * \details This function sets the address of the member variable pGraphicsView, connects the signals and slots and sets the Battle Map scene.  *
      *                                                                                                                                              *
      * \param   graphicsView                  Address of the graphics view to display the Battle Map scene on                                       *
      *                                                                                                                                              *
@@ -66,6 +67,17 @@ public:
      * \return  This function does not have any return value.                                                                                       *
      ************************************************************************************************************************************************/
     void setBattleMap(BattleMap *battleMap);
+
+    /*! *********************************************************************************************************************************************
+     * \brief   This function sets the address of the member variable pBattleMapSceneSection.                                                       *
+     *                                                                                                                                              *
+     * \details -                                                                                                                                   *
+     *                                                                                                                                              *
+     * \param   battleMapSceneSection         Address of the Battle Map scene section                                                               *
+     *                                                                                                                                              *
+     * \return  This function does not have any return value.                                                                                       *
+     ************************************************************************************************************************************************/
+    void setBattleMapSceneSection(BattleMapSceneSection *battleMapSceneSection);
 
     /*! *********************************************************************************************************************************************
      * \brief   This function shows the Battle Map image.                                                                                           *
@@ -92,8 +104,7 @@ private slots:
     void changed_ScaleFactor(qreal scaleFactor);
 
     /*! *********************************************************************************************************************************************
-     * \brief   This function updates the member variables m_indexFirstRowSceneSection and m_indexFirstColumnSceneSection and the Battle Map scene  *
-     *          section.                                                                                                                            *
+     * \brief   This function updates the member variables of the Battle Map scene section in case of an appropriate key press.                     *
      *                                                                                                                                              *
      * \details -                                                                                                                                   *
      *                                                                                                                                              *
@@ -151,6 +162,11 @@ private:
     BattleMap *pBattleMap;
 
     /*!
+     * \brief This is a pointer to the Battle Map scene section.
+     */
+    BattleMapSceneSection *pBattleMapSceneSection;
+
+    /*!
      * \brief This is a pointer to the Battle Map scene.
      */
     BattleMapSceneMasterScreen *pBattleMapScene;
@@ -179,27 +195,6 @@ private:
      * \brief This is the factor that is used for scaling the Battle Map view while scrolling.
      */
     qreal m_scaleFactor;
-
-    /*!
-     * \brief This is the index of the first row to be displayed on the player screen.
-     */
-    quint32 m_indexFirstRowSceneSection;
-
-    /*!
-     * \brief This is the index of the first column to be displayed on the player screen.
-     */
-    quint32 m_indexFirstColumnSceneSection;
-
-    /*!
-     * \brief This is the number of rows to be displayed on the player screen.
-     */
-    quint32 m_numberRowsSceneSection;
-
-    /*!
-     * \brief This is the number of columns to be displayed on the player screen.
-     */
-    quint32 m_numberColumnsSceneSection;
-
 };
 
 #endif // MASTERSCREENHANDLER_H

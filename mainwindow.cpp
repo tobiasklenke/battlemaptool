@@ -21,11 +21,16 @@ MainWindow::MainWindow(QGraphicsView *playerWindow, QWidget *parent) :
     pUserInterface->setupUi(this);
 
     m_masterScreenHandler.setGraphicsView(pUserInterface->GraphicsView_BattleMapMasterScreen);
+    m_masterScreenHandler.setBattleMapSceneSection(&m_battleMapSceneSection);
     m_playerScreenHandler.setGraphicsView(playerWindow);
+    m_playerScreenHandler.setBattleMapSceneSection(&m_battleMapSceneSection);
 
     /* connect signals and slots of the main window actions */
     connect(pUserInterface->Action_NewBattleMap, SIGNAL(triggered()), this, SLOT(open_Dialog_NewBattleMap()));
     connect(pUserInterface->Action_Quit, SIGNAL(triggered()), QApplication::instance(), SLOT(quit()));
+
+    connect(pUserInterface->Action_UpdatePlayerScreen, SIGNAL(triggered()), this, SLOT(updatePlayerScreen()));
+
     connect(pUserInterface->GraphicsView_BattleMapMasterScreen, SIGNAL(changed_ScaleFactor(qreal)), this, SLOT(changed_ScaleFactor(qreal)));
 
     pUserInterface->Label_ScaleFactor->setVisible(false);
@@ -76,9 +81,37 @@ void MainWindow::accepted_Dialog_NewBattleMap()
     pBattleMap = new BattleMap(*pDialog_NewBattleMap->getBattleMap());
     delete pDialog_NewBattleMap;
 
-    m_masterScreenHandler.setBattleMap(pBattleMap);
-    m_masterScreenHandler.showBattleMapImage();
+    /* set parameters of Battle Map scene section */
+    m_battleMapSceneSection.setIndexFirstRowSceneSection(0U);
+    m_battleMapSceneSection.setIndexFirstColumnSceneSection(0U);
+    quint32 numberRowsOnPlayerScreen = static_cast<quint32>(calcScreenHeightInInches(CONFIG_PLAYER_SCREEN_DIAGONAL, CONFIG_PLAYER_SCREEN_RESOLUTION.height(), CONFIG_PLAYER_SCREEN_RESOLUTION.width()));
+    quint32 numberColumnsOnPlayerScreen = static_cast<quint32>(calcScreenWidthInInches(CONFIG_PLAYER_SCREEN_DIAGONAL, CONFIG_PLAYER_SCREEN_RESOLUTION.height(), CONFIG_PLAYER_SCREEN_RESOLUTION.width()));
 
+    if (numberRowsOnPlayerScreen < pBattleMap->getNumberRows())
+    {
+        m_battleMapSceneSection.setNumberRowsSceneSection(numberRowsOnPlayerScreen);
+    }
+    else
+    {
+        m_battleMapSceneSection.setNumberRowsSceneSection(pBattleMap->getNumberRows());
+    }
+
+    if (numberColumnsOnPlayerScreen < pBattleMap->getNumberColumns())
+    {
+        m_battleMapSceneSection.setNumberColumnsSceneSection(numberColumnsOnPlayerScreen);
+    }
+    else
+    {
+        m_battleMapSceneSection.setNumberColumnsSceneSection(pBattleMap->getNumberColumns());
+    }
+
+    /* share Battle Map with screen handlers */
+    m_masterScreenHandler.setBattleMap(pBattleMap);
+    m_playerScreenHandler.setBattleMap(pBattleMap);
+    m_masterScreenHandler.showBattleMapImage();
+    m_playerScreenHandler.initBattleMapImage();
+
+    pUserInterface->Action_UpdatePlayerScreen->setEnabled(true);
     pUserInterface->Label_ScaleFactor->setVisible(true);
 
     setCursor(Qt::ArrowCursor);
@@ -90,6 +123,14 @@ void MainWindow::accepted_Dialog_NewBattleMap()
 void MainWindow::rejected_Dialog_NewBattleMap()
 {
     delete pDialog_NewBattleMap;
+}
+
+/*!
+ * \brief This function handles the update of the player screen.
+ */
+void MainWindow::updatePlayerScreen()
+{
+    m_playerScreenHandler.updateBattleMapImage();
 }
 
 /*!
