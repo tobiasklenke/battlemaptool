@@ -11,11 +11,6 @@
  * DEFINES                                                                                                                                          *
  ****************************************************************************************************************************************************/
 
-/*!
- * \brief This is the conversion factor between inches and centimeters.
- */
-#define INCH_IN_CENTIMETERS                                2.54
-
 /****************************************************************************************************************************************************
  * MACROS                                                                                                                                           *
  ****************************************************************************************************************************************************/
@@ -50,19 +45,6 @@
 qreal calcScreenWidthInInches(qreal screenDiagonal, quint32 resolutionWidth, quint32 resolutionHeight);
 
 /*! *************************************************************************************************************************************************
- * \brief   This function calculates the screen width in centimeters.                                                                               *
- *                                                                                                                                                  *
- * \details -                                                                                                                                       *
- *                                                                                                                                                  *
- * \param   screenDiagonal                Screen diagonal in inches                                                                                 *
- * \param   resolutionWidth               Screen width in pixels                                                                                    *
- * \param   resolutionHeight              Screen height in pixels                                                                                   *
- *                                                                                                                                                  *
- * \return  This function returns the calculated screen width in centimeters.                                                                       *
- ****************************************************************************************************************************************************/
-qreal calcScreenWidthInCentimeters(qreal screenDiagonal, quint32 resolutionWidth, quint32 resolutionHeight);
-
-/*! *************************************************************************************************************************************************
  * \brief   This function calculates the screen height in inches.                                                                                   *
  *                                                                                                                                                  *
  * \details -                                                                                                                                       *
@@ -75,8 +57,9 @@ qreal calcScreenWidthInCentimeters(qreal screenDiagonal, quint32 resolutionWidth
  ****************************************************************************************************************************************************/
 qreal calcScreenHeightInInches(qreal screenDiagonal, quint32 resolutionWidth, quint32 resolutionHeight);
 
+
 /*! *************************************************************************************************************************************************
- * \brief   This function calculates the screen height in centimeters.                                                                              *
+ * \brief   This function calculates the number of pixels per inch.                                                                                 *
  *                                                                                                                                                  *
  * \details -                                                                                                                                       *
  *                                                                                                                                                  *
@@ -84,8 +67,8 @@ qreal calcScreenHeightInInches(qreal screenDiagonal, quint32 resolutionWidth, qu
  * \param   resolutionWidth               Screen width in pixels                                                                                    *
  * \param   resolutionHeight              Screen height in pixels                                                                                   *
  *                                                                                                                                                  *
- * \return  This function returns the calculated screen height in centimeters.                                                                      *
+ * \return  This function returns the calculated number of pixels per inch.                                                                         *
  ****************************************************************************************************************************************************/
-qreal calcScreenHeightInCentimeters(qreal screenDiagonal, quint32 resolutionWidth, quint32 resolutionHeight);
+qreal calcNumberPixelsPerInch(qreal screenDiagonal, quint32 resolutionWidth, quint32 resolutionHeight);
 
 #endif // SCREENCALC_H

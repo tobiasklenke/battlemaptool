@@ -29,14 +29,6 @@ qreal calcScreenWidthInInches(qreal screenDiagonal, quint32 resolutionWidth, qui
 }
 
 /*!
- * \brief This function calculates the screen width in centimeters.
- */
-qreal calcScreenWidthInCentimeters(qreal screenDiagonal, quint32 resolutionWidth, quint32 resolutionHeight)
-{
-    return calcScreenWidthInInches(screenDiagonal, resolutionWidth, resolutionHeight) * INCH_IN_CENTIMETERS;
-}
-
-/*!
  * \brief This function calculates the screen height in inches.
  */
 qreal calcScreenHeightInInches(qreal screenDiagonal, quint32 resolutionWidth, quint32 resolutionHeight)
@@ -45,9 +37,9 @@ qreal calcScreenHeightInInches(qreal screenDiagonal, quint32 resolutionWidth, qu
 }
 
 /*!
- * \brief This function calculates the screen height in centimeters.
+ * \brief This function calculates the number of pixels per inch.
  */
-qreal calcScreenHeightInCentimeters(qreal screenDiagonal, quint32 resolutionWidth, quint32 resolutionHeight)
+qreal calcNumberPixelsPerInch(qreal screenDiagonal, quint32 resolutionWidth, quint32 resolutionHeight)
 {
-    return calcScreenHeightInInches(screenDiagonal, resolutionWidth, resolutionHeight) * INCH_IN_CENTIMETERS;
+    return qSqrt(qPow(static_cast<qreal>(resolutionWidth), 2) + qPow(static_cast<qreal>(resolutionHeight), 2)) / screenDiagonal;
 }
