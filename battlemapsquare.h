@@ -40,7 +40,7 @@ public:
     ~BattleMapSquare();
 
     /*! *********************************************************************************************************************************************
-     * \brief   This function returns the pixmap of the member variable pBattleMapSquarePixmap                                                      *
+     * \brief   This function returns the pixmap of the member variable pBattleMapSquarePixmap.                                                     *
      *                                                                                                                                              *
      * \details -                                                                                                                                   *
      *                                                                                                                                              *
@@ -49,7 +49,7 @@ public:
     QPixmap getBattleMapSquarePixmap() const;
 
     /*! *********************************************************************************************************************************************
-     * \brief   This function sets the pixmap of the member variable pBattleMapSquarePixmap                                                         *
+     * \brief   This function sets the pixmap of the member variable pBattleMapSquarePixmap.                                                        *
      *                                                                                                                                              *
      * \details -                                                                                                                                   *
      *                                                                                                                                              *
@@ -60,7 +60,7 @@ public:
     void setBattleMapSquarePixmap(QPixmap battleMapSquarePixmap);
 
     /*! *********************************************************************************************************************************************
-     * \brief   This function scales the pixmap of the member variable pBattleMapSquarePixmap                                                       *
+     * \brief   This function scales the pixmap of the member variable pBattleMapSquarePixmap.                                                      *
      *                                                                                                                                              *
      * \details -                                                                                                                                   *
      *                                                                                                                                              *
