@@ -106,7 +106,8 @@ private slots:
     /*! *********************************************************************************************************************************************
      * \brief   This function updates the member variables of the Battle Map scene section in case of an appropriate key press.                     *
      *                                                                                                                                              *
-     * \details -                                                                                                                                   *
+     * \details This function updates the member variables of the Battle Map scene section in case of an appropriate key press and centers the      *
+     *          graphics view on the new position of the scene center if the border of the Battle Map scene section is moved outside the viewport.  *
      *                                                                                                                                              *
      * \return  This function does not have any return value.                                                                                       *
      ************************************************************************************************************************************************/

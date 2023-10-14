@@ -124,6 +124,9 @@ void MasterScreenHandler::changed_ScaleFactor(qreal scaleFactor)
  */
 void MasterScreenHandler::pressed_Key(Qt::Key key)
 {
+    QPointF scenePosCenter = pGraphicsView->mapToScene(pGraphicsView->viewport()->rect().center());
+    qreal difference;
+
     switch(key)
     {
     case Qt::Key_Left:
@@ -131,6 +134,15 @@ void MasterScreenHandler::pressed_Key(Qt::Key key)
         {
             pBattleMapSceneSection->setIndexFirstColumnSceneSection(pBattleMapSceneSection->getIndexFirstColumnSceneSection() - 1U);
             updateBattleMapSceneSection();
+
+            /* center graphics view on new position of scene center if border of Battle Map scene section is moved outside the viewport */
+            difference = pGraphicsView->mapToScene(pGraphicsView->viewport()->rect().topLeft()).x() -
+                    static_cast<qreal>(pBattleMapSceneSection->getIndexFirstColumnSceneSection() * CONFIG_BATTLEMAPSQUARE_SIZE);
+
+            if (0 < difference)
+            {
+                pGraphicsView->centerOn(scenePosCenter.x() - difference, scenePosCenter.y());
+            }
         }
 
         break;
@@ -140,6 +152,15 @@ void MasterScreenHandler::pressed_Key(Qt::Key key)
         {
             pBattleMapSceneSection->setIndexFirstRowSceneSection(pBattleMapSceneSection->getIndexFirstRowSceneSection() - 1U);
             updateBattleMapSceneSection();
+
+            /* center graphics view on new position of scene center if border of Battle Map scene section is moved outside the viewport */
+            difference = pGraphicsView->mapToScene(pGraphicsView->viewport()->rect().topLeft()).y() -
+                     static_cast<qreal>(pBattleMapSceneSection->getIndexFirstRowSceneSection() * CONFIG_BATTLEMAPSQUARE_SIZE);
+
+            if (0 < difference)
+            {
+                pGraphicsView->centerOn(scenePosCenter.x(), scenePosCenter.y() - difference);
+            }
         }
 
         break;
@@ -149,6 +170,15 @@ void MasterScreenHandler::pressed_Key(Qt::Key key)
         {
             pBattleMapSceneSection->setIndexFirstColumnSceneSection(pBattleMapSceneSection->getIndexFirstColumnSceneSection() + 1U);
             updateBattleMapSceneSection();
+
+            /* center graphics view on new position of scene center if border of Battle Map scene section is moved outside the viewport */
+            difference = static_cast<qreal>((pBattleMapSceneSection->getIndexFirstColumnSceneSection() + pBattleMapSceneSection->getNumberColumnsSceneSection())* CONFIG_BATTLEMAPSQUARE_SIZE -
+                                            pGraphicsView->mapToScene(pGraphicsView->viewport()->rect().bottomRight()).x());
+
+            if (0 < difference)
+            {
+                pGraphicsView->centerOn(scenePosCenter.x() + difference, scenePosCenter.y());
+            }
         }
 
         break;
@@ -158,6 +188,15 @@ void MasterScreenHandler::pressed_Key(Qt::Key key)
         {
             pBattleMapSceneSection->setIndexFirstRowSceneSection(pBattleMapSceneSection->getIndexFirstRowSceneSection() + 1U);
             updateBattleMapSceneSection();
+
+            /* center graphics view on new position of scene center if border of Battle Map scene section is moved outside the viewport */
+            difference = static_cast<qreal>((pBattleMapSceneSection->getIndexFirstRowSceneSection() + pBattleMapSceneSection->getNumberRowsSceneSection())* CONFIG_BATTLEMAPSQUARE_SIZE) -
+                    pGraphicsView->mapToScene(pGraphicsView->viewport()->rect().bottomRight()).y();
+
+            if (0 < difference)
+            {
+                pGraphicsView->centerOn(scenePosCenter.x(),  scenePosCenter.y() + difference);
+            }
         }
 
         break;
