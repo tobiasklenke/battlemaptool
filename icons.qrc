@@ -3,5 +3,6 @@
         <file>icons/newbattlemap.png</file>
         <file>icons/openbattlemap.png</file>
         <file>icons/quit.png</file>
+        <file>icons/updateplayerscreen.png</file>
     </qresource>
 </RCC>
