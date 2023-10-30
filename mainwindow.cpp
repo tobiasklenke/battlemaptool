@@ -15,6 +15,7 @@
 MainWindow::MainWindow(QGraphicsView *playerWindow, QWidget *parent) :
     QMainWindow(parent),
     pUserInterface(new Ui::MainWindow),
+    pOperationModeActionGroup(new QActionGroup(this)),
     pDialog_NewBattleMap(nullptr),
     pBattleMap(new BattleMap())
 {
@@ -24,6 +25,12 @@ MainWindow::MainWindow(QGraphicsView *playerWindow, QWidget *parent) :
     m_masterScreenHandler.setBattleMapSceneSection(&m_battleMapSceneSection);
     m_playerScreenHandler.setGraphicsView(playerWindow);
     m_playerScreenHandler.setBattleMapSceneSection(&m_battleMapSceneSection);
+
+    /* create exclusive action group */
+    pOperationModeActionGroup->addAction(pUserInterface->Action_Select);
+    pOperationModeActionGroup->addAction(pUserInterface->Action_CoverBattleMap);
+    pOperationModeActionGroup->addAction(pUserInterface->Action_UncoverBattleMap);
+    pOperationModeActionGroup->setExclusive(true);
 
     /* connect signals and slots of the main window actions */
     connect(pUserInterface->Action_NewBattleMap, SIGNAL(triggered()), this, SLOT(triggered_Action_NewBattleMap()));
@@ -147,9 +154,6 @@ void MainWindow::toggled_Action_Select(bool checked)
 {
     if(checked)
     {
-        pUserInterface->Action_CoverBattleMap->setChecked(false);
-        pUserInterface->Action_UncoverBattleMap->setChecked(false);
-
         m_masterScreenHandler.setOperationMode(Select);
         m_playerScreenHandler.setOperationMode(Select);
     }
@@ -162,9 +166,6 @@ void MainWindow::toggled_Action_CoverBattleMap(bool checked)
 {
     if(checked)
     {
-        pUserInterface->Action_Select->setChecked(false);
-        pUserInterface->Action_UncoverBattleMap->setChecked(false);
-
         m_masterScreenHandler.setOperationMode(CoverBattleMap);
         m_playerScreenHandler.setOperationMode(CoverBattleMap);
     }
@@ -177,9 +178,6 @@ void MainWindow::toggled_Action_UncoverBattleMap(bool checked)
 {
     if(checked)
     {
-        pUserInterface->Action_Select->setChecked(false);
-        pUserInterface->Action_CoverBattleMap->setChecked(false);
-
         m_masterScreenHandler.setOperationMode(UncoverBattleMap);
         m_playerScreenHandler.setOperationMode(UncoverBattleMap);
     }

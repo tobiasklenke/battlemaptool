@@ -5,6 +5,7 @@
  * INCLUDES                                                                                                                                         *
  ****************************************************************************************************************************************************/
 
+#include <QActionGroup>
 #include <QMainWindow>
 
 #include "battlemap.h"
@@ -103,7 +104,7 @@ private slots:
     /*! *********************************************************************************************************************************************
      * \brief   This function handles a toggle of Action_Select.                                                                                    *
      *                                                                                                                                              *
-     * \details -                                                                                                                                   *
+     * \details This function sets the operation mode of the master and the player screen handlers to Select.                                       *
      *                                                                                                                                              *
      * \return  This function does not have any return value.                                                                                       *
      ************************************************************************************************************************************************/
@@ -112,7 +113,7 @@ private slots:
     /*! *********************************************************************************************************************************************
      * \brief   This function handles a toggle of Action_CoverBattleMap.                                                                            *
      *                                                                                                                                              *
-     * \details -                                                                                                                                   *
+     * \details This function sets the operation mode of the master and the player screen handlers to CoverBattleMap.                               *
      *                                                                                                                                              *
      * \return  This function does not have any return value.                                                                                       *
      ************************************************************************************************************************************************/
@@ -121,7 +122,7 @@ private slots:
     /*! *********************************************************************************************************************************************
      * \brief   This function handles a toggle of Action_UncoverBattleMap.                                                                          *
      *                                                                                                                                              *
-     * \details -                                                                                                                                   *
+     * \details This function sets the operation mode of the master and the player screen handlers to UncoverBattleMap.                             *
      *                                                                                                                                              *
      * \return  This function does not have any return value.                                                                                       *
      ************************************************************************************************************************************************/
@@ -142,6 +143,11 @@ private:
      * \brief This is a pointer to the user interface of the class MainWindow.
      */
     Ui::MainWindow *pUserInterface;
+
+    /*!
+     * \brief TODO
+     */
+    QActionGroup *pOperationModeActionGroup;
 
     /*!
      * \brief This is a pointer to the user interface of the class Dialog_NewBattleMap.
