@@ -13,6 +13,7 @@
  */
 GraphicsView_BattleMap::GraphicsView_BattleMap(QWidget *parent) :
     QGraphicsView(parent),
+    m_eventProcessingEnabled(false),
     m_scaleFactor(1.0),
     m_dragModeEnabled(false),
     m_cursor(Qt::ArrowCursor),
@@ -26,6 +27,22 @@ GraphicsView_BattleMap::GraphicsView_BattleMap(QWidget *parent) :
  */
 GraphicsView_BattleMap::~GraphicsView_BattleMap()
 {
+}
+
+/*!
+ * \brief This function returns the value of the member variable m_eventProcessingEnabled.
+ */
+bool GraphicsView_BattleMap::getEventProcessingEnabled() const
+{
+    return m_eventProcessingEnabled;
+}
+
+/*!
+ * \brief This function sets the value of the member variable m_eventProcessingEnabled.
+ */
+void GraphicsView_BattleMap::setEventProcessingEnabled(bool eventProcessingEnabled)
+{
+    m_eventProcessingEnabled = eventProcessingEnabled;
 }
 
 /*!
@@ -49,29 +66,32 @@ void GraphicsView_BattleMap::resetScaling()
  */
 void GraphicsView_BattleMap::wheelEvent(QWheelEvent *event)
 {
-    setTransformationAnchor(AnchorUnderMouse);
-
-    scale(1 / m_scaleFactor, 1 / m_scaleFactor);
-
-    /* incrementing or decrementing the scale factor by 10 percent, depending on the scrolling direction */
-    if (0 < event->angleDelta().y())
+    if (m_eventProcessingEnabled)
     {
-        if (BATTLEMAPVIEW_SCALEFACTOR_MAXVALUE_PERCENTAGE > static_cast<quint32>(m_scaleFactor * HUNDRED_PERCENTAGE))
-        {
-            m_scaleFactor = m_scaleFactor + BATTLEMAPVIEW_SCALEFACTOR_STEPSIZE;
-        }
-    }
-    else
-    {
-        if (BATTLEMAPVIEW_SCALEFACTOR_MINVALUE_PERCENTAGE < static_cast<quint32>(m_scaleFactor * HUNDRED_PERCENTAGE))
-        {
-            m_scaleFactor = m_scaleFactor - BATTLEMAPVIEW_SCALEFACTOR_STEPSIZE;
-        }
-    }
+        setTransformationAnchor(AnchorUnderMouse);
 
-    scale(m_scaleFactor, m_scaleFactor);
+        scale(1 / m_scaleFactor, 1 / m_scaleFactor);
 
-    emit changed_ScaleFactor(m_scaleFactor);
+        /* incrementing or decrementing the scale factor by 10 percent, depending on the scrolling direction */
+        if (0 < event->angleDelta().y())
+        {
+            if (BATTLEMAPVIEW_SCALEFACTOR_MAXVALUE_PERCENTAGE > static_cast<quint32>(m_scaleFactor * HUNDRED_PERCENTAGE))
+            {
+                m_scaleFactor = m_scaleFactor + BATTLEMAPVIEW_SCALEFACTOR_STEPSIZE;
+            }
+        }
+        else
+        {
+            if (BATTLEMAPVIEW_SCALEFACTOR_MINVALUE_PERCENTAGE < static_cast<quint32>(m_scaleFactor * HUNDRED_PERCENTAGE))
+            {
+                m_scaleFactor = m_scaleFactor - BATTLEMAPVIEW_SCALEFACTOR_STEPSIZE;
+            }
+        }
+
+        scale(m_scaleFactor, m_scaleFactor);
+
+        emit changed_ScaleFactor(m_scaleFactor);
+    }
 }
 
 /*!
@@ -79,18 +99,21 @@ void GraphicsView_BattleMap::wheelEvent(QWheelEvent *event)
  */
 void GraphicsView_BattleMap::mousePressEvent(QMouseEvent *event)
 {
-    if (Qt::RightButton == event->button())
+    if (m_eventProcessingEnabled)
     {
-        m_dragModeEnabled = true;
+        if (Qt::MiddleButton == event->button())
+        {
+            m_dragModeEnabled = true;
 
-        m_cursor = viewport()->cursor();
-        viewport()->setCursor(Qt::SizeAllCursor);
+            m_cursor = viewport()->cursor();
+            viewport()->setCursor(Qt::SizeAllCursor);
 
-        m_scenePosCenter = mapToScene(viewport()->rect().center());
-        m_viewPosPress = event->pos();
+            m_scenePosCenter = mapToScene(viewport()->rect().center());
+            m_viewPosPress = event->pos();
+        }
+
+        QGraphicsView::mousePressEvent(event);
     }
-
-    QGraphicsView::mousePressEvent(event);
 }
 
 /*!
@@ -98,12 +121,15 @@ void GraphicsView_BattleMap::mousePressEvent(QMouseEvent *event)
  */
 void GraphicsView_BattleMap::mouseMoveEvent(QMouseEvent *event)
 {
-    if (m_dragModeEnabled)
+    if (m_eventProcessingEnabled)
     {
-        centerOn(m_scenePosCenter - (event->pos() - m_viewPosPress) * (1 / m_scaleFactor));
-    }
+        if (m_dragModeEnabled)
+        {
+            centerOn(m_scenePosCenter - (event->pos() - m_viewPosPress) * (1 / m_scaleFactor));
+        }
 
-    QGraphicsView::mouseMoveEvent(event);
+        QGraphicsView::mouseMoveEvent(event);
+    }
 }
 
 /*!
@@ -111,14 +137,17 @@ void GraphicsView_BattleMap::mouseMoveEvent(QMouseEvent *event)
  */
 void GraphicsView_BattleMap::mouseReleaseEvent(QMouseEvent *event)
 {
-    if (Qt::RightButton == event->button())
+    if (m_eventProcessingEnabled)
     {
-        m_dragModeEnabled = false;
+        if (Qt::MiddleButton == event->button())
+        {
+            m_dragModeEnabled = false;
 
-        viewport()->setCursor(m_cursor);
+            viewport()->setCursor(m_cursor);
+        }
+
+        QGraphicsView::mouseReleaseEvent(event);
     }
-
-    QGraphicsView::mouseReleaseEvent(event);
 }
 
 /*!
@@ -126,7 +155,10 @@ void GraphicsView_BattleMap::mouseReleaseEvent(QMouseEvent *event)
  */
 void GraphicsView_BattleMap::keyPressEvent(QKeyEvent *event)
 {
-    emit pressed_Key(static_cast<Qt::Key>(event->key()));
+    if (m_eventProcessingEnabled)
+    {
+        emit pressed_Key(static_cast<Qt::Key>(event->key()));
+    }
 }
 
 /****************************************************************************************************************************************************

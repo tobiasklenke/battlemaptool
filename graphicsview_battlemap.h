@@ -44,6 +44,26 @@ public:
     ~GraphicsView_BattleMap();
 
     /*! *********************************************************************************************************************************************
+     * \brief   This function returns the value of the member variable m_eventProcessingEnabled.                                                    *
+     *                                                                                                                                              *
+     * \details -                                                                                                                                   *
+     *                                                                                                                                              *
+     * \return  This function returns the value of the member variable m_eventProcessingEnabled.                                                    *
+     ************************************************************************************************************************************************/
+    bool getEventProcessingEnabled() const;
+
+    /*! *********************************************************************************************************************************************
+     * \brief   This function sets the value of the member variable m_eventProcessingEnabled.                                                       *
+     *                                                                                                                                              *
+     * \details -                                                                                                                                   *
+     *                                                                                                                                              *
+     * \param   eventProcessingEnabled        Information whether the event processing shall be enabled                                             *
+     *                                                                                                                                              *
+     * \return  This function does not have any return value.                                                                                       *
+     ************************************************************************************************************************************************/
+    void setEventProcessingEnabled(bool eventProcessingEnabled);
+
+    /*! *********************************************************************************************************************************************
      * \brief   This function resets the scaling.                                                                                                   *
      *                                                                                                                                              *
      * \details This function scales the view to the original size, resets the scale factor and emits the signal that the scale factor has been     *
@@ -112,7 +132,7 @@ protected:
     /*! *********************************************************************************************************************************************
      * \brief   This function handles a key press event on the Battle Map view.                                                                     *
      *                                                                                                                                              *
-     * \details TODO                                                                                                                                *
+     * \details This function emits the signal pressed_Key.                                                                                         *
      *                                                                                                                                              *
      * \param   event                         Key press event to be handled                                                                         *
      *                                                                                                                                              *
@@ -135,6 +155,11 @@ signals:
 private slots: /* - */
 
 private:
+
+    /*!
+     * \brief This is the information if the event processing is enabled.
+     */
+    bool m_eventProcessingEnabled;
 
     /*!
      * \brief This is the factor that is used for scaling the Battle Map view while scrolling.

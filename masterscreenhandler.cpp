@@ -112,6 +112,7 @@ void MasterScreenHandler::showBattleMapImage()
     connect(pBattleMapScene, SIGNAL(selected_BattleMapSquares()), this, SLOT(selected_BattleMapSquares()));
     pGraphicsView->resetScaling();
     pGraphicsView->setScene(pBattleMapScene);
+    pGraphicsView->setEventProcessingEnabled(true);
 
     for (quint32 rowIdx = 0U; rowIdx < pBattleMap->getNumberRows(); rowIdx++)
     {

@@ -604,6 +604,8 @@ void Dialog_NewBattleMap::showEmptyBattleMapImage()
             pBattleMapScene->setSceneRect(0, 0, m_battleMapImagePixMap.pixmap().width(), m_battleMapImagePixMap.pixmap().height());
 
             drawBattleMapGrid();
+
+            pUserInterface->GraphicsView_NewBattleMap->setEventProcessingEnabled(true);
         }
     }
 }
@@ -637,6 +639,7 @@ void Dialog_NewBattleMap::showSourceBattleMapImage()
     else
     {
         pUserInterface->GraphicsView_NewBattleMap->setInteractive(true);
+        pUserInterface->GraphicsView_NewBattleMap->setEventProcessingEnabled(true);
         pUserInterface->GraphicsView_NewBattleMap->viewport()->setCursor(Qt::CrossCursor);
         pUserInterface->GraphicsView_NewBattleMap->setToolTip("Select Battle Map square");
 
