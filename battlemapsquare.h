@@ -70,6 +70,26 @@ public:
      ************************************************************************************************************************************************/
     void scaleBattleMapSquarePixmap(quint32 newSize);
 
+    /*! *********************************************************************************************************************************************
+     * \brief   This function returns the value of the member variable m_covered.                                                                   *
+     *                                                                                                                                              *
+     * \details -                                                                                                                                   *
+     *                                                                                                                                              *
+     * \return  This function returns the value of the member variable m_covered.                                                                   *
+     ************************************************************************************************************************************************/
+    bool getCovered() const;
+
+    /*! *********************************************************************************************************************************************
+     * \brief   This function sets the value of the member variable m_covered.                                                                      *
+     *                                                                                                                                              *
+     * \details -                                                                                                                                   *
+     *                                                                                                                                              *
+     * \param   covered                       Information whether the Battle Map square is covered                                                  *
+     *                                                                                                                                              *
+     * \return  This function does not have any return value.                                                                                       *
+     ************************************************************************************************************************************************/
+    void setCovered(bool covered);
+
 protected: /* - */
 
 signals: /* - */
@@ -82,6 +102,11 @@ private:
      * \brief This is the pixmap of the Battle Map square.
      */
     QPixmap m_battleMapSquarePixmap;
+
+    /*!
+     * \brief This is the information whether the Battle Map square is covered.
+     */
+    bool m_covered;
 };
 
 #endif // BATTLEMAPSQUARE_H

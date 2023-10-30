@@ -11,7 +11,8 @@
 /*!
  * \brief This function is the constructor of the class BattleMapSquare.
  */
-BattleMapSquare::BattleMapSquare()
+BattleMapSquare::BattleMapSquare() :
+    m_covered(false)
 {
     /* initialize Battle Map square with image of empty Battle Map square */
     m_battleMapSquarePixmap = QPixmap::fromImage(QImage((EMPTYBATTLEMAPSQUAREIMAGE_SOURCE)));
@@ -47,6 +48,22 @@ void BattleMapSquare::setBattleMapSquarePixmap(QPixmap battleMapSquarePixMap)
 void BattleMapSquare::scaleBattleMapSquarePixmap(quint32 newSize)
 {
     m_battleMapSquarePixmap = m_battleMapSquarePixmap.scaled(QSize(newSize, newSize));
+}
+
+/*!
+ * \brief This function returns the value of the member variable m_covered.
+ */
+bool BattleMapSquare::getCovered() const
+{
+    return m_covered;
+}
+
+/*!
+ * \brief This function sets the value of the member variable m_covered.
+ */
+void BattleMapSquare::setCovered(bool covered)
+{
+    m_covered = covered;
 }
 
 /****************************************************************************************************************************************************
