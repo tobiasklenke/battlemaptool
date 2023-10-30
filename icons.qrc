@@ -1,8 +1,11 @@
 <RCC>
-    <qresource prefix="/icon">
+    <qresource prefix="/icons">
         <file>icons/newbattlemap.png</file>
         <file>icons/openbattlemap.png</file>
         <file>icons/quit.png</file>
         <file>icons/updateplayerscreen.png</file>
+        <file>icons/coverbattlemap.png</file>
+        <file>icons/uncoverbattlemap.png</file>
+        <file>icons/cursor.png</file>
     </qresource>
 </RCC>
