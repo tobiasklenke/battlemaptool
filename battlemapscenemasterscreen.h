@@ -8,6 +8,7 @@
 #include <QGraphicsRectItem>
 
 #include "battlemapscene.h"
+#include "defines.h"
 
 /****************************************************************************************************************************************************
  * CLASS DECLARATION                                                                                                                                *
@@ -41,6 +42,15 @@ public:
      * \return  This function does not have any return value.                                                                                       *
      ************************************************************************************************************************************************/
     ~BattleMapSceneMasterScreen();
+
+    /*! *********************************************************************************************************************************************
+     * \brief   This function updates the member variable m_scaleFactor and the pen properties.                                                     *
+     *                                                                                                                                              *
+     * \details -                                                                                                                                   *
+     *                                                                                                                                              *
+     * \return  This function does not have any return value.                                                                                       *
+     ************************************************************************************************************************************************/
+    void changed_ScaleFactor(qreal scaleFactor);
 
 protected:
 
@@ -77,11 +87,26 @@ protected:
      ************************************************************************************************************************************************/
     void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
 
-signals: /* - */
+signals:
+
+    /*! *********************************************************************************************************************************************
+     * \brief This signal is emitted as soon as some Battle Map squares have been selected.                                                         *
+     ************************************************************************************************************************************************/
+    void selected_BattleMapSquares(void);
 
 private slots: /* - */
 
-private: /* - */
+private:
+
+    /*!
+     * \brief This is the rectangle to be drawn while the selection on the Battle Map.
+     */
+    QGraphicsRectItem  m_battleMapSelectionSquareToDraw;
+
+    /*!
+     * \brief This is the factor that is used for scaling the Battle Map scene while scrolling.
+     */
+    qreal m_scaleFactor;
 
 };
 

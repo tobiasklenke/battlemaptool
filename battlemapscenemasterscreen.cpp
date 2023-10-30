@@ -12,7 +12,8 @@
  * \brief This function is the constructor of the class BattleMapSceneMasterScreen.
  */
 BattleMapSceneMasterScreen::BattleMapSceneMasterScreen(QObject *parent) :
-    BattleMapScene(parent)
+    BattleMapScene(parent),
+    m_scaleFactor(1.0)
 {
 }
 
@@ -21,6 +22,16 @@ BattleMapSceneMasterScreen::BattleMapSceneMasterScreen(QObject *parent) :
  */
 BattleMapSceneMasterScreen::~BattleMapSceneMasterScreen()
 {
+}
+
+/*!
+ * \brief This function updates the member variable m_scaleFactor and the pen properties.
+ */
+void BattleMapSceneMasterScreen::changed_ScaleFactor(qreal scaleFactor)
+{
+    m_scaleFactor = scaleFactor;
+
+    m_battleMapSelectionSquareToDraw.setPen(QPen(Qt::black, BATTLEMAPSELECTIONSQUARE_LINEWIDTH * (1 / m_scaleFactor), Qt::DotLine));
 }
 
 /****************************************************************************************************************************************************
@@ -32,7 +43,18 @@ BattleMapSceneMasterScreen::~BattleMapSceneMasterScreen()
  */
 void BattleMapSceneMasterScreen::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
-    BattleMapScene::mousePressEvent(event);
+    if (Qt::LeftButton == event->button())
+    {
+        BattleMapScene::mousePressEvent(event);
+
+        /* check whether the mouse press event is positioned at the Battle Map scene */
+        if ((0 <= event->scenePos().x()) && (event->scenePos().x() <= this->width()) &&
+                (0 <= event->scenePos().y()) && (event->scenePos().y() <= this->height()))
+        {
+            addItem(&m_battleMapSelectionSquareToDraw);
+            m_battleMapSelectionSquareToDraw.setPen(QPen(BATTLEMAPSELECTIONSQUARE_COLOR, BATTLEMAPSELECTIONSQUARE_LINEWIDTH * (1 / m_scaleFactor), Qt::DotLine));
+        }
+    }
 }
 
 /*!
@@ -40,7 +62,14 @@ void BattleMapSceneMasterScreen::mousePressEvent(QGraphicsSceneMouseEvent *event
  */
 void BattleMapSceneMasterScreen::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
-    Q_UNUSED(event);
+    if (!m_scenePosPress.isNull() && m_scenePosRelease.isNull())
+    {
+        /* determine corners of the square built from mouse press event and mouse move event positions */
+        QPointF topLeft = QPointF(qMin(m_scenePosPress.rx(), event->scenePos().rx()), qMin(m_scenePosPress.y(), event->scenePos().ry()));
+        QPointF bottomRight = QPointF(qMax(m_scenePosPress.rx(), event->scenePos().rx()), qMax(m_scenePosPress.y(), event->scenePos().ry()));
+
+        m_battleMapSelectionSquareToDraw.setRect(topLeft.rx(), topLeft.ry(), (bottomRight - topLeft).rx(), (bottomRight - topLeft).ry());
+    }
 }
 
 /*!
@@ -48,7 +77,20 @@ void BattleMapSceneMasterScreen::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
  */
 void BattleMapSceneMasterScreen::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
-    BattleMapScene::mouseReleaseEvent(event);
+    if (Qt::LeftButton == event->button())
+    {
+        m_battleMapSelectionSquareToDraw.setRect(0, 0, 0, 0);
+        removeItem(&m_battleMapSelectionSquareToDraw);
+
+        BattleMapScene::mouseReleaseEvent(event);
+
+        /* check whether the mouse release event is positioned at the Battle Map scene */
+        if ((0 <= event->scenePos().x()) && (event->scenePos().x() <= this->width()) &&
+                (0 <= event->scenePos().y()) && (event->scenePos().y() <= this->height()))
+        {
+            emit selected_BattleMapSquares();
+        }
+    }
 }
 
 /****************************************************************************************************************************************************
