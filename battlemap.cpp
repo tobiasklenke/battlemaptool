@@ -115,6 +115,22 @@ void BattleMap::scaleBattleMapSquarePixmap(quint32 rowIdx, quint32 columnIdx, qu
     m_battleMapSquares[rowIdx][columnIdx]->scaleBattleMapSquarePixmap(newSize);
 }
 
+/*!
+ * \brief  This function returns the coverage state of an entry of the nested QList member variable m_battleMapSquares.
+ */
+bool BattleMap::getBattleMapSquareCovered(quint32 rowIdx, quint32 columnIdx) const
+{
+    return m_battleMapSquares[rowIdx][columnIdx]->getCovered();
+}
+
+/*!
+ * \brief This function sets the coverage state of an entry of the nested QList member variable m_battleMapSquares.
+ */
+void BattleMap::setBattleMapSquareCovered(quint32 rowIdx, quint32 columnIdx, bool covered)
+{
+    m_battleMapSquares[rowIdx][columnIdx]->setCovered(covered);
+}
+
 /****************************************************************************************************************************************************
  * DEFINITION OF PROTECTED FUNCTIONS                                                                                                                *
  ****************************************************************************************************************************************************/

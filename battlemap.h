@@ -126,6 +126,31 @@ public:
      ************************************************************************************************************************************************/
     void scaleBattleMapSquarePixmap(quint32 rowIdx, quint32 columnIdx, quint32 newSize);
 
+    /*! *********************************************************************************************************************************************
+     * \brief   This function returns the coverage state of an entry of the nested QList member variable m_battleMapSquares.                        *
+     *                                                                                                                                              *
+     * \details -                                                                                                                                   *
+     *                                                                                                                                              *
+     * \param   rowIdx                        Index of the row                                                                                      *
+     * \param   columnIdx                     Index of the column                                                                                   *
+     *                                                                                                                                              *
+     * \return  This function returns the coverage state of an entry of the nested QList member variable m_battleMapSquares.                        *
+     ************************************************************************************************************************************************/
+    bool getBattleMapSquareCovered(quint32 rowIdx, quint32 columnIdx) const;
+
+    /*! *********************************************************************************************************************************************
+     * \brief   This function sets the coverage state of an entry of the nested QList member variable m_battleMapSquares.                           *
+     *                                                                                                                                              *
+     * \details -                                                                                                                                   *
+     *                                                                                                                                              *
+     * \param   rowIdx                        Index of the row                                                                                      *
+     * \param   columnIdx                     Index of the column                                                                                   *
+     * \param   covered                       Coverage state                                                                                        *
+     *                                                                                                                                              *
+     * \return  This function does not have any return value.                                                                                       *
+     ************************************************************************************************************************************************/
+    void setBattleMapSquareCovered(quint32 rowIdx, quint32 columnIdx, bool covered);
+
 protected: /* - */
 
 signals: /* - */
