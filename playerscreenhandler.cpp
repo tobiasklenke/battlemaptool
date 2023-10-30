@@ -16,7 +16,8 @@ PlayerScreenHandler::PlayerScreenHandler() :
     pBattleMap(nullptr),
     pBattleMapSceneSection(nullptr),
     pBattleMapScene(new BattleMapScenePlayerScreen()),
-    m_battleMapSquaresGraphicsItems(QList<QList<QGraphicsPixmapItem*>>()),
+    m_operationMode(Select),
+    m_battleMapSquaresGraphicsItems(QList<QList<CustomGraphicsPixmapItem*>>()),
     m_pixelsPerBattleMapSquare(static_cast<quint32>(calcNumberPixelsPerInch(CONFIG_PLAYER_SCREEN_DIAGONAL, CONFIG_PLAYER_SCREEN_RESOLUTION.height(), CONFIG_PLAYER_SCREEN_RESOLUTION.width())))
 {
 }
@@ -64,6 +65,36 @@ void PlayerScreenHandler::setBattleMapSceneSection(BattleMapSceneSection *battle
 }
 
 /*!
+ * \brief This function sets the operation mode.
+ */
+void PlayerScreenHandler::setOperationMode(operationMode_t operationMode)
+{
+    m_operationMode = operationMode;
+
+    QCursor cursor;
+
+    switch (operationMode)
+    {
+    case Select:
+        cursor = Qt::ArrowCursor;
+        break;
+    case CoverBattleMap:
+        /* This mode is not supported on the player screen. */
+        cursor = Qt::ArrowCursor;
+        break;
+    case UncoverBattleMap:
+        /* This mode is not supported on the player screen. */
+        cursor = Qt::ArrowCursor;
+        break;
+    default:
+        cursor = Qt::ArrowCursor;
+        break;
+    }
+
+    pGraphicsView->viewport()->setCursor(cursor);
+}
+
+/*!
  * \brief This function initializes the Battle Map image without showing it.
  */
 void PlayerScreenHandler::initBattleMapImage()
@@ -96,25 +127,9 @@ void PlayerScreenHandler::updateBattleMapImage()
 {
     pGraphicsView->setEnabled(true);
 
-    /* Update the visibility of the Battle Map squares depending on whether they are displayed on the player screen */
-    for (quint32 rowIdx = 0U; rowIdx < pBattleMap->getNumberRows(); rowIdx++)
-    {
-        for (quint32 columnIdx = 0U; columnIdx < pBattleMap->getNumberColumns(); columnIdx++)
-        {
-            if ((rowIdx < pBattleMapSceneSection->getIndexFirstRowSceneSection()) || (pBattleMapSceneSection->getIndexFirstRowSceneSection() + pBattleMapSceneSection->getNumberRowsSceneSection() - 1U < rowIdx) ||
-                    (columnIdx < pBattleMapSceneSection->getIndexFirstColumnSceneSection()) || (pBattleMapSceneSection->getIndexFirstColumnSceneSection() + pBattleMapSceneSection->getNumberColumnsSceneSection() - 1U < columnIdx))
-            {
-                m_battleMapSquaresGraphicsItems[rowIdx][columnIdx]->setVisible(false);
-            }
-            else
-            {
-                m_battleMapSquaresGraphicsItems[rowIdx][columnIdx]->setVisible(true);
-            }
-        }
-    }
+    updateBattleMapSquaresVisibility();
 
-    pBattleMapScene->setSceneRect(QRectF(QPointF(pBattleMapSceneSection->getIndexFirstColumnSceneSection(), pBattleMapSceneSection->getIndexFirstRowSceneSection()) * m_pixelsPerBattleMapSquare,
-                                         QSizeF(pBattleMapSceneSection->getNumberColumnsSceneSection(), pBattleMapSceneSection->getNumberRowsSceneSection()) * m_pixelsPerBattleMapSquare));
+    updateBattleMapSquaresOpacity();
 }
 
 /****************************************************************************************************************************************************
@@ -161,14 +176,14 @@ void PlayerScreenHandler::updateBattleMapSquaresGraphicsItems()
         /* append row to nested QList member variable m_battleMapSquaresGraphicsItems if row does not already exist */
         if (rowIdx + 1 > m_battleMapSquaresGraphicsItems.count())
         {
-            m_battleMapSquaresGraphicsItems.append(QList<QGraphicsPixmapItem*>());
+            m_battleMapSquaresGraphicsItems.append(QList<CustomGraphicsPixmapItem*>());
         }
 
         for (quint32 columnIdx = 0U; columnIdx < pBattleMap->getNumberColumns(); columnIdx++)
         {
             /* append graphics item of Battle Map square to row of nested QList member variable m_battleMapSquaresGraphicsItems */
             QPixmap scaledPixmap = pBattleMap->getBattleMapSquarePixmap(rowIdx, columnIdx).scaled(QSize(m_pixelsPerBattleMapSquare, m_pixelsPerBattleMapSquare));
-            m_battleMapSquaresGraphicsItems[rowIdx].append(new QGraphicsPixmapItem(scaledPixmap));
+            m_battleMapSquaresGraphicsItems[rowIdx].append(new CustomGraphicsPixmapItem(scaledPixmap));
         }
     }
 }
@@ -184,4 +199,80 @@ void PlayerScreenHandler::deleteBattleMapScene()
     }
 
     delete pBattleMapScene;
+}
+
+/*!
+ * \brief This function updates the visibility of the Battle Map squares depending on whether they are displayed on the player screen.
+ */
+void PlayerScreenHandler::updateBattleMapSquaresVisibility()
+{
+    for (quint32 rowIdx = 0U; rowIdx < pBattleMap->getNumberRows(); rowIdx++)
+    {
+        for (quint32 columnIdx = 0U; columnIdx < pBattleMap->getNumberColumns(); columnIdx++)
+        {
+            if ((rowIdx < pBattleMapSceneSection->getIndexFirstRowSceneSection()) || (pBattleMapSceneSection->getIndexFirstRowSceneSection() + pBattleMapSceneSection->getNumberRowsSceneSection() - 1U < rowIdx) ||
+                    (columnIdx < pBattleMapSceneSection->getIndexFirstColumnSceneSection()) || (pBattleMapSceneSection->getIndexFirstColumnSceneSection() + pBattleMapSceneSection->getNumberColumnsSceneSection() - 1U < columnIdx))
+            {
+                m_battleMapSquaresGraphicsItems[rowIdx][columnIdx]->setVisible(false);
+            }
+            else
+            {
+                m_battleMapSquaresGraphicsItems[rowIdx][columnIdx]->setVisible(true);
+            }
+        }
+    }
+
+    pBattleMapScene->setSceneRect(QRectF(QPointF(pBattleMapSceneSection->getIndexFirstColumnSceneSection(), pBattleMapSceneSection->getIndexFirstRowSceneSection()) * m_pixelsPerBattleMapSquare,
+                                         QSizeF(pBattleMapSceneSection->getNumberColumnsSceneSection(), pBattleMapSceneSection->getNumberRowsSceneSection()) * m_pixelsPerBattleMapSquare));
+}
+
+/*!
+ * \brief This function updates the opacity of the Battle Map squares depending on whether they are covered.
+ */
+void PlayerScreenHandler::updateBattleMapSquaresOpacity()
+{
+    QParallelAnimationGroup *opacityAnimationGroup = new QParallelAnimationGroup();
+    for (quint32 rowIdx = 0U; rowIdx < pBattleMap->getNumberRows(); rowIdx++)
+    {
+        for (quint32 columnIdx = 0U; columnIdx < pBattleMap->getNumberColumns(); columnIdx++)
+        {
+            if (m_battleMapSquaresGraphicsItems[rowIdx][columnIdx]->isVisible())
+            {
+                /* Battle Map square is visible and therefore located within the displayed Battle Map scene section */
+                if (pBattleMap->getBattleMapSquareCovered(rowIdx, columnIdx))
+                {
+                    /* Cover Battle Map square */
+                    m_battleMapSquaresGraphicsItems[rowIdx][columnIdx]->setOpacity(BATTLEMAPSQUARECOVERED_OPACITY);
+                }
+                else
+                {
+                    if (BATTLEMAPSQUARECOVERED_OPACITY == m_battleMapSquaresGraphicsItems[rowIdx][columnIdx]->opacity())
+                    {
+                        /* Uncover Battle Map square gradually since it is located within the displayed Battle Map scene section */
+                        QPropertyAnimation * opacityAnimation = new QPropertyAnimation(m_battleMapSquaresGraphicsItems[rowIdx][columnIdx], "opacity");
+                        opacityAnimation->setDuration(BATTLEMAPSQUAREOPACITYANIMATION_DURATION);
+                        opacityAnimation->setStartValue(BATTLEMAPSQUARECOVERED_OPACITY);
+                        opacityAnimation->setEndValue(BATTLEMAPSQUAREUNCOVERED_OPACITY);
+                        opacityAnimationGroup->addAnimation(opacityAnimation);
+                    }
+                }
+            }
+            else
+            {
+                /* Battle Map square is invisible and therefore located outside the displayed Battle Map scene section */
+                if (pBattleMap->getBattleMapSquareCovered(rowIdx, columnIdx))
+                {
+                    /* Cover Battle Map square */
+                    m_battleMapSquaresGraphicsItems[rowIdx][columnIdx]->setOpacity(BATTLEMAPSQUARECOVERED_OPACITY);
+                }
+                else
+                {
+                    /* Uncover Battle Map square immediately since it is located outside the displayed Battle Map scene section */
+                    m_battleMapSquaresGraphicsItems[rowIdx][columnIdx]->setOpacity(BATTLEMAPSQUAREUNCOVERED_OPACITY);
+                }
+            }
+        }
+    }
+
+    opacityAnimationGroup->start(QAbstractAnimation::DeleteWhenStopped);
 }

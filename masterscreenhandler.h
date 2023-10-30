@@ -5,6 +5,7 @@
  * INCLUDES                                                                                                                                         *
  ****************************************************************************************************************************************************/
 
+#include <QGuiApplication>
 #include <QImage>
 #include <QObject>
 
@@ -80,6 +81,17 @@ public:
     void setBattleMapSceneSection(BattleMapSceneSection *battleMapSceneSection);
 
     /*! *********************************************************************************************************************************************
+     * \brief   This function sets the operation mode.                                                                                              *
+     *                                                                                                                                              *
+     * \details This function sets the operation mode and the cursor according to the operation mode.                                               *
+     *                                                                                                                                              *
+     * \param   operationMode                 Operation mode                                                                                        *
+     *                                                                                                                                              *
+     * \return  This function does not have any return value.                                                                                       *
+     ************************************************************************************************************************************************/
+    void setOperationMode(operationMode_t operationMode);
+
+    /*! *********************************************************************************************************************************************
      * \brief   This function shows the Battle Map image.                                                                                           *
      *                                                                                                                                              *
      * \details This function resets the Battle Map scene and adds all the Battle Map squares from the Battle Map to the Battle Map scene.          *
@@ -112,6 +124,15 @@ private slots:
      * \return  This function does not have any return value.                                                                                       *
      ************************************************************************************************************************************************/
     void pressed_Key(Qt::Key key);
+
+    /*! *********************************************************************************************************************************************
+     * \brief   This function handles the selection of some Battle Map squares.                                                                     *
+     *                                                                                                                                              *
+     * \details -                                                                                                                                   *
+     *                                                                                                                                              *
+     * \return  This function does not have any return value.                                                                                       *
+     ************************************************************************************************************************************************/
+    void selected_BattleMapSquares();
 
 private:
 
@@ -152,6 +173,30 @@ private:
      ************************************************************************************************************************************************/
     void deleteBattleMapScene();
 
+    /*! *********************************************************************************************************************************************
+     * \brief   This function handles the selection of some Battle Map squares in case of operation mode Select.                                    *
+     *                                                                                                                                              *
+     * \details This function checks first if the Ctrl key on the keyboard is pressed and sets the item selection operation accordingly which       *
+	 *          decides if the new selection will replace or extend the previous selection. If the mouse has not been moved between mouse press and *
+	 *          mouse release event, only a single Battle Map square is selected. Otherwise, multiple Battle Map squares are selected. Finally, the *
+	 *          selected items are stacked on top of the unselected items so that the selection rectangle is completely visible.                    *
+     *                                                                                                                                              *
+     * \return  This function does not have any return value.                                                                                       *
+     ************************************************************************************************************************************************/
+    void handleSelect();
+
+    /*! *********************************************************************************************************************************************
+     * \brief   This function handles the selection of some Battle Map squares in case of operation modes CoverBattleMap or UncoverBattleMap.       *
+     *                                                                                                                                              *
+     * \details This function gets the selected Battle Map squares and determines the row and column indexes of them. Afterwards, the function      *
+	 *          updates the coverage states and pixmaps of Battle Map squares according to the parameter covered. If the Battle Map squares are     *
+	 *          covered, its pixmap is converted to grayscale and a transparent black layer is added to it in order to darken it. Otherwise, the    *
+	 *          original pixmap is used. Finally, the selection area is reset.                                                                      *
+     *                                                                                                                                              *
+     * \return  This function does not have any return value.                                                                                       *
+     ************************************************************************************************************************************************/
+    void handleCoverBattleMap(bool covered);
+
     /*!
      * \brief This is a pointer to the graphics view.
      */
@@ -173,14 +218,14 @@ private:
     BattleMapSceneMasterScreen *pBattleMapScene;
 
     /*!
+     * \brief This is the operation mode.
+     */
+    operationMode_t m_operationMode;
+
+    /*!
      * \brief This is the text to be shown in the Battle Map scene.
      */
     QGraphicsTextItem m_sceneText;
-
-    /*!
-     * \brief This is the graphics item of the rect to be shown in the Battle Map scene, that frames the whole Battle Map scene.
-     */
-    QGraphicsRectItem m_sceneFrameRect;
 
     /*!
      * \brief This is the graphics item of the rect to be shown in the Battle Map scene, that frames the Battle Map scene section to be displayed on the player screen.

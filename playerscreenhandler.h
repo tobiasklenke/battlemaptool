@@ -6,10 +6,13 @@
  ****************************************************************************************************************************************************/
 
 #include <QGraphicsView>
+#include <QParallelAnimationGroup>
+#include <QPropertyAnimation>
 
 #include "battlemap.h"
 #include "battlemapsceneplayerscreen.h"
 #include "battlemapscenesection.h"
+#include "customgraphicspixmapitem.h"
 #include "screencalc.h"
 
 /****************************************************************************************************************************************************
@@ -77,6 +80,17 @@ public:
     void setBattleMapSceneSection(BattleMapSceneSection *battleMapSceneSection);
 
     /*! *********************************************************************************************************************************************
+     * \brief   This function sets the operation mode.                                                                                              *
+     *                                                                                                                                              *
+     * \details This function sets the operation mode and the cursor according to the operation mode.                                               *
+     *                                                                                                                                              *
+     * \param   operationMode                 Operation mode                                                                                        *
+     *                                                                                                                                              *
+     * \return  This function does not have any return value.                                                                                       *
+     ************************************************************************************************************************************************/
+    void setOperationMode(operationMode_t operationMode);
+
+    /*! *********************************************************************************************************************************************
      * \brief   This function initializes the Battle Map image without showing it.                                                                  *
      *                                                                                                                                              *
      * \details This function resets the Battle Map scene and adds all the Battle Map squares from the Battle Map to the Battle Map scene without   *
@@ -130,6 +144,30 @@ private:
      ************************************************************************************************************************************************/
     void deleteBattleMapScene();
 
+    /*! *********************************************************************************************************************************************
+     * \brief   This function updates the visibility of the Battle Map squares depending on whether they are displayed on the player screen.        *
+     *                                                                                                                                              *
+     * \details This function updates the visibility of the Battle Map squares depending on whether they are displayed on the player screen and     *
+	 *          sets the rect of the Battle Map scene according to the visible Battle Map squares.                                                  *
+	 *                                                                                                                                              *
+     * \return  This function does not have any return value.                                                                                       *
+     ************************************************************************************************************************************************/
+    void updateBattleMapSquaresVisibility();
+
+    /*! *********************************************************************************************************************************************
+     * \brief   This function updates the opacity of the Battle Map squares depending on whether they are covered.                                  *
+     *                                                                                                                                              *
+     * \details This function updates the opacity of the Battle Map squares depending on whether they are covered. In case that a Battle Map square *
+	 *          is visible and therefore located within the displayed Battle Map scene section, it is checked if the Battle Map square shall be     *
+	 *          covered. If so, the opacity is set to the minimum value. Otherwise and if the opacity has currently the minimum value, an opacity   *
+	 *          animation is added that changes the opacity gradually from minimum to maximum value. In case that a Battle Map square is invisible  *
+	 *          and therefore located outside the displayed Battle Map scene section, it is checked if the Battle Map square shall be covered. If   *
+	 *          so, the opacity is set to the minimum value. Otherwise, the opacity is set immediateöy to the maximum value.                        *
+     *                                                                                                                                              *
+     * \return  This function does not have any return value.                                                                                       *
+     ************************************************************************************************************************************************/
+    void updateBattleMapSquaresOpacity();
+
     /*!
      * \brief This is a pointer to the graphics view.
      */
@@ -151,9 +189,14 @@ private:
     BattleMapScenePlayerScreen *pBattleMapScene;
 
     /*!
+     * \brief This is the operation mode.
+     */
+    operationMode_t m_operationMode;
+
+    /*!
      * \brief This is the variable containing the graphics items of the Battle Map squares.
      */
-    QList<QList<QGraphicsPixmapItem*>> m_battleMapSquaresGraphicsItems;
+    QList<QList<CustomGraphicsPixmapItem*>> m_battleMapSquaresGraphicsItems;
 
     /*!
      * \brief This is the number of pixels per Battle Map square.
