@@ -16,6 +16,7 @@ SOURCES += \
     battlemapscenesection.cpp \
     battlemapscenesquareselection.cpp \
     battlemapsquare.cpp \
+    customgraphicspixmapitem.cpp \
     dialog_newbattlemap.cpp \
     graphicsview_battlemap.cpp \
     main.cpp \
@@ -32,6 +33,7 @@ HEADERS += \
     battlemapscenesection.h \
     battlemapscenesquareselection.h \
     battlemapsquare.h \
+    customgraphicspixmapitem.h \
     defines.h \
     dialog_newbattlemap.h \
     graphicsview_battlemap.h \
