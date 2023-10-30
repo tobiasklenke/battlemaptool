@@ -69,7 +69,7 @@ private slots:
      *                                                                                                                                              *
      * \return  This function does not have any return value.                                                                                       *
      ************************************************************************************************************************************************/
-    void open_Dialog_NewBattleMap();
+    void triggered_Action_NewBattleMap();
 
     /*! *********************************************************************************************************************************************
      * \brief   This function handles the acceptance of the dialog Dialog_NewBattleMap.                                                             *
@@ -92,13 +92,40 @@ private slots:
     void rejected_Dialog_NewBattleMap();
 
     /*! *********************************************************************************************************************************************
-     * \brief   This function handles the update of the player screen.                                                                              *
+     * \brief   This function handles the action Action_UpdatePlayerScreen and updates the player screen.                                           *
      *                                                                                                                                              *
      * \details -                                                                                                                                   *
      *                                                                                                                                              *
      * \return  This function does not have any return value.                                                                                       *
      ************************************************************************************************************************************************/
-    void updatePlayerScreen();
+    void triggered_Action_UpdatePlayerScreen();
+
+    /*! *********************************************************************************************************************************************
+     * \brief   This function handles a toggle of Action_Select.                                                                                    *
+     *                                                                                                                                              *
+     * \details -                                                                                                                                   *
+     *                                                                                                                                              *
+     * \return  This function does not have any return value.                                                                                       *
+     ************************************************************************************************************************************************/
+    void toggled_Action_Select(bool checked);
+
+    /*! *********************************************************************************************************************************************
+     * \brief   This function handles a toggle of Action_CoverBattleMap.                                                                            *
+     *                                                                                                                                              *
+     * \details -                                                                                                                                   *
+     *                                                                                                                                              *
+     * \return  This function does not have any return value.                                                                                       *
+     ************************************************************************************************************************************************/
+    void toggled_Action_CoverBattleMap(bool checked);
+
+    /*! *********************************************************************************************************************************************
+     * \brief   This function handles a toggle of Action_UncoverBattleMap.                                                                          *
+     *                                                                                                                                              *
+     * \details -                                                                                                                                   *
+     *                                                                                                                                              *
+     * \return  This function does not have any return value.                                                                                       *
+     ************************************************************************************************************************************************/
+    void toggled_Action_UncoverBattleMap(bool checked);
 
     /*! *********************************************************************************************************************************************
      * \brief   This function updates the label that shows the value of the scale factor.                                                           *

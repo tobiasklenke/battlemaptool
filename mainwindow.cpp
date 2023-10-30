@@ -26,10 +26,13 @@ MainWindow::MainWindow(QGraphicsView *playerWindow, QWidget *parent) :
     m_playerScreenHandler.setBattleMapSceneSection(&m_battleMapSceneSection);
 
     /* connect signals and slots of the main window actions */
-    connect(pUserInterface->Action_NewBattleMap, SIGNAL(triggered()), this, SLOT(open_Dialog_NewBattleMap()));
+    connect(pUserInterface->Action_NewBattleMap, SIGNAL(triggered()), this, SLOT(triggered_Action_NewBattleMap()));
     connect(pUserInterface->Action_Quit, SIGNAL(triggered()), QApplication::instance(), SLOT(quit()));
 
-    connect(pUserInterface->Action_UpdatePlayerScreen, SIGNAL(triggered()), this, SLOT(updatePlayerScreen()));
+    connect(pUserInterface->Action_UpdatePlayerScreen, SIGNAL(triggered()), this, SLOT(triggered_Action_UpdatePlayerScreen()));
+    connect(pUserInterface->Action_Select, SIGNAL(toggled(bool)), this, SLOT(toggled_Action_Select(bool)));
+    connect(pUserInterface->Action_CoverBattleMap, SIGNAL(toggled(bool)), this, SLOT(toggled_Action_CoverBattleMap(bool)));
+    connect(pUserInterface->Action_UncoverBattleMap, SIGNAL(toggled(bool)), this, SLOT(toggled_Action_UncoverBattleMap(bool)));
 
     connect(pUserInterface->GraphicsView_BattleMapMasterScreen, SIGNAL(changed_ScaleFactor(qreal)), this, SLOT(changed_ScaleFactor(qreal)));
 
@@ -58,7 +61,7 @@ MainWindow::~MainWindow()
 /*!
  * \brief This function handles the action Action_NewBattleMap and opens the dialog Dialog_NewBattleMap.
  */
-void MainWindow::open_Dialog_NewBattleMap()
+void MainWindow::triggered_Action_NewBattleMap()
 {
     pDialog_NewBattleMap = new Dialog_NewBattleMap(this);
 
@@ -112,6 +115,10 @@ void MainWindow::accepted_Dialog_NewBattleMap()
     m_playerScreenHandler.initBattleMapImage();
 
     pUserInterface->Action_UpdatePlayerScreen->setEnabled(true);
+    pUserInterface->Action_Select->setEnabled(true);
+    pUserInterface->Action_Select->setChecked(true);
+    pUserInterface->Action_CoverBattleMap->setEnabled(true);
+    pUserInterface->Action_UncoverBattleMap->setEnabled(true);
     pUserInterface->Label_ScaleFactor->setVisible(true);
 
     setCursor(Qt::ArrowCursor);
@@ -126,11 +133,56 @@ void MainWindow::rejected_Dialog_NewBattleMap()
 }
 
 /*!
- * \brief This function handles the update of the player screen.
+ * \brief This function handles the action Action_UpdatePlayerScreen and updates the player screen.
  */
-void MainWindow::updatePlayerScreen()
+void MainWindow::triggered_Action_UpdatePlayerScreen()
 {
     m_playerScreenHandler.updateBattleMapImage();
+}
+
+/*!
+ * \brief This function handles a toggle of Action_Select.
+ */
+void MainWindow::toggled_Action_Select(bool checked)
+{
+    if(checked)
+    {
+        pUserInterface->Action_CoverBattleMap->setChecked(false);
+        pUserInterface->Action_UncoverBattleMap->setChecked(false);
+
+        m_masterScreenHandler.setOperationMode(Select);
+        m_playerScreenHandler.setOperationMode(Select);
+    }
+}
+
+/*!
+ * \brief This function handles a toggle of Action_CoverBattleMap.
+ */
+void MainWindow::toggled_Action_CoverBattleMap(bool checked)
+{
+    if(checked)
+    {
+        pUserInterface->Action_Select->setChecked(false);
+        pUserInterface->Action_UncoverBattleMap->setChecked(false);
+
+        m_masterScreenHandler.setOperationMode(CoverBattleMap);
+        m_playerScreenHandler.setOperationMode(CoverBattleMap);
+    }
+}
+
+/*!
+ * \brief This function handles a toggle of Action_UncoverBattleMap.
+ */
+void MainWindow::toggled_Action_UncoverBattleMap(bool checked)
+{
+    if(checked)
+    {
+        pUserInterface->Action_Select->setChecked(false);
+        pUserInterface->Action_CoverBattleMap->setChecked(false);
+
+        m_masterScreenHandler.setOperationMode(UncoverBattleMap);
+        m_playerScreenHandler.setOperationMode(UncoverBattleMap);
+    }
 }
 
 /*!
