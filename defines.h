@@ -58,14 +58,44 @@
 #define BATTLEMAPSECTIONFRAME_LINEWIDTH                    6
 
 /*!
- * \brief This is the opacity of Battle Map squares within the Battle Map section frame.
+ * \brief This is the line color of the Battle Map selection square.
+ */
+#define BATTLEMAPSELECTIONSQUARE_COLOR                     Qt::black
+
+/*!
+ * \brief This is the line width of the Battle Map selection square.
+ */
+#define BATTLEMAPSELECTIONSQUARE_LINEWIDTH                 3
+
+/*!
+ * \brief This is the opacity of Battle Map squares within the Battle Map section frame on the master screen.
  */
 #define BATTLEMAPSQUAREWITHINSECTIONFRAME_OPACITY          1.0
 
 /*!
- * \brief This is the opacity of Battle Map squares outside the Battle Map section frame.
+ * \brief This is the opacity of Battle Map squares outside the Battle Map section frame on the master screen.
  */
 #define BATTLEMAPSQUAREOUTSIDESECTIONFRAME_OPACITY         0.5
+
+/*!
+ * \brief This is the opacity of uncovered Battle Map squares on the player screen.
+ */
+#define BATTLEMAPSQUAREUNCOVERED_OPACITY                   1.0
+
+/*!
+ * \brief This is the opacity of covered Battle Map squares on the player screen.
+ */
+#define BATTLEMAPSQUARECOVERED_OPACITY                     0.0
+
+/*!
+ * \brief This is the duration of the opacity animation of covered Battle Map squares on the player screen in miliseconds.
+ */
+#define BATTLEMAPSQUAREOPACITYANIMATION_DURATION           3000
+
+/*!
+ * \brief This is the color of covered Battle Map squares on the master screen.
+ */
+#define BATTLEMAPSQUARECOVERED_COLOR                       QColor(0, 0, 0, 150)
 
 /* Image resource paths */
 
@@ -79,6 +109,25 @@
  */
 #define EMPTYBATTLEMAPSQUAREIMAGE_SOURCE                   ":/images/images/emptybattlemapsquareimage.png"
 
+/* Icon resource paths */
+
+/*!
+ * \brief This is the resource file path of the CoverBattleMap icon.
+ */
+#define COVERBATTLEMAPICON_SOURCE                          ":/icons/icons/coverbattlemap.png"
+
+/*!
+ * \brief This is the resource file path of the UncoverBattleMap icon.
+ */
+#define UNCOVERBATTLEMAPICON_SOURCE                        ":/icons/icons/uncoverbattlemap.png"
+
+/* Miscellaneous */
+
+/*!
+ * \brief This is the size of custom pixmap cursors.
+ */
+#define CUSTOMPIXMAPCURSOR_SIZE                            32
+
 /****************************************************************************************************************************************************
  * MACROS                                                                                                                                           *
  ****************************************************************************************************************************************************/
@@ -86,6 +135,27 @@
 /****************************************************************************************************************************************************
  * GLOBAL TYPE DEFINITIONS                                                                                                                          *
  ****************************************************************************************************************************************************/
+
+/*!
+ * \brief This enum lists the toolbar operation modes used from the screen handlers.
+ */
+typedef enum
+{
+    /*!
+     * \brief This is the default operation mode for selection.
+     */
+    Select,
+
+    /*!
+     * \brief This is the operation mode for covering parts of the Battle Map. (Only supported on master screen.)
+     */
+    CoverBattleMap,
+
+    /*!
+     * \brief This is the operation mode for uncovering parts of the Battle Map. (Only supported on master screen.)
+     */
+    UncoverBattleMap
+} operationMode_t;
 
 /****************************************************************************************************************************************************
  * GLOBAL DECLARATIONS                                                                                                                              *
