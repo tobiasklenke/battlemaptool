@@ -31,7 +31,7 @@ void BattleMapSceneSquareSelection::changed_ScaleFactor(qreal scaleFactor)
 {
     m_scaleFactor = scaleFactor;
 
-    m_battleMapSquareToDraw.setPen(QPen(Qt::black, BATTLEMAPGRID_LINEWIDTH * (1 / m_scaleFactor), Qt::DotLine));
+    m_battleMapSelectionSquareToDraw.setPen(QPen(Qt::black, BATTLEMAPSELECTIONSQUARE_LINEWIDTH * (1 / m_scaleFactor), Qt::DotLine));
 }
 
 /****************************************************************************************************************************************************
@@ -51,8 +51,8 @@ void BattleMapSceneSquareSelection::mousePressEvent(QGraphicsSceneMouseEvent *ev
         if ((0 <= event->scenePos().x()) && (event->scenePos().x() <= this->width()) &&
                 (0 <= event->scenePos().y()) && (event->scenePos().y() <= this->height()))
         {
-            addItem(&m_battleMapSquareToDraw);
-            m_battleMapSquareToDraw.setPen(QPen(BATTLEMAPGRID_COLOR, BATTLEMAPGRID_LINEWIDTH * (1 / m_scaleFactor), Qt::DotLine));
+            addItem(&m_battleMapSelectionSquareToDraw);
+            m_battleMapSelectionSquareToDraw.setPen(QPen(BATTLEMAPSELECTIONSQUARE_COLOR, BATTLEMAPSELECTIONSQUARE_LINEWIDTH * (1 / m_scaleFactor), Qt::DotLine));
         }
     }
 }
@@ -68,7 +68,7 @@ void BattleMapSceneSquareSelection::mouseMoveEvent(QGraphicsSceneMouseEvent *eve
         QPointF topLeft = QPointF(qMin(m_scenePosPress.rx(), event->scenePos().rx()), qMin(m_scenePosPress.y(), event->scenePos().ry()));
         QPointF bottomRight = QPointF(qMax(m_scenePosPress.rx(), event->scenePos().rx()), qMax(m_scenePosPress.y(), event->scenePos().ry()));
 
-        m_battleMapSquareToDraw.setRect(topLeft.rx(), topLeft.ry(), (bottomRight - topLeft).rx(), (bottomRight - topLeft).ry());
+        m_battleMapSelectionSquareToDraw.setRect(topLeft.rx(), topLeft.ry(), (bottomRight - topLeft).rx(), (bottomRight - topLeft).ry());
     }
 }
 
@@ -79,8 +79,8 @@ void BattleMapSceneSquareSelection::mouseReleaseEvent(QGraphicsSceneMouseEvent *
 {
     if (Qt::LeftButton == event->button())
     {
-        m_battleMapSquareToDraw.setRect(0, 0, 0, 0);
-        removeItem(&m_battleMapSquareToDraw);
+        m_battleMapSelectionSquareToDraw.setRect(0, 0, 0, 0);
+        removeItem(&m_battleMapSelectionSquareToDraw);
 
         BattleMapScene::mouseReleaseEvent(event);
 

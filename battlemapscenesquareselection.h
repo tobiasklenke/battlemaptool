@@ -107,9 +107,9 @@ private slots: /* - */
 private:
 
     /*!
-     * \brief This is the rectangle to be drawn while the selection of the Battle Map square.
+     * \brief This is the rectangle to be drawn while the selection on the Battle Map.
      */
-    QGraphicsRectItem  m_battleMapSquareToDraw;
+    QGraphicsRectItem  m_battleMapSelectionSquareToDraw;
 
     /*!
      * \brief This is the factor that is used for scaling the Battle Map scene while scrolling.
