@@ -102,31 +102,49 @@ private slots:
     void triggered_Action_UpdatePlayerScreen();
 
     /*! *********************************************************************************************************************************************
-     * \brief   This function handles a toggle of Action_Select.                                                                                    *
+     * \brief   This function handles a toggle of Mode_Select.                                                                                      *
      *                                                                                                                                              *
      * \details This function sets the operation mode of the master and the player screen handlers to Select.                                       *
      *                                                                                                                                              *
      * \return  This function does not have any return value.                                                                                       *
      ************************************************************************************************************************************************/
-    void toggled_Action_Select(bool checked);
+    void toggled_Mode_Select(bool checked);
 
     /*! *********************************************************************************************************************************************
-     * \brief   This function handles a toggle of Action_CoverBattleMap.                                                                            *
+     * \brief   This function handles a toggle of Mode_CoverBattleMap.                                                                              *
      *                                                                                                                                              *
      * \details This function sets the operation mode of the master and the player screen handlers to CoverBattleMap.                               *
      *                                                                                                                                              *
      * \return  This function does not have any return value.                                                                                       *
      ************************************************************************************************************************************************/
-    void toggled_Action_CoverBattleMap(bool checked);
+    void toggled_Mode_CoverBattleMap(bool checked);
 
     /*! *********************************************************************************************************************************************
-     * \brief   This function handles a toggle of Action_UncoverBattleMap.                                                                          *
+     * \brief   This function handles the action Action_CoverBattleMap and covers the selected Battle Map squares on the master screen.             *
+     *                                                                                                                                              *
+     * \details -                                                                                                                                   *
+     *                                                                                                                                              *
+     * \return  This function does not have any return value.                                                                                       *
+     ************************************************************************************************************************************************/
+    void triggered_Action_CoverBattleMap();
+
+    /*! *********************************************************************************************************************************************
+     * \brief   This function handles a toggle of Mode_UncoverBattleMap.                                                                            *
      *                                                                                                                                              *
      * \details This function sets the operation mode of the master and the player screen handlers to UncoverBattleMap.                             *
      *                                                                                                                                              *
      * \return  This function does not have any return value.                                                                                       *
      ************************************************************************************************************************************************/
-    void toggled_Action_UncoverBattleMap(bool checked);
+    void toggled_Mode_UncoverBattleMap(bool checked);
+
+    /*! *********************************************************************************************************************************************
+     * \brief   This function handles the action Action_UncoverBattleMap and uncovers the selected Battle Map squares on the master screen.         *
+     *                                                                                                                                              *
+     * \details -                                                                                                                                   *
+     *                                                                                                                                              *
+     * \return  This function does not have any return value.                                                                                       *
+     ************************************************************************************************************************************************/
+    void triggered_Action_UncoverBattleMap();
 
     /*! *********************************************************************************************************************************************
      * \brief   This function updates the label that shows the value of the scale factor.                                                           *
@@ -137,6 +155,17 @@ private slots:
      ************************************************************************************************************************************************/
     void changed_ScaleFactor(qreal scaleFactor);
 
+    /*! *********************************************************************************************************************************************
+     * \brief   This function handles a click of the right mouse button.                                                                            *
+     *                                                                                                                                              *
+     * \details This function checks whether the mouse button click was positioned at the Battle Map scene and if so, opens a context menu.         *
+     *                                                                                                                                              *
+     * \param   position                      Position of the mouse click                                                                           *
+     *                                                                                                                                              *
+     * \return  This function does not have any return value.                                                                                       *
+     ************************************************************************************************************************************************/
+    void clicked_RightMouseButton(QPoint position);
+
 private:
 
     /*!
@@ -145,7 +174,7 @@ private:
     Ui::MainWindow *pUserInterface;
 
     /*!
-     * \brief TODO
+     * \brief This is a pointer to the action group containing the operation mode actions.
      */
     QActionGroup *pOperationModeActionGroup;
 

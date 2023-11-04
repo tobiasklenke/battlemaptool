@@ -40,6 +40,7 @@ void MasterScreenHandler::setGraphicsView(GraphicsView_BattleMap *graphicsView)
 
     connect(pGraphicsView, SIGNAL(changed_ScaleFactor(qreal)), this, SLOT(changed_ScaleFactor(qreal)));
     connect(pGraphicsView, SIGNAL(pressed_Key(Qt::Key)), this, SLOT(pressed_Key(Qt::Key)));
+    connect(pGraphicsView, SIGNAL(clicked_RightMouseButton(QPoint)), this, SLOT(clicked_RightMouseButton(QPoint)));
 
     QPalette palette;
     pGraphicsView->setBackgroundBrush(QBrush(palette.color(QPalette::Window)));
@@ -130,6 +131,51 @@ void MasterScreenHandler::showBattleMapImage()
     pBattleMapScene->addItem(&m_sceneSectionRect);
 
     pGraphicsView->setInteractive(true);
+}
+
+/*!
+ * \brief This function handles the selection of some Battle Map squares in case of operation modes CoverBattleMap or UncoverBattleMap.
+ */
+void MasterScreenHandler::handleCoverBattleMap(bool covered)
+{
+    /* Get index of selected Battle Map squares and cover them */
+    quint32 rowIdx = 0U;
+    quint32 columnIdx = 0U;
+    for (QGraphicsItem * selectedItem : pBattleMapScene->selectedItems())
+    {
+        for (rowIdx = 0U; rowIdx < pBattleMap->getNumberRows(); rowIdx++)
+        {
+            if (-1 < m_battleMapSquaresGraphicsItems[rowIdx].indexOf(selectedItem))
+            {
+                columnIdx = m_battleMapSquaresGraphicsItems[rowIdx].indexOf(selectedItem);
+                break;
+            }
+
+        }
+
+        /* Update coverage state and pixmap of Battle Map square */
+        pBattleMap->setBattleMapSquareCovered(rowIdx, columnIdx, covered);
+
+        QPixmap temporaryPixmap;
+        if (covered)
+        {
+            /* Convert pixmap to grayscale and add transparent black layer in order to darken it */
+            temporaryPixmap = QPixmap::fromImage(pBattleMap->getBattleMapSquarePixmap(rowIdx, columnIdx).toImage().convertToFormat(QImage::Format_Grayscale16));
+
+            QPainter *painter = new QPainter(&temporaryPixmap);
+            painter->setBrush(QBrush(BATTLEMAPSQUARECOVERED_COLOR));
+            painter->setPen(QPen(CONFIG_BATTLEMAPGRID_COLOR, CONFIG_BATTLEMAPGRID_LINEWIDTH, Qt::SolidLine));
+            painter->drawRect(temporaryPixmap.rect());
+            delete painter;
+        }
+        else
+        {
+            temporaryPixmap = pBattleMap->getBattleMapSquarePixmap(rowIdx, columnIdx);
+        }
+        m_battleMapSquaresGraphicsItems[rowIdx][columnIdx]->setPixmap(temporaryPixmap);
+    }
+
+    resetSelectionArea();
 }
 
 /****************************************************************************************************************************************************
@@ -238,6 +284,20 @@ void MasterScreenHandler::pressed_Key(Qt::Key key)
 }
 
 /*!
+ * \brief This function handles a click of the right mouse button.
+ */
+void MasterScreenHandler::clicked_RightMouseButton(QPoint position)
+{
+    for (QGraphicsItem * item : pBattleMapScene->items(pGraphicsView->mapToScene(position)))
+    {
+        if (item->flags().testFlag(QGraphicsItem::ItemIsSelectable) && !item->isSelected())
+        {
+            handleSelect(pGraphicsView->mapToScene(position), pGraphicsView->mapToScene(position));
+        }
+    }
+}
+
+/*!
  * \brief This function handles the selection of some Battle Map squares.
  */
 void MasterScreenHandler::selected_BattleMapSquares()
@@ -245,12 +305,14 @@ void MasterScreenHandler::selected_BattleMapSquares()
     switch (m_operationMode)
     {
     case Select:
-        handleSelect();
+        handleSelect(pBattleMapScene->getScenePosPress(), pBattleMapScene->getScenePosRelease());
         break;
     case CoverBattleMap:
+        handleSelect(pBattleMapScene->getScenePosPress(), pBattleMapScene->getScenePosRelease());
         handleCoverBattleMap(true);
         break;
     case UncoverBattleMap:
+        handleSelect(pBattleMapScene->getScenePosPress(), pBattleMapScene->getScenePosRelease());
         handleCoverBattleMap(false);
         break;
     default:
@@ -347,7 +409,7 @@ void MasterScreenHandler::deleteBattleMapScene()
 /*!
  * \brief This function handles the selection of some Battle Map squares in case of operation mode Select.
  */
-void MasterScreenHandler::handleSelect()
+void MasterScreenHandler::handleSelect(QPointF positionPress, QPointF positionRelease)
 {
     /* Check if Ctrl key on the keyboard is pressed */
     Qt::ItemSelectionOperation itemSelectionOperation;
@@ -360,18 +422,15 @@ void MasterScreenHandler::handleSelect()
         itemSelectionOperation = Qt::ReplaceSelection;
     }
 
-    if (pBattleMapScene->getScenePosPress() == pBattleMapScene->getScenePosRelease())
+    if (positionPress == positionRelease)
     {
         /* Select single Battle Map square */
         if (itemSelectionOperation == Qt::ReplaceSelection)
         {
-            for (QGraphicsItem * item : pBattleMapScene->items())
-            {
-                item->setSelected(false);
-            }
+            resetSelectionArea();
         }
 
-        for (QGraphicsItem * item : pBattleMapScene->items(pBattleMapScene->getScenePosPress()))
+        for (QGraphicsItem * item : pBattleMapScene->items(positionPress))
         {
             item->setSelected(true);
         }
@@ -380,7 +439,7 @@ void MasterScreenHandler::handleSelect()
     {
         /* Select multiple Battle Map squares */
         QPainterPath path;
-        path.addRect(QRectF(pBattleMapScene->getScenePosPress(), pBattleMapScene->getScenePosRelease()));
+        path.addRect(QRectF(positionPress, positionRelease));
         pBattleMapScene->setSelectionArea(path, itemSelectionOperation);
     }
 
@@ -399,54 +458,13 @@ void MasterScreenHandler::handleSelect()
 }
 
 /*!
- * \brief This function handles the selection of some Battle Map squares in case of operation modes CoverBattleMap or UncoverBattleMap.
+ * \brief This function handles resets the selection area.
  */
-void MasterScreenHandler::handleCoverBattleMap(bool covered)
+void MasterScreenHandler::resetSelectionArea()
 {
-    /* Get selected Battle Map squares */
-    handleSelect();
-
-    /* Get index of selected Battle Map squares and cover them */
-    quint32 rowIdx = 0U;
-    quint32 columnIdx = 0U;
     for (QGraphicsItem * selectedItem : pBattleMapScene->selectedItems())
     {
-        for (rowIdx = 0U; rowIdx < pBattleMap->getNumberRows(); rowIdx++)
-        {
-            if (-1 < m_battleMapSquaresGraphicsItems[rowIdx].indexOf(selectedItem))
-            {
-                columnIdx = m_battleMapSquaresGraphicsItems[rowIdx].indexOf(selectedItem);
-                break;
-            }
-
-        }
-
-        /* Update coverage state and pixmap of Battle Map square */
-        pBattleMap->setBattleMapSquareCovered(rowIdx, columnIdx, covered);
-
-        QPixmap temporaryPixmap;
-        if (covered)
-        {
-            /* Convert pixmap to grayscale and add transparent black layer in order to darken it */
-            temporaryPixmap = QPixmap::fromImage(pBattleMap->getBattleMapSquarePixmap(rowIdx, columnIdx).toImage().convertToFormat(QImage::Format_Grayscale16));
-
-            QPainter *painter = new QPainter(&temporaryPixmap);
-            painter->setBrush(QBrush(BATTLEMAPSQUARECOVERED_COLOR));
-            painter->setPen(QPen(CONFIG_BATTLEMAPGRID_COLOR, CONFIG_BATTLEMAPGRID_LINEWIDTH, Qt::SolidLine));
-            painter->drawRect(temporaryPixmap.rect());
-            delete painter;
-        }
-        else
-        {
-            temporaryPixmap = pBattleMap->getBattleMapSquarePixmap(rowIdx, columnIdx);
-        }
-        m_battleMapSquaresGraphicsItems[rowIdx][columnIdx]->setPixmap(temporaryPixmap);
-    }
-
-    /* Reset selection area */
-    for (QGraphicsItem * item : pBattleMapScene->items())
-    {
-        item->setSelected(false);
-        item->setZValue(0.0);
+        selectedItem->setSelected(false);
+        selectedItem->setZValue(0.0);
     }
 }

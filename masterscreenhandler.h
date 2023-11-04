@@ -100,6 +100,20 @@ public:
      ************************************************************************************************************************************************/
     void showBattleMapImage();
 
+    /*! *********************************************************************************************************************************************
+     * \brief   This function handles the coverage and uncoverage of some Battle Map squares.                                                       *
+     *                                                                                                                                              *
+     * \details This function determines the row and column indexes of the selected Battle Map squares. Afterwards, the function updates the        *
+     *          coverage states and pixmaps of Battle Map squares according to the parameter covered. If the Battle Map squares are covered, its    *
+     *          pixmap is converted to grayscale and a transparent black layer is added to it in order to darken it. Otherwise, the original pixmap *
+     *          is used. Finally, the selection area is reset.                                                                                      *
+     *                                                                                                                                              *
+     * \param   covered                       Information whether Battle Map squares shall be covered or uncovered                                  *
+     *                                                                                                                                              *
+     * \return  This function does not have any return value.                                                                                       *
+     ************************************************************************************************************************************************/
+    void handleCoverBattleMap(bool covered);
+
 protected: /* - */
 
 signals: /* - */
@@ -124,6 +138,17 @@ private slots:
      * \return  This function does not have any return value.                                                                                       *
      ************************************************************************************************************************************************/
     void pressed_Key(Qt::Key key);
+
+    /*! *********************************************************************************************************************************************
+     * \brief   This function handles a click of the right mouse button.                                                                            *
+     *                                                                                                                                              *
+     * \details This function handles the selection of the clicked Battle Map square.                                                               *
+     *                                                                                                                                              *
+     * \param   position                      Position of the mouse click                                                                           *
+     *                                                                                                                                              *
+     * \return  This function does not have any return value.                                                                                       *
+     ************************************************************************************************************************************************/
+    void clicked_RightMouseButton(QPoint position);
 
     /*! *********************************************************************************************************************************************
      * \brief   This function handles the selection of some Battle Map squares.                                                                     *
@@ -181,21 +206,21 @@ private:
 	 *          mouse release event, only a single Battle Map square is selected. Otherwise, multiple Battle Map squares are selected. Finally, the *
 	 *          selected items are stacked on top of the unselected items so that the selection rectangle is completely visible.                    *
      *                                                                                                                                              *
+     * \param   positionPress                 Position of the mouse button press                                                                    *
+     * \param   positionRelease               Position of the mouse button release                                                                  *
+     *                                                                                                                                              *
      * \return  This function does not have any return value.                                                                                       *
      ************************************************************************************************************************************************/
-    void handleSelect();
+    void handleSelect(QPointF positionPress, QPointF positionRelease);
 
     /*! *********************************************************************************************************************************************
-     * \brief   This function handles the selection of some Battle Map squares in case of operation modes CoverBattleMap or UncoverBattleMap.       *
+     * \brief   This function handles resets the selection area.                                                                                    *
      *                                                                                                                                              *
-     * \details This function gets the selected Battle Map squares and determines the row and column indexes of them. Afterwards, the function      *
-	 *          updates the coverage states and pixmaps of Battle Map squares according to the parameter covered. If the Battle Map squares are     *
-	 *          covered, its pixmap is converted to grayscale and a transparent black layer is added to it in order to darken it. Otherwise, the    *
-	 *          original pixmap is used. Finally, the selection area is reset.                                                                      *
+     * \details -                                                                                                                                   *
      *                                                                                                                                              *
      * \return  This function does not have any return value.                                                                                       *
      ************************************************************************************************************************************************/
-    void handleCoverBattleMap(bool covered);
+    void resetSelectionArea();
 
     /*!
      * \brief This is a pointer to the graphics view.
