@@ -112,6 +112,11 @@ void GraphicsView_BattleMap::mousePressEvent(QMouseEvent *event)
             m_viewPosPress = event->pos();
         }
 
+        if (Qt::RightButton == event->button())
+        {
+            emit clicked_RightMouseButton(event->pos());
+        }
+
         QGraphicsView::mousePressEvent(event);
     }
 }

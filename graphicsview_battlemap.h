@@ -93,8 +93,9 @@ protected:
      *                                                                                                                                              *
      * \details This function handles a mouse press event on the Battle Map view by enabling the drag mode, saving the current cursor in the member *
      *          variable m_cursor and changing it. Afterwards, the member variable m_scenePosCenter is set according to the current position of the *
-     *          Battle Map scene center and the member variable m_viewPosPress is set according to the position of the parameter event. Finally,    *
-     *          the event is forwarded to the Battle Map scene by calling the base class implementation of the function mousePressEvent().          *
+     *          Battle Map scene center and the member variable m_viewPosPress is set according to the position of the parameter event. If the      *
+     *          event button is the right mouse button, the function emits the signal clicked_RightMouseButton. Finally, the event is forwarded to  *
+     *          the Battle Map scene by calling the base class implementation of the function mousePressEvent().                                    *
      *                                                                                                                                              *
      * \param   event                         Mouse press event to be handled                                                                       *
      *                                                                                                                                              *
@@ -151,6 +152,11 @@ signals:
      * \brief This signal is emitted as soon as a key is pressed.                                                                                   *
      ************************************************************************************************************************************************/
     void pressed_Key(Qt::Key key);
+
+    /*! *********************************************************************************************************************************************
+     * \brief This signal is emitted as soon as the right mouse button is pressed.                                                                  *
+     ************************************************************************************************************************************************/
+    void clicked_RightMouseButton(QPoint position);
 
 private slots: /* - */
 
