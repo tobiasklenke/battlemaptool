@@ -10,7 +10,6 @@
  ****************************************************************************************************************************************************/
 
 /* CONFIGURATION PARAMETERS, TODO REMOVE */
-#define CONFIG_MASTER_SCREEN_DIAGONAL                      23.8
 #define CONFIG_MASTER_SCREEN_RESOLUTION                    QSize(1920, 1080)
 #define CONFIG_PLAYER_SCREEN_DIAGONAL                      23.8
 #define CONFIG_PLAYER_SCREEN_RESOLUTION                    QSize(1920, 1080)
