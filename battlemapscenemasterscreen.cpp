@@ -79,15 +79,15 @@ void BattleMapSceneMasterScreen::mouseReleaseEvent(QGraphicsSceneMouseEvent *eve
 {
     if (Qt::LeftButton == event->button())
     {
-        m_battleMapSelectionSquareToDraw.setRect(0, 0, 0, 0);
-        removeItem(&m_battleMapSelectionSquareToDraw);
-
-        BattleMapScene::mouseReleaseEvent(event);
-
         /* check whether the mouse release event is positioned at the Battle Map scene */
         if ((0 <= event->scenePos().x()) && (event->scenePos().x() <= this->width()) &&
                 (0 <= event->scenePos().y()) && (event->scenePos().y() <= this->height()))
         {
+            m_battleMapSelectionSquareToDraw.setRect(0, 0, 0, 0);
+            removeItem(&m_battleMapSelectionSquareToDraw);
+
+            BattleMapScene::mouseReleaseEvent(event);
+
             emit selected_BattleMapSquares();
         }
     }
