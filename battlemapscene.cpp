@@ -73,11 +73,14 @@ void BattleMapScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
     if (Qt::LeftButton == event->button())
     {
-        /* check whether the mouse release event is positioned at the Battle Map scene */
-        if ((0 <= event->scenePos().x()) && (event->scenePos().x() <= this->width()) &&
-                (0 <= event->scenePos().y()) && (event->scenePos().y() <= this->height()))
+        if (!m_scenePosPress.isNull())
         {
-            m_scenePosRelease = event->scenePos();
+            /* check whether the mouse release event is positioned at the Battle Map scene */
+            if ((0 <= event->scenePos().x()) && (event->scenePos().x() <= this->width()) &&
+                    (0 <= event->scenePos().y()) && (event->scenePos().y() <= this->height()))
+            {
+                m_scenePosRelease = event->scenePos();
+            }
         }
     }
 }
