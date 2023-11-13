@@ -16,6 +16,7 @@ MainWindow::MainWindow(QGraphicsView *playerWindow, QWidget *parent) :
     QMainWindow(parent),
     pUserInterface(new Ui::MainWindow),
     pOperationModeActionGroup(new QActionGroup(this)),
+    pWindRoseOrientationActionGroup(new QActionGroup(this)),
     pDialog_NewBattleMap(nullptr),
     pBattleMap(new BattleMap())
 {
@@ -26,17 +27,28 @@ MainWindow::MainWindow(QGraphicsView *playerWindow, QWidget *parent) :
     m_playerScreenHandler.setGraphicsView(playerWindow);
     m_playerScreenHandler.setBattleMapSceneSection(&m_battleMapSceneSection);
 
-    /* create exclusive action group */
+    /* create exclusive action group for operation mode */
     pOperationModeActionGroup->addAction(pUserInterface->Mode_Select);
     pOperationModeActionGroup->addAction(pUserInterface->Mode_CoverBattleMap);
     pOperationModeActionGroup->addAction(pUserInterface->Mode_UncoverBattleMap);
-    pOperationModeActionGroup->setExclusive(true);
+    pOperationModeActionGroup->setExclusionPolicy(QActionGroup::ExclusionPolicy::Exclusive);
+
+    /* create exclusive action group for wind rose orientation */
+    pWindRoseOrientationActionGroup->addAction(pUserInterface->Action_WindRoseOrientationNorth);
+    pWindRoseOrientationActionGroup->addAction(pUserInterface->Action_WindRoseOrientationEast);
+    pWindRoseOrientationActionGroup->addAction(pUserInterface->Action_WindRoseOrientationSouth);
+    pWindRoseOrientationActionGroup->addAction(pUserInterface->Action_WindRoseOrientationWest);
+    pWindRoseOrientationActionGroup->setExclusionPolicy(QActionGroup::ExclusionPolicy::ExclusiveOptional);
 
     /* connect signals and slots of the main window actions */
     connect(pUserInterface->Action_NewBattleMap, SIGNAL(triggered()), this, SLOT(triggered_Action_NewBattleMap()));
     connect(pUserInterface->Action_Quit, SIGNAL(triggered()), QApplication::instance(), SLOT(quit()));
 
     connect(pUserInterface->Action_UpdatePlayerScreen, SIGNAL(triggered()), this, SLOT(triggered_Action_UpdatePlayerScreen()));
+    connect(pUserInterface->Action_WindRoseOrientationNorth, SIGNAL(triggered()), this, SLOT(triggered_Action_WindRoseOrientation()));
+    connect(pUserInterface->Action_WindRoseOrientationEast, SIGNAL(triggered()), this, SLOT(triggered_Action_WindRoseOrientation()));
+    connect(pUserInterface->Action_WindRoseOrientationSouth, SIGNAL(triggered()), this, SLOT(triggered_Action_WindRoseOrientation()));
+    connect(pUserInterface->Action_WindRoseOrientationWest, SIGNAL(triggered()), this, SLOT(triggered_Action_WindRoseOrientation()));
     connect(pUserInterface->Mode_Select, SIGNAL(toggled(bool)), this, SLOT(toggled_Mode_Select(bool)));
     connect(pUserInterface->Mode_CoverBattleMap, SIGNAL(toggled(bool)), this, SLOT(toggled_Mode_CoverBattleMap(bool)));
     connect(pUserInterface->Action_CoverBattleMap, SIGNAL(triggered()), this, SLOT(triggered_Action_CoverBattleMap()));
@@ -46,6 +58,7 @@ MainWindow::MainWindow(QGraphicsView *playerWindow, QWidget *parent) :
     connect(pUserInterface->GraphicsView_BattleMapMasterScreen, SIGNAL(changed_ScaleFactor(qreal)), this, SLOT(changed_ScaleFactor(qreal)));
     connect(pUserInterface->GraphicsView_BattleMapMasterScreen, SIGNAL(clicked_RightMouseButton(QPoint)), this, SLOT(clicked_RightMouseButton(QPoint)));
 
+    pUserInterface->Label_WindRose->setVisible(false);
     pUserInterface->Label_ScaleFactor->setVisible(false);
 }
 
@@ -56,6 +69,7 @@ MainWindow::~MainWindow()
 {
     delete pUserInterface;
     delete pOperationModeActionGroup;
+    delete pWindRoseOrientationActionGroup;
     delete pBattleMap;
 }
 
@@ -126,10 +140,19 @@ void MainWindow::accepted_Dialog_NewBattleMap()
     m_playerScreenHandler.initBattleMapImage();
 
     pUserInterface->Action_UpdatePlayerScreen->setEnabled(true);
-    pUserInterface->Mode_Select->setEnabled(true);
+
+    pUserInterface->SubMenu_WindRoseOrientation->setEnabled(true);
+    for (QAction *action : pWindRoseOrientationActionGroup->actions())
+    {
+        action->setEnabled(true);
+    }
+
+    for (QAction *action : pOperationModeActionGroup->actions())
+    {
+        action->setEnabled(true);
+    }
     pUserInterface->Mode_Select->setChecked(true);
-    pUserInterface->Mode_CoverBattleMap->setEnabled(true);
-    pUserInterface->Mode_UncoverBattleMap->setEnabled(true);
+
     pUserInterface->Label_ScaleFactor->setVisible(true);
 
     setCursor(Qt::ArrowCursor);
@@ -149,6 +172,52 @@ void MainWindow::rejected_Dialog_NewBattleMap()
 void MainWindow::triggered_Action_UpdatePlayerScreen()
 {
     m_playerScreenHandler.updateBattleMapImage();
+}
+
+/*!
+ * \brief This function handles the actions Action_WindRoseOrientationNorth to Action_WindRoseOrientationWest.
+ */
+void MainWindow::triggered_Action_WindRoseOrientation()
+{
+    qreal orientation;
+
+    if (pUserInterface->Action_WindRoseOrientationNorth->isChecked())
+    {
+        orientation = WINDROSEORIENTATIONNORTH_DEGREES;
+        pUserInterface->Label_WindRose->setVisible(true);
+        m_playerScreenHandler.setWindRoseGraphicsItemVisibility(true);
+    }
+    else if (pUserInterface->Action_WindRoseOrientationEast->isChecked())
+    {
+        orientation = WINDROSEORIENTATIONEAST_DEGREES;
+        pUserInterface->Label_WindRose->setVisible(true);
+        m_playerScreenHandler.setWindRoseGraphicsItemVisibility(true);
+    }
+    else if (pUserInterface->Action_WindRoseOrientationSouth->isChecked())
+    {
+        orientation = WINDROSEORIENTATIONSOUTH_DEGREES;
+        pUserInterface->Label_WindRose->setVisible(true);
+        m_playerScreenHandler.setWindRoseGraphicsItemVisibility(true);
+    }
+    else if (pUserInterface->Action_WindRoseOrientationWest->isChecked())
+    {
+        orientation = WINDROSEORIENTATIONWEST_DEGREES;
+        pUserInterface->Label_WindRose->setVisible(true);
+        m_playerScreenHandler.setWindRoseGraphicsItemVisibility(true);
+    }
+    else
+    {
+        orientation = WINDROSEORIENTATIONNORTH_DEGREES;
+        pUserInterface->Label_WindRose->setVisible(false);
+        m_playerScreenHandler.setWindRoseGraphicsItemVisibility(false);
+    }
+
+    /* rotate the wind rose image according to the chosen wind rose orientation */
+    QImage windRoseImage = QImage(WINDROSEIMAGE_SOURCE).transformed(QTransform().rotate(orientation));
+
+    /* set the wind rose pixmap to the screen handlers */
+    pUserInterface->Label_WindRose->setPixmap(QPixmap::fromImage(windRoseImage).scaled(pUserInterface->Label_WindRose->size()));
+    m_playerScreenHandler.setWindRoseGraphicsItemPixmap(QPixmap::fromImage(windRoseImage));
 }
 
 /*!

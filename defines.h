@@ -108,6 +108,11 @@
  */
 #define EMPTYBATTLEMAPSQUAREIMAGE_SOURCE                   ":/images/images/emptybattlemapsquareimage.png"
 
+/*!
+ * \brief This is the resource file path of the wind rose image.
+ */
+#define WINDROSEIMAGE_SOURCE                               ":/images/images/windroseimage.png"
+
 /* Icon resource paths */
 
 /*!
@@ -126,6 +131,31 @@
  * \brief This is the size of custom pixmap cursors.
  */
 #define CUSTOMPIXMAPCURSOR_SIZE                            32
+
+/*!
+ * \brief This is the wind rose orientation in degrees for direction north.
+ */
+#define WINDROSEORIENTATIONNORTH_DEGREES                   0.0
+
+/*!
+ * \brief This is the wind rose orientation in degrees for direction east.
+ */
+#define WINDROSEORIENTATIONEAST_DEGREES                    -90.0
+
+/*!
+ * \brief This is the wind rose orientation in degrees for direction south.
+ */
+#define WINDROSEORIENTATIONSOUTH_DEGREES                   -180.0
+
+/*!
+ * \brief This is the wind rose orientation in degrees for direction west.
+ */
+#define WINDROSEORIENTATIONWEST_DEGREES                    -270.0
+
+/*!
+ * \brief This is the wind rose size in Battle Map squares.
+ */
+#define WINDROSESIZE_BATTLEMAPSQUARES                      3
 
 /****************************************************************************************************************************************************
  * MACROS                                                                                                                                           *

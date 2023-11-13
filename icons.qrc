@@ -7,5 +7,6 @@
         <file>icons/coverbattlemap.png</file>
         <file>icons/uncoverbattlemap.png</file>
         <file>icons/cursor.png</file>
+        <file>icons/windrose.png</file>
     </qresource>
 </RCC>

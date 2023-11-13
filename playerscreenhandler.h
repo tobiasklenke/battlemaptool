@@ -101,13 +101,35 @@ public:
     void initBattleMapImage();
 
     /*! *********************************************************************************************************************************************
-     * \brief   This function updates the Battle Map image                   .                                                                      *
+     * \brief   This function updates the Battle Map image.                                                                                         *
      *                                                                                                                                              *
      * \details This function updates the visibility of the Battle Map squares depending on whether they are displayed on the player screen.        *
      *                                                                                                                                              *
      * \return  This function does not have any return value.                                                                                       *
      ************************************************************************************************************************************************/
     void updateBattleMapImage();
+
+    /*! *********************************************************************************************************************************************
+     * \brief   This function sets the visibility state of the graphics item of the wind rose.                                                      *
+     *                                                                                                                                              *
+     * \details -                                                                                                                                   *
+     *                                                                                                                                              *
+     * \param   visibile                      Visibility state                                                                                      *
+     *                                                                                                                                              *
+     * \return  This function does not have any return value.                                                                                       *
+     ************************************************************************************************************************************************/
+    void setWindRoseGraphicsItemVisibility(bool visibile);
+
+    /*! *********************************************************************************************************************************************
+     * \brief   This function sets the pixmap of the graphics item of the wind rose.                                                                *
+     *                                                                                                                                              *
+     * \details -                                                                                                                                   *
+     *                                                                                                                                              *
+     * \param   pixmap                         Pixmap                                                                                               *
+     *                                                                                                                                              *
+     * \return  This function does not have any return value.                                                                                       *
+     ************************************************************************************************************************************************/
+    void setWindRoseGraphicsItemPixmap(QPixmap pixmap);
 
 protected: /* - */
 
@@ -197,6 +219,11 @@ private:
      * \brief This is the variable containing the graphics items of the Battle Map squares.
      */
     QList<QList<CustomGraphicsPixmapItem*>> m_battleMapSquaresGraphicsItems;
+
+    /*!
+     * \brief This is the variable contaiting the graphics item of the wind rose.
+     */
+    QGraphicsPixmapItem m_windRoseGraphicsItem;
 
     /*!
      * \brief This is the number of pixels per Battle Map square.

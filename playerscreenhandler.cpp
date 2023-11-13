@@ -20,6 +20,7 @@ PlayerScreenHandler::PlayerScreenHandler() :
     m_battleMapSquaresGraphicsItems(QList<QList<CustomGraphicsPixmapItem*>>()),
     m_pixelsPerBattleMapSquare(static_cast<quint32>(calcNumberPixelsPerInch(CONFIG_PLAYER_SCREEN_DIAGONAL, CONFIG_PLAYER_SCREEN_RESOLUTION.height(), CONFIG_PLAYER_SCREEN_RESOLUTION.width())))
 {
+    m_windRoseGraphicsItem.setVisible(false);
 }
 
 /*!
@@ -104,8 +105,6 @@ void PlayerScreenHandler::initBattleMapImage()
     pBattleMapScene = new BattleMapScenePlayerScreen();
     pGraphicsView->setScene(pBattleMapScene);
 
-
-
     for (quint32 rowIdx = 0U; rowIdx < pBattleMap->getNumberRows(); rowIdx++)
     {
         for (quint32 columnIdx = 0U; columnIdx < pBattleMap->getNumberColumns(); columnIdx++)
@@ -118,6 +117,10 @@ void PlayerScreenHandler::initBattleMapImage()
 
     pBattleMapScene->setSceneRect(QRectF(QPointF(pBattleMapSceneSection->getIndexFirstColumnSceneSection(), pBattleMapSceneSection->getIndexFirstRowSceneSection()) * m_pixelsPerBattleMapSquare,
                                          QSizeF(pBattleMapSceneSection->getNumberColumnsSceneSection(), pBattleMapSceneSection->getNumberRowsSceneSection()) * m_pixelsPerBattleMapSquare));
+
+    pBattleMapScene->addItem(&m_windRoseGraphicsItem);
+    m_windRoseGraphicsItem.setPos((pBattleMapSceneSection->getIndexFirstColumnSceneSection() + pBattleMapSceneSection->getNumberColumnsSceneSection() - WINDROSESIZE_BATTLEMAPSQUARES) * m_pixelsPerBattleMapSquare,
+                                  pBattleMapSceneSection->getIndexFirstRowSceneSection() * m_pixelsPerBattleMapSquare);
 }
 
 /*!
@@ -130,6 +133,25 @@ void PlayerScreenHandler::updateBattleMapImage()
     updateBattleMapSquaresVisibility();
 
     updateBattleMapSquaresOpacity();
+
+    m_windRoseGraphicsItem.setPos((pBattleMapSceneSection->getIndexFirstColumnSceneSection() + pBattleMapSceneSection->getNumberColumnsSceneSection() - WINDROSESIZE_BATTLEMAPSQUARES) * m_pixelsPerBattleMapSquare,
+                                  pBattleMapSceneSection->getIndexFirstRowSceneSection() * m_pixelsPerBattleMapSquare);
+}
+
+/*!
+ * \brief This function sets the visibility state of the graphics item of the wind rose.
+ */
+void PlayerScreenHandler::setWindRoseGraphicsItemVisibility(bool visibile)
+{
+    m_windRoseGraphicsItem.setVisible(visibile);
+}
+
+/*!
+ * \brief This function sets the pixmap of the graphics item of the wind rose.
+ */
+void PlayerScreenHandler::setWindRoseGraphicsItemPixmap(QPixmap pixmap)
+{
+    m_windRoseGraphicsItem.setPixmap(pixmap.scaled(WINDROSESIZE_BATTLEMAPSQUARES * QSize(m_pixelsPerBattleMapSquare, m_pixelsPerBattleMapSquare)));
 }
 
 /****************************************************************************************************************************************************

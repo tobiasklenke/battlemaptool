@@ -82,6 +82,19 @@
      <set>Qt::AlignCenter</set>
     </property>
    </widget>
+   <widget class="QLabel" name="Label_WindRose">
+    <property name="geometry">
+     <rect>
+      <x>1670</x>
+      <y>10</y>
+      <width>200</width>
+      <height>200</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="MenuBar">
    <property name="geometry">
@@ -110,7 +123,25 @@
     <property name="title">
      <string>View</string>
     </property>
+    <widget class="QMenu" name="SubMenu_WindRoseOrientation">
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
+     <property name="title">
+      <string>Wind Rose Orientation</string>
+     </property>
+     <property name="icon">
+      <iconset resource="icons.qrc">
+       <normaloff>:/icons/icons/windrose.png</normaloff>:/icons/icons/windrose.png</iconset>
+     </property>
+     <addaction name="Action_WindRoseOrientationNorth"/>
+     <addaction name="Action_WindRoseOrientationEast"/>
+     <addaction name="Action_WindRoseOrientationSouth"/>
+     <addaction name="Action_WindRoseOrientationWest"/>
+    </widget>
     <addaction name="Action_UpdatePlayerScreen"/>
+    <addaction name="separator"/>
+    <addaction name="SubMenu_WindRoseOrientation"/>
     <addaction name="separator"/>
     <addaction name="Mode_Select"/>
     <addaction name="Mode_CoverBattleMap"/>
@@ -278,6 +309,50 @@
    </property>
    <property name="text">
     <string>Cover Battle Map</string>
+   </property>
+  </action>
+  <action name="Action_WindRoseOrientationNorth">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>North</string>
+   </property>
+  </action>
+  <action name="Action_WindRoseOrientationEast">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>East</string>
+   </property>
+  </action>
+  <action name="Action_WindRoseOrientationSouth">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>South</string>
+   </property>
+  </action>
+  <action name="Action_WindRoseOrientationWest">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>West</string>
    </property>
   </action>
  </widget>

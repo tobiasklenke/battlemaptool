@@ -102,6 +102,15 @@ private slots:
     void triggered_Action_UpdatePlayerScreen();
 
     /*! *********************************************************************************************************************************************
+     * \brief   This function handles the actions Action_WindRoseOrientationNorth to Action_WindRoseOrientationWest.                                *
+     *                                                                                                                                              *
+     * \details -                                                                                                                                   *
+     *                                                                                                                                              *
+     * \return  This function does not have any return value.                                                                                       *
+     ************************************************************************************************************************************************/
+    void triggered_Action_WindRoseOrientation();
+
+    /*! *********************************************************************************************************************************************
      * \brief   This function handles a toggle of Mode_Select.                                                                                      *
      *                                                                                                                                              *
      * \details This function sets the operation mode of the master and the player screen handlers to Select.                                       *
@@ -177,6 +186,11 @@ private:
      * \brief This is a pointer to the action group containing the operation mode actions.
      */
     QActionGroup *pOperationModeActionGroup;
+
+    /*!
+     * \brief This is a pointer to the action group containing the wind rose orientation actions.
+     */
+    QActionGroup *pWindRoseOrientationActionGroup;
 
     /*!
      * \brief This is a pointer to the user interface of the class Dialog_NewBattleMap.

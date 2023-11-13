@@ -2,6 +2,7 @@
     <qresource prefix="/images">
         <file>images/emptybattlemapsquareimage.png</file>
         <file>images/splashscreenimage.png</file>
+        <file>images/windroseimage.png</file>
     </qresource>
     <qresource prefix="/"/>
 </RCC>
