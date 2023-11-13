@@ -164,6 +164,7 @@ void MasterScreenHandler::handleCoverBattleMap(bool covered)
 
             QPainter *painter = new QPainter(&temporaryPixmap);
             painter->setBrush(QBrush(BATTLEMAPSQUARECOVERED_COLOR));
+            painter->setPen(Qt::NoPen);
             painter->drawRect(temporaryPixmap.rect());
 
             delete painter;
