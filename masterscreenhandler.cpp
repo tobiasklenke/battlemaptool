@@ -164,8 +164,8 @@ void MasterScreenHandler::handleCoverBattleMap(bool covered)
 
             QPainter *painter = new QPainter(&temporaryPixmap);
             painter->setBrush(QBrush(BATTLEMAPSQUARECOVERED_COLOR));
-            painter->setPen(QPen(CONFIG_BATTLEMAPGRID_COLOR, CONFIG_BATTLEMAPGRID_LINEWIDTH, Qt::SolidLine));
             painter->drawRect(temporaryPixmap.rect());
+
             delete painter;
         }
         else
