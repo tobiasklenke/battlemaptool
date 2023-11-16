@@ -101,6 +101,8 @@ void Dialog_NewBattleMap::toggled_RadioButton_SourceBattleMap(bool checked)
         pUserInterface->LineEdit_NumberColumns->setText(QString::number(pBattleMap->getNumberRows()));
         pUserInterface->CheckBox_DrawBattleMapGrid->setCheckState(Qt::Unchecked);
         pUserInterface->GraphicsView_NewBattleMap->setInteractive(false);
+        pUserInterface->GraphicsView_NewBattleMap->setEventProcessingEnabled(false);
+        pUserInterface->GraphicsView_NewBattleMap->resetScaling();
         pUserInterface->GraphicsView_NewBattleMap->viewport()->setCursor(Qt::ArrowCursor);
         pUserInterface->GraphicsView_NewBattleMap->setToolTip("");
         pUserInterface->GraphicsView_NewBattleMap->setFrameShape(QFrame::Box);
@@ -141,6 +143,8 @@ void Dialog_NewBattleMap::toggled_RadioButton_EmptyBattleMap(bool checked)
         pUserInterface->LineEdit_Source->setText("");
         pUserInterface->CheckBox_DrawBattleMapGrid->setCheckState(Qt::Checked);
         pUserInterface->GraphicsView_NewBattleMap->setInteractive(false);
+        pUserInterface->GraphicsView_NewBattleMap->setEventProcessingEnabled(false);
+        pUserInterface->GraphicsView_NewBattleMap->resetScaling();
         pUserInterface->GraphicsView_NewBattleMap->viewport()->setCursor(Qt::ArrowCursor);
         pUserInterface->GraphicsView_NewBattleMap->setToolTip("");
         pUserInterface->GraphicsView_NewBattleMap->setFrameShape(QFrame::Box);
@@ -623,6 +627,7 @@ void Dialog_NewBattleMap::showSourceBattleMapImage()
     connect(pBattleMapScene, SIGNAL(selected_BattleMapSquare()), this, SLOT(selected_BattleMapSquare()));
     pUserInterface->GraphicsView_NewBattleMap->setScene(pBattleMapScene);
     pUserInterface->GraphicsView_NewBattleMap->setFrameShape(QFrame::NoFrame);
+    pUserInterface->GraphicsView_NewBattleMap->resetScaling();
 
     QImage battleMapImage(pUserInterface->LineEdit_Source->text());
 
