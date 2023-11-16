@@ -124,6 +124,8 @@ void MasterScreenHandler::showBattleMapImage()
         }
     }
 
+    pBattleMapScene->setSceneRect(0, 0, pBattleMap->getNumberColumns() * CONFIG_BATTLEMAPSQUARE_SIZE, pBattleMap->getNumberRows() * CONFIG_BATTLEMAPSQUARE_SIZE);
+
     updateBattleMapSceneSection();
 
     /* Add the rect that frames the Battle Map scene section to be displayed on the players screen */
@@ -456,6 +458,9 @@ void MasterScreenHandler::handleSelect(QPointF positionPress, QPointF positionRe
             item->setZValue(-1.0);
         }
     }
+
+    /* Stack Battle Map scene section rectangle on top of all other items */
+    m_sceneSectionRect.setZValue(0.0);
 }
 
 /*!
