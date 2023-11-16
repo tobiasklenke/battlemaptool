@@ -41,6 +41,15 @@ QPointF BattleMapScene::getScenePosRelease() const
     return m_scenePosRelease;
 }
 
+/*!
+ * \brief This function checks the mouse event scene position for validity.
+ */
+bool BattleMapScene::checkMouseEventScenePos(QGraphicsSceneMouseEvent *event)
+{
+    /* check whether the mouse event is positioned at the Battle Map scene */
+    return ((0 <= event->scenePos().x()) && (event->scenePos().x() <= this->width()) && (0 <= event->scenePos().y()) && (event->scenePos().y() <= this->height()));
+}
+
 /****************************************************************************************************************************************************
  * DEFINITION OF PROTECTED FUNCTIONS                                                                                                                *
  ****************************************************************************************************************************************************/
@@ -57,10 +66,8 @@ void BattleMapScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
         m_scenePosRelease = QPointF();
 
         /* check whether the mouse press event is positioned at the Battle Map scene */
-        if ((0 <= event->scenePos().x()) && (event->scenePos().x() <= this->width()) &&
-                (0 <= event->scenePos().y()) && (event->scenePos().y() <= this->height()))
+        if (checkMouseEventScenePos(event))
         {
-            /* set press position */
             m_scenePosPress = event->scenePos();
         }
     }
@@ -73,11 +80,10 @@ void BattleMapScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
     if (Qt::LeftButton == event->button())
     {
-        if (!m_scenePosPress.isNull())
+        /* check whether the mouse release event is positioned at the Battle Map scene */
+        if (checkMouseEventScenePos(event))
         {
-            /* check whether the mouse release event is positioned at the Battle Map scene */
-            if ((0 <= event->scenePos().x()) && (event->scenePos().x() <= this->width()) &&
-                    (0 <= event->scenePos().y()) && (event->scenePos().y() <= this->height()))
+            if (!m_scenePosPress.isNull())
             {
                 m_scenePosRelease = event->scenePos();
             }

@@ -59,6 +59,17 @@ public:
      ************************************************************************************************************************************************/
     QPointF getScenePosRelease() const;
 
+    /*! *********************************************************************************************************************************************
+     * \brief   This function checks the mouse event scene position for validity.                                                                   *
+     *                                                                                                                                              *
+     * \details -                                                                                                                                   *
+     *                                                                                                                                              *
+     * \param   event                         Mouse event to be checked                                                                             *
+     *                                                                                                                                              *
+     * \return  This function returns true if the mouse event is positioned on the Battle Map scene. Otherwise, it returns false.                   *
+     ************************************************************************************************************************************************/
+    bool checkMouseEventScenePos(QGraphicsSceneMouseEvent *event);
+
 protected:
 
     /*! *********************************************************************************************************************************************
