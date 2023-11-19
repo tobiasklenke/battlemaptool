@@ -60,6 +60,9 @@ MainWindow::MainWindow(QGraphicsView *playerWindow, QWidget *parent) :
 
     pUserInterface->Label_WindRose->setVisible(false);
     pUserInterface->Label_ScaleFactor->setVisible(false);
+
+    pUserInterface->Label_WindRose->setAttribute(Qt::WA_TransparentForMouseEvents);
+    pUserInterface->Label_ScaleFactor->setAttribute(Qt::WA_TransparentForMouseEvents);
 }
 
 /*!
