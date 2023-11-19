@@ -532,6 +532,14 @@ void Dialog_NewBattleMap::rejected_DialogButtonBox()
 }
 
 /*!
+ * \brief This function handles a click on the close button.
+ */
+void Dialog_NewBattleMap::reject()
+{
+    emit rejected();
+}
+
+/*!
  * \brief This function updates the member variable m_scaleFactor and redraws the Battle Map grid.
  */
 void Dialog_NewBattleMap::changed_ScaleFactor(qreal scaleFactor)

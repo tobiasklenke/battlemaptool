@@ -239,6 +239,15 @@ private slots:
     void rejected_DialogButtonBox();
 
     /*! *********************************************************************************************************************************************
+     * \brief   This function handles a click on the close button.                                                                                  *
+     *                                                                                                                                              *
+     * \details -                                                                                                                                   *
+     *                                                                                                                                              *
+     * \return  This function does not have any return value.                                                                                       *
+     ************************************************************************************************************************************************/
+    void reject();
+
+    /*! *********************************************************************************************************************************************
      * \brief   This function updates the member variable m_scaleFactor and redraws the Battle Map grid.                                            *
      *                                                                                                                                              *
      * \details -                                                                                                                                   *
