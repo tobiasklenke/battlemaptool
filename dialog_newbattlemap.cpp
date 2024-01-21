@@ -487,24 +487,37 @@ void DialogNewBattleMap::selectedBattleMapSquare()
         m_userInterface->lineEditNumberRows->setText(QString::number(m_battleMap->getNumberRows()));
         m_userInterface->lineEditNumberColumns->setText(QString::number(m_battleMap->getNumberColumns()));
 
-        /* enable widgets for editing of numbers of rows and columns for readjustment */
-        m_userInterface->lineEditNumberRows->setEnabled(true);
-        m_userInterface->lineEditNumberColumns->setEnabled(true);
-        m_userInterface->pushButtonDecrementNumberRows->setEnabled(true);
-        m_userInterface->pushButtonIncrementNumberRows->setEnabled(true);
-        m_userInterface->pushButtonDecrementNumberColumns->setEnabled(true);
-        m_userInterface->pushButtonIncrementNumberColumns->setEnabled(true);
+        /* check if calculated numbers of rows and columns are reasonable */
+        if (BATTLEMAPSELECTION_MAXIMUMNUMBERROWS < m_battleMap->getNumberRows() || BATTLEMAPSELECTION_MAXIMUMNUMBERCOLUMNS < m_battleMap->getNumberColumns())
+        {
+            /* show message box asking user to check resolution accuracy of selected Battle Map image */
+            QMessageBox msgBox(this);
+            msgBox.setWindowTitle("Battle Map square selection failed");
+            msgBox.setText("Please check the resolution accuracy of the selected Battle Map image.");
+            msgBox.setIcon(QMessageBox::Warning);
+            msgBox.exec();
+        }
+        else
+        {
+            /* enable widgets for editing of numbers of rows and columns for readjustment */
+            m_userInterface->lineEditNumberRows->setEnabled(true);
+            m_userInterface->lineEditNumberColumns->setEnabled(true);
+            m_userInterface->pushButtonDecrementNumberRows->setEnabled(true);
+            m_userInterface->pushButtonIncrementNumberRows->setEnabled(true);
+            m_userInterface->pushButtonDecrementNumberColumns->setEnabled(true);
+            m_userInterface->pushButtonIncrementNumberColumns->setEnabled(true);
 
-        /* check if Battle Map grid covers complete Battle Map image (which affects push button with AcceptRole) and draw Battle Map grid */
-        checkBattleMapGrid();
-        drawBattleMapGrid();
+            /* check if Battle Map grid covers complete Battle Map image (which affects push button with AcceptRole) and draw Battle Map grid */
+            checkBattleMapGrid();
+            drawBattleMapGrid();
 
-        /* show message box asking user to check Battle Map grid and readjust number of rows and columns in case of mismatch */
-        QMessageBox msgBox(this);
-        msgBox.setWindowTitle("Check Battle Map grid");
-        msgBox.setText("Please check the Battle Map grid and readjust the number of rows and columns in case of mismatch.");
-        msgBox.setIcon(QMessageBox::Question);
-        msgBox.exec();
+            /* show message box asking user to check Battle Map grid and readjust number of rows and columns in case of mismatch */
+            QMessageBox msgBox(this);
+            msgBox.setWindowTitle("Check Battle Map grid");
+            msgBox.setText("Please check the Battle Map grid and readjust the number of rows and columns in case of mismatch.");
+            msgBox.setIcon(QMessageBox::Question);
+            msgBox.exec();
+        }
     }
     else
     {

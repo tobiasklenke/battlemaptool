@@ -203,15 +203,17 @@ private slots:
      *                                                                                                                                              *
      * \details This function calculates the average edge length of the selected Battle Map square and initializes the average edge length and      *
 	 *          counter values for increment and decrement optimization. If the average edge length is not greater 0, no valid Battle Map square    *
-	 *          has been selected and the function resets the number of rows and columns and the corresponding widgets, disables the push button    *
+     *          has been selected and the function resets the numbers of rows and columns and the corresponding widgets, disables the push button   *
 	 *          from DialogButtonBox with AcceptRole and removes the Battle Map grid. Otherwise, if a valid Battle Map square has been selected, it *
 	 *          optimizes the edge length by performing a modulo operation with the height of the Battle Map image and the edge length with the     *
 	 *          goal of minimizing the residual to 0. This is done twice by incrementing and decrementing the edge length. The edge length that     *
-	 *          results from the optimization with fewer iterations is kept. Afterwards, the function updates the number of rows and columns        *
-	 *          according to the optimized edge length of the Battle Map squares and enables the widgets for the editing of numbers of rows and     *
-	 *          columns for readjustment, checks if the Battle Map grid covers the complete Battle Map image (which affects push button with        *
-	 *          AcceptRole) and draws Battle Map grid. Finally, the function shows a message box asking the user to check the Battle Map grid and   *
-	 *          readjust the number of rows and columns in case of a mismatch.                                                                      *
+     *          results from the optimization with fewer iterations is kept. Afterwards, the function updates the numbers of rows and columns       *
+     *          according to the optimized edge length of the Battle Map squares and checks if the calculated numbers of rows and columns are       *
+     *          reasonable. If this is not the case, the function shows a message box asking the user to check the resolution accuracy of the       *
+     *          selected Battle Map image. Otherwise, it enables the widgets for the editing of numbers of rows and columns for readjustment,       *
+     *          checks if the Battle Map grid covers the complete Battle Map image (which affects push button with AcceptRole) and draws Battle Map *
+     *          grid. Finally, the function shows a message box asking the user to check the Battle Map grid and readjust the numbers of rows and   *
+     *          columns in case of a mismatch.                                                                                                      *
 	 *                                                                                                                                              *
      * \return  This function does not have any return value.                                                                                       *
      ************************************************************************************************************************************************/

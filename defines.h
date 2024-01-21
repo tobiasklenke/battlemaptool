@@ -67,6 +67,16 @@
 #define BATTLEMAPSELECTIONRECT_LINEWIDTH                   3
 
 /*!
+ * \brief This is the maximum expected number of rows to be calculated after Battle Map square selection.
+ */
+#define BATTLEMAPSELECTION_MAXIMUMNUMBERROWS               250U
+
+/*!
+ * \brief This is the maximum expected number of columns to be calculated after Battle Map square selection.
+ */
+#define BATTLEMAPSELECTION_MAXIMUMNUMBERCOLUMNS            250U
+
+/*!
  * \brief This is the opacity of Battle Map squares within the Battle Map section frame on the master screen.
  */
 #define BATTLEMAPSQUAREWITHINSECTIONFRAME_OPACITY          1.0
