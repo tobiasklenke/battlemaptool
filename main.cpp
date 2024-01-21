@@ -59,21 +59,22 @@ const int splashScreenFontSizeApplicationVersion = 12;
  */
 int main(int argc, char *argv[])
 {
+    /* initialize application with name and version, which are shown on the splash screens */
     QApplication battleMapTool(argc, argv);
     battleMapTool.setApplicationName(applicationName);
     battleMapTool.setApplicationVersion(applicationVersion);
 
-    /* show the splash screen windows */
+    /* load splash screen image and draw text onto it containing application name and application version */
     QPixmap splashScreenPixmap(SPLASHSCREENIMAGE_SOURCE);
-
     QPainter painter(&splashScreenPixmap);
     painter.setFont(QFont("Arial", splashScreenFontSizeApplicationName, QFont::Bold));
     painter.drawText(splashScreenPixmap.rect(), Qt::AlignHCenter, battleMapTool.applicationName());
     painter.setFont(QFont("Arial", splashScreenFontSizeApplicationVersion, QFont::Bold));
     painter.drawText(splashScreenPixmap.rect(), Qt::AlignHCenter, QString("\n\n(Version ") + battleMapTool.applicationVersion() + QString(")"));
+
+    /* show splash screens centrally on both main window and player window */
     QSplashScreen splashScreen1(splashScreenPixmap);
     QSplashScreen splashScreen2(splashScreenPixmap);
-
     int splashScreen1PosX = (CONFIG_MASTER_SCREEN_RESOLUTION.width() - splashScreenPixmap.width()) / 2;
     int splashScreen1PosY = (CONFIG_MASTER_SCREEN_RESOLUTION.height() - splashScreenPixmap.height()) / 2;
     int splashScreen2PosX = (CONFIG_PLAYER_SCREEN_RESOLUTION.width() - splashScreenPixmap.width()) / 2 + CONFIG_MASTER_SCREEN_RESOLUTION.width();
@@ -83,16 +84,19 @@ int main(int argc, char *argv[])
     splashScreen1.show();
     splashScreen2.show();
 
-    QGraphicsView * playerWindow = new QGraphicsView();
-    MainWindow mainWindow(playerWindow);
+    /* construct player window and main window and pass the former to the latter for later handling */
+    QGraphicsView playerWindow;
+    MainWindow mainWindow(&playerWindow);
 
-    /* close the splash screen windows, show the main window and player window in full screen mode and move them to the respective screen */
+    /* after splash screen duration, close splash screens and show main window and player window in full screen mode */
     QTimer::singleShot(splashScreenDuration, &splashScreen1, SLOT(close()));
     QTimer::singleShot(splashScreenDuration, &splashScreen2, SLOT(close()));
     QTimer::singleShot(splashScreenDuration, &mainWindow, SLOT(showFullScreen()));
-    QTimer::singleShot(splashScreenDuration, playerWindow, SLOT(showFullScreen()));
+    QTimer::singleShot(splashScreenDuration, &playerWindow, SLOT(showFullScreen()));
+
+    /* move main window and player window to respective screens */
     mainWindow.move(0, 0);
-    playerWindow->move(CONFIG_MASTER_SCREEN_RESOLUTION.width(), 0);
+    playerWindow.move(CONFIG_MASTER_SCREEN_RESOLUTION.width(), 0);
 
     return battleMapTool.exec();
 }

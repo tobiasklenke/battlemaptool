@@ -14,7 +14,7 @@
  ****************************************************************************************************************************************************/
 
 /*!
- * \brief This class implements the functionality of a Battle Map square.
+ * \brief This class implements the functionality needed for a Battle Map square.
  */
 class BattleMapSquare
 {

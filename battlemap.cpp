@@ -26,6 +26,7 @@ BattleMap::BattleMap(BattleMap &battleMap) :
     m_numberColumns(battleMap.getNumberColumns()),
     m_battleMapSquares(QList<QList<BattleMapSquare*>>())
 {
+    /* copy pixmaps of all Battle Map squares */
     for (quint32 rowIdx = 0U; rowIdx < m_numberRows; rowIdx++)
     {
         for (quint32 columnIdx = 0U; columnIdx < m_numberColumns; columnIdx++)
@@ -40,6 +41,7 @@ BattleMap::BattleMap(BattleMap &battleMap) :
  */
 BattleMap::~BattleMap()
 {
+    /* delete all Battle Map squares */
     for (quint32 rowIdx = 0U; rowIdx < m_battleMapSquares.count(); rowIdx++)
     {
         for (quint32 columnIdx = 0U; columnIdx < m_battleMapSquares[rowIdx].count(); columnIdx++)
@@ -82,7 +84,7 @@ void BattleMap::setNumberColumns(quint32 numberColumns)
 }
 
 /*!
- * \brief This function returns the pixmap of an entry of the nested QList member variable m_battleMapSquares.
+ * \brief This function returns the pixmap of an entry of the member variable m_battleMapSquares.
  */
 QPixmap BattleMap::getBattleMapSquarePixmap(quint32 rowIdx, quint32 columnIdx) const
 {
@@ -90,7 +92,7 @@ QPixmap BattleMap::getBattleMapSquarePixmap(quint32 rowIdx, quint32 columnIdx) c
 }
 
 /*!
- * \brief This function sets the pixmap of an entry of the nested QList member variable m_battleMapSquares.
+ * \brief This function sets the pixmap of an entry of the member variable m_battleMapSquares.
  */
 void BattleMap::setBattleMapSquarePixmap(quint32 rowIdx, QPixmap battleMapSquarePixmap)
 {
@@ -100,6 +102,7 @@ void BattleMap::setBattleMapSquarePixmap(quint32 rowIdx, QPixmap battleMapSquare
         m_battleMapSquares.append(QList<BattleMapSquare*>());
     }
 
+    /* construct new Battle Map square object and set pixmap */
     BattleMapSquare * battleMapSquare = new BattleMapSquare();
     battleMapSquare->setBattleMapSquarePixmap(battleMapSquarePixmap);
 
@@ -108,7 +111,7 @@ void BattleMap::setBattleMapSquarePixmap(quint32 rowIdx, QPixmap battleMapSquare
 }
 
 /*!
- * \brief This function scales the pixmap of an entry of the nested QList member variable m_battleMapSquares.
+ * \brief This function scales the pixmap of an entry of the member variable m_battleMapSquares.
  */
 void BattleMap::scaleBattleMapSquarePixmap(quint32 rowIdx, quint32 columnIdx, quint32 newSize)
 {
@@ -116,7 +119,7 @@ void BattleMap::scaleBattleMapSquarePixmap(quint32 rowIdx, quint32 columnIdx, qu
 }
 
 /*!
- * \brief  This function returns the coverage state of an entry of the nested QList member variable m_battleMapSquares.
+ * \brief This function returns the coverage state of an entry of the member variable m_battleMapSquares.
  */
 bool BattleMap::getBattleMapSquareCovered(quint32 rowIdx, quint32 columnIdx) const
 {
@@ -124,7 +127,7 @@ bool BattleMap::getBattleMapSquareCovered(quint32 rowIdx, quint32 columnIdx) con
 }
 
 /*!
- * \brief This function sets the coverage state of an entry of the nested QList member variable m_battleMapSquares.
+ * \brief This function sets the coverage state of an entry of the member variable m_battleMapSquares.
  */
 void BattleMap::setBattleMapSquareCovered(quint32 rowIdx, quint32 columnIdx, bool covered)
 {

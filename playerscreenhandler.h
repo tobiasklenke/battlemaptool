@@ -20,7 +20,7 @@
  ****************************************************************************************************************************************************/
 
 /*!
- * \brief This class implements the functionality of the player screen handling.
+ * \brief This class implements the functionality needed for the handling of the player screen.
  */
 class PlayerScreenHandler
 {
@@ -39,17 +39,18 @@ public:
     /*! *********************************************************************************************************************************************
      * \brief   This function is the destructor of the class PlayerScreenHandler.                                                                   *
      *                                                                                                                                              *
-     * \details This function deletes the objects pointed to by pBattleMapScene and contained in the nested QList member variable                   *
-	 *          m_battleMapSquaresGraphicsItems.                                                                                                    *
+     * \details This function deletes the objects created in the constructor.                                                                       *
      *                                                                                                                                              *
      * \return  This function does not have any return value.                                                                                       *
      ************************************************************************************************************************************************/
     ~PlayerScreenHandler();
 
     /*! *********************************************************************************************************************************************
-     * \brief   This function sets the address of the member variable pGraphicsView.                                                                *
+     * \brief   This function sets the address of the member variable m_graphicsView.                                                               *
      *                                                                                                                                              *
-     * \details This function sets the address of the member variable pGraphicsView and sets the Battle Map scene.                                  *
+     * \details This function sets the address of the member variable m_graphicsView, sets the background color of the graphics view to black and   *
+     *          removes the frame. Afterwards, it removes the scroll bars from the graphics view and sets the Battle Map scene to the graphics      *
+     *          view.                                                                                                                               *
      *                                                                                                                                              *
      * \param   graphicsView                  Address of the graphics view to display the Battle Map scene on                                       *
      *                                                                                                                                              *
@@ -58,9 +59,10 @@ public:
     void setGraphicsView(QGraphicsView *graphicsView);
 
     /*! *********************************************************************************************************************************************
-     * \brief   This function sets the address of the member variable pBattleMap.                                                                   *
+     * \brief   This function sets the address of the member variable m_battleMap.                                                                  *
      *                                                                                                                                              *
-     * \details This function sets the address of the member variable pBattleMap and updates the graphics items of the Battle Map squares.          *
+     * \details This function sets the address of the member variable m_battleMap and updates the Battle Map square graphics items according to the *
+     *          set Battle Map.                                                                                                                     *
      *                                                                                                                                              *
      * \param   battleMap                     Address of the Battle Map                                                                             *
      *                                                                                                                                              *
@@ -69,7 +71,7 @@ public:
     void setBattleMap(BattleMap *battleMap);
 
     /*! *********************************************************************************************************************************************
-     * \brief   This function sets the address of the member variable pBattleMapSceneSection.                                                       *
+     * \brief   This function sets the address of the member variable m_battleMapSceneSection.                                                      *
      *                                                                                                                                              *
      * \details -                                                                                                                                   *
      *                                                                                                                                              *
@@ -80,9 +82,9 @@ public:
     void setBattleMapSceneSection(BattleMapSceneSection *battleMapSceneSection);
 
     /*! *********************************************************************************************************************************************
-     * \brief   This function sets the operation mode.                                                                                              *
+     * \brief   This function sets the member variable m_operationMode.                                                                             *
      *                                                                                                                                              *
-     * \details This function sets the operation mode and the cursor according to the operation mode.                                               *
+     * \details This function sets the member variable m_operationMode and sets the cursor according to the operation mode.                         *
      *                                                                                                                                              *
      * \param   operationMode                 Operation mode                                                                                        *
      *                                                                                                                                              *
@@ -93,9 +95,9 @@ public:
     /*! *********************************************************************************************************************************************
      * \brief   This function initializes the Battle Map image without showing it.                                                                  *
      *                                                                                                                                              *
-     * \details This function resets the Battle Map scene and adds all the Battle Map squares from the Battle Map to the Battle Map scene without   *
-     *          showing them.                                                                                                                       *
-     *                                                                                                                                              *
+     * \details This function resets the Battle Map scene and adds all the Battle Map squares from the Battle Map to the Battle Map scene.          *
+     *          Afterwards, it initializes the Battle Map scene rect according to the Battle Map scene section and adds and positions the wind rose *
+     *          graphics item.                                                                                                                      *
      * \return  This function does not have any return value.                                                                                       *
      ************************************************************************************************************************************************/
     void initBattleMapImage();
@@ -103,14 +105,15 @@ public:
     /*! *********************************************************************************************************************************************
      * \brief   This function updates the Battle Map image.                                                                                         *
      *                                                                                                                                              *
-     * \details This function updates the visibility of the Battle Map squares depending on whether they are displayed on the player screen.        *
+     * \details This function updates the visibility and opacity of the Battle Map squares. Afterwards, it updates the Battle Map scene rect        *
+     *          according to the Battle Map scene section and the position of the wind rose graphics item.                                          *
      *                                                                                                                                              *
      * \return  This function does not have any return value.                                                                                       *
      ************************************************************************************************************************************************/
     void updateBattleMapImage();
 
     /*! *********************************************************************************************************************************************
-     * \brief   This function sets the visibility state of the graphics item of the wind rose.                                                      *
+     * \brief   This function sets the visibility state of the wind rose graphics item.                                                             *
      *                                                                                                                                              *
      * \details -                                                                                                                                   *
      *                                                                                                                                              *
@@ -121,7 +124,7 @@ public:
     void setWindRoseGraphicsItemVisibility(bool visibile);
 
     /*! *********************************************************************************************************************************************
-     * \brief   This function sets the pixmap of the graphics item of the wind rose.                                                                *
+     * \brief   This function sets the pixmap of the wind rose graphics item.                                                                       *
      *                                                                                                                                              *
      * \details -                                                                                                                                   *
      *                                                                                                                                              *
@@ -142,7 +145,7 @@ private:
     /*! *********************************************************************************************************************************************
      * \brief   This function deletes the graphics items of the Battle Map squares.                                                                 *
      *                                                                                                                                              *
-     * \details -                                                                                                                                   *
+     * \details This function deletes the graphics items of the Battle Map squares and removes all the graphics items from the list.                *
      *                                                                                                                                              *
      * \return  This function does not have any return value.                                                                                       *
      ************************************************************************************************************************************************/
@@ -151,7 +154,9 @@ private:
     /*! *********************************************************************************************************************************************
      * \brief   This function updates the graphics items of the Battle Map squares.                                                                 *
      *                                                                                                                                              *
-     * \details -                                                                                                                                   *
+     * \details This function deletes the Battle Map squares of the previous Battle Map. Afterwards, it appends all the rows of the new Battle Map  *
+     *          to the nested QList member variable m_battleMapSquaresGraphicsItems if the respective rows do not already exist. To each row it     *
+     *          appends the graphics items of the Battle Map squares.                                                                               *
      *                                                                                                                                              *
      * \return  This function does not have any return value.                                                                                       *
      ************************************************************************************************************************************************/
@@ -160,7 +165,7 @@ private:
     /*! *********************************************************************************************************************************************
      * \brief   This function deletes the Battle Map scene.                                                                                         *
      *                                                                                                                                              *
-     * \details -                                                                                                                                   *
+     * \details This function removes all graphics items from the Battle Map scene and deletes m_battleMapScene afterwards.                         *
      *                                                                                                                                              *
      * \return  This function does not have any return value.                                                                                       *
      ************************************************************************************************************************************************/
@@ -169,8 +174,7 @@ private:
     /*! *********************************************************************************************************************************************
      * \brief   This function updates the visibility of the Battle Map squares depending on whether they are displayed on the player screen.        *
      *                                                                                                                                              *
-     * \details This function updates the visibility of the Battle Map squares depending on whether they are displayed on the player screen and     *
-	 *          sets the rect of the Battle Map scene according to the visible Battle Map squares.                                                  *
+     * \details -                                                                                                                                   *
 	 *                                                                                                                                              *
      * \return  This function does not have any return value.                                                                                       *
      ************************************************************************************************************************************************/
@@ -184,7 +188,8 @@ private:
 	 *          covered. If so, the opacity is set to the minimum value. Otherwise and if the opacity has currently the minimum value, an opacity   *
 	 *          animation is added that changes the opacity gradually from minimum to maximum value. In case that a Battle Map square is invisible  *
 	 *          and therefore located outside the displayed Battle Map scene section, it is checked if the Battle Map square shall be covered. If   *
-	 *          so, the opacity is set to the minimum value. Otherwise, the opacity is set immediateöy to the maximum value.                        *
+     *          so, the opacity is set to the minimum value. Otherwise, the opacity is set immediately to the maximum value. Finally, it starts the *
+     *          opacity animation which is deleted when it has been stopped.                                                                        *
      *                                                                                                                                              *
      * \return  This function does not have any return value.                                                                                       *
      ************************************************************************************************************************************************/
@@ -193,22 +198,22 @@ private:
     /*!
      * \brief This is a pointer to the graphics view.
      */
-    QGraphicsView *pGraphicsView;
+    QGraphicsView *m_graphicsView;
 
     /*!
      * \brief This is a pointer to the Battle Map.
      */
-    BattleMap *pBattleMap;
+    BattleMap *m_battleMap;
 
     /*!
      * \brief This is a pointer to the Battle Map scene section.
      */
-    BattleMapSceneSection *pBattleMapSceneSection;
+    BattleMapSceneSection *m_battleMapSceneSection;
 
     /*!
      * \brief This is a pointer to the Battle Map scene.
      */
-    BattleMapScenePlayerScreen *pBattleMapScene;
+    BattleMapScenePlayerScreen *m_battleMapScene;
 
     /*!
      * \brief This is the operation mode.
@@ -226,9 +231,9 @@ private:
     QGraphicsPixmapItem m_windRoseGraphicsItem;
 
     /*!
-     * \brief This is the number of pixels per Battle Map square.
+     * \brief This is the edge length of a Battle Map square in pixels.
      */
-    quint32 m_pixelsPerBattleMapSquare;
+    quint32 m_edgeLengthInPixels;
 };
 
 #endif // PLAYERSCREENHANDLER_H

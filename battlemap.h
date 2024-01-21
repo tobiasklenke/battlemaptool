@@ -12,7 +12,7 @@
  ****************************************************************************************************************************************************/
 
 /*!
- * \brief This class implements the functionality of a Battle Map.
+ * \brief This class implements the functionality needed for a Battle Map.
  */
 class BattleMap
 {
@@ -31,7 +31,10 @@ public:
     /*! *********************************************************************************************************************************************
      * \brief   This function is the copy constructor of the class BattleMap.                                                                       *
      *                                                                                                                                              *
-     * \details -                                                                                                                                   *
+     * \details This function copies the pixmaps of all the Battle Map squares.                                                                     *
+     *                                                                                                                                              *
+     * \param   battleMap                     Battle Map to be copied                                                                               *
+     *                                                                                                                                              *
      *                                                                                                                                              *
      * \return  This function does not have any return value.                                                                                       *
      ************************************************************************************************************************************************/
@@ -40,7 +43,7 @@ public:
     /*! *********************************************************************************************************************************************
      * \brief   This function is the destructor of the class BattleMap.                                                                             *
      *                                                                                                                                              *
-     * \details This function deletes the objects pointed to by the nested QList member variable m_battleMapSquares.                                *
+     * \details This function deletes the objects created in the constructor.                                                                       *
      *                                                                                                                                              *
      * \return  This function does not have any return value.                                                                                       *
      ************************************************************************************************************************************************/
@@ -87,24 +90,24 @@ public:
     void setNumberColumns(quint32 numberColumns);
 
     /*! *********************************************************************************************************************************************
-     * \brief   This function returns the pixmap of an entry of the nested QList member variable m_battleMapSquares.                                *
+     * \brief   This function returns the pixmap of an entry of the member variable m_battleMapSquares.                                             *
      *                                                                                                                                              *
      * \details -                                                                                                                                   *
      *                                                                                                                                              *
      * \param   rowIdx                        Index of the row                                                                                      *
      * \param   columnIdx                     Index of the column                                                                                   *
      *                                                                                                                                              *
-     * \return  This function returns the pixmap of an entry of the nested QList member variable m_battleMapSquares.                                *
+     * \return  This function returns the pixmap of an entry of the member variable m_battleMapSquares.                                             *
      ************************************************************************************************************************************************/
     QPixmap getBattleMapSquarePixmap(quint32 rowIdx, quint32 columnIdx) const;
 
     /*! *********************************************************************************************************************************************
-     * \brief   This function sets the pixmap of an entry of the nested QList member variable m_battleMapSquares.                                   *
+     * \brief   This function sets the pixmap of an entry of the member variable m_battleMapSquares.                                                *
      *                                                                                                                                              *
      * \details This function checks if the parameter rowIdx exceeds the current number of rows in the nested QList member variable                 *
-     *          m_battleMapSquares and appends a new row if this is the case. Afterwards, the function creates a new Battle Map square and sets its *
-     *          pixmap according to the parameter battleMapSquarePixmap. Finally, the function appends this newly created Battle Map square to the  *
-     *          row indicated by the parameter rowIdx.                                                                                              *
+     *          m_battleMapSquares and appends a new row if this is the case. Afterwards, the function constructs a new Battle Map square object    *
+     *          and sets its pixmap according to the parameter battleMapSquarePixmap. Finally, the function appends this newly created Battle Map   *
+     *          square to the row indicated by the parameter rowIdx.                                                                                *
      *                                                                                                                                              *
      * \param   rowIdx                        Index of the row                                                                                      *
      * \param   battleMapSquarePixmap         Pixmap of the Battle Map square                                                                       *
@@ -114,7 +117,7 @@ public:
     void setBattleMapSquarePixmap(quint32 rowIdx, QPixmap battleMapSquarePixmap);
 
     /*! *********************************************************************************************************************************************
-     * \brief   This function scales the pixmap of an entry of the nested QList member variable m_battleMapSquares.                                 *
+     * \brief   This function scales the pixmap of an entry of the member variable m_battleMapSquares.                                              *
      *                                                                                                                                              *
      * \details -                                                                                                                                   *
      *                                                                                                                                              *
@@ -127,7 +130,7 @@ public:
     void scaleBattleMapSquarePixmap(quint32 rowIdx, quint32 columnIdx, quint32 newSize);
 
     /*! *********************************************************************************************************************************************
-     * \brief   This function returns the coverage state of an entry of the nested QList member variable m_battleMapSquares.                        *
+     * \brief   This function returns the coverage state of an entry of the member variable m_battleMapSquares.                                     *
      *                                                                                                                                              *
      * \details -                                                                                                                                   *
      *                                                                                                                                              *
@@ -139,7 +142,7 @@ public:
     bool getBattleMapSquareCovered(quint32 rowIdx, quint32 columnIdx) const;
 
     /*! *********************************************************************************************************************************************
-     * \brief   This function sets the coverage state of an entry of the nested QList member variable m_battleMapSquares.                           *
+     * \brief   This function sets the coverage state of an entry of the member variable m_battleMapSquares.                                        *
      *                                                                                                                                              *
      * \details -                                                                                                                                   *
      *                                                                                                                                              *

@@ -57,14 +57,14 @@
 #define BATTLEMAPSECTIONFRAME_LINEWIDTH                    6
 
 /*!
- * \brief This is the line color of the Battle Map selection square.
+ * \brief This is the line color of the Battle Map selection rectangle.
  */
-#define BATTLEMAPSELECTIONSQUARE_COLOR                     Qt::black
+#define BATTLEMAPSELECTIONRECT_COLOR                       Qt::black
 
 /*!
- * \brief This is the line width of the Battle Map selection square.
+ * \brief This is the line width of the Battle Map selection rectangle.
  */
-#define BATTLEMAPSELECTIONSQUARE_LINEWIDTH                 3
+#define BATTLEMAPSELECTIONRECT_LINEWIDTH                   3
 
 /*!
  * \brief This is the opacity of Battle Map squares within the Battle Map section frame on the master screen.
@@ -156,6 +156,16 @@
  * \brief This is the wind rose size in Battle Map squares.
  */
 #define WINDROSESIZE_BATTLEMAPSQUARES                      3
+
+/*!
+ * \brief This is the z value of foregrounded graphics items on the master screen.
+ */
+#define FOREGROUNDEDGRAPHICSITEM_ZVALUE                    0.0
+
+/*!
+ * \brief This is the z value of backgrounded graphics items on the master screen.
+ */
+#define BACKGROUNDEDGRAPHICSITEM_ZVALUE                    -1.0
 
 /****************************************************************************************************************************************************
  * MACROS                                                                                                                                           *

@@ -14,55 +14,63 @@
  */
 MainWindow::MainWindow(QGraphicsView *playerWindow, QWidget *parent) :
     QMainWindow(parent),
-    pUserInterface(new Ui::MainWindow),
-    pOperationModeActionGroup(new QActionGroup(this)),
-    pWindRoseOrientationActionGroup(new QActionGroup(this)),
-    pDialog_NewBattleMap(nullptr),
-    pBattleMap(new BattleMap())
+    m_userInterface(new Ui::MainWindow),
+    m_operationModeActionGroup(new QActionGroup(this)),
+    m_windRoseOrientationActionGroup(new QActionGroup(this)),
+    m_dialogNewBattleMap(nullptr),
+    m_battleMap(new BattleMap())
 {
-    pUserInterface->setupUi(this);
+    /* set up the user interface */
+    m_userInterface->setupUi(this);
 
-    m_masterScreenHandler.setGraphicsView(pUserInterface->GraphicsView_BattleMapMasterScreen);
+    /* pass graphics views and Battle Map scene sections to master and player screen handlers */
+    m_masterScreenHandler.setGraphicsView(m_userInterface->graphicsViewBattleMapMasterScreen);
     m_masterScreenHandler.setBattleMapSceneSection(&m_battleMapSceneSection);
     m_playerScreenHandler.setGraphicsView(playerWindow);
     m_playerScreenHandler.setBattleMapSceneSection(&m_battleMapSceneSection);
 
-    /* create exclusive action group for operation mode */
-    pOperationModeActionGroup->addAction(pUserInterface->Mode_Select);
-    pOperationModeActionGroup->addAction(pUserInterface->Mode_CoverBattleMap);
-    pOperationModeActionGroup->addAction(pUserInterface->Mode_UncoverBattleMap);
-    pOperationModeActionGroup->setExclusionPolicy(QActionGroup::ExclusionPolicy::Exclusive);
+    /* create action group for operation mode */
+    m_operationModeActionGroup->addAction(m_userInterface->modeSelect);
+    m_operationModeActionGroup->addAction(m_userInterface->modeCoverBattleMap);
+    m_operationModeActionGroup->addAction(m_userInterface->modeUncoverBattleMap);
+    m_operationModeActionGroup->setExclusionPolicy(QActionGroup::ExclusionPolicy::Exclusive);
 
-    /* create exclusive action group for wind rose orientation */
-    pWindRoseOrientationActionGroup->addAction(pUserInterface->Action_WindRoseOrientationNorth);
-    pWindRoseOrientationActionGroup->addAction(pUserInterface->Action_WindRoseOrientationEast);
-    pWindRoseOrientationActionGroup->addAction(pUserInterface->Action_WindRoseOrientationSouth);
-    pWindRoseOrientationActionGroup->addAction(pUserInterface->Action_WindRoseOrientationWest);
-    pWindRoseOrientationActionGroup->setExclusionPolicy(QActionGroup::ExclusionPolicy::ExclusiveOptional);
+    /* create action group for wind rose orientation */
+    m_windRoseOrientationActionGroup->addAction(m_userInterface->actionWindRoseOrientationNorth);
+    m_windRoseOrientationActionGroup->addAction(m_userInterface->actionWindRoseOrientationEast);
+    m_windRoseOrientationActionGroup->addAction(m_userInterface->actionWindRoseOrientationSouth);
+    m_windRoseOrientationActionGroup->addAction(m_userInterface->actionWindRoseOrientationWest);
+    m_windRoseOrientationActionGroup->setExclusionPolicy(QActionGroup::ExclusionPolicy::ExclusiveOptional);
 
-    /* connect signals and slots of the main window actions */
-    connect(pUserInterface->Action_NewBattleMap, SIGNAL(triggered()), this, SLOT(triggered_Action_NewBattleMap()));
-    connect(pUserInterface->Action_Quit, SIGNAL(triggered()), QApplication::instance(), SLOT(quit()));
+    /* connect signals and slots of actions from menu File */
+    connect(m_userInterface->actionNewBattleMap, SIGNAL(triggered()), this, SLOT(triggeredActionNewBattleMap()));
+    connect(m_userInterface->actionQuit, SIGNAL(triggered()), QApplication::instance(), SLOT(quit()));
 
-    connect(pUserInterface->Action_UpdatePlayerScreen, SIGNAL(triggered()), this, SLOT(triggered_Action_UpdatePlayerScreen()));
-    connect(pUserInterface->Action_WindRoseOrientationNorth, SIGNAL(triggered()), this, SLOT(triggered_Action_WindRoseOrientation()));
-    connect(pUserInterface->Action_WindRoseOrientationEast, SIGNAL(triggered()), this, SLOT(triggered_Action_WindRoseOrientation()));
-    connect(pUserInterface->Action_WindRoseOrientationSouth, SIGNAL(triggered()), this, SLOT(triggered_Action_WindRoseOrientation()));
-    connect(pUserInterface->Action_WindRoseOrientationWest, SIGNAL(triggered()), this, SLOT(triggered_Action_WindRoseOrientation()));
-    connect(pUserInterface->Mode_Select, SIGNAL(toggled(bool)), this, SLOT(toggled_Mode_Select(bool)));
-    connect(pUserInterface->Mode_CoverBattleMap, SIGNAL(toggled(bool)), this, SLOT(toggled_Mode_CoverBattleMap(bool)));
-    connect(pUserInterface->Action_CoverBattleMap, SIGNAL(triggered()), this, SLOT(triggered_Action_CoverBattleMap()));
-    connect(pUserInterface->Mode_UncoverBattleMap, SIGNAL(toggled(bool)), this, SLOT(toggled_Mode_UncoverBattleMap(bool)));
-    connect(pUserInterface->Action_UncoverBattleMap, SIGNAL(triggered()), this, SLOT(triggered_Action_UncoverBattleMap()));
+    /* connect signals and slots of actions from menu View */
+    connect(m_userInterface->actionUpdatePlayerScreen, SIGNAL(triggered()), this, SLOT(triggeredActionUpdatePlayerScreen()));
+    connect(m_userInterface->actionWindRoseOrientationNorth, SIGNAL(triggered()), this, SLOT(triggeredActionWindRoseOrientation()));
+    connect(m_userInterface->actionWindRoseOrientationEast, SIGNAL(triggered()), this, SLOT(triggeredActionWindRoseOrientation()));
+    connect(m_userInterface->actionWindRoseOrientationSouth, SIGNAL(triggered()), this, SLOT(triggeredActionWindRoseOrientation()));
+    connect(m_userInterface->actionWindRoseOrientationWest, SIGNAL(triggered()), this, SLOT(triggeredActionWindRoseOrientation()));
+    connect(m_userInterface->modeSelect, SIGNAL(toggled(bool)), this, SLOT(toggledModeSelect(bool)));
+    connect(m_userInterface->modeCoverBattleMap, SIGNAL(toggled(bool)), this, SLOT(toggledModeCoverBattleMap(bool)));
+    connect(m_userInterface->modeUncoverBattleMap, SIGNAL(toggled(bool)), this, SLOT(toggledModeUncoverBattleMap(bool)));
 
-    connect(pUserInterface->GraphicsView_BattleMapMasterScreen, SIGNAL(changed_ScaleFactor(qreal)), this, SLOT(changed_ScaleFactor(qreal)));
-    connect(pUserInterface->GraphicsView_BattleMapMasterScreen, SIGNAL(clicked_RightMouseButton(QPoint)), this, SLOT(clicked_RightMouseButton(QPoint)));
+    /* connect signals and slots of actions from menu shown on right mouse button click */
+    connect(m_userInterface->actionCoverBattleMap, SIGNAL(triggered()), this, SLOT(triggeredActionCoverBattleMap()));
+    connect(m_userInterface->actionUncoverBattleMap, SIGNAL(triggered()), this, SLOT(triggeredActionUncoverBattleMap()));
 
-    pUserInterface->Label_WindRose->setVisible(false);
-    pUserInterface->Label_ScaleFactor->setVisible(false);
+    /* connect signals and slots of other user interface widges */
+    connect(m_userInterface->graphicsViewBattleMapMasterScreen, SIGNAL(changedScaleFactor(qreal)), this, SLOT(changedScaleFactor(qreal)));
+    connect(m_userInterface->graphicsViewBattleMapMasterScreen, SIGNAL(pressedRightMouseButton(QPoint)), this, SLOT(pressedRightMouseButton(QPoint)));
 
-    pUserInterface->Label_WindRose->setAttribute(Qt::WA_TransparentForMouseEvents);
-    pUserInterface->Label_ScaleFactor->setAttribute(Qt::WA_TransparentForMouseEvents);
+    /* make labels invisible so that they are not shown initially when there is no Battle Map */
+    m_userInterface->labelWindRose->setVisible(false);
+    m_userInterface->labelScaleFactor->setVisible(false);
+
+    /* make labels transparent for mouse events so that they do not process them instead of the graphics view */
+    m_userInterface->labelWindRose->setAttribute(Qt::WA_TransparentForMouseEvents);
+    m_userInterface->labelScaleFactor->setAttribute(Qt::WA_TransparentForMouseEvents);
 }
 
 /*!
@@ -70,10 +78,11 @@ MainWindow::MainWindow(QGraphicsView *playerWindow, QWidget *parent) :
  */
 MainWindow::~MainWindow()
 {
-    delete pUserInterface;
-    delete pOperationModeActionGroup;
-    delete pWindRoseOrientationActionGroup;
-    delete pBattleMap;
+    /* delete objects created in the constructor except m_dialogNewBattleMap */
+    delete m_userInterface;
+    delete m_operationModeActionGroup;
+    delete m_windRoseOrientationActionGroup;
+    delete m_battleMap;
 }
 
 /****************************************************************************************************************************************************
@@ -87,219 +96,233 @@ MainWindow::~MainWindow()
  ****************************************************************************************************************************************************/
 
 /*!
- * \brief This function handles the action Action_NewBattleMap and opens the dialog Dialog_NewBattleMap.
+ * \brief This function handles the action actionNewBattleMap.
  */
-void MainWindow::triggered_Action_NewBattleMap()
+void MainWindow::triggeredActionNewBattleMap()
 {
-    pDialog_NewBattleMap = new Dialog_NewBattleMap(this);
+    /* create dialog DialogNewBattleMap */
+    m_dialogNewBattleMap = new DialogNewBattleMap(this);
 
-    /* connect signals and slots of the dialog button box actions of the dialog */
-    connect(pDialog_NewBattleMap, SIGNAL(accepted()), this, SLOT(accepted_Dialog_NewBattleMap()));
-    connect(pDialog_NewBattleMap, SIGNAL(rejected()), this, SLOT(rejected_Dialog_NewBattleMap()));
+    /* connect signals and slots of the dialog button box actions of the dialog DialogNewBattleMap */
+    connect(m_dialogNewBattleMap, SIGNAL(accepted()), this, SLOT(acceptedDialogNewBattleMap()));
+    connect(m_dialogNewBattleMap, SIGNAL(rejected()), this, SLOT(rejectedDialogNewBattleMap()));
 
-    pDialog_NewBattleMap->open();
+    /* open dialog DialogNewBattleMap */
+    m_dialogNewBattleMap->open();
 }
 
 /*!
- * \brief This function handles the acceptance of the dialog Dialog_NewBattleMap.
+ * \brief This function handles the acceptance of the dialog DialogNewBattleMap.
  */
-void MainWindow::accepted_Dialog_NewBattleMap()
+void MainWindow::acceptedDialogNewBattleMap()
 {
+    /* set wait cursor as the following process may take some time */
     setCursor(Qt::WaitCursor);
 
-    /* reset Battle Map */
-    delete pBattleMap;
-    pBattleMap = new BattleMap(*pDialog_NewBattleMap->getBattleMap());
-    delete pDialog_NewBattleMap;
+    /* store Battle Map from accepted dialog DialogNewBattleMap and delete dialog afterwards */
+    delete m_battleMap;
+    m_battleMap = new BattleMap(*m_dialogNewBattleMap->getBattleMap());
+    delete m_dialogNewBattleMap;
 
-    /* set parameters of Battle Map scene section */
+    /* reset indexes of first row and column of Battle Map scene section */
     m_battleMapSceneSection.setIndexFirstRowSceneSection(0U);
     m_battleMapSceneSection.setIndexFirstColumnSceneSection(0U);
-    quint32 numberRowsOnPlayerScreen = static_cast<quint32>(calcScreenHeightInInches(CONFIG_PLAYER_SCREEN_DIAGONAL, CONFIG_PLAYER_SCREEN_RESOLUTION.height(), CONFIG_PLAYER_SCREEN_RESOLUTION.width()));
-    quint32 numberColumnsOnPlayerScreen = static_cast<quint32>(calcScreenWidthInInches(CONFIG_PLAYER_SCREEN_DIAGONAL, CONFIG_PLAYER_SCREEN_RESOLUTION.height(), CONFIG_PLAYER_SCREEN_RESOLUTION.width()));
 
-    if (numberRowsOnPlayerScreen < pBattleMap->getNumberRows())
+    /* check whether number of rows displayable on player screen is less than total number of rows of Battle Map and set number of rows of Battle Map scene section to less number */
+    quint32 numberRowsOnPlayerScreen = static_cast<quint32>(calcScreenHeightInInches(CONFIG_PLAYER_SCREEN_DIAGONAL, CONFIG_PLAYER_SCREEN_RESOLUTION.height(), CONFIG_PLAYER_SCREEN_RESOLUTION.width()));
+    if (numberRowsOnPlayerScreen < m_battleMap->getNumberRows())
     {
         m_battleMapSceneSection.setNumberRowsSceneSection(numberRowsOnPlayerScreen);
     }
     else
     {
-        m_battleMapSceneSection.setNumberRowsSceneSection(pBattleMap->getNumberRows());
+        m_battleMapSceneSection.setNumberRowsSceneSection(m_battleMap->getNumberRows());
     }
 
-    if (numberColumnsOnPlayerScreen < pBattleMap->getNumberColumns())
+    /* check whether number of columns displayable on player screen is less than total number of columns of Battle Map and set number of columns of Battle Map scene section to less number */
+    quint32 numberColumnsOnPlayerScreen = static_cast<quint32>(calcScreenWidthInInches(CONFIG_PLAYER_SCREEN_DIAGONAL, CONFIG_PLAYER_SCREEN_RESOLUTION.height(), CONFIG_PLAYER_SCREEN_RESOLUTION.width()));
+    if (numberColumnsOnPlayerScreen < m_battleMap->getNumberColumns())
     {
         m_battleMapSceneSection.setNumberColumnsSceneSection(numberColumnsOnPlayerScreen);
     }
     else
     {
-        m_battleMapSceneSection.setNumberColumnsSceneSection(pBattleMap->getNumberColumns());
+        m_battleMapSceneSection.setNumberColumnsSceneSection(m_battleMap->getNumberColumns());
     }
 
     /* share Battle Map with screen handlers */
-    m_masterScreenHandler.setBattleMap(pBattleMap);
-    m_playerScreenHandler.setBattleMap(pBattleMap);
+    m_masterScreenHandler.setBattleMap(m_battleMap);
+    m_playerScreenHandler.setBattleMap(m_battleMap);
+
+    /* show Battle Map image on master screen and initialize Battle Map image on player screen */
     m_masterScreenHandler.showBattleMapImage();
     m_playerScreenHandler.initBattleMapImage();
 
-    pUserInterface->Action_UpdatePlayerScreen->setEnabled(true);
-
-    pUserInterface->SubMenu_WindRoseOrientation->setEnabled(true);
-    for (QAction *action : pWindRoseOrientationActionGroup->actions())
+    /* enable actions that shall only be available when Battle Map is shared with screen handlers */
+    m_userInterface->actionUpdatePlayerScreen->setEnabled(true);
+    m_userInterface->submenuWindRoseOrientation->setEnabled(true);
+    for (QAction *action : m_windRoseOrientationActionGroup->actions())
+    {
+        action->setEnabled(true);
+    }
+    for (QAction *action : m_operationModeActionGroup->actions())
     {
         action->setEnabled(true);
     }
 
-    for (QAction *action : pOperationModeActionGroup->actions())
-    {
-        action->setEnabled(true);
-    }
-    pUserInterface->Mode_Select->setChecked(true);
+    /* make label labelScaleFactor visible so that it is shown when Battle Map is shared with screen handlers */
+    m_userInterface->labelScaleFactor->setVisible(true);
 
-    pUserInterface->Label_ScaleFactor->setVisible(true);
-
+    /* reset arrow cursor as the process which takes some time is completed */
     setCursor(Qt::ArrowCursor);
 }
 
 /*!
  * \brief This function handles the rejection of the dialog Dialog_NewBattleMap.
  */
-void MainWindow::rejected_Dialog_NewBattleMap()
+void MainWindow::rejectedDialogNewBattleMap()
 {
-    delete pDialog_NewBattleMap;
+    /* delete dialog DialogNewBattleMap */
+    delete m_dialogNewBattleMap;
 }
 
 /*!
- * \brief This function handles the action Action_UpdatePlayerScreen and updates the player screen.
+ * \brief This function handles the action actionUpdatePlayerScreen.
  */
-void MainWindow::triggered_Action_UpdatePlayerScreen()
+void MainWindow::triggeredActionUpdatePlayerScreen()
 {
+    /*  update Battle Map image on player screen */
     m_playerScreenHandler.updateBattleMapImage();
 }
 
 /*!
- * \brief This function handles the actions Action_WindRoseOrientationNorth to Action_WindRoseOrientationWest.
+ * \brief This function handles the actions actionWindRoseOrientationNorth to actionWindRoseOrientationWest.
  */
-void MainWindow::triggered_Action_WindRoseOrientation()
+void MainWindow::triggeredActionWindRoseOrientation()
 {
     qreal orientation;
 
-    if (pUserInterface->Action_WindRoseOrientationNorth->isChecked())
+    /* choose wind rose orientation depending on action and update visibility of wind rose on master and player screen */
+    if (m_userInterface->actionWindRoseOrientationNorth->isChecked())
     {
         orientation = WINDROSEORIENTATIONNORTH_DEGREES;
-        pUserInterface->Label_WindRose->setVisible(true);
+        m_userInterface->labelWindRose->setVisible(true);
         m_playerScreenHandler.setWindRoseGraphicsItemVisibility(true);
     }
-    else if (pUserInterface->Action_WindRoseOrientationEast->isChecked())
+    else if (m_userInterface->actionWindRoseOrientationEast->isChecked())
     {
         orientation = WINDROSEORIENTATIONEAST_DEGREES;
-        pUserInterface->Label_WindRose->setVisible(true);
+        m_userInterface->labelWindRose->setVisible(true);
         m_playerScreenHandler.setWindRoseGraphicsItemVisibility(true);
     }
-    else if (pUserInterface->Action_WindRoseOrientationSouth->isChecked())
+    else if (m_userInterface->actionWindRoseOrientationSouth->isChecked())
     {
         orientation = WINDROSEORIENTATIONSOUTH_DEGREES;
-        pUserInterface->Label_WindRose->setVisible(true);
+        m_userInterface->labelWindRose->setVisible(true);
         m_playerScreenHandler.setWindRoseGraphicsItemVisibility(true);
     }
-    else if (pUserInterface->Action_WindRoseOrientationWest->isChecked())
+    else if (m_userInterface->actionWindRoseOrientationWest->isChecked())
     {
         orientation = WINDROSEORIENTATIONWEST_DEGREES;
-        pUserInterface->Label_WindRose->setVisible(true);
+        m_userInterface->labelWindRose->setVisible(true);
         m_playerScreenHandler.setWindRoseGraphicsItemVisibility(true);
     }
     else
     {
         orientation = WINDROSEORIENTATIONNORTH_DEGREES;
-        pUserInterface->Label_WindRose->setVisible(false);
+        m_userInterface->labelWindRose->setVisible(false);
         m_playerScreenHandler.setWindRoseGraphicsItemVisibility(false);
     }
 
-    /* rotate the wind rose image according to the chosen wind rose orientation */
+    /* rotate wind rose image according to chosen wind rose orientation */
     QImage windRoseImage = QImage(WINDROSEIMAGE_SOURCE).transformed(QTransform().rotate(orientation));
 
-    /* set the wind rose pixmap to the screen handlers */
-    pUserInterface->Label_WindRose->setPixmap(QPixmap::fromImage(windRoseImage).scaled(pUserInterface->Label_WindRose->size()));
+    /* set wind rose pixmap to screen handlers */
+    m_userInterface->labelWindRose->setPixmap(QPixmap::fromImage(windRoseImage).scaled(m_userInterface->labelWindRose->size()));
     m_playerScreenHandler.setWindRoseGraphicsItemPixmap(QPixmap::fromImage(windRoseImage));
 }
 
 /*!
- * \brief This function handles a toggle of Mode_Select.
+ * \brief This function handles a toggle of modeSelect.
  */
-void MainWindow::toggled_Mode_Select(bool checked)
+void MainWindow::toggledModeSelect(bool checked)
 {
     if(checked)
     {
+        /* set operation mode of master and player screen handlers to Select */
         m_masterScreenHandler.setOperationMode(Select);
         m_playerScreenHandler.setOperationMode(Select);
     }
 }
 
 /*!
- * \brief This function handles a toggle of Mode_CoverBattleMap.
+ * \brief This function handles a toggle of modeCoverBattleMap.
  */
-void MainWindow::toggled_Mode_CoverBattleMap(bool checked)
+void MainWindow::toggledModeCoverBattleMap(bool checked)
 {
     if(checked)
     {
+        /* set operation mode of master and player screen handlers to CoverBattleMap */
         m_masterScreenHandler.setOperationMode(CoverBattleMap);
         m_playerScreenHandler.setOperationMode(CoverBattleMap);
     }
 }
 
 /*!
- * \brief This function handles the action Action_CoverBattleMap and covers the selected Battle Map squares on the master screen.
+ * \brief This function handles the action actionCoverBattleMap.
  */
-void MainWindow::triggered_Action_CoverBattleMap()
+void MainWindow::triggeredActionCoverBattleMap()
 {
+    /* cover selected Battle Map squares on master screen */
     m_masterScreenHandler.handleCoverBattleMap(true);
 }
 
 /*!
- * \brief This function handles a toggle of Mode_UncoverBattleMap.
+ * \brief This function handles a toggle of modeUncoverBattleMap.
  */
-void MainWindow::toggled_Mode_UncoverBattleMap(bool checked)
+void MainWindow::toggledModeUncoverBattleMap(bool checked)
 {
     if(checked)
     {
+        /* set operation mode of master and player screen handlers to UncoverBattleMap */
         m_masterScreenHandler.setOperationMode(UncoverBattleMap);
         m_playerScreenHandler.setOperationMode(UncoverBattleMap);
     }
 }
 
 /*!
- * \brief This function handles the action Action_UncoverBattleMap and uncovers the selected Battle Map squares on the master screen.
+ * \brief This function handles the action actionUncoverBattleMap.
  */
-void MainWindow::triggered_Action_UncoverBattleMap()
+void MainWindow::triggeredActionUncoverBattleMap()
 {
+    /* uncover selected Battle Map squares on master screen */
     m_masterScreenHandler.handleCoverBattleMap(false);
 }
 
 /*!
  * \brief This function updates the label that shows the value of the scale factor.
  */
-void MainWindow::changed_ScaleFactor(qreal scaleFactor)
+void MainWindow::changedScaleFactor(qreal scaleFactor)
 {
-    pUserInterface->Label_ScaleFactor->setText(QString::number(static_cast<quint32>(scaleFactor * HUNDRED_PERCENTAGE)) + QString("%"));
+    m_userInterface->labelScaleFactor->setText(QString::number(static_cast<quint32>(scaleFactor * HUNDRED_PERCENTAGE)) + QString("%"));
 }
 
 /*!
- * \brief This function handles a click of the right mouse button.
+ * \brief This function handles a press of the right mouse button.
  */
-void MainWindow::clicked_RightMouseButton(QPoint position)
+void MainWindow::pressedRightMouseButton(QPoint position)
 {
-    /* check whether the mouse button click was positioned at the Battle Map scene */
-    QPointF positionOnScene = pUserInterface->GraphicsView_BattleMapMasterScreen->mapToScene(position);
-    if ((0 <= positionOnScene.x()) && (positionOnScene.x() <= pUserInterface->GraphicsView_BattleMapMasterScreen->scene()->width()) &&
-            (0 <= positionOnScene.y()) && (positionOnScene.y() <= pUserInterface->GraphicsView_BattleMapMasterScreen->scene()->height()))
+    /* check whether the mouse button press was positioned at the Battle Map scene */
+    QPointF positionOnScene = m_userInterface->graphicsViewBattleMapMasterScreen->mapToScene(position);
+    if ((0 <= positionOnScene.x()) && (positionOnScene.x() <= m_userInterface->graphicsViewBattleMapMasterScreen->scene()->width()) &&
+            (0 <= positionOnScene.y()) && (positionOnScene.y() <= m_userInterface->graphicsViewBattleMapMasterScreen->scene()->height()))
     {
+        /* create menu, add actions and show it at right mouse button press position */
         QMenu *menu = new QMenu();
         menu->setAttribute(Qt::WA_DeleteOnClose);
-
-        menu->addAction(pUserInterface->Action_CoverBattleMap);
-        menu->addAction(pUserInterface->Action_UncoverBattleMap);
-
-        menu->popup(pUserInterface->GraphicsView_BattleMapMasterScreen->viewport()->mapToGlobal(position));
+        menu->addAction(m_userInterface->actionCoverBattleMap);
+        menu->addAction(m_userInterface->actionUncoverBattleMap);
+        menu->popup(m_userInterface->graphicsViewBattleMapMasterScreen->viewport()->mapToGlobal(position));
     }
 }
 

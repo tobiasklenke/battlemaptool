@@ -41,7 +41,7 @@
    <bool>false</bool>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="GraphicsView_BattleMap" name="GraphicsView_BattleMapMasterScreen">
+   <widget class="GraphicsView_BattleMap" name="graphicsViewBattleMapMasterScreen">
     <property name="geometry">
      <rect>
       <x>0</x>
@@ -66,7 +66,7 @@
      <bool>false</bool>
     </property>
    </widget>
-   <widget class="QLabel" name="Label_ScaleFactor">
+   <widget class="QLabel" name="labelScaleFactor">
     <property name="geometry">
      <rect>
       <x>1810</x>
@@ -82,7 +82,7 @@
      <set>Qt::AlignCenter</set>
     </property>
    </widget>
-   <widget class="QLabel" name="Label_WindRose">
+   <widget class="QLabel" name="labelWindRose">
     <property name="geometry">
      <rect>
       <x>1670</x>
@@ -96,7 +96,7 @@
     </property>
    </widget>
   </widget>
-  <widget class="QMenuBar" name="MenuBar">
+  <widget class="QMenuBar" name="menuBar">
    <property name="geometry">
     <rect>
      <x>0</x>
@@ -105,25 +105,25 @@
      <height>22</height>
     </rect>
    </property>
-   <widget class="QMenu" name="Menu_File">
+   <widget class="QMenu" name="menuFile">
     <property name="title">
      <string>File</string>
     </property>
-    <addaction name="Action_NewBattleMap"/>
-    <addaction name="Action_OpenBattleMap"/>
+    <addaction name="actionNewBattleMap"/>
+    <addaction name="actionOpenBattleMap"/>
     <addaction name="separator"/>
-    <addaction name="Action_Quit"/>
+    <addaction name="actionQuit"/>
    </widget>
-   <widget class="QMenu" name="Menu_Edit">
+   <widget class="QMenu" name="menuEdit">
     <property name="title">
      <string>Edit</string>
     </property>
    </widget>
-   <widget class="QMenu" name="Menu_View">
+   <widget class="QMenu" name="menuView">
     <property name="title">
      <string>View</string>
     </property>
-    <widget class="QMenu" name="SubMenu_WindRoseOrientation">
+    <widget class="QMenu" name="submenuWindRoseOrientation">
      <property name="enabled">
       <bool>false</bool>
      </property>
@@ -134,36 +134,36 @@
       <iconset resource="icons.qrc">
        <normaloff>:/icons/icons/windrose.png</normaloff>:/icons/icons/windrose.png</iconset>
      </property>
-     <addaction name="Action_WindRoseOrientationNorth"/>
-     <addaction name="Action_WindRoseOrientationEast"/>
-     <addaction name="Action_WindRoseOrientationSouth"/>
-     <addaction name="Action_WindRoseOrientationWest"/>
+     <addaction name="actionWindRoseOrientationNorth"/>
+     <addaction name="actionWindRoseOrientationEast"/>
+     <addaction name="actionWindRoseOrientationSouth"/>
+     <addaction name="actionWindRoseOrientationWest"/>
     </widget>
-    <addaction name="Action_UpdatePlayerScreen"/>
+    <addaction name="actionUpdatePlayerScreen"/>
     <addaction name="separator"/>
-    <addaction name="SubMenu_WindRoseOrientation"/>
+    <addaction name="submenuWindRoseOrientation"/>
     <addaction name="separator"/>
-    <addaction name="Mode_Select"/>
-    <addaction name="Mode_CoverBattleMap"/>
-    <addaction name="Mode_UncoverBattleMap"/>
+    <addaction name="modeSelect"/>
+    <addaction name="modeCoverBattleMap"/>
+    <addaction name="modeUncoverBattleMap"/>
    </widget>
-   <widget class="QMenu" name="Menu_Settings">
+   <widget class="QMenu" name="menuSettings">
     <property name="title">
      <string>Settings</string>
     </property>
    </widget>
-   <widget class="QMenu" name="Menu_Help">
+   <widget class="QMenu" name="menuHelp">
     <property name="title">
      <string>Help</string>
     </property>
    </widget>
-   <addaction name="Menu_File"/>
-   <addaction name="Menu_Edit"/>
-   <addaction name="Menu_View"/>
-   <addaction name="Menu_Settings"/>
-   <addaction name="Menu_Help"/>
+   <addaction name="menuFile"/>
+   <addaction name="menuEdit"/>
+   <addaction name="menuView"/>
+   <addaction name="menuSettings"/>
+   <addaction name="menuHelp"/>
   </widget>
-  <widget class="QToolBar" name="ToolBar">
+  <widget class="QToolBar" name="toolBar">
    <property name="windowTitle">
     <string>toolBar</string>
    </property>
@@ -179,13 +179,13 @@
    <attribute name="toolBarBreak">
     <bool>false</bool>
    </attribute>
-   <addaction name="Action_UpdatePlayerScreen"/>
+   <addaction name="actionUpdatePlayerScreen"/>
    <addaction name="separator"/>
-   <addaction name="Mode_Select"/>
-   <addaction name="Mode_CoverBattleMap"/>
-   <addaction name="Mode_UncoverBattleMap"/>
+   <addaction name="modeSelect"/>
+   <addaction name="modeCoverBattleMap"/>
+   <addaction name="modeUncoverBattleMap"/>
   </widget>
-  <action name="Action_NewBattleMap">
+  <action name="actionNewBattleMap">
    <property name="icon">
     <iconset resource="icons.qrc">
      <normaloff>:/icons/icons/newbattlemap.png</normaloff>:/icons/icons/newbattlemap.png</iconset>
@@ -197,7 +197,7 @@
     <string>Ctrl+N</string>
    </property>
   </action>
-  <action name="Action_Quit">
+  <action name="actionQuit">
    <property name="icon">
     <iconset resource="icons.qrc">
      <normaloff>:/icons/icons/quit.png</normaloff>:/icons/icons/quit.png</iconset>
@@ -209,7 +209,7 @@
     <string>Ctrl+Q</string>
    </property>
   </action>
-  <action name="Action_OpenBattleMap">
+  <action name="actionOpenBattleMap">
    <property name="icon">
     <iconset resource="icons.qrc">
      <normaloff>:/icons/icons/openbattlemap.png</normaloff>:/icons/icons/openbattlemap.png</iconset>
@@ -221,7 +221,7 @@
     <string>Ctrl+O</string>
    </property>
   </action>
-  <action name="Action_UpdatePlayerScreen">
+  <action name="actionUpdatePlayerScreen">
    <property name="enabled">
     <bool>false</bool>
    </property>
@@ -236,7 +236,7 @@
     <string>Ctrl+U</string>
    </property>
   </action>
-  <action name="Mode_UncoverBattleMap">
+  <action name="modeUncoverBattleMap">
    <property name="checkable">
     <bool>true</bool>
    </property>
@@ -254,7 +254,7 @@
     <string>Uncover Battle Map</string>
    </property>
   </action>
-  <action name="Mode_CoverBattleMap">
+  <action name="modeCoverBattleMap">
    <property name="checkable">
     <bool>true</bool>
    </property>
@@ -272,8 +272,11 @@
     <string>Cover Battle Map</string>
    </property>
   </action>
-  <action name="Mode_Select">
+  <action name="modeSelect">
    <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
     <bool>true</bool>
    </property>
    <property name="enabled">
@@ -293,7 +296,7 @@
     <string>Select</string>
    </property>
   </action>
-  <action name="Action_UncoverBattleMap">
+  <action name="actionUncoverBattleMap">
    <property name="icon">
     <iconset resource="icons.qrc">
      <normaloff>:/icons/icons/uncoverbattlemap.png</normaloff>:/icons/icons/uncoverbattlemap.png</iconset>
@@ -302,7 +305,7 @@
     <string>Uncover Battle Map</string>
    </property>
   </action>
-  <action name="Action_CoverBattleMap">
+  <action name="actionCoverBattleMap">
    <property name="icon">
     <iconset resource="icons.qrc">
      <normaloff>:/icons/icons/coverbattlemap.png</normaloff>:/icons/icons/coverbattlemap.png</iconset>
@@ -311,7 +314,7 @@
     <string>Cover Battle Map</string>
    </property>
   </action>
-  <action name="Action_WindRoseOrientationNorth">
+  <action name="actionWindRoseOrientationNorth">
    <property name="checkable">
     <bool>true</bool>
    </property>
@@ -322,7 +325,7 @@
     <string>North</string>
    </property>
   </action>
-  <action name="Action_WindRoseOrientationEast">
+  <action name="actionWindRoseOrientationEast">
    <property name="checkable">
     <bool>true</bool>
    </property>
@@ -333,7 +336,7 @@
     <string>East</string>
    </property>
   </action>
-  <action name="Action_WindRoseOrientationSouth">
+  <action name="actionWindRoseOrientationSouth">
    <property name="checkable">
     <bool>true</bool>
    </property>
@@ -344,7 +347,7 @@
     <string>South</string>
    </property>
   </action>
-  <action name="Action_WindRoseOrientationWest">
+  <action name="actionWindRoseOrientationWest">
    <property name="checkable">
     <bool>true</bool>
    </property>

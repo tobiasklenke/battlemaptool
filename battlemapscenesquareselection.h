@@ -15,7 +15,7 @@
  ****************************************************************************************************************************************************/
 
 /*!
- * \brief This class implements the functionality needed for the selection of a Battle Map square.
+ * \brief This class implements the functionality needed for a custom graphics scene for the selection of a Battle Map square.
  */
 class BattleMapSceneSquareSelection : public BattleMapScene
 {
@@ -50,16 +50,16 @@ public:
      *                                                                                                                                              *
      * \return  This function does not have any return value.                                                                                       *
      ************************************************************************************************************************************************/
-    void changed_ScaleFactor(qreal scaleFactor);
+    void changedScaleFactor(qreal scaleFactor);
 
 protected:
 
     /*! *********************************************************************************************************************************************
-     * \brief   This function handles a mouse press event on the Battle Map scene.                                                                  *
+     * \brief   This function handles a mouse press event.                                                                                          *
      *                                                                                                                                              *
-     * \details This function handles a mouse press event on the Battle Map scene by calling the base class implementation of the function          *
-	 *          mousePressEvent() first. Afterwards, the function checks whether the mouse press event is positioned at the Battle Map scene and if *
-     *          so the function adds the member variable m_battleMapSquareToDraw to the Battle Map scene and sets the pen properties.               *
+     * \details This function handles a mouse press event. In case that the left button has been pressed, it calls the base class function in order *
+     *          to set press position. Afterwards, it checks whether the mouse press event is positioned at the Battle Map scene and if so, it adds *
+     *          the selection rectangle to the Battle Map scene and sets its pen properties.                                                        *
      *                                                                                                                                              *
      * \param   event                         Mouse press event to be handled                                                                       *
      *                                                                                                                                              *
@@ -68,12 +68,10 @@ protected:
     void mousePressEvent(QGraphicsSceneMouseEvent *event);
 
     /*! *********************************************************************************************************************************************
-     * \brief   This function handles a mouse move event on the Battle Map scene.                                                                   *
+     * \brief   This function handles a mouse move event.                                                                                           *
      *                                                                                                                                              *
-     * \details This function handles a mouse move event on the Battle Map scene and checks whether the mouse press event has already been handled  *
-     *          while the mouse release event has not been handled. If so, the coordinates of the top left and the bottom right corners of the      *
-     *          square that is built from the previous mouse press event position and the mouse move event position are determined. Afterwards, the *
-     *          function sets the rectangle of the member variable m_battleMapSquareToDraw according to the determined corners.                     *
+     * \details This function handles a mouse move event. It determines the corners of the selection rectangle built from the mouse press event and *
+     *          the mouse move event positions and updates the selection rectangle accordingly.                                                     *
      *                                                                                                                                              *
      * \param   event                         Mouse move event to be handled                                                                        *
      *                                                                                                                                              *
@@ -82,12 +80,12 @@ protected:
     void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
 
     /*! *********************************************************************************************************************************************
-     * \brief   This function handles a mouse release event on the Battle Map scene.                                                                *
+     * \brief   This function handles a mouse release event.                                                                                        *
      *                                                                                                                                              *
-     * \details This function handles a mouse release event on the Battle Map scene and resets the member variable m_battleMapSquareToDraw and      *
-     *          removes it from the Battle Map scene. Afterwards, the function calls the base class implementation of the function                  *
-	 *          mousePressEvent() and checks whether the mouse release event is positioned at the Battle Map scene and if so, the function emits    *
-	 *          the signal that a Battle Map square has been selected.                                                                              *
+     * \details This function handles a mouse release event. In case that the left button has been pressed, it resets the selection rectangle and   *
+     *          removes it from the Battle Map scene. Afterwards, it calls the base class function in order to set the release position. Finally,   *
+     *          it checks whether the mouse release event is positioned at the Battle Map scene and if so, it emits the signal for the completed    *
+     *          selection of a Battle Map square.                                                                                                   *
      *                                                                                                                                              *
      * \param   event                         Mouse release event to be handled                                                                     *
      *                                                                                                                                              *
@@ -100,7 +98,7 @@ signals:
     /*! *********************************************************************************************************************************************
      * \brief This signal is emitted as soon as a Battle Map square has been selected.                                                              *
      ************************************************************************************************************************************************/
-    void selected_BattleMapSquare(void);
+    void selectedBattleMapSquare(void);
 
 private slots: /* - */
 
@@ -109,7 +107,7 @@ private:
     /*!
      * \brief This is the rectangle to be drawn while the selection on the Battle Map.
      */
-    QGraphicsRectItem  m_battleMapSelectionSquareToDraw;
+    QGraphicsRectItem  m_battleMapSelectionRectToDraw;
 
     /*!
      * \brief This is the factor that is used for scaling the Battle Map scene while scrolling.

@@ -13,7 +13,7 @@
  ****************************************************************************************************************************************************/
 
 /*!
- * \brief This class implements the custom functionality of a transparent graphics pixmap item.
+ * \brief This class implements the functionality of a custom graphics pixmap item.
  */
 class CustomGraphicsPixmapItem : public QObject, public QGraphicsPixmapItem
 {

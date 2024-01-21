@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>Dialog_NewBattleMap</class>
- <widget class="QDialog" name="Dialog_NewBattleMap">
+ <class>DialogNewBattleMap</class>
+ <widget class="QDialog" name="DialogNewBattleMap">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -40,7 +40,7 @@
   <property name="windowTitle">
    <string>New Battle Map</string>
   </property>
-  <widget class="QDialogButtonBox" name="DialogButtonBox">
+  <widget class="QDialogButtonBox" name="dialogButtonBox">
    <property name="geometry">
     <rect>
      <x>25</x>
@@ -59,7 +59,7 @@
     <bool>false</bool>
    </property>
   </widget>
-  <widget class="GraphicsView_BattleMap" name="GraphicsView_NewBattleMap">
+  <widget class="GraphicsView_BattleMap" name="graphicsViewNewBattleMap">
    <property name="geometry">
     <rect>
      <x>25</x>
@@ -98,7 +98,7 @@
     <bool>false</bool>
    </property>
   </widget>
-  <widget class="QRadioButton" name="RadioButton_SourceBattleMap">
+  <widget class="QRadioButton" name="radioButtonSourceBattleMap">
    <property name="geometry">
     <rect>
      <x>25</x>
@@ -111,10 +111,10 @@
     <string>Battle Map image from source</string>
    </property>
    <property name="checked">
-    <bool>false</bool>
+    <bool>true</bool>
    </property>
   </widget>
-  <widget class="QRadioButton" name="RadioButton_EmptyBattleMap">
+  <widget class="QRadioButton" name="radioButtonEmptyBattleMap">
    <property name="geometry">
     <rect>
      <x>25</x>
@@ -127,10 +127,10 @@
     <string>Battle Map image empty</string>
    </property>
    <property name="checked">
-    <bool>true</bool>
+    <bool>false</bool>
    </property>
   </widget>
-  <widget class="QCheckBox" name="CheckBox_DrawBattleMapGrid">
+  <widget class="QCheckBox" name="checkBoxDrawBattleMapGrid">
    <property name="geometry">
     <rect>
      <x>25</x>
@@ -143,7 +143,7 @@
     <string>Draw Battle Map grid</string>
    </property>
   </widget>
-  <widget class="QLabel" name="Label_NumberRows">
+  <widget class="QLabel" name="labelNumberRows">
    <property name="geometry">
     <rect>
      <x>45</x>
@@ -156,7 +156,7 @@
     <string>Number of rows</string>
    </property>
   </widget>
-  <widget class="QLabel" name="Label_NumberColumns">
+  <widget class="QLabel" name="labelNumberColumns">
    <property name="geometry">
     <rect>
      <x>45</x>
@@ -169,7 +169,7 @@
     <string>Number of columns</string>
    </property>
   </widget>
-  <widget class="QLineEdit" name="LineEdit_NumberRows">
+  <widget class="QLineEdit" name="lineEditNumberRows">
    <property name="geometry">
     <rect>
      <x>300</x>
@@ -185,7 +185,7 @@
     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
    </property>
   </widget>
-  <widget class="QLineEdit" name="LineEdit_NumberColumns">
+  <widget class="QLineEdit" name="lineEditNumberColumns">
    <property name="geometry">
     <rect>
      <x>300</x>
@@ -201,7 +201,7 @@
     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
    </property>
   </widget>
-  <widget class="QPushButton" name="PushButton_DecrementNumberRows">
+  <widget class="QPushButton" name="pushButtonDecrementNumberRows">
    <property name="geometry">
     <rect>
      <x>405</x>
@@ -214,7 +214,7 @@
     <string>-</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="PushButton_IncrementNumberRows">
+  <widget class="QPushButton" name="pushButtonIncrementNumberRows">
    <property name="geometry">
     <rect>
      <x>435</x>
@@ -227,7 +227,7 @@
     <string>+</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="PushButton_DecrementNumberColumns">
+  <widget class="QPushButton" name="pushButtonDecrementNumberColumns">
    <property name="geometry">
     <rect>
      <x>405</x>
@@ -240,7 +240,7 @@
     <string>-</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="PushButton_IncrementNumberColumns">
+  <widget class="QPushButton" name="pushButtonIncrementNumberColumns">
    <property name="geometry">
     <rect>
      <x>435</x>
@@ -253,7 +253,7 @@
     <string>+</string>
    </property>
   </widget>
-  <widget class="QLineEdit" name="LineEdit_Source">
+  <widget class="QLineEdit" name="lineEditSource">
    <property name="enabled">
     <bool>true</bool>
    </property>
@@ -266,7 +266,7 @@
     </rect>
    </property>
   </widget>
-  <widget class="QPushButton" name="PushButton_SelectSource">
+  <widget class="QPushButton" name="pushButtonSelectSource">
    <property name="enabled">
     <bool>true</bool>
    </property>

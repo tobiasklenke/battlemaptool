@@ -17,7 +17,7 @@
  ****************************************************************************************************************************************************/
 
 /*!
- * \brief This class implements the custom functionality of a Battle Map view.
+ * \brief This class implements the functionality of a custom graphics view.
  */
 class GraphicsView_BattleMap : public QGraphicsView
 {
@@ -29,6 +29,8 @@ public:
      * \brief   This function is the constructor of the class GraphicsView_BattleMap.                                                               *
      *                                                                                                                                              *
      * \details -                                                                                                                                   *
+     *                                                                                                                                              *
+     * \param   parent                        Parent of the class GraphicsView_BattleMap                                                            *
      *                                                                                                                                              *
      * \return  This function does not have any return value.                                                                                       *
      ************************************************************************************************************************************************/
@@ -64,10 +66,9 @@ public:
     void setEventProcessingEnabled(bool eventProcessingEnabled);
 
     /*! *********************************************************************************************************************************************
-     * \brief   This function resets the scaling.                                                                                                   *
+     * \brief   This function resets the scaling and the scale factor.                                                                              *
      *                                                                                                                                              *
-     * \details This function scales the view to the original size, resets the scale factor and emits the signal that the scale factor has been     *
-     *          changed.                                                                                                                            *
+     * \details This function resets the scaling and the scale factor and emits the signal for a changed scale factor.                              *
      *                                                                                                                                              *
      * \return  This function does not have any return value.                                                                                       *
      ************************************************************************************************************************************************/
@@ -76,11 +77,11 @@ public:
 protected:
 
     /*! *********************************************************************************************************************************************
-     * \brief   This function handles a mouse wheel event on the Battle Map view.                                                                   *
+     * \brief   This function handles a mouse wheel event.                                                                                          *
      *                                                                                                                                              *
-     * \details This function handles a mouse wheel event on the Battle Map view by incrementing or decrementing the scale factor by 10 percent,    *
-     *          depending on the scrolling direction. The scale factor can take values in the range of 10 percent to 200 percent. Afterwards, the   *
-     *          function emits the signal that the scale factor has been changed.                                                                   *
+     * \details This function processes a mouse wheel event, but only if the event processing is enabled. It sets the transformation anchor under   *
+     *          the mouse and resets the scaling. Afterwards, it increments or decrements the scale factor by 10 percent, depending on the          *
+     *          scrolling direction, rescales the graphics view with the changed scale factor and emits the signal for a changed scale factor.      *
      *                                                                                                                                              *
      * \param   event                         Mouse wheel event to be handled                                                                       *
      *                                                                                                                                              *
@@ -89,13 +90,12 @@ protected:
     void wheelEvent(QWheelEvent *event);
 
     /*! *********************************************************************************************************************************************
-     * \brief   This function handles a mouse press event on the Battle Map view.                                                                   *
+     * \brief   This function handles a mouse press event.                                                                                          *
      *                                                                                                                                              *
-     * \details This function handles a mouse press event on the Battle Map view by enabling the drag mode, saving the current cursor in the member *
-     *          variable m_cursor and changing it. Afterwards, the member variable m_scenePosCenter is set according to the current position of the *
-     *          Battle Map scene center and the member variable m_viewPosPress is set according to the position of the parameter event. If the      *
-     *          event button is the right mouse button, the function emits the signal clicked_RightMouseButton. Finally, the event is forwarded to  *
-     *          the Battle Map scene by calling the base class implementation of the function mousePressEvent().                                    *
+     * \details This function processes a mouse press event, but only if the event processing is enabled. In case that the middle button has been   *
+     *          pressed, it enables the drag mode, sets the cursor accordingly and saves the positions of the current viewport center and the mouse *
+     *          press for later processing. In case that the right button has been pressed, it emits the respective signal. Finally, it calls the   *
+     *          base class function in order to forward the event to the Battle Map scene.                                                          *
      *                                                                                                                                              *
      * \param   event                         Mouse press event to be handled                                                                       *
      *                                                                                                                                              *
@@ -104,12 +104,11 @@ protected:
     void mousePressEvent(QMouseEvent *event);
 
     /*! *********************************************************************************************************************************************
-     * \brief   This function handles a mouse move event on the Battle Map view.                                                                    *
+     * \brief   This function handles a mouse move event.                                                                                           *
      *                                                                                                                                              *
-     * \details This function handles a mouse move event on the Battle Map view by centering the Battle Map view on the new position of the Battle  *
-     *          Map scene center, resulting from the previous position of the Battle Map scene center from the member variable m_scenePosCenter and *
-     *          the vector from the previous position from the member variable m_viewPosPress to the new position of the parameter event. Finally,  *
-     *          the event is forwarded to the Battle Map scene by calling the base class implementation of the function mouseMoveEvent().           *
+     * \details This function processes a mouse move event, but only if the event processing is enabled. If the drag mode is enabled, it centers    *
+     *          the graphics view on the new position, calculated from the viewport center position while the mouse press, the mouse press position *
+     *          and the mouse move position. Finally, it calls the base class function in order to forward the event to the Battle Map scene.       *
      *                                                                                                                                              *
      * \param   event                         Mouse move event to be handled                                                                        *
      *                                                                                                                                              *
@@ -118,11 +117,11 @@ protected:
     void mouseMoveEvent(QMouseEvent *event);
 
     /*! *********************************************************************************************************************************************
-     * \brief   This function handles a mouse release event on the Battle Map view.                                                                 *
+     * \brief   This function handles a mouse release event.                                                                                        *
      *                                                                                                                                              *
-     * \details This function handles a mouse release event on the Battle Map view by disabling the drag mode and resetting the cursor to the       *
-     *          previously saved cursor from the member variable m_cursor. Finally, the event is forwarded to the Battle Map scene by calling the   *
-	 *          base class implementation of the function mouseReleaseEvent().                                                                      *
+     * \details This function processes a mouse release event, but only if the event processing is enabled. In case that the middle button has been *
+     *          pressed, it disables the drag mode and resets the cursor. Finally, it calls the base class function in order to forward the event   *
+     *          to the Battle Map scene.                                                                                                            *
      *                                                                                                                                              *
      * \param   event                         Mouse release event to be handled                                                                     *
      *                                                                                                                                              *
@@ -131,9 +130,10 @@ protected:
     void mouseReleaseEvent(QMouseEvent *event);
 
     /*! *********************************************************************************************************************************************
-     * \brief   This function handles a key press event on the Battle Map view.                                                                     *
+     * \brief   This function handles a key press event.                                                                                            *
      *                                                                                                                                              *
-     * \details This function emits the signal pressed_Key.                                                                                         *
+     * \details This function processes a key press event, but only if the event processing is enabled. It emits the signal for a pressed key.      *
+     *          Finally, it calls the base class function in order to forward the event to the Battle Map scene.                                    *
      *                                                                                                                                              *
      * \param   event                         Key press event to be handled                                                                         *
      *                                                                                                                                              *
@@ -144,19 +144,19 @@ protected:
 signals:
 
     /*! *********************************************************************************************************************************************
-     * \brief This signal is emitted as soon as the scale factor of the Battle Map view changes.                                                    *
+     * \brief This signal is emitted as soon as the scale factor of the graphics view changes.                                                      *
      ************************************************************************************************************************************************/
-    void changed_ScaleFactor(qreal m_scaleFactor);
+    void changedScaleFactor(qreal m_scaleFactor);
 
     /*! *********************************************************************************************************************************************
      * \brief This signal is emitted as soon as a key is pressed.                                                                                   *
      ************************************************************************************************************************************************/
-    void pressed_Key(Qt::Key key);
+    void pressedKey(Qt::Key key);
 
     /*! *********************************************************************************************************************************************
      * \brief This signal is emitted as soon as the right mouse button is pressed.                                                                  *
      ************************************************************************************************************************************************/
-    void clicked_RightMouseButton(QPoint position);
+    void pressedRightMouseButton(QPoint position);
 
 private slots: /* - */
 
@@ -168,7 +168,7 @@ private:
     bool m_eventProcessingEnabled;
 
     /*!
-     * \brief This is the factor that is used for scaling the Battle Map view while scrolling.
+     * \brief This is the factor that is used for scaling the graphics view while scrolling.
      */
     qreal m_scaleFactor;
 

@@ -14,7 +14,7 @@
  ****************************************************************************************************************************************************/
 
 /*!
- * \brief This class implements the functionality needed for the display of the Battle Map on the player screen.
+ * \brief This class implements the functionality needed for a custom graphics scene for display of the Battle Map on the player screen.
  */
 class BattleMapScenePlayerScreen : public BattleMapScene
 {
@@ -45,9 +45,9 @@ public:
 protected:
 
     /*! *********************************************************************************************************************************************
-     * \brief   This function handles a mouse press event on the Battle Map scene.                                                                  *
+     * \brief   This function handles a mouse press event.                                                                                          *
      *                                                                                                                                              *
-     * \details -                                                                                                                                   *
+     * \details This function handles a mouse press event. It calls the base class function in order to set the press position.                     *
      *                                                                                                                                              *
      * \param   event                         Mouse press event to be handled                                                                       *
      *                                                                                                                                              *
@@ -56,7 +56,7 @@ protected:
     void mousePressEvent(QGraphicsSceneMouseEvent *event);
 
     /*! *********************************************************************************************************************************************
-     * \brief   This function handles a mouse move event on the Battle Map scene.                                                                   *
+     * \brief   This function handles a mouse move event.                                                                                           *
      *                                                                                                                                              *
      * \details -                                                                                                                                   *
      *                                                                                                                                              *
@@ -67,9 +67,9 @@ protected:
     void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
 
     /*! *********************************************************************************************************************************************
-     * \brief   This function handles a mouse release event on the Battle Map scene.                                                                *
+     * \brief   This function handles a mouse release event.                                                                                        *
      *                                                                                                                                              *
-     * \details -                                                                                                                                   *
+     * \details This function handles a mouse release event. It calls the base class function in order to set the release position.                 *
      *                                                                                                                                              *
      * \param   event                         Mouse release event to be handled                                                                     *
      *                                                                                                                                              *

@@ -25,7 +25,7 @@
  */
 qreal calcScreenWidthInInches(qreal screenDiagonal, quint32 resolutionWidth, quint32 resolutionHeight)
 {
-    return qSqrt(qPow(screenDiagonal, 2) / (1 + qPow(static_cast<qreal>(resolutionWidth) / static_cast<qreal>(resolutionHeight), 2)));
+    return qSqrt(qPow(screenDiagonal, EXPONENT_SQUARE) / (1 + qPow(static_cast<qreal>(resolutionWidth) / static_cast<qreal>(resolutionHeight), EXPONENT_SQUARE)));
 }
 
 /*!
@@ -33,7 +33,7 @@ qreal calcScreenWidthInInches(qreal screenDiagonal, quint32 resolutionWidth, qui
  */
 qreal calcScreenHeightInInches(qreal screenDiagonal, quint32 resolutionWidth, quint32 resolutionHeight)
 {
-    return qSqrt(qPow(screenDiagonal, 2) / (1 + qPow(static_cast<qreal>(resolutionHeight) / static_cast<qreal>(resolutionWidth), 2)));
+    return qSqrt(qPow(screenDiagonal, EXPONENT_SQUARE) / (1 + qPow(static_cast<qreal>(resolutionHeight) / static_cast<qreal>(resolutionWidth), EXPONENT_SQUARE)));
 }
 
 /*!
@@ -41,5 +41,5 @@ qreal calcScreenHeightInInches(qreal screenDiagonal, quint32 resolutionWidth, qu
  */
 qreal calcNumberPixelsPerInch(qreal screenDiagonal, quint32 resolutionWidth, quint32 resolutionHeight)
 {
-    return qSqrt(qPow(static_cast<qreal>(resolutionWidth), 2) + qPow(static_cast<qreal>(resolutionHeight), 2)) / screenDiagonal;
+    return qSqrt(qPow(static_cast<qreal>(resolutionWidth), EXPONENT_SQUARE) + qPow(static_cast<qreal>(resolutionHeight), EXPONENT_SQUARE)) / screenDiagonal;
 }

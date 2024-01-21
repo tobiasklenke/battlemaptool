@@ -12,10 +12,10 @@
  * \brief This function is the constructor of the class MasterScreenHandler.
  */
 MasterScreenHandler::MasterScreenHandler() :
-    pGraphicsView(nullptr),
-    pBattleMap(nullptr),
-    pBattleMapSceneSection(nullptr),
-    pBattleMapScene(new BattleMapSceneMasterScreen()),
+    m_graphicsView(nullptr),
+    m_battleMap(nullptr),
+    m_battleMapSceneSection(nullptr),
+    m_battleMapScene(new BattleMapSceneMasterScreen()),
     m_operationMode(Select),
     m_battleMapSquaresGraphicsItems(QList<QList<QGraphicsPixmapItem*>>()),
     m_scaleFactor(1.0)
@@ -27,61 +27,63 @@ MasterScreenHandler::MasterScreenHandler() :
  */
 MasterScreenHandler::~MasterScreenHandler()
 {
+    /* delete objects created in the constructor */
     deleteBattleMapScene();
     deleteBattleMapSquaresGraphicsItems();
 }
 
 /*!
- * \brief This function sets the address of the member variable pGraphicsView.
+ * \brief This function sets the address of the member variable m_graphicsView.
  */
 void MasterScreenHandler::setGraphicsView(GraphicsView_BattleMap *graphicsView)
 {
-    pGraphicsView = graphicsView;
+    m_graphicsView = graphicsView;
 
-    connect(pGraphicsView, SIGNAL(changed_ScaleFactor(qreal)), this, SLOT(changed_ScaleFactor(qreal)));
-    connect(pGraphicsView, SIGNAL(pressed_Key(Qt::Key)), this, SLOT(pressed_Key(Qt::Key)));
-    connect(pGraphicsView, SIGNAL(clicked_RightMouseButton(QPoint)), this, SLOT(clicked_RightMouseButton(QPoint)));
+    /* connect signals and slots of graphics view */
+    connect(m_graphicsView, SIGNAL(changedScaleFactor(qreal)), this, SLOT(changedScaleFactor(qreal)));
+    connect(m_graphicsView, SIGNAL(pressedKey(Qt::Key)), this, SLOT(pressedKey(Qt::Key)));
+    connect(m_graphicsView, SIGNAL(pressedRightMouseButton(QPoint)), this, SLOT(pressedRightMouseButton(QPoint)));
 
+    /* set background color of graphics view to window color */
     QPalette palette;
-    pGraphicsView->setBackgroundBrush(QBrush(palette.color(QPalette::Window)));
-    pGraphicsView->setScene(pBattleMapScene);
+    m_graphicsView->setBackgroundBrush(QBrush(palette.color(QPalette::Window)));
 
+    /* set Battle Map scene to graphics view and add text asking user to create new Battle Map or open existing Battle Map */
+    m_graphicsView->setScene(m_battleMapScene);
     m_sceneText.setPlainText("New Battle Map\t[Ctrl+N]\nOpen Battle Map\t[Ctrl+O]");
-    pBattleMapScene->addItem(&m_sceneText);
+    m_battleMapScene->addItem(&m_sceneText);
 }
 
 /*!
- * \brief This function sets the address of the member variable pBattleMap.
+ * \brief This function sets the address of the member variable m_battleMap.
  */
 void MasterScreenHandler::setBattleMap(BattleMap *battleMap)
 {
-    pBattleMap = battleMap;
+    m_battleMap = battleMap;
 
+    /* update Battle Map square graphics items according to set Battle Map */
     updateBattleMapSquaresGraphicsItems();
 }
 
 /*!
- * \brief This function sets the address of the member variable pBattleMapSceneSection.
+ * \brief This function sets the address of the member variable m_battleMapSceneSection.
  */
 void MasterScreenHandler::setBattleMapSceneSection(BattleMapSceneSection *battleMapSceneSection)
 {
-    pBattleMapSceneSection = battleMapSceneSection;
+    m_battleMapSceneSection = battleMapSceneSection;
 }
 
 /*!
- * \brief This function sets the operation mode.
+ * \brief This function sets the member variable m_operationMode.
  */
 void MasterScreenHandler::setOperationMode(operationMode_t operationMode)
 {
     m_operationMode = operationMode;
 
-    /* Reset selection area */
-    for (QGraphicsItem * item : pBattleMapScene->items())
-    {
-        item->setSelected(false);
-        item->setZValue(0.0);
-    }
+    /* reset selection area when operation mode is changed */
+    resetSelectionArea();
 
+    /* set cursor according to operation mode */
     QCursor cursor;
     switch (operationMode)
     {
@@ -98,8 +100,7 @@ void MasterScreenHandler::setOperationMode(operationMode_t operationMode)
         cursor = Qt::ArrowCursor;
         break;
     }
-
-    pGraphicsView->viewport()->setCursor(cursor);
+    m_graphicsView->viewport()->setCursor(cursor);
 }
 
 /*!
@@ -107,45 +108,47 @@ void MasterScreenHandler::setOperationMode(operationMode_t operationMode)
  */
 void MasterScreenHandler::showBattleMapImage()
 {
-    /* reset Battle Map scene */
+    /* reset and reconnect Battle Map scene */
     deleteBattleMapScene();
-    pBattleMapScene = new BattleMapSceneMasterScreen();
-    connect(pBattleMapScene, SIGNAL(selected_BattleMapSquares()), this, SLOT(selected_BattleMapSquares()));
-    pGraphicsView->resetScaling();
-    pGraphicsView->setScene(pBattleMapScene);
-    pGraphicsView->setEventProcessingEnabled(true);
+    m_battleMapScene = new BattleMapSceneMasterScreen();
+    connect(m_battleMapScene, SIGNAL(selectedBattleMapSquares()), this, SLOT(selectedBattleMapSquares()));
+    m_graphicsView->setScene(m_battleMapScene);
 
-    for (quint32 rowIdx = 0U; rowIdx < pBattleMap->getNumberRows(); rowIdx++)
+    /* reset scaling of graphics view */
+    m_graphicsView->resetScaling();
+
+    /* add Battle Map squares to Battle Map scene */
+    for (quint32 rowIdx = 0U; rowIdx < m_battleMap->getNumberRows(); rowIdx++)
     {
-        for (quint32 columnIdx = 0U; columnIdx < pBattleMap->getNumberColumns(); columnIdx++)
+        for (quint32 columnIdx = 0U; columnIdx < m_battleMap->getNumberColumns(); columnIdx++)
         {
             m_battleMapSquaresGraphicsItems[rowIdx][columnIdx]->setPos(columnIdx * CONFIG_BATTLEMAPSQUARE_SIZE, rowIdx * CONFIG_BATTLEMAPSQUARE_SIZE);
-            pBattleMapScene->addItem(m_battleMapSquaresGraphicsItems[rowIdx][columnIdx]);
+            m_battleMapScene->addItem(m_battleMapSquaresGraphicsItems[rowIdx][columnIdx]);
         }
     }
+    m_battleMapScene->setSceneRect(0, 0, m_battleMap->getNumberColumns() * CONFIG_BATTLEMAPSQUARE_SIZE, m_battleMap->getNumberRows() * CONFIG_BATTLEMAPSQUARE_SIZE);
 
-    pBattleMapScene->setSceneRect(0, 0, pBattleMap->getNumberColumns() * CONFIG_BATTLEMAPSQUARE_SIZE, pBattleMap->getNumberRows() * CONFIG_BATTLEMAPSQUARE_SIZE);
-
+    /* update Battle Map scene section and add frame */
     updateBattleMapSceneSection();
-
-    /* Add the rect that frames the Battle Map scene section to be displayed on the players screen */
     m_sceneSectionRect.setPen(QPen(Qt::black, BATTLEMAPSECTIONFRAME_LINEWIDTH * (1 / m_scaleFactor), Qt::SolidLine));
-    pBattleMapScene->addItem(&m_sceneSectionRect);
+    m_battleMapScene->addItem(&m_sceneSectionRect);
 
-    pGraphicsView->setInteractive(true);
+    /* enable event processing of graphics view as soon as Battle Map image is shown */
+    m_graphicsView->setEventProcessingEnabled(true);
+    m_graphicsView->setInteractive(true);
 }
 
 /*!
- * \brief This function handles the selection of some Battle Map squares in case of operation modes CoverBattleMap or UncoverBattleMap.
+ * \brief This function updates the coverage state of Battle Map squares.
  */
 void MasterScreenHandler::handleCoverBattleMap(bool covered)
 {
-    /* Get index of selected Battle Map squares and cover them */
     quint32 rowIdx = 0U;
     quint32 columnIdx = 0U;
-    for (QGraphicsItem * selectedItem : pBattleMapScene->selectedItems())
+    for (QGraphicsItem * selectedItem : m_battleMapScene->selectedItems())
     {
-        for (rowIdx = 0U; rowIdx < pBattleMap->getNumberRows(); rowIdx++)
+        /* get row and column indexes of selected Battle Map squares */
+        for (rowIdx = 0U; rowIdx < m_battleMap->getNumberRows(); rowIdx++)
         {
             if (-1 < m_battleMapSquaresGraphicsItems[rowIdx].indexOf(selectedItem))
             {
@@ -155,29 +158,30 @@ void MasterScreenHandler::handleCoverBattleMap(bool covered)
 
         }
 
-        /* Update coverage state and pixmap of Battle Map square */
-        pBattleMap->setBattleMapSquareCovered(rowIdx, columnIdx, covered);
+        /* update coverage state of selected Battle Map square */
+        m_battleMap->setBattleMapSquareCovered(rowIdx, columnIdx, covered);
 
+        /* update pixmap of selected Battle Map square according to parameter covered */
         QPixmap temporaryPixmap;
         if (covered)
         {
-            /* Convert pixmap to grayscale and add transparent black layer in order to darken it */
-            temporaryPixmap = QPixmap::fromImage(pBattleMap->getBattleMapSquarePixmap(rowIdx, columnIdx).toImage().convertToFormat(QImage::Format_Grayscale16));
-
+            /* convert pixmap to grayscale and add transparent black layer in order to darken pixmap */
+            temporaryPixmap = QPixmap::fromImage(m_battleMap->getBattleMapSquarePixmap(rowIdx, columnIdx).toImage().convertToFormat(QImage::Format_Grayscale16));
             QPainter *painter = new QPainter(&temporaryPixmap);
             painter->setBrush(QBrush(BATTLEMAPSQUARECOVERED_COLOR));
             painter->setPen(Qt::NoPen);
             painter->drawRect(temporaryPixmap.rect());
-
             delete painter;
         }
         else
         {
-            temporaryPixmap = pBattleMap->getBattleMapSquarePixmap(rowIdx, columnIdx);
+            /* use original pixmap */
+            temporaryPixmap = m_battleMap->getBattleMapSquarePixmap(rowIdx, columnIdx);
         }
         m_battleMapSquaresGraphicsItems[rowIdx][columnIdx]->setPixmap(temporaryPixmap);
     }
 
+    /* reset selection area when update of coverage state is finished */
     resetSelectionArea();
 }
 
@@ -192,91 +196,94 @@ void MasterScreenHandler::handleCoverBattleMap(bool covered)
  ****************************************************************************************************************************************************/
 
 /*!
- * \brief This function updates the member variable m_scaleFactor and redraws the Battle Map section rect.
+ * \brief This function updates the member variable m_scaleFactor.
  */
-void MasterScreenHandler::changed_ScaleFactor(qreal scaleFactor)
+void MasterScreenHandler::changedScaleFactor(qreal scaleFactor)
 {
+    /* update scale factor of master screen handler */
     m_scaleFactor = scaleFactor;
 
-    m_sceneSectionRect.setPen(QPen(Qt::black, BATTLEMAPSECTIONFRAME_LINEWIDTH * (1 / m_scaleFactor), Qt::SolidLine));
+    /* update scale factor of Battle Map scene */
+    m_battleMapScene->changedScaleFactor(scaleFactor);
 
-    pBattleMapScene->changed_ScaleFactor(scaleFactor);
+    /* redraw Battle Map scene section rect */
+    m_sceneSectionRect.setPen(QPen(Qt::black, BATTLEMAPSECTIONFRAME_LINEWIDTH * (1 / m_scaleFactor), Qt::SolidLine));
 }
 
 /*!
- * \brief This function updates the member variables of the Battle Map scene section in case of an appropriate key press.
+ * \brief This function handles a key press.
  */
-void MasterScreenHandler::pressed_Key(Qt::Key key)
+void MasterScreenHandler::pressedKey(Qt::Key key)
 {
-    QPointF scenePosCenter = pGraphicsView->mapToScene(pGraphicsView->viewport()->rect().center());
-    qreal difference;
+    /* determine viewport center position in scene coordinates */
+    QPointF scenePosCenter = m_graphicsView->mapToScene(m_graphicsView->viewport()->rect().center());
 
     switch(key)
     {
     case Qt::Key_Left:
-        if (0U < pBattleMapSceneSection->getIndexFirstColumnSceneSection())
+        if (0U < m_battleMapSceneSection->getIndexFirstColumnSceneSection())
         {
-            pBattleMapSceneSection->setIndexFirstColumnSceneSection(pBattleMapSceneSection->getIndexFirstColumnSceneSection() - 1U);
-            updateBattleMapSceneSection();
+            /* decrement index of first column of Battle Map scene section */
+            m_battleMapSceneSection->setIndexFirstColumnSceneSection(m_battleMapSceneSection->getIndexFirstColumnSceneSection() - 1U);
 
             /* center graphics view on new position of scene center if border of Battle Map scene section is moved outside the viewport */
-            difference = pGraphicsView->mapToScene(pGraphicsView->viewport()->rect().topLeft()).x() -
-                    static_cast<qreal>(pBattleMapSceneSection->getIndexFirstColumnSceneSection() * CONFIG_BATTLEMAPSQUARE_SIZE);
+            qreal difference = m_graphicsView->mapToScene(m_graphicsView->viewport()->rect().topLeft()).x() -
+                    static_cast<qreal>(m_battleMapSceneSection->getIndexFirstColumnSceneSection() * CONFIG_BATTLEMAPSQUARE_SIZE);
 
             if (0 < difference)
             {
-                pGraphicsView->centerOn(scenePosCenter.x() - difference, scenePosCenter.y());
+                m_graphicsView->centerOn(scenePosCenter.x() - difference, scenePosCenter.y());
             }
         }
         break;
 
     case Qt::Key_Up:
-        if (0U < pBattleMapSceneSection->getIndexFirstRowSceneSection())
+        if (0U < m_battleMapSceneSection->getIndexFirstRowSceneSection())
         {
-            pBattleMapSceneSection->setIndexFirstRowSceneSection(pBattleMapSceneSection->getIndexFirstRowSceneSection() - 1U);
-            updateBattleMapSceneSection();
+            /* decrement index of first row of Battle Map scene section */
+            m_battleMapSceneSection->setIndexFirstRowSceneSection(m_battleMapSceneSection->getIndexFirstRowSceneSection() - 1U);
 
             /* center graphics view on new position of scene center if border of Battle Map scene section is moved outside the viewport */
-            difference = pGraphicsView->mapToScene(pGraphicsView->viewport()->rect().topLeft()).y() -
-                     static_cast<qreal>(pBattleMapSceneSection->getIndexFirstRowSceneSection() * CONFIG_BATTLEMAPSQUARE_SIZE);
+            qreal difference = m_graphicsView->mapToScene(m_graphicsView->viewport()->rect().topLeft()).y() -
+                     static_cast<qreal>(m_battleMapSceneSection->getIndexFirstRowSceneSection() * CONFIG_BATTLEMAPSQUARE_SIZE);
 
             if (0 < difference)
             {
-                pGraphicsView->centerOn(scenePosCenter.x(), scenePosCenter.y() - difference);
+                m_graphicsView->centerOn(scenePosCenter.x(), scenePosCenter.y() - difference);
             }
         }
         break;
 
     case Qt::Key_Right:
-        if (pBattleMap->getNumberColumns() > pBattleMapSceneSection->getIndexFirstColumnSceneSection() + pBattleMapSceneSection->getNumberColumnsSceneSection())
+        if (m_battleMap->getNumberColumns() > m_battleMapSceneSection->getIndexFirstColumnSceneSection() + m_battleMapSceneSection->getNumberColumnsSceneSection())
         {
-            pBattleMapSceneSection->setIndexFirstColumnSceneSection(pBattleMapSceneSection->getIndexFirstColumnSceneSection() + 1U);
-            updateBattleMapSceneSection();
+            /* increment index of first column of Battle Map scene section */
+            m_battleMapSceneSection->setIndexFirstColumnSceneSection(m_battleMapSceneSection->getIndexFirstColumnSceneSection() + 1U);
 
             /* center graphics view on new position of scene center if border of Battle Map scene section is moved outside the viewport */
-            difference = static_cast<qreal>((pBattleMapSceneSection->getIndexFirstColumnSceneSection() + pBattleMapSceneSection->getNumberColumnsSceneSection())* CONFIG_BATTLEMAPSQUARE_SIZE -
-                                            pGraphicsView->mapToScene(pGraphicsView->viewport()->rect().bottomRight()).x());
+            qreal difference = static_cast<qreal>((m_battleMapSceneSection->getIndexFirstColumnSceneSection() + m_battleMapSceneSection->getNumberColumnsSceneSection()) * CONFIG_BATTLEMAPSQUARE_SIZE -
+                                            m_graphicsView->mapToScene(m_graphicsView->viewport()->rect().bottomRight()).x());
 
             if (0 < difference)
             {
-                pGraphicsView->centerOn(scenePosCenter.x() + difference, scenePosCenter.y());
+                m_graphicsView->centerOn(scenePosCenter.x() + difference, scenePosCenter.y());
             }
         }
         break;
 
     case Qt::Key_Down:
-        if (pBattleMap->getNumberRows() > pBattleMapSceneSection->getIndexFirstRowSceneSection() + pBattleMapSceneSection->getNumberRowsSceneSection())
+        if (m_battleMap->getNumberRows() > m_battleMapSceneSection->getIndexFirstRowSceneSection() + m_battleMapSceneSection->getNumberRowsSceneSection())
         {
-            pBattleMapSceneSection->setIndexFirstRowSceneSection(pBattleMapSceneSection->getIndexFirstRowSceneSection() + 1U);
-            updateBattleMapSceneSection();
+            /* increment index of first row of Battle Map scene section */
+            m_battleMapSceneSection->setIndexFirstRowSceneSection(m_battleMapSceneSection->getIndexFirstRowSceneSection() + 1U);
 
             /* center graphics view on new position of scene center if border of Battle Map scene section is moved outside the viewport */
-            difference = static_cast<qreal>((pBattleMapSceneSection->getIndexFirstRowSceneSection() + pBattleMapSceneSection->getNumberRowsSceneSection())* CONFIG_BATTLEMAPSQUARE_SIZE) -
-                    pGraphicsView->mapToScene(pGraphicsView->viewport()->rect().bottomRight()).y();
+            qreal difference = static_cast<qreal>((m_battleMapSceneSection->getIndexFirstRowSceneSection() + m_battleMapSceneSection->getNumberRowsSceneSection()) * CONFIG_BATTLEMAPSQUARE_SIZE) -
+                    m_graphicsView->mapToScene(m_graphicsView->viewport()->rect().bottomRight()).y();
 
             if (0 < difference)
             {
-                pGraphicsView->centerOn(scenePosCenter.x(),  scenePosCenter.y() + difference);
+                m_graphicsView->centerOn(scenePosCenter.x(),  scenePosCenter.y() + difference);
             }
         }
         break;
@@ -284,18 +291,23 @@ void MasterScreenHandler::pressed_Key(Qt::Key key)
     default:
         break;
     }
+
+    updateBattleMapSceneSection();
 }
 
 /*!
- * \brief This function handles a click of the right mouse button.
+ * \brief This function handles a press of the right mouse button.
  */
-void MasterScreenHandler::clicked_RightMouseButton(QPoint position)
+void MasterScreenHandler::pressedRightMouseButton(QPoint position)
 {
-    for (QGraphicsItem * item : pBattleMapScene->items(pGraphicsView->mapToScene(position)))
+    /* handle only graphics items positioned at right mouse button press position */
+    for (QGraphicsItem * item : m_battleMapScene->items(m_graphicsView->mapToScene(position)))
     {
+        /* handle only selectable graphics items that are not selected */
         if (item->flags().testFlag(QGraphicsItem::ItemIsSelectable) && !item->isSelected())
         {
-            handleSelect(pGraphicsView->mapToScene(position), pGraphicsView->mapToScene(position));
+            /* handle selection of Battle Map squares */
+            handleSelect(m_graphicsView->mapToScene(position), m_graphicsView->mapToScene(position));
         }
     }
 }
@@ -303,19 +315,20 @@ void MasterScreenHandler::clicked_RightMouseButton(QPoint position)
 /*!
  * \brief This function handles the selection of some Battle Map squares.
  */
-void MasterScreenHandler::selected_BattleMapSquares()
+void MasterScreenHandler::selectedBattleMapSquares()
 {
+    /* handle selection of Battle Map squares with respective operation mode */
     switch (m_operationMode)
     {
     case Select:
-        handleSelect(pBattleMapScene->getScenePosPress(), pBattleMapScene->getScenePosRelease());
+        handleSelect(m_battleMapScene->getScenePosPress(), m_battleMapScene->getScenePosRelease());
         break;
     case CoverBattleMap:
-        handleSelect(pBattleMapScene->getScenePosPress(), pBattleMapScene->getScenePosRelease());
+        handleSelect(m_battleMapScene->getScenePosPress(), m_battleMapScene->getScenePosRelease());
         handleCoverBattleMap(true);
         break;
     case UncoverBattleMap:
-        handleSelect(pBattleMapScene->getScenePosPress(), pBattleMapScene->getScenePosRelease());
+        handleSelect(m_battleMapScene->getScenePosPress(), m_battleMapScene->getScenePosRelease());
         handleCoverBattleMap(false);
         break;
     default:
@@ -336,10 +349,12 @@ void MasterScreenHandler::deleteBattleMapSquaresGraphicsItems()
     {
         for (quint32 columnIdx = 0U; columnIdx < m_battleMapSquaresGraphicsItems[rowIdx].count(); columnIdx++)
         {
+            /* delete graphics items */
             delete m_battleMapSquaresGraphicsItems[rowIdx][columnIdx];
         }
     }
 
+    /* remove all graphics items from list */
     m_battleMapSquaresGraphicsItems.clear();
 }
 
@@ -348,9 +363,10 @@ void MasterScreenHandler::deleteBattleMapSquaresGraphicsItems()
  */
 void MasterScreenHandler::updateBattleMapSquaresGraphicsItems()
 {
+    /* delete Battle Map squares of previous Battle Map */
     deleteBattleMapSquaresGraphicsItems();
 
-    for (quint32 rowIdx = 0U; rowIdx < pBattleMap->getNumberRows(); rowIdx++)
+    for (quint32 rowIdx = 0U; rowIdx < m_battleMap->getNumberRows(); rowIdx++)
     {
         /* append row to nested QList member variable m_battleMapSquaresGraphicsItems if row does not already exist */
         if (rowIdx + 1 > m_battleMapSquaresGraphicsItems.count())
@@ -358,10 +374,10 @@ void MasterScreenHandler::updateBattleMapSquaresGraphicsItems()
             m_battleMapSquaresGraphicsItems.append(QList<QGraphicsPixmapItem*>());
         }
 
-        for (quint32 columnIdx = 0U; columnIdx < pBattleMap->getNumberColumns(); columnIdx++)
+        for (quint32 columnIdx = 0U; columnIdx < m_battleMap->getNumberColumns(); columnIdx++)
         {
             /* append graphics item of Battle Map square to row of nested QList member variable m_battleMapSquaresGraphicsItems */
-            m_battleMapSquaresGraphicsItems[rowIdx].append(new QGraphicsPixmapItem(pBattleMap->getBattleMapSquarePixmap(rowIdx, columnIdx)));
+            m_battleMapSquaresGraphicsItems[rowIdx].append(new QGraphicsPixmapItem(m_battleMap->getBattleMapSquarePixmap(rowIdx, columnIdx)));
 
             /* make Battle Mal square selectable */
             m_battleMapSquaresGraphicsItems[rowIdx][columnIdx]->setFlag(QGraphicsItem::ItemIsSelectable, true);
@@ -374,17 +390,17 @@ void MasterScreenHandler::updateBattleMapSquaresGraphicsItems()
  */
 void MasterScreenHandler::updateBattleMapSceneSection()
 {
-    /* Update the rect that frames the Battle Map scene section to be displayed on the player screen */
-    m_sceneSectionRect.setRect(QRectF(QPointF(pBattleMapSceneSection->getIndexFirstColumnSceneSection(), pBattleMapSceneSection->getIndexFirstRowSceneSection()) * CONFIG_BATTLEMAPSQUARE_SIZE,
-                                      QSize(pBattleMapSceneSection->getNumberColumnsSceneSection(), pBattleMapSceneSection->getNumberRowsSceneSection()) * CONFIG_BATTLEMAPSQUARE_SIZE));
+    /* update rect that frames the Battle Map scene section to be displayed on the player screen */
+    m_sceneSectionRect.setRect(QRectF(QPointF(m_battleMapSceneSection->getIndexFirstColumnSceneSection(), m_battleMapSceneSection->getIndexFirstRowSceneSection()) * CONFIG_BATTLEMAPSQUARE_SIZE,
+                                      QSize(m_battleMapSceneSection->getNumberColumnsSceneSection(), m_battleMapSceneSection->getNumberRowsSceneSection()) * CONFIG_BATTLEMAPSQUARE_SIZE));
 
-    /* Update the opacity of the Battle Map squares depending on whether they are displayed on the player screen */
-    for (quint32 rowIdx = 0U; rowIdx < pBattleMap->getNumberRows(); rowIdx++)
+    for (quint32 rowIdx = 0U; rowIdx < m_battleMap->getNumberRows(); rowIdx++)
     {
-        for (quint32 columnIdx = 0U; columnIdx < pBattleMap->getNumberColumns(); columnIdx++)
+        for (quint32 columnIdx = 0U; columnIdx < m_battleMap->getNumberColumns(); columnIdx++)
         {
-            if ((rowIdx < pBattleMapSceneSection->getIndexFirstRowSceneSection()) || (pBattleMapSceneSection->getIndexFirstRowSceneSection() + pBattleMapSceneSection->getNumberRowsSceneSection() - 1U < rowIdx) ||
-                    (columnIdx < pBattleMapSceneSection->getIndexFirstColumnSceneSection()) || (pBattleMapSceneSection->getIndexFirstColumnSceneSection() + pBattleMapSceneSection->getNumberColumnsSceneSection() - 1U < columnIdx))
+            /* update opacity of Battle Map squares depending on whether they are displayed on the player screen */
+            if ((rowIdx < m_battleMapSceneSection->getIndexFirstRowSceneSection()) || (m_battleMapSceneSection->getIndexFirstRowSceneSection() + m_battleMapSceneSection->getNumberRowsSceneSection() - 1U < rowIdx) ||
+                    (columnIdx < m_battleMapSceneSection->getIndexFirstColumnSceneSection()) || (m_battleMapSceneSection->getIndexFirstColumnSceneSection() + m_battleMapSceneSection->getNumberColumnsSceneSection() - 1U < columnIdx))
             {
                 m_battleMapSquaresGraphicsItems[rowIdx][columnIdx]->setOpacity(BATTLEMAPSQUAREOUTSIDESECTIONFRAME_OPACITY);
             }
@@ -401,20 +417,21 @@ void MasterScreenHandler::updateBattleMapSceneSection()
  */
 void MasterScreenHandler::deleteBattleMapScene()
 {
-    for (QGraphicsItem * item : pBattleMapScene->items())
+    /* remove all graphics items from Battle Map scene */
+    for (QGraphicsItem * item : m_battleMapScene->items())
     {
-        pBattleMapScene->removeItem(item);
+        m_battleMapScene->removeItem(item);
     }
 
-    delete pBattleMapScene;
+    delete m_battleMapScene;
 }
 
 /*!
- * \brief This function handles the selection of some Battle Map squares in case of operation mode Select.
+ * \brief This function handles the selection of some Battle Map squares.
  */
 void MasterScreenHandler::handleSelect(QPointF positionPress, QPointF positionRelease)
 {
-    /* Check if Ctrl key on the keyboard is pressed */
+    /* check whether Ctrl key on keyboard is pressed and set item selection operation accordingly */
     Qt::ItemSelectionOperation itemSelectionOperation;
     if (QGuiApplication::queryKeyboardModifiers().testFlag(Qt::ControlModifier))
     {
@@ -427,50 +444,52 @@ void MasterScreenHandler::handleSelect(QPointF positionPress, QPointF positionRe
 
     if (positionPress == positionRelease)
     {
-        /* Select single Battle Map square */
+        /* reset selection area if single Battle Map square has been selected and respective item selection operation is set */
         if (itemSelectionOperation == Qt::ReplaceSelection)
         {
             resetSelectionArea();
         }
 
-        for (QGraphicsItem * item : pBattleMapScene->items(positionPress))
+        /* select single Battle Map square positioned at mouse button click position */
+        for (QGraphicsItem * item : m_battleMapScene->items(positionPress))
         {
             item->setSelected(true);
         }
     }
     else
     {
-        /* Select multiple Battle Map squares */
+        /* select multiple Battle Map squares positioned in selection area */
         QPainterPath path;
         path.addRect(QRectF(positionPress, positionRelease));
-        pBattleMapScene->setSelectionArea(path, itemSelectionOperation);
+        m_battleMapScene->setSelectionArea(path, itemSelectionOperation);
     }
 
-    /* Stack selected items on top of unselected items so that selection rectangle is completely visible */
-    for (QGraphicsItem * item : pBattleMapScene->items())
+    /* stack selected items on top of unselected items so that selection rectangle is completely visible */
+    for (QGraphicsItem * item : m_battleMapScene->items())
     {
         if (item->isSelected())
         {
-            item->setZValue(0.0);
+            item->setZValue(FOREGROUNDEDGRAPHICSITEM_ZVALUE);
         }
         else
         {
-            item->setZValue(-1.0);
+            item->setZValue(BACKGROUNDEDGRAPHICSITEM_ZVALUE);
         }
     }
 
-    /* Stack Battle Map scene section rectangle on top of all other items */
-    m_sceneSectionRect.setZValue(0.0);
+    /* stack Battle Map scene section rectangle on top of all other items */
+    m_sceneSectionRect.setZValue(FOREGROUNDEDGRAPHICSITEM_ZVALUE);
 }
 
 /*!
- * \brief This function handles resets the selection area.
+ * \brief This function resets the selection area.
  */
 void MasterScreenHandler::resetSelectionArea()
 {
-    for (QGraphicsItem * selectedItem : pBattleMapScene->selectedItems())
+    /* unselect selected graphics items */
+    for (QGraphicsItem * selectedItem : m_battleMapScene->selectedItems())
     {
         selectedItem->setSelected(false);
-        selectedItem->setZValue(0.0);
+        selectedItem->setZValue(FOREGROUNDEDGRAPHICSITEM_ZVALUE);
     }
 }

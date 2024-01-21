@@ -46,7 +46,7 @@ QPointF BattleMapScene::getScenePosRelease() const
  */
 bool BattleMapScene::checkMouseEventScenePos(QGraphicsSceneMouseEvent *event)
 {
-    /* check whether the mouse event is positioned at the Battle Map scene */
+    /* check whether mouse event is positioned at Battle Map scene */
     return ((0 <= event->scenePos().x()) && (event->scenePos().x() <= this->width()) && (0 <= event->scenePos().y()) && (event->scenePos().y() <= this->height()));
 }
 
@@ -55,36 +55,38 @@ bool BattleMapScene::checkMouseEventScenePos(QGraphicsSceneMouseEvent *event)
  ****************************************************************************************************************************************************/
 
 /*!
- * \brief This function handles a mouse press event on the Battle Map scene.
+ * \brief This function handles a mouse press event.
  */
 void BattleMapScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
     if (Qt::LeftButton == event->button())
     {
-        /* reset press position and release position */
+        /* reset positions of mouse press and mouse release */
         m_scenePosPress = QPointF();
         m_scenePosRelease = QPointF();
 
-        /* check whether the mouse press event is positioned at the Battle Map scene */
+        /* check whether mouse press event is positioned at Battle Map scene */
         if (checkMouseEventScenePos(event))
         {
+            /* save position of mouse press for later processing */
             m_scenePosPress = event->scenePos();
         }
     }
 }
 
 /*!
- * \brief This function handles a mouse release event on the Battle Map scene.
+ * \brief This function handles a mouse release event.
  */
 void BattleMapScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
     if (Qt::LeftButton == event->button())
     {
-        /* check whether the mouse release event is positioned at the Battle Map scene */
+        /* check whether mouse release event is positioned at Battle Map scene */
         if (checkMouseEventScenePos(event))
         {
             if (!m_scenePosPress.isNull())
             {
+                /* save position of mouse release for later processing */
                 m_scenePosRelease = event->scenePos();
             }
         }

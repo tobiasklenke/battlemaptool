@@ -46,15 +46,16 @@ void GraphicsView_BattleMap::setEventProcessingEnabled(bool eventProcessingEnabl
 }
 
 /*!
- * \brief This function resets the scaling.
+ * \brief This function resets the scaling and the scale factor.
  */
 void GraphicsView_BattleMap::resetScaling()
 {
+    /* reset scaling of graphics view and scale factor */
     scale(1 / m_scaleFactor, 1 / m_scaleFactor);
-
     m_scaleFactor = 1.0;
 
-    emit changed_ScaleFactor(m_scaleFactor);
+    /* emit signal for changed scale factor */
+    emit changedScaleFactor(m_scaleFactor);
 }
 
 /****************************************************************************************************************************************************
@@ -62,17 +63,19 @@ void GraphicsView_BattleMap::resetScaling()
  ****************************************************************************************************************************************************/
 
 /*!
- * \brief This function handles a mouse wheel event on the Battle Map view.
+ * \brief This function handles a mouse wheel event.
  */
 void GraphicsView_BattleMap::wheelEvent(QWheelEvent *event)
 {
+    /* mouse wheel event is only processed if event processing is enabled */
     if (m_eventProcessingEnabled)
     {
         setTransformationAnchor(AnchorUnderMouse);
 
+        /* reset scaling */
         scale(1 / m_scaleFactor, 1 / m_scaleFactor);
 
-        /* incrementing or decrementing the scale factor by 10 percent, depending on the scrolling direction */
+        /* increment or decrement scale factor by 10 percent, depending on scrolling direction */
         if (0 < event->angleDelta().y())
         {
             if (BATTLEMAPVIEW_SCALEFACTOR_MAXVALUE_PERCENTAGE > static_cast<quint32>(m_scaleFactor * HUNDRED_PERCENTAGE))
@@ -88,81 +91,101 @@ void GraphicsView_BattleMap::wheelEvent(QWheelEvent *event)
             }
         }
 
+        /* rescale graphics view with changed scale factor */
         scale(m_scaleFactor, m_scaleFactor);
 
-        emit changed_ScaleFactor(m_scaleFactor);
+        /* emit signal for changed scale factor */
+        emit changedScaleFactor(m_scaleFactor);
     }
 }
 
 /*!
- * \brief This function handles a mouse press event on the Battle Map view.
+ * \brief This function handles a mouse press event.
  */
 void GraphicsView_BattleMap::mousePressEvent(QMouseEvent *event)
 {
+    /* mouse press event is only processed if event processing is enabled */
     if (m_eventProcessingEnabled)
     {
+        /* enable drag mode in case of pressed middle button */
         if (Qt::MiddleButton == event->button())
         {
             m_dragModeEnabled = true;
 
+            /* set cursor according to drag mode */
             m_cursor = viewport()->cursor();
             viewport()->setCursor(Qt::SizeAllCursor);
 
+            /* save positions of current viewport center and mouse press for later processing */
             m_scenePosCenter = mapToScene(viewport()->rect().center());
             m_viewPosPress = event->pos();
         }
 
+        /* emit respective signal in case of pressed right button */
         if (Qt::RightButton == event->button())
         {
-            emit clicked_RightMouseButton(event->pos());
+            emit pressedRightMouseButton(event->pos());
         }
 
+        /* call base class function in order to forward event to Battle Map scene */
         QGraphicsView::mousePressEvent(event);
     }
 }
 
 /*!
- * \brief This function handles a mouse move event on the Battle Map view.
+ * \brief This function handles a mouse move event.
  */
 void GraphicsView_BattleMap::mouseMoveEvent(QMouseEvent *event)
 {
+    /* mouse move event is only processed if event processing is enabled */
     if (m_eventProcessingEnabled)
     {
         if (m_dragModeEnabled)
         {
+            /* center graphics view on new position, calculated from viewport center position while mouse press, mouse press position and mouse move position */
             centerOn(m_scenePosCenter - (event->pos() - m_viewPosPress) * (1 / m_scaleFactor));
         }
 
+        /* call base class function in order to forward event to Battle Map scene */
         QGraphicsView::mouseMoveEvent(event);
     }
 }
 
 /*!
- * \brief This function handles a mouse release event on the Battle Map view.
+ * \brief This function handles a mouse release event.
  */
 void GraphicsView_BattleMap::mouseReleaseEvent(QMouseEvent *event)
 {
+    /* mouse release event is only processed if event processing is enabled */
     if (m_eventProcessingEnabled)
     {
+        /* disable drag mode in case of pressed middle button */
         if (Qt::MiddleButton == event->button())
         {
             m_dragModeEnabled = false;
 
+            /* reset cursor */
             viewport()->setCursor(m_cursor);
         }
 
+        /* call base class function in order to forward event to Battle Map scene */
         QGraphicsView::mouseReleaseEvent(event);
     }
 }
 
 /*!
- * \brief This function handles a key press event on the Battle Map view.
+ * \brief This function handles a key press event.
  */
 void GraphicsView_BattleMap::keyPressEvent(QKeyEvent *event)
 {
+    /* key press event is only processed if event processing is enabled */
     if (m_eventProcessingEnabled)
     {
-        emit pressed_Key(static_cast<Qt::Key>(event->key()));
+        /* emit signal for pressed key */
+        emit pressedKey(static_cast<Qt::Key>(event->key()));
+
+        /* call base class function in order to forward event to Battle Map scene */
+        QGraphicsView::keyPressEvent(event);
     }
 }
 

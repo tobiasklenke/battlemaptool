@@ -12,7 +12,7 @@
  ****************************************************************************************************************************************************/
 
 /*!
- * \brief This class implements the Battle Map scene section to be displayed on the player screen.
+ * \brief This class implements the functionality needed for the Battle Map scene section to be displayed on the player screen.
  */
 class BattleMapSceneSection
 {

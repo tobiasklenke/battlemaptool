@@ -13,7 +13,7 @@
  ****************************************************************************************************************************************************/
 
 /*!
- * \brief This class implements the base functionality needed for the display of a Battle Map image.
+ * \brief This class implements the base functionality needed for a custom graphics scene for display of Battle Map images.
  */
 class BattleMapScene : public QGraphicsScene
 {
@@ -73,11 +73,11 @@ public:
 protected:
 
     /*! *********************************************************************************************************************************************
-     * \brief   This function handles a mouse press event on the Battle Map scene.                                                                  *
+     * \brief   This function handles a mouse press event.                                                                                          *
      *                                                                                                                                              *
-     * \details This function handles a mouse press event on the Battle Map scene by resetting the member variables m_scenePosPress and             *
-     *          m_scenePosRelease first. Afterwards, the function checks whether the mouse press event is positioned at the Battle Map scene and if *
-     *          so, the member variable m_scenePosPress is set according to the position of the parameter event.                                    *
+     * \details This function handles a mouse press event. In case that the left button has been pressed, it resets the positions of the mouse      *
+     *          press and the mouse release. Afterwards, it checks whether the mouse press event is positioned at the Battle Map scene and if so,   *
+	 *          it saves the position of the mouse press for later processing.                                                                      *
      *                                                                                                                                              *
      * \param   event                         Mouse press event to be handled                                                                       *
      *                                                                                                                                              *
@@ -86,10 +86,10 @@ protected:
     void mousePressEvent(QGraphicsSceneMouseEvent *event);
 
     /*! *********************************************************************************************************************************************
-     * \brief   This function handles a mouse release event on the Battle Map scene.                                                                *
+     * \brief   This function handles a mouse release event.                                                                                        *
      *                                                                                                                                              *
-     * \details This function handles a mouse release event on the Battle Map scene and checks whether the mouse release event is positioned at the *
-     *          Battle Map scene and if so, the member variable m_scenePosRelease is set according to the position of the parameter event.          *
+     * \details This function handles a mouse release event. In case that the left button has been released, it checks whether the mouse release    *
+     *          event is positioned at the Battle Map scene and if so, it saves the position of the mouse release for later processing.             *
      *                                                                                                                                              *
      * \param   event                         Mouse release event to be handled                                                                     *
      *                                                                                                                                              *
