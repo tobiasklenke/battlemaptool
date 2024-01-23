@@ -10,7 +10,7 @@
 
 #include "battlemap.h"
 #include "battlemapscenesection.h"
-#include "dialog_newbattlemap.h"
+#include "dialognewbattlemap.h"
 #include "playerscreenhandler.h"
 #include "masterscreenhandler.h"
 

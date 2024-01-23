@@ -1,5 +1,5 @@
-#ifndef DIALOG_NEWBATTLEMAP_H
-#define DIALOG_NEWBATTLEMAP_H
+#ifndef DIALOGNEWBATTLEMAP_H
+#define DIALOGNEWBATTLEMAP_H
 
 /****************************************************************************************************************************************************
  * INCLUDES                                                                                                                                         *
@@ -402,4 +402,4 @@ private:
     BattleMap *m_battleMap;
 };
 
-#endif // DIALOG_NEWBATTLEMAP_H
+#endif // DIALOGNEWBATTLEMAP_H

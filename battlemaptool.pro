@@ -17,7 +17,7 @@ SOURCES += \
     battlemapscenesquareselection.cpp \
     battlemapsquare.cpp \
     customgraphicspixmapitem.cpp \
-    dialog_newbattlemap.cpp \
+    dialognewbattlemap.cpp \
     graphicsview_battlemap.cpp \
     main.cpp \
     mainwindow.cpp \
@@ -35,7 +35,7 @@ HEADERS += \
     battlemapsquare.h \
     customgraphicspixmapitem.h \
     defines.h \
-    dialog_newbattlemap.h \
+    dialognewbattlemap.h \
     graphicsview_battlemap.h \
     mainwindow.h \
     masterscreenhandler.h \
@@ -43,7 +43,7 @@ HEADERS += \
     screencalc.h
 
 FORMS += \
-    dialog_newbattlemap.ui \
+    dialognewbattlemap.ui \
     mainwindow.ui
 
 # Default rules for deployment.
