@@ -133,7 +133,6 @@ protected:
      * \brief   This function handles a key press event.                                                                                            *
      *                                                                                                                                              *
      * \details This function processes a key press event, but only if the event processing is enabled. It emits the signal for a pressed key.      *
-     *          Finally, it calls the base class function in order to forward the event to the Battle Map scene.                                    *
      *                                                                                                                                              *
      * \param   event                         Key press event to be handled                                                                         *
      *                                                                                                                                              *

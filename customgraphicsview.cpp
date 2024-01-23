@@ -183,9 +183,6 @@ void CustomGraphicsView::keyPressEvent(QKeyEvent *event)
     {
         /* emit signal for pressed key */
         emit pressedKey(static_cast<Qt::Key>(event->key()));
-
-        /* call base class function in order to forward event to Battle Map scene */
-        QGraphicsView::keyPressEvent(event);
     }
 }
 
