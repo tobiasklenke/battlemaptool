@@ -2,16 +2,16 @@
  * INCLUDES                                                                                                                                         *
  ****************************************************************************************************************************************************/
 
-#include "graphicsview_battlemap.h"
+#include "customgraphicsview.h"
 
 /****************************************************************************************************************************************************
  * DEFINITION OF PUBLIC FUNCTIONS                                                                                                                   *
  ****************************************************************************************************************************************************/
 
 /*!
- * \brief This function is the constructor of the class GraphicsView_BattleMap.
+ * \brief This function is the constructor of the class CustomGraphicsView.
  */
-GraphicsView_BattleMap::GraphicsView_BattleMap(QWidget *parent) :
+CustomGraphicsView::CustomGraphicsView(QWidget *parent) :
     QGraphicsView(parent),
     m_eventProcessingEnabled(false),
     m_scaleFactor(1.0),
@@ -23,16 +23,16 @@ GraphicsView_BattleMap::GraphicsView_BattleMap(QWidget *parent) :
 }
 
 /*!
- * \brief This function is the destructor of the class GraphicsView_BattleMap.
+ * \brief This function is the destructor of the class CustomGraphicsView.
  */
-GraphicsView_BattleMap::~GraphicsView_BattleMap()
+CustomGraphicsView::~CustomGraphicsView()
 {
 }
 
 /*!
  * \brief This function returns the value of the member variable m_eventProcessingEnabled.
  */
-bool GraphicsView_BattleMap::getEventProcessingEnabled() const
+bool CustomGraphicsView::getEventProcessingEnabled() const
 {
     return m_eventProcessingEnabled;
 }
@@ -40,7 +40,7 @@ bool GraphicsView_BattleMap::getEventProcessingEnabled() const
 /*!
  * \brief This function sets the value of the member variable m_eventProcessingEnabled.
  */
-void GraphicsView_BattleMap::setEventProcessingEnabled(bool eventProcessingEnabled)
+void CustomGraphicsView::setEventProcessingEnabled(bool eventProcessingEnabled)
 {
     m_eventProcessingEnabled = eventProcessingEnabled;
 }
@@ -48,7 +48,7 @@ void GraphicsView_BattleMap::setEventProcessingEnabled(bool eventProcessingEnabl
 /*!
  * \brief This function resets the scaling and the scale factor.
  */
-void GraphicsView_BattleMap::resetScaling()
+void CustomGraphicsView::resetScaling()
 {
     /* reset scaling of graphics view and scale factor */
     scale(1 / m_scaleFactor, 1 / m_scaleFactor);
@@ -65,7 +65,7 @@ void GraphicsView_BattleMap::resetScaling()
 /*!
  * \brief This function handles a mouse wheel event.
  */
-void GraphicsView_BattleMap::wheelEvent(QWheelEvent *event)
+void CustomGraphicsView::wheelEvent(QWheelEvent *event)
 {
     /* mouse wheel event is only processed if event processing is enabled */
     if (m_eventProcessingEnabled)
@@ -102,7 +102,7 @@ void GraphicsView_BattleMap::wheelEvent(QWheelEvent *event)
 /*!
  * \brief This function handles a mouse press event.
  */
-void GraphicsView_BattleMap::mousePressEvent(QMouseEvent *event)
+void CustomGraphicsView::mousePressEvent(QMouseEvent *event)
 {
     /* mouse press event is only processed if event processing is enabled */
     if (m_eventProcessingEnabled)
@@ -135,7 +135,7 @@ void GraphicsView_BattleMap::mousePressEvent(QMouseEvent *event)
 /*!
  * \brief This function handles a mouse move event.
  */
-void GraphicsView_BattleMap::mouseMoveEvent(QMouseEvent *event)
+void CustomGraphicsView::mouseMoveEvent(QMouseEvent *event)
 {
     /* mouse move event is only processed if event processing is enabled */
     if (m_eventProcessingEnabled)
@@ -154,7 +154,7 @@ void GraphicsView_BattleMap::mouseMoveEvent(QMouseEvent *event)
 /*!
  * \brief This function handles a mouse release event.
  */
-void GraphicsView_BattleMap::mouseReleaseEvent(QMouseEvent *event)
+void CustomGraphicsView::mouseReleaseEvent(QMouseEvent *event)
 {
     /* mouse release event is only processed if event processing is enabled */
     if (m_eventProcessingEnabled)
@@ -176,7 +176,7 @@ void GraphicsView_BattleMap::mouseReleaseEvent(QMouseEvent *event)
 /*!
  * \brief This function handles a key press event.
  */
-void GraphicsView_BattleMap::keyPressEvent(QKeyEvent *event)
+void CustomGraphicsView::keyPressEvent(QKeyEvent *event)
 {
     /* key press event is only processed if event processing is enabled */
     if (m_eventProcessingEnabled)

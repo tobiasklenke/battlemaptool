@@ -41,7 +41,7 @@
    <bool>false</bool>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="GraphicsView_BattleMap" name="graphicsViewBattleMapMasterScreen">
+   <widget class="CustomGraphicsView" name="graphicsViewBattleMapMasterScreen">
     <property name="geometry">
      <rect>
       <x>0</x>
@@ -361,9 +361,9 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>GraphicsView_BattleMap</class>
+   <class>CustomGraphicsView</class>
    <extends>QGraphicsView</extends>
-   <header location="global">graphicsview_battlemap.h</header>
+   <header location="global">customgraphicsview.h</header>
   </customwidget>
  </customwidgets>
  <resources>

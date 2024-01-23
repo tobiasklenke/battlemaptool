@@ -12,7 +12,7 @@
 #include "battlemap.h"
 #include "battlemapscenemasterscreen.h"
 #include "battlemapscenesection.h"
-#include "graphicsview_battlemap.h"
+#include "customgraphicsview.h"
 #include "screencalc.h"
 
 /****************************************************************************************************************************************************
@@ -57,7 +57,7 @@ public:
      *                                                                                                                                              *
      * \return  This function does not have any return value.                                                                                       *
      ************************************************************************************************************************************************/
-    void setGraphicsView(GraphicsView_BattleMap *graphicsView);
+    void setGraphicsView(CustomGraphicsView *graphicsView);
 
     /*! *********************************************************************************************************************************************
      * \brief   This function sets the address of the member variable m_battleMap.                                                                  *
@@ -241,7 +241,7 @@ private:
     /*!
      * \brief This is a pointer to the graphics view.
      */
-    GraphicsView_BattleMap *m_graphicsView;
+    CustomGraphicsView *m_graphicsView;
 
     /*!
      * \brief This is a pointer to the Battle Map.

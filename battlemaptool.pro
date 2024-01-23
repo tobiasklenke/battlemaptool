@@ -17,8 +17,8 @@ SOURCES += \
     battlemapscenesquareselection.cpp \
     battlemapsquare.cpp \
     customgraphicspixmapitem.cpp \
+    customgraphicsview.cpp \
     dialognewbattlemap.cpp \
-    graphicsview_battlemap.cpp \
     main.cpp \
     mainwindow.cpp \
     masterscreenhandler.cpp \
@@ -34,9 +34,9 @@ HEADERS += \
     battlemapscenesquareselection.h \
     battlemapsquare.h \
     customgraphicspixmapitem.h \
+    customgraphicsview.h \
     defines.h \
     dialognewbattlemap.h \
-    graphicsview_battlemap.h \
     mainwindow.h \
     masterscreenhandler.h \
     playerscreenhandler.h \

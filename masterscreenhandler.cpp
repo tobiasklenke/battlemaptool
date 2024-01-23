@@ -35,7 +35,7 @@ MasterScreenHandler::~MasterScreenHandler()
 /*!
  * \brief This function sets the address of the member variable m_graphicsView.
  */
-void MasterScreenHandler::setGraphicsView(GraphicsView_BattleMap *graphicsView)
+void MasterScreenHandler::setGraphicsView(CustomGraphicsView *graphicsView)
 {
     m_graphicsView = graphicsView;
 

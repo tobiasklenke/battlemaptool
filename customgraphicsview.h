@@ -1,5 +1,5 @@
-#ifndef GRAPHICSVIEW_BATTLEMAP_H
-#define GRAPHICSVIEW_BATTLEMAP_H
+#ifndef CUSTOMGRAPHICSVIEW_H
+#define CUSTOMGRAPHICSVIEW_H
 
 /****************************************************************************************************************************************************
  * INCLUDES                                                                                                                                         *
@@ -19,31 +19,31 @@
 /*!
  * \brief This class implements the functionality of a custom graphics view.
  */
-class GraphicsView_BattleMap : public QGraphicsView
+class CustomGraphicsView : public QGraphicsView
 {
     Q_OBJECT
 
 public:
 
     /*! *********************************************************************************************************************************************
-     * \brief   This function is the constructor of the class GraphicsView_BattleMap.                                                               *
+     * \brief   This function is the constructor of the class CustomGraphicsView.                                                                   *
      *                                                                                                                                              *
      * \details -                                                                                                                                   *
      *                                                                                                                                              *
-     * \param   parent                        Parent of the class GraphicsView_BattleMap                                                            *
+     * \param   parent                        Parent of the class CustomGraphicsView                                                                *
      *                                                                                                                                              *
      * \return  This function does not have any return value.                                                                                       *
      ************************************************************************************************************************************************/
-    GraphicsView_BattleMap(QWidget *parent = nullptr);
+    CustomGraphicsView(QWidget *parent = nullptr);
 
     /*! *********************************************************************************************************************************************
-     * \brief   This function is the destructor of the class GraphicsView_BattleMap.                                                                *
+     * \brief   This function is the destructor of the class CustomGraphicsView.                                                                    *
      *                                                                                                                                              *
      * \details -                                                                                                                                   *
      *                                                                                                                                              *
      * \return  This function does not have any return value.                                                                                       *
      ************************************************************************************************************************************************/
-    ~GraphicsView_BattleMap();
+    ~CustomGraphicsView();
 
     /*! *********************************************************************************************************************************************
      * \brief   This function returns the value of the member variable m_eventProcessingEnabled.                                                    *
@@ -193,4 +193,4 @@ private:
     QPoint m_viewPosPress;
 };
 
-#endif // GRAPHICSVIEW_BATTLEMAP_H
+#endif // CUSTOMGRAPHICSVIEW_H
