@@ -100,6 +100,24 @@ private slots:
     void rejectedDialogNewBattleMap();
 
     /*! *********************************************************************************************************************************************
+     * \brief   This function handles the action actionUndo.                                                                                        *
+     *                                                                                                                                              *
+     * \details TODO                                                                                                                                *
+     *                                                                                                                                              *
+     * \return  This function does not have any return value.                                                                                       *
+     ************************************************************************************************************************************************/
+    void triggeredActionUndo();
+
+    /*! *********************************************************************************************************************************************
+     * \brief   This function handles the action actionRedo.                                                                                        *
+     *                                                                                                                                              *
+     * \details TODO                                                                                                                                *
+     *                                                                                                                                              *
+     * \return  This function does not have any return value.                                                                                       *
+     ************************************************************************************************************************************************/
+    void triggeredActionRedo();
+
+    /*! *********************************************************************************************************************************************
      * \brief   This function handles the action actionUpdatePlayerScreen.                                                                          *
      *                                                                                                                                              *
      * \details This function updates the Battle Map image on the player screen.                                                                    *

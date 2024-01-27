@@ -8,5 +8,8 @@
         <file>icons/uncoverbattlemap.png</file>
         <file>icons/cursor.png</file>
         <file>icons/windrose.png</file>
+        <file>icons/redo.png</file>
+        <file>icons/undo.png</file>
     </qresource>
+    <qresource prefix="/"/>
 </RCC>

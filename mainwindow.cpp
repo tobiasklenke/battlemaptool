@@ -46,6 +46,10 @@ MainWindow::MainWindow(QGraphicsView *playerWindow, QWidget *parent) :
     connect(m_userInterface->actionNewBattleMap, SIGNAL(triggered()), this, SLOT(triggeredActionNewBattleMap()));
     connect(m_userInterface->actionQuit, SIGNAL(triggered()), QApplication::instance(), SLOT(quit()));
 
+    /* connect signals and slots of actions from menu Edit */
+    connect(m_userInterface->actionUndo, SIGNAL(triggered()), this, SLOT(triggeredActionUndo()));
+    connect(m_userInterface->actionRedo, SIGNAL(triggered()), this, SLOT(triggeredActionRedo()));
+
     /* connect signals and slots of actions from menu View */
     connect(m_userInterface->actionUpdatePlayerScreen, SIGNAL(triggered()), this, SLOT(triggeredActionUpdatePlayerScreen()));
     connect(m_userInterface->actionWindRoseOrientationNorth, SIGNAL(triggered()), this, SLOT(triggeredActionWindRoseOrientation()));
@@ -184,6 +188,26 @@ void MainWindow::rejectedDialogNewBattleMap()
 {
     /* delete dialog DialogNewBattleMap */
     delete m_dialogNewBattleMap;
+}
+
+/*!
+ * \brief This function handles the action actionUndo.
+ */
+void MainWindow::triggeredActionUndo()
+{
+    //TODO  implement undo framework
+
+    qDebug() << __func__;
+}
+
+/*!
+ * \brief This function handles the action actionUndo.
+ */
+void MainWindow::triggeredActionRedo()
+{
+    //TODO  implement undo framework
+
+    qDebug() << __func__;
 }
 
 /*!
