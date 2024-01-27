@@ -85,7 +85,8 @@ protected:
      * \details This function handles a mouse release event. In case that the left button has been pressed, it resets the selection rectangle and   *
      *          removes it from the Battle Map scene. Afterwards, it calls the base class function in order to set the release position. Finally,   *
      *          it checks whether the mouse release event is positioned at the Battle Map scene and if so, it emits the signal for the completed    *
-     *          selection of Battle Map squares.                                                                                                    *
+     *          selection of Battle Map squares. If the mouse press event was not positioned at the Battle Map scene before or if the mouse release *
+     *          event is not positioned at the Battle Map scene, it emits the signal for the unselection of Battle Map squares.                     *
      *                                                                                                                                              *
      * \param   event                         Mouse release event to be handled                                                                     *
      *                                                                                                                                              *
@@ -99,6 +100,11 @@ signals:
      * \brief This signal is emitted as soon as some Battle Map squares have been selected.                                                         *
      ************************************************************************************************************************************************/
     void selectedBattleMapSquares(void);
+
+    /*! *********************************************************************************************************************************************
+     * \brief This signal is emitted as soon as the Battle Map squares have been unselected.                                                        *
+     ************************************************************************************************************************************************/
+    void unselectedBattleMapSquares(void);
 
 private slots: /* - */
 

@@ -112,6 +112,7 @@ void MasterScreenHandler::showBattleMapImage()
     deleteBattleMapScene();
     m_battleMapScene = new BattleMapSceneMasterScreen();
     connect(m_battleMapScene, SIGNAL(selectedBattleMapSquares()), this, SLOT(selectedBattleMapSquares()));
+    connect(m_battleMapScene, SIGNAL(unselectedBattleMapSquares()), this, SLOT(unselectedBattleMapSquares()));
     m_graphicsView->setScene(m_battleMapScene);
 
     /* reset scaling of graphics view */
@@ -334,6 +335,14 @@ void MasterScreenHandler::selectedBattleMapSquares()
     default:
         break;
     }
+}
+
+/*!
+ * \brief This function handles the unselection of all Battle Map squares.
+ */
+void MasterScreenHandler::unselectedBattleMapSquares()
+{
+    resetSelectionArea();
 }
 
 /****************************************************************************************************************************************************

@@ -96,6 +96,14 @@ void BattleMapSceneMasterScreen::mouseReleaseEvent(QGraphicsSceneMouseEvent *eve
             {
                 emit selectedBattleMapSquares();
             }
+            else
+            {
+                emit unselectedBattleMapSquares();
+            }
+        }
+        else
+        {
+             emit unselectedBattleMapSquares();
         }
     }
 }
