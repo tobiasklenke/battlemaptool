@@ -49,6 +49,12 @@ MainWindow::MainWindow(QGraphicsView *playerWindow, QWidget *parent) :
     /* connect signals and slots of actions from menu Edit */
     connect(m_userInterface->actionUndo, SIGNAL(triggered()), this, SLOT(triggeredActionUndo()));
     connect(m_userInterface->actionRedo, SIGNAL(triggered()), this, SLOT(triggeredActionRedo()));
+    connect(m_userInterface->actionInsertRowAbove, SIGNAL(triggered()), this, SLOT(triggeredActionInsertRowAbove()));
+    connect(m_userInterface->actionInsertRowBelow, SIGNAL(triggered()), this, SLOT(triggeredActionInsertRowBelow()));
+    connect(m_userInterface->actionInsertColumnLeft, SIGNAL(triggered()), this, SLOT(triggeredActionInsertColumnLeft()));
+    connect(m_userInterface->actionInsertColumnRight, SIGNAL(triggered()), this, SLOT(triggeredActionInsertColumnRight()));
+    connect(m_userInterface->actionDeleteRow, SIGNAL(triggered()), this, SLOT(triggeredActionDeleteRow()));
+    connect(m_userInterface->actionDeleteColumn, SIGNAL(triggered()), this, SLOT(triggeredActionDeleteColumn()));
 
     /* connect signals and slots of actions from menu View */
     connect(m_userInterface->actionUpdatePlayerScreen, SIGNAL(triggered()), this, SLOT(triggeredActionUpdatePlayerScreen()));
@@ -206,6 +212,66 @@ void MainWindow::triggeredActionUndo()
 void MainWindow::triggeredActionRedo()
 {
     //TODO  implement undo framework
+
+    qDebug() << __func__;
+}
+
+/*!
+ * \brief This function handles the action actionInsertRowAbove.
+ */
+void MainWindow::triggeredActionInsertRowAbove()
+{
+    //TODO  implement insert function
+
+    qDebug() << __func__;
+}
+
+/*!
+ * \brief This function handles the action actionInsertRowBelow.
+ */
+void MainWindow::triggeredActionInsertRowBelow()
+{
+    //TODO  implement insert function
+
+    qDebug() << __func__;
+}
+
+/*!
+ * \brief This function handles the action actionInsertColumnLeft.
+ */
+void MainWindow::triggeredActionInsertColumnLeft()
+{
+    //TODO  implement insert function
+
+    qDebug() << __func__;
+}
+
+/*!
+ * \brief This function handles the action actionInsertColumnRight.
+ */
+void MainWindow::triggeredActionInsertColumnRight()
+{
+    //TODO  implement insert function
+
+    qDebug() << __func__;
+}
+
+/*!
+ * \brief This function handles the action actionDeleteRow.
+ */
+void MainWindow::triggeredActionDeleteRow()
+{
+    //TODO  implement delete function
+
+    qDebug() << __func__;
+}
+
+/*!
+ * \brief This function handles the action actionDeleteColumn.
+ */
+void MainWindow::triggeredActionDeleteColumn()
+{
+    //TODO  implement delete function
 
     qDebug() << __func__;
 }

@@ -10,6 +10,14 @@
         <file>icons/windrose.png</file>
         <file>icons/redo.png</file>
         <file>icons/undo.png</file>
+        <file>icons/extendbattlemap.png</file>
+        <file>icons/reducebattlemap.png</file>
+        <file>icons/insertcolumnleft.png</file>
+        <file>icons/insertcolumnright.png</file>
+        <file>icons/insertrowabove.png</file>
+        <file>icons/insertrowbelow.png</file>
+        <file>icons/deletecolumn.png</file>
+        <file>icons/deleterow.png</file>
     </qresource>
     <qresource prefix="/"/>
 </RCC>

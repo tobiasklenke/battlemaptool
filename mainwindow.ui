@@ -40,6 +40,12 @@
   <property name="autoFillBackground">
    <bool>false</bool>
   </property>
+  <property name="iconSize">
+   <size>
+    <width>24</width>
+    <height>24</height>
+   </size>
+  </property>
   <widget class="QWidget" name="centralwidget">
    <widget class="CustomGraphicsView" name="graphicsViewBattleMapMasterScreen">
     <property name="geometry">
@@ -49,6 +55,9 @@
       <width>1880</width>
       <height>1060</height>
      </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QMenu {icon-size: 50px;}</string>
     </property>
     <property name="frameShape">
      <enum>QFrame::NoFrame</enum>
@@ -115,14 +124,41 @@
     <addaction name="actionQuit"/>
    </widget>
    <widget class="QMenu" name="menuEdit">
+    <property name="styleSheet">
+     <string notr="true"/>
+    </property>
     <property name="title">
      <string>Edit</string>
     </property>
+    <widget class="QMenu" name="submenuExpandBattleMap">
+     <property name="title">
+      <string>Expand Battle Map</string>
+     </property>
+     <property name="icon">
+      <iconset resource="icons.qrc">
+       <normaloff>:/icons/icons/extendbattlemap.png</normaloff>:/icons/icons/extendbattlemap.png</iconset>
+     </property>
+     <addaction name="actionInsertRowAbove"/>
+     <addaction name="actionInsertRowBelow"/>
+     <addaction name="actionInsertColumnLeft"/>
+     <addaction name="actionInsertColumnRight"/>
+    </widget>
+    <widget class="QMenu" name="submenuReduceBattleMap">
+     <property name="title">
+      <string>Reduce Battle Map</string>
+     </property>
+     <property name="icon">
+      <iconset resource="icons.qrc">
+       <normaloff>:/icons/icons/reducebattlemap.png</normaloff>:/icons/icons/reducebattlemap.png</iconset>
+     </property>
+     <addaction name="actionDeleteRow"/>
+     <addaction name="actionDeleteColumn"/>
+    </widget>
     <addaction name="actionUndo"/>
     <addaction name="actionRedo"/>
     <addaction name="separator"/>
-    <addaction name="actionExpandBattleMap"/>
-    <addaction name="actionReduceBattleMap"/>
+    <addaction name="submenuExpandBattleMap"/>
+    <addaction name="submenuReduceBattleMap"/>
    </widget>
    <widget class="QMenu" name="menuView">
     <property name="title">
@@ -387,14 +423,58 @@
     <string>Ctrl+Shift+Z</string>
    </property>
   </action>
-  <action name="actionExpandBattleMap">
+  <action name="actionInsertRowAbove">
+   <property name="icon">
+    <iconset resource="icons.qrc">
+     <normaloff>:/icons/icons/insertrowabove.png</normaloff>:/icons/icons/insertrowabove.png</iconset>
+   </property>
    <property name="text">
-    <string>Expand Battle Map</string>
+    <string>Insert row above</string>
    </property>
   </action>
-  <action name="actionReduceBattleMap">
+  <action name="actionInsertRowBelow">
+   <property name="icon">
+    <iconset resource="icons.qrc">
+     <normaloff>:/icons/icons/insertrowbelow.png</normaloff>:/icons/icons/insertrowbelow.png</iconset>
+   </property>
    <property name="text">
-    <string>Reduce Battle Map</string>
+    <string>Insert row below</string>
+   </property>
+  </action>
+  <action name="actionInsertColumnLeft">
+   <property name="icon">
+    <iconset resource="icons.qrc">
+     <normaloff>:/icons/icons/insertcolumnleft.png</normaloff>:/icons/icons/insertcolumnleft.png</iconset>
+   </property>
+   <property name="text">
+    <string>Insert column left</string>
+   </property>
+  </action>
+  <action name="actionInsertColumnRight">
+   <property name="icon">
+    <iconset resource="icons.qrc">
+     <normaloff>:/icons/icons/insertcolumnright.png</normaloff>:/icons/icons/insertcolumnright.png</iconset>
+   </property>
+   <property name="text">
+    <string>Insert column right</string>
+   </property>
+  </action>
+  <action name="actionDeleteRow">
+   <property name="icon">
+    <iconset resource="icons.qrc">
+     <normaloff>:/icons/icons/deleterow.png</normaloff>:/icons/icons/deleterow.png</iconset>
+   </property>
+   <property name="text">
+    <string>Delete row</string>
+   </property>
+  </action>
+  <action name="actionDeleteColumn">
+   <property name="icon">
+    <iconset resource="icons.qrc">
+     <normaloff>:/icons/icons/deletecolumn.png</normaloff>:/icons/icons/deletecolumn.png</iconset>
+   </property>
+   <property name="text">
+    <string>Delete column</string>
    </property>
   </action>
  </widget>

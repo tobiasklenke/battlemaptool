@@ -118,6 +118,60 @@ private slots:
     void triggeredActionRedo();
 
     /*! *********************************************************************************************************************************************
+     * \brief   This function handles the action actionInsertRowAbove.                                                                              *
+     *                                                                                                                                              *
+     * \details TODO                                                                                                                                *
+     *                                                                                                                                              *
+     * \return  This function does not have any return value.                                                                                       *
+     ************************************************************************************************************************************************/
+    void triggeredActionInsertRowAbove();
+
+    /*! *********************************************************************************************************************************************
+     * \brief   This function handles the action actionInsertRowBelow.                                                                              *
+     *                                                                                                                                              *
+     * \details TODO                                                                                                                                *
+     *                                                                                                                                              *
+     * \return  This function does not have any return value.                                                                                       *
+     ************************************************************************************************************************************************/
+    void triggeredActionInsertRowBelow();
+
+    /*! *********************************************************************************************************************************************
+     * \brief   This function handles the action actionInsertColumnLeft.                                                                            *
+     *                                                                                                                                              *
+     * \details TODO                                                                                                                                *
+     *                                                                                                                                              *
+     * \return  This function does not have any return value.                                                                                       *
+     ************************************************************************************************************************************************/
+    void triggeredActionInsertColumnLeft();
+
+    /*! *********************************************************************************************************************************************
+     * \brief   This function handles the action actionInsertColumnRight.                                                                           *
+     *                                                                                                                                              *
+     * \details TODO                                                                                                                                *
+     *                                                                                                                                              *
+     * \return  This function does not have any return value.                                                                                       *
+     ************************************************************************************************************************************************/
+    void triggeredActionInsertColumnRight();
+
+    /*! *********************************************************************************************************************************************
+     * \brief   This function handles the action actionDeleteRow.                                                                                   *
+     *                                                                                                                                              *
+     * \details TODO                                                                                                                                *
+     *                                                                                                                                              *
+     * \return  This function does not have any return value.                                                                                       *
+     ************************************************************************************************************************************************/
+    void triggeredActionDeleteRow();
+
+    /*! *********************************************************************************************************************************************
+     * \brief   This function handles the action actionDeleteColumn.                                                                                *
+     *                                                                                                                                              *
+     * \details TODO                                                                                                                                *
+     *                                                                                                                                              *
+     * \return  This function does not have any return value.                                                                                       *
+     ************************************************************************************************************************************************/
+    void triggeredActionDeleteColumn();
+
+    /*! *********************************************************************************************************************************************
      * \brief   This function handles the action actionUpdatePlayerScreen.                                                                          *
      *                                                                                                                                              *
      * \details This function updates the Battle Map image on the player screen.                                                                    *
