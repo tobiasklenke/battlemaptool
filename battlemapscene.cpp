@@ -90,6 +90,12 @@ void BattleMapScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
                 m_scenePosRelease = event->scenePos();
             }
         }
+        else
+        {
+            /* reset positions of mouse press and mouse release */
+            m_scenePosPress = QPointF();
+            m_scenePosRelease = QPointF();
+        }
     }
 }
 

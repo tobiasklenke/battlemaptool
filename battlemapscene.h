@@ -89,7 +89,8 @@ protected:
      * \brief   This function handles a mouse release event.                                                                                        *
      *                                                                                                                                              *
      * \details This function handles a mouse release event. In case that the left button has been released, it checks whether the mouse release    *
-     *          event is positioned at the Battle Map scene and if so, it saves the position of the mouse release for later processing.             *
+     *          event is positioned at the Battle Map scene and if so, it saves the position of the mouse release for later processing. Otherwise,  *
+     *          it resets the positions of the mouse press and the mouse release.                                                                   *
      *                                                                                                                                              *
      * \param   event                         Mouse release event to be handled                                                                     *
      *                                                                                                                                              *
