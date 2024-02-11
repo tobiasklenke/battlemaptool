@@ -95,9 +95,11 @@ public:
     /*! *********************************************************************************************************************************************
      * \brief   This function initializes the Battle Map image without showing it.                                                                  *
      *                                                                                                                                              *
-     * \details This function resets the Battle Map scene and adds all the Battle Map squares from the Battle Map to the Battle Map scene.          *
-     *          Afterwards, it initializes the Battle Map scene rect according to the Battle Map scene section and adds and positions the wind rose *
-     *          graphics item.                                                                                                                      *
+     * \details This function resets the Battle Map scene and adds all the Battle Map squares from the Battle Map to the Battle Map scene after it  *
+	 *          positions the Battle Map squares on theBattle Map scene, makes the Battle Map squares invisible and puts the Battle Map squares     *
+	 *          graphics items to the background so that the wind rose graphics item is completely visible. Afterwards, it initializes the Battle   *
+	 *          Map scene rect according to the Battle Map scene section and adds and positions the wind rose graphics item.                        *
+	 *                                                                                                                                              *
      * \return  This function does not have any return value.                                                                                       *
      ************************************************************************************************************************************************/
     void initBattleMapImage();
@@ -105,12 +107,43 @@ public:
     /*! *********************************************************************************************************************************************
      * \brief   This function updates the Battle Map image.                                                                                         *
      *                                                                                                                                              *
-     * \details This function updates the visibility and opacity of the Battle Map squares. Afterwards, it updates the Battle Map scene rect        *
-     *          according to the Battle Map scene section and the position of the wind rose graphics item.                                          *
+     * \details This function updates the Battle Map image by repositioning the Battle Map squares on the Battle Map scene if required. Afterwards, *
+	 *          it updates the visibility and opacity of the Battle Map squares. Finally, it updates the Battle Map scene rect according to the     *
+	 *          Battle Map scene section and it updates the position of the wind rose graphics item.                                                *
      *                                                                                                                                              *
      * \return  This function does not have any return value.                                                                                       *
      ************************************************************************************************************************************************/
     void updateBattleMapImage();
+
+    /*! *********************************************************************************************************************************************
+     * \brief   This function inserts a new Battle Map row.                                                                                         *
+     *                                                                                                                                              *
+     * \details This function inserts a new Battle Map row at index position rowPosition in the nested QList member variable                        *
+     *          m_battleMapSquaresGraphicsItems. It puts the Battle Map square graphics items to the background so that the wind rose graphics item *
+	 *          is completely visible and adds the Battle Map square to the Battle Map scene. Afterwards, it sets the member variable               *
+	 *          m_repositioningRequired to true so that the reposition of the Battle Map squares on Battle Map scene takes place on the next update *
+	 *          of Battle Map image.                                                                                                                *
+     *                                                                                                                                              *
+     * \param   rowPosition                   Position of the row                                                                                   *
+     *                                                                                                                                              *
+     * \return  This function does not have any return value.                                                                                       *
+     ************************************************************************************************************************************************/
+    void insertRow(int rowPosition);
+
+    /*! *********************************************************************************************************************************************
+     * \brief   This function inserts a new Battle Map column.                                                                                      *
+     *                                                                                                                                              *
+     * \details This function inserts a new Battle Map column at index position columnPosition in the nested QList member variable                  *
+	 *          m_battleMapSquaresGraphicsItems. It makes the Battle Map squares in the inserted column selectable, stacks the unselected items     *
+	 *          beneath of the selected items so that the selection rectangle is completely visible and adds the Battle Map squares to the Battle   *
+	 *          Map scene. Afterwards, it repositions the Battle Map squares on the Battle Map scene and updates the Battle Map scene section and   *
+	 *          the frame.                                                                                                                          *
+     *                                                                                                                                              *
+     * \param   columnPosition                Position of the column                                                                                *
+     *                                                                                                                                              *
+     * \return  This function does not have any return value.                                                                                       *
+     ************************************************************************************************************************************************/
+    void insertColumn(int columnPosition);
 
     /*! *********************************************************************************************************************************************
      * \brief   This function sets the visibility state of the wind rose graphics item.                                                             *
@@ -234,6 +267,11 @@ private:
      * \brief This is the edge length of a Battle Map square in pixels.
      */
     quint32 m_edgeLengthInPixels;
+
+    /*!
+     * \brief This is the information whether the repositioning of the Battle Map squares is required due to newly inserted or deleted Battle Map squares.
+     */
+    bool m_repositioningRequired;
 };
 
 #endif // PLAYERSCREENHANDLER_H

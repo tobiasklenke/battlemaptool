@@ -18,7 +18,8 @@ PlayerScreenHandler::PlayerScreenHandler() :
     m_battleMapScene(new BattleMapScenePlayerScreen()),
     m_operationMode(Select),
     m_battleMapSquaresGraphicsItems(QList<QList<CustomGraphicsPixmapItem*>>()),
-    m_edgeLengthInPixels(static_cast<quint32>(calcNumberPixelsPerInch(CONFIG_PLAYER_SCREEN_DIAGONAL, CONFIG_PLAYER_SCREEN_RESOLUTION.height(), CONFIG_PLAYER_SCREEN_RESOLUTION.width())))
+    m_edgeLengthInPixels(static_cast<quint32>(calcNumberPixelsPerInch(CONFIG_PLAYER_SCREEN_DIAGONAL, CONFIG_PLAYER_SCREEN_RESOLUTION.height(), CONFIG_PLAYER_SCREEN_RESOLUTION.width()))),
+    m_repositioningRequired(false)
 {
     m_windRoseGraphicsItem.setVisible(false);
 }
@@ -115,8 +116,14 @@ void PlayerScreenHandler::initBattleMapImage()
     {
         for (quint32 columnIdx = 0U; columnIdx < m_battleMap->getNumberColumns(); columnIdx++)
         {
+            /* position Battle Map square on Battle Map scene and make Battle Map square invisible */
             m_battleMapSquaresGraphicsItems[rowIdx][columnIdx]->setPos(columnIdx * m_edgeLengthInPixels, rowIdx * m_edgeLengthInPixels);
             m_battleMapSquaresGraphicsItems[rowIdx][columnIdx]->setVisible(false);
+
+            /* put Battle Map square graphics items to background so that wind rose graphics item is completely visible */
+            m_battleMapSquaresGraphicsItems[rowIdx][columnIdx]->setZValue(BACKGROUNDEDGRAPHICSITEM_ZVALUE);
+
+             /* add Battle Map square to Battle Map scene */
             m_battleMapScene->addItem(m_battleMapSquaresGraphicsItems[rowIdx][columnIdx]);
         }
     }
@@ -136,6 +143,19 @@ void PlayerScreenHandler::initBattleMapImage()
  */
 void PlayerScreenHandler::updateBattleMapImage()
 {
+    if (m_repositioningRequired)
+    {
+        /* reposition Battle Map squares on Battle Map scene */
+        for (quint32 rowIdx = 0U; rowIdx < m_battleMap->getNumberRows(); rowIdx++)
+        {
+            for (quint32 columnIdx = 0U; columnIdx < m_battleMap->getNumberColumns(); columnIdx++)
+            {
+                m_battleMapSquaresGraphicsItems[rowIdx][columnIdx]->setPos(columnIdx * m_edgeLengthInPixels, rowIdx * m_edgeLengthInPixels);
+            }
+        }
+        m_repositioningRequired = false;
+    }
+
     /* update visibility and opacity of Battle Map squares */
     updateBattleMapSquaresVisibility();
     updateBattleMapSquaresOpacity();
@@ -147,6 +167,56 @@ void PlayerScreenHandler::updateBattleMapImage()
     /* update position of wind rose graphics item */
     m_windRoseGraphicsItem.setPos((m_battleMapSceneSection->getIndexFirstColumnSceneSection() + m_battleMapSceneSection->getNumberColumnsSceneSection() - WINDROSESIZE_BATTLEMAPSQUARES) * m_edgeLengthInPixels,
                                   m_battleMapSceneSection->getIndexFirstRowSceneSection() * m_edgeLengthInPixels);
+}
+
+/*!
+ * \brief This function inserts a new Battle Map row.
+ */
+void PlayerScreenHandler::insertRow(int rowPosition)
+{
+    /* insert row in nested QList member variable m_battleMapSquaresGraphicsItems */
+    m_battleMapSquaresGraphicsItems.insert(rowPosition, QList<CustomGraphicsPixmapItem*>());
+
+    for (quint32 columnIdx = 0U; columnIdx < m_battleMap->getNumberColumns(); columnIdx++)
+    {
+        /* append graphics item of Battle Map square to row of nested QList member variable m_battleMapSquaresGraphicsItems */
+        QPixmap scaledPixmap = m_battleMap->getBattleMapSquarePixmap(rowPosition, columnIdx).scaled(QSize(m_edgeLengthInPixels, m_edgeLengthInPixels));
+        m_battleMapSquaresGraphicsItems[rowPosition].append(new CustomGraphicsPixmapItem(scaledPixmap));
+        m_battleMapSquaresGraphicsItems[rowPosition][columnIdx]->setVisible(false);
+
+        /* put Battle Map square graphics items to background so that wind rose graphics item is completely visible */
+        m_battleMapSquaresGraphicsItems[rowPosition][columnIdx]->setZValue(BACKGROUNDEDGRAPHICSITEM_ZVALUE);
+
+        /* add Battle Map square to Battle Map scene */
+        m_battleMapScene->addItem(m_battleMapSquaresGraphicsItems[rowPosition][columnIdx]);
+    }
+
+    /* reposition of Battle Map squares on Battle Map scene is required on next update of Battle Map image */
+    m_repositioningRequired = true;
+}
+
+/*!
+ * \brief This function inserts a new Battle Map column.
+ */
+void PlayerScreenHandler::insertColumn(int columnPosition)
+{
+    /* insert column in nested QList member variable m_battleMapSquaresGraphicsItems */
+    for (quint32 rowIdx = 0U; rowIdx < m_battleMap->getNumberRows(); rowIdx++)
+    {
+        /* insert graphics item of Battle Map square in row of nested QList member variable m_battleMapSquaresGraphicsItems */
+        QPixmap scaledPixmap = m_battleMap->getBattleMapSquarePixmap(rowIdx, columnPosition).scaled(QSize(m_edgeLengthInPixels, m_edgeLengthInPixels));
+        m_battleMapSquaresGraphicsItems[rowIdx].insert(columnPosition, new CustomGraphicsPixmapItem(scaledPixmap));
+        m_battleMapSquaresGraphicsItems[rowIdx][columnPosition]->setVisible(false);
+
+        /* put Battle Map square graphics items to background so that wind rose graphics item is completely visible */
+        m_battleMapSquaresGraphicsItems[rowIdx][columnPosition]->setZValue(BACKGROUNDEDGRAPHICSITEM_ZVALUE);
+
+        /* add Battle Map squares to Battle Map scene */
+        m_battleMapScene->addItem(m_battleMapSquaresGraphicsItems[rowIdx][columnPosition]);
+    }
+
+    /* reposition of Battle Map squares on Battle Map scene is required on next update of Battle Map image */
+    m_repositioningRequired = true;
 }
 
 /*!
