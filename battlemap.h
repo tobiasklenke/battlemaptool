@@ -157,8 +157,8 @@ public:
     /*! *********************************************************************************************************************************************
      * \brief   This function inserts a new Battle Map row.                                                                                         *
      *                                                                                                                                              *
-     * \details This function inserts a new Battle Map row by insertig a row at index position rowPosition in the nested QList member variable      *
-     *          m_battleMapSquares. Afterwards, it increments the number of rows.                                                                   *
+     * \details This function inserts a new Battle Map row at index position rowPosition in the nested QList member variable m_battleMapSquares.    *
+	 *          Afterwards, it increments the number of rows.                                                                                       *
      *                                                                                                                                              *
      * \param   rowPosition                   Position of the row                                                                                   *
      *                                                                                                                                              *
@@ -169,8 +169,8 @@ public:
     /*! *********************************************************************************************************************************************
      * \brief   This function inserts a new Battle Map column.                                                                                      *
      *                                                                                                                                              *
-     * \details This function inserts a new Battle Map column by insertig a column at index position columnPosition in the nested QList member      *
-     *          variable m_battleMapSquares. Afterwards, it increments the number of columns.                                                       *
+     * \details This function inserts a new Battle Map column at index position columnPosition in the nested QList member variable                  *
+	 *          m_battleMapSquares. Afterwards, it increments the number of columns.                                                                *
      *                                                                                                                                              *
      * \param   columnPosition                Position of the column                                                                                *
      *                                                                                                                                              *

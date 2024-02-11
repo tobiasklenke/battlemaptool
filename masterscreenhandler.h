@@ -108,10 +108,11 @@ public:
     /*! *********************************************************************************************************************************************
      * \brief   This function inserts a new Battle Map row.                                                                                         *
      *                                                                                                                                              *
-     * \details This function inserts a new Battle Map row by insertig a row at index position rowPosition in the nested QList member variable      *
-     *          m_battleMapSquares. It makes the Battle Map squares in the inserted row selectable, stacks the unselected items beneath of the      *
-	 *          selected items so that the selection rectangle is completely visible and adds the Battle Map squares to the Battle Map scene.       *
-	 *          Afterwards, it repositions the Battle Map squares on the Battle Map scene and updates the Battle Map scene section and the frame.   *
+     * \details This function inserts a new Battle Map row at index position rowPosition in the nested QList member variable                        *
+     *          m_battleMapSquaresGraphicsItems. It makes the Battle Map squares in the inserted row selectable, stacks the unselected items        *
+	 *          beneath of the selected items so that the selection rectangle is completely visible and adds the Battle Map square to the Battle    *
+	 *          Map scene. Afterwards, it repositions the Battle Map squares on the Battle Map scene and updates the Battle Map scene section and   *
+	 *          the frame.                                                                                                                          *
      *                                                                                                                                              *
      * \param   rowPosition                   Position of the row                                                                                   *
      *                                                                                                                                              *
@@ -122,11 +123,11 @@ public:
     /*! *********************************************************************************************************************************************
      * \brief   This function inserts a new Battle Map column.                                                                                      *
      *                                                                                                                                              *
-     * \details This function inserts a new Battle Map column by insertig a column at index position columnPosition in the nested QList member      *
-     *          variable m_battleMapSquares. It makes the Battle Map squares in the inserted column selectable, stacks the unselected items beneath *
-	 *          of the selected items so that the selection rectangle is completely visible and adds the Battle Map squares to the Battle Map       *
-	 *          scene. Afterwards, it repositions the Battle Map squares on the Battle Map scene and updates the Battle Map scene section and the   *
-	 *          frame.                                                                                                                              *
+     * \details This function inserts a new Battle Map column at index position columnPosition in the nested QList member variable                  *
+	 *          m_battleMapSquaresGraphicsItems. It makes the Battle Map squares in the inserted column selectable, stacks the unselected items     *
+	 *          beneath of the selected items so that the selection rectangle is completely visible and adds the Battle Map square to the Battle    *
+	 *          Map scene. Afterwards, it repositions the Battle Map squares on the Battle Map scene and updates the Battle Map scene section and   *
+	 *          the frame.                                                                                                                          *
      *                                                                                                                                              *
      * \param   columnPosition                Position of the column                                                                                *
      *                                                                                                                                              *
