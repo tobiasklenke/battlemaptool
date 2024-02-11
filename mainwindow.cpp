@@ -224,8 +224,18 @@ void MainWindow::triggeredActionInsertRowAbove()
     /* insert new Battle Map row above */
     m_battleMap->insertRow(0);
 
-    /* increment index of first row of Battle Map scene section */
-    m_battleMapSceneSection.setIndexFirstRowSceneSection(m_battleMapSceneSection.getIndexFirstRowSceneSection() + 1U);
+    /* check whether number of rows displayable on player screen is greater than or equal to total number of rows of Battle Map */
+    quint32 numberRowsOnPlayerScreen = static_cast<quint32>(calcScreenHeightInInches(CONFIG_PLAYER_SCREEN_DIAGONAL, CONFIG_PLAYER_SCREEN_RESOLUTION.height(), CONFIG_PLAYER_SCREEN_RESOLUTION.width()));
+    if (m_battleMap->getNumberRows() <= numberRowsOnPlayerScreen)
+    {
+        /* increment number of rows of Battle Map scene section */
+        m_battleMapSceneSection.setNumberRowsSceneSection(m_battleMapSceneSection.getNumberRowsSceneSection() + 1U);
+    }
+    else
+    {
+        /* increment index of first row of Battle Map scene section */
+        m_battleMapSceneSection.setIndexFirstRowSceneSection(m_battleMapSceneSection.getIndexFirstRowSceneSection() + 1U);
+    }
 
     /* insert new Battle Map square graphics items above for screen handlers */
     m_masterScreenHandler.insertRow(0);
@@ -240,6 +250,14 @@ void MainWindow::triggeredActionInsertRowBelow()
     /* insert new Battle Map row below */
     m_battleMap->insertRow(m_battleMap->getNumberRows());
 
+    /* check whether number of rows displayable on player screen is greater than or equal to total number of rows of Battle Map */
+    quint32 numberRowsOnPlayerScreen = static_cast<quint32>(calcScreenHeightInInches(CONFIG_PLAYER_SCREEN_DIAGONAL, CONFIG_PLAYER_SCREEN_RESOLUTION.height(), CONFIG_PLAYER_SCREEN_RESOLUTION.width()));
+    if (m_battleMap->getNumberRows() <= numberRowsOnPlayerScreen)
+    {
+        /* increment number of rows of Battle Map scene section */
+        m_battleMapSceneSection.setNumberRowsSceneSection(m_battleMapSceneSection.getNumberRowsSceneSection() + 1U);
+    }
+
     /* insert new Battle square row graphics items below for screen handlers (row position is decremented because it has been incremented before when insertig row in Battle Map) */
     m_masterScreenHandler.insertRow(m_battleMap->getNumberRows() - 1U);
     m_playerScreenHandler.insertRow(m_battleMap->getNumberRows() - 1U);
@@ -253,8 +271,18 @@ void MainWindow::triggeredActionInsertColumnLeft()
     /* insert new Battle Map column left */
     m_battleMap->insertColumn(0);
 
-    /* increment index of first column of Battle Map scene section */
-    m_battleMapSceneSection.setIndexFirstColumnSceneSection(m_battleMapSceneSection.getIndexFirstColumnSceneSection() + 1U);
+    /* check whether number of columns displayable on player screen is greater than or equal to total number of columns of Battle Map */
+    quint32 numberColumnsOnPlayerScreen = static_cast<quint32>(calcScreenWidthInInches(CONFIG_PLAYER_SCREEN_DIAGONAL, CONFIG_PLAYER_SCREEN_RESOLUTION.height(), CONFIG_PLAYER_SCREEN_RESOLUTION.width()));
+    if (m_battleMap->getNumberColumns() <= numberColumnsOnPlayerScreen)
+    {
+        /* increment number of columns of Battle Map scene section */
+        m_battleMapSceneSection.setNumberColumnsSceneSection(m_battleMapSceneSection.getNumberColumnsSceneSection() + 1U);
+    }
+    else
+    {
+        /* increment index of first column of Battle Map scene section */
+        m_battleMapSceneSection.setIndexFirstColumnSceneSection(m_battleMapSceneSection.getIndexFirstColumnSceneSection() + 1U);
+    }
 
     /* insert new Battle Map square graphics items left for screen handlers */
     m_masterScreenHandler.insertColumn(0);
@@ -268,6 +296,14 @@ void MainWindow::triggeredActionInsertColumnRight()
 {
     /* insert new Battle Map column right */
     m_battleMap->insertColumn(m_battleMap->getNumberColumns());
+
+    /* check whether number of columns displayable on player screen is greater than or equal to total number of columns of Battle Map */
+    quint32 numberColumnsOnPlayerScreen = static_cast<quint32>(calcScreenWidthInInches(CONFIG_PLAYER_SCREEN_DIAGONAL, CONFIG_PLAYER_SCREEN_RESOLUTION.height(), CONFIG_PLAYER_SCREEN_RESOLUTION.width()));
+    if (m_battleMap->getNumberColumns() <= numberColumnsOnPlayerScreen)
+    {
+        /* increment number of columns of Battle Map scene section */
+        m_battleMapSceneSection.setNumberColumnsSceneSection(m_battleMapSceneSection.getNumberColumnsSceneSection() + 1U);
+    }
 
     /* insert new Battle Map square graphics items right for screen handlers (column position is decremented because it has been incremented before when insertig column in Battle Map) */
     m_masterScreenHandler.insertColumn(m_battleMap->getNumberColumns() - 1U);
