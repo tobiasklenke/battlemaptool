@@ -106,12 +106,39 @@ public:
     void showBattleMapImage();
 
     /*! *********************************************************************************************************************************************
+     * \brief   This function inserts a new Battle Map row.                                                                                         *
+     *                                                                                                                                              *
+     * \details This function inserts a new Battle Map row by insertig a row at index position rowPosition in the nested QList member variable      *
+     *          m_battleMapSquares. It makes the Battle Map squares in the inserted row selectable, stacks the unselected items beneath of the      *
+	 *          selected items so that the selection rectangle is completely visible and adds the Battle Map squares to the Battle Map scene.       *
+	 *          Afterwards, it repositions the Battle Map squares on the Battle Map scene and updates the Battle Map scene section and the frame.   *
+     *                                                                                                                                              *
+     * \param   rowPosition                   Position of the row                                                                                   *
+     *                                                                                                                                              *
+     * \return  This function does not have any return value.                                                                                       *
+     ************************************************************************************************************************************************/
+    void insertRow(int rowPosition);
+
+    /*! *********************************************************************************************************************************************
+     * \brief   This function inserts a new Battle Map column.                                                                                      *
+     *                                                                                                                                              *
+     * \details This function inserts a new Battle Map column by insertig a column at index position columnPosition in the nested QList member      *
+     *          variable m_battleMapSquares. It makes the Battle Map squares in the inserted column selectable, stacks the unselected items beneath *
+	 *          of the selected items so that the selection rectangle is completely visible and adds the Battle Map squares to the Battle Map       *
+	 *          scene. Afterwards, it repositions the Battle Map squares on the Battle Map scene and updates the Battle Map scene section and the   *
+	 *          frame.                                                                                                                              *
+     *                                                                                                                                              *
+     * \param   columnPosition                Position of the column                                                                                *
+     *                                                                                                                                              *
+     * \return  This function does not have any return value.                                                                                       *
+     ************************************************************************************************************************************************/
+    void insertColumn(int columnPosition);
+
+    /*! *********************************************************************************************************************************************
      * \brief   This function updates the coverage state of Battle Map squares.                                                                     *
      *                                                                                                                                              *
      * \details This function gets the row and column indexes of the selected Battle Map squares and updates the coverage states and pixmaps of     *
-     *          these Battle Map squares according to the parameter covered. If the Battle Map squares are covered, its pixmap is converted to      *
-     *          grayscale and a transparent black layer is added in order to darken it. Otherwise, the original pixmap is used. Finally, the        *
-     *          selection area is reset.                                                                                                            *
+     *          these Battle Map squares according to the parameter covered. Finally, the selection area is reset.                                  *
      *                                                                                                                                              *
      * \param   covered                       Information whether Battle Map squares shall be covered or uncovered                                  *
      *                                                                                                                                              *
@@ -197,11 +224,23 @@ private:
      *                                                                                                                                              *
      * \details This function deletes the Battle Map squares of the previous Battle Map. Afterwards, it appends all the rows of the new Battle Map  *
      *          to the nested QList member variable m_battleMapSquaresGraphicsItems if the respective rows do not already exist. To each row it     *
-     *          appends the graphics items of the Battle Map squares which are made selectable, finally.                                            *
+     *          appends the graphics items of the Battle Map squares which are made selectable. Finally, it stacks the unselected items beneath of  *
+	 *          the selected items so that the selection rectangle is completely visible.                                                           *
      *                                                                                                                                              *
      * \return  This function does not have any return value.                                                                                       *
      ************************************************************************************************************************************************/
     void updateBattleMapSquaresGraphicsItems();
+
+    /*! *********************************************************************************************************************************************
+     * \brief   This function updates the pixmaps of the Battle Map squares according to their coverage state.                                      *
+     *                                                                                                                                              *
+     * \details This function updates the pixmaps of the Battle Map squares according to their coverage state. If the Battle Map squares are        *
+	 *          covered, its pixmap is converted to grayscale and a transparent black layer is added in order to darken it. Otherwise, the original *
+	 *          pixmap is used.                                                                                                                     *
+     *                                                                                                                                              *
+     * \return  This function does not have any return value.                                                                                       *
+     ************************************************************************************************************************************************/
+    void updatePixmapAccordingCoverageState();
 
     /*! *********************************************************************************************************************************************
      * \brief   This function updates the Battle Map scene section.                                                                                 *

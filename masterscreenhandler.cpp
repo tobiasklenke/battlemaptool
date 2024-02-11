@@ -140,6 +140,78 @@ void MasterScreenHandler::showBattleMapImage()
 }
 
 /*!
+ * \brief This function inserts a new Battle Map row.
+ */
+void MasterScreenHandler::insertRow(int rowPosition)
+{
+    /* insert row in nested QList member variable m_battleMapSquaresGraphicsItems */
+    m_battleMapSquaresGraphicsItems.insert(rowPosition, QList<QGraphicsPixmapItem*>());
+
+    for (quint32 columnIdx = 0U; columnIdx < m_battleMap->getNumberColumns(); columnIdx++)
+    {
+        /* append graphics item of Battle Map square to row of nested QList member variable m_battleMapSquaresGraphicsItems */
+        m_battleMapSquaresGraphicsItems[rowPosition].append(new QGraphicsPixmapItem(m_battleMap->getBattleMapSquarePixmap(rowPosition, columnIdx)));
+
+        /* make Battle Mal square selectable */
+        m_battleMapSquaresGraphicsItems[rowPosition][columnIdx]->setFlag(QGraphicsItem::ItemIsSelectable, true);
+
+        /* stack unselected items beneath of selected items so that selection rectangle is completely visible */
+        m_battleMapSquaresGraphicsItems[rowPosition][columnIdx]->setZValue(BACKGROUNDEDGRAPHICSITEM_ZVALUE);
+
+        /* add Battle Map square to Battle Map scene */
+        m_battleMapScene->addItem(m_battleMapSquaresGraphicsItems[rowPosition][columnIdx]);
+    }
+
+    /* reposition Battle Map squares on Battle Map scene */
+    for (quint32 rowIdx = 0U; rowIdx < m_battleMap->getNumberRows(); rowIdx++)
+    {
+        for (quint32 columnIdx = 0U; columnIdx < m_battleMap->getNumberColumns(); columnIdx++)
+        {
+            m_battleMapSquaresGraphicsItems[rowIdx][columnIdx]->setPos(columnIdx * CONFIG_BATTLEMAPSQUARE_SIZE, rowIdx * CONFIG_BATTLEMAPSQUARE_SIZE);
+        }
+    }
+
+    /* update Battle Map scene section and frame */
+    updateBattleMapSceneSection();
+    m_battleMapScene->setSceneRect(0, 0, m_battleMap->getNumberColumns() * CONFIG_BATTLEMAPSQUARE_SIZE, m_battleMap->getNumberRows() * CONFIG_BATTLEMAPSQUARE_SIZE);
+}
+
+/*!
+ * \brief This function inserts a new Battle Map column.
+ */
+void MasterScreenHandler::insertColumn(int columnPosition)
+{
+    /* insert column in nested QList member variable m_battleMapSquaresGraphicsItems */
+    for (quint32 rowIdx = 0U; rowIdx < m_battleMap->getNumberRows(); rowIdx++)
+    {
+        /* insert graphics item of Battle Map square in row of nested QList member variable m_battleMapSquaresGraphicsItems */
+        m_battleMapSquaresGraphicsItems[rowIdx].insert(columnPosition, new QGraphicsPixmapItem(m_battleMap->getBattleMapSquarePixmap(rowIdx, columnPosition)));
+
+        /* make Battle Mal square selectable */
+        m_battleMapSquaresGraphicsItems[rowIdx][columnPosition]->setFlag(QGraphicsItem::ItemIsSelectable, true);
+
+        /* stack unselected items beneath of selected items so that selection rectangle is completely visible */
+        m_battleMapSquaresGraphicsItems[rowIdx][columnPosition]->setZValue(BACKGROUNDEDGRAPHICSITEM_ZVALUE);
+
+        /* add Battle Map squares to Battle Map scene */
+        m_battleMapScene->addItem(m_battleMapSquaresGraphicsItems[rowIdx][columnPosition]);
+    }
+
+    /* reposition Battle Map squares on Battle Map scene */
+    for (quint32 rowIdx = 0U; rowIdx < m_battleMap->getNumberRows(); rowIdx++)
+    {
+        for (quint32 columnIdx = 0U; columnIdx < m_battleMap->getNumberColumns(); columnIdx++)
+        {
+            m_battleMapSquaresGraphicsItems[rowIdx][columnIdx]->setPos(columnIdx * CONFIG_BATTLEMAPSQUARE_SIZE, rowIdx * CONFIG_BATTLEMAPSQUARE_SIZE);
+        }
+    }
+
+    /* update Battle Map scene section and frame */
+    updateBattleMapSceneSection();
+    m_battleMapScene->setSceneRect(0, 0, m_battleMap->getNumberColumns() * CONFIG_BATTLEMAPSQUARE_SIZE, m_battleMap->getNumberRows() * CONFIG_BATTLEMAPSQUARE_SIZE);
+}
+
+/*!
  * \brief This function updates the coverage state of Battle Map squares.
  */
 void MasterScreenHandler::handleCoverBattleMap(bool covered)
@@ -161,26 +233,10 @@ void MasterScreenHandler::handleCoverBattleMap(bool covered)
 
         /* update coverage state of selected Battle Map square */
         m_battleMap->setBattleMapSquareCovered(rowIdx, columnIdx, covered);
-
-        /* update pixmap of selected Battle Map square according to parameter covered */
-        QPixmap temporaryPixmap;
-        if (covered)
-        {
-            /* convert pixmap to grayscale and add transparent black layer in order to darken pixmap */
-            temporaryPixmap = QPixmap::fromImage(m_battleMap->getBattleMapSquarePixmap(rowIdx, columnIdx).toImage().convertToFormat(QImage::Format_Grayscale16));
-            QPainter *painter = new QPainter(&temporaryPixmap);
-            painter->setBrush(QBrush(BATTLEMAPSQUARECOVERED_COLOR));
-            painter->setPen(Qt::NoPen);
-            painter->drawRect(temporaryPixmap.rect());
-            delete painter;
-        }
-        else
-        {
-            /* use original pixmap */
-            temporaryPixmap = m_battleMap->getBattleMapSquarePixmap(rowIdx, columnIdx);
-        }
-        m_battleMapSquaresGraphicsItems[rowIdx][columnIdx]->setPixmap(temporaryPixmap);
     }
+
+    /* update pixmaps of Battle Map squares according to their coverage state */
+    updatePixmapAccordingCoverageState();
 
     /* reset selection area when update of coverage state is finished */
     resetSelectionArea();
@@ -390,6 +446,41 @@ void MasterScreenHandler::updateBattleMapSquaresGraphicsItems()
 
             /* make Battle Mal square selectable */
             m_battleMapSquaresGraphicsItems[rowIdx][columnIdx]->setFlag(QGraphicsItem::ItemIsSelectable, true);
+
+            /* stack unselected items beneath of selected items so that selection rectangle is completely visible */
+            m_battleMapSquaresGraphicsItems[rowIdx][columnIdx]->setZValue(BACKGROUNDEDGRAPHICSITEM_ZVALUE);
+        }
+    }
+}
+
+/*!
+ * \brief This function updates the pixmaps of the Battle Map squares according to their coverage state.
+ */
+void MasterScreenHandler::updatePixmapAccordingCoverageState()
+{
+    QPixmap temporaryPixmap;
+
+    for (quint32 rowIdx = 0U; rowIdx < m_battleMap->getNumberRows(); rowIdx++)
+    {
+        for (quint32 columnIdx = 0U; columnIdx < m_battleMap->getNumberColumns(); columnIdx++)
+        {
+            if (m_battleMap->getBattleMapSquareCovered(rowIdx, columnIdx))
+            {
+                /* convert pixmap to grayscale and add transparent black layer in order to darken pixmap */
+                temporaryPixmap = QPixmap::fromImage(m_battleMap->getBattleMapSquarePixmap(rowIdx, columnIdx).toImage().convertToFormat(QImage::Format_Grayscale16));
+                QPainter *painter = new QPainter(&temporaryPixmap);
+                painter->setBrush(QBrush(BATTLEMAPSQUARECOVERED_COLOR));
+                painter->setPen(Qt::NoPen);
+                painter->drawRect(temporaryPixmap.rect());
+                delete painter;
+            }
+            else
+            {
+                /* use original pixmap */
+                temporaryPixmap = m_battleMap->getBattleMapSquarePixmap(rowIdx, columnIdx);
+            }
+
+            m_battleMapSquaresGraphicsItems[rowIdx][columnIdx]->setPixmap(temporaryPixmap);
         }
     }
 }
