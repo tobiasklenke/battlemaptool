@@ -134,6 +134,45 @@ void BattleMap::setBattleMapSquareCovered(quint32 rowIdx, quint32 columnIdx, boo
     m_battleMapSquares[rowIdx][columnIdx]->setCovered(covered);
 }
 
+/*!
+ * \brief This function inserts a new Battle Map row.
+ */
+void BattleMap::insertRow(int rowPosition)
+{
+    /* insert row in nested QList member variable m_battleMapSquares */
+    m_battleMapSquares.insert(rowPosition, QList<BattleMapSquare*>());
+    for (quint32 columnIdx = 0U; columnIdx < m_numberColumns; columnIdx++)
+    {
+        /* construct new Battle Map square object */
+        BattleMapSquare * battleMapSquare = new BattleMapSquare();
+
+        /* append Battle Map square to row of nested QList member variable m_battleMapSquares */
+        m_battleMapSquares[rowPosition].append(battleMapSquare);
+    }
+
+    /* increment number of rows */
+    m_numberRows++;
+}
+
+/*!
+ * \brief This function inserts a new Battle Map column.
+ */
+void BattleMap::insertColumn(int columnPosition)
+{
+    /* insert column in nested QList member variable m_battleMapSquares */
+    for (quint32 rowIdx = 0U; rowIdx < m_numberRows; rowIdx++)
+    {
+        /* construct new Battle Map square object */
+        BattleMapSquare * battleMapSquare = new BattleMapSquare();
+
+        /* insert Battle Map square to row in nested QList member variable m_battleMapSquares */
+        m_battleMapSquares[rowIdx].insert(columnPosition, battleMapSquare);
+    }
+
+    /* increment number of columns */
+    m_numberColumns++;
+}
+
 /****************************************************************************************************************************************************
  * DEFINITION OF PROTECTED FUNCTIONS                                                                                                                *
  ****************************************************************************************************************************************************/

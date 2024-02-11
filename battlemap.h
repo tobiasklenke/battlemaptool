@@ -154,6 +154,30 @@ public:
      ************************************************************************************************************************************************/
     void setBattleMapSquareCovered(quint32 rowIdx, quint32 columnIdx, bool covered);
 
+    /*! *********************************************************************************************************************************************
+     * \brief   This function inserts a new Battle Map row.                                                                                         *
+     *                                                                                                                                              *
+     * \details This function inserts a new Battle Map row by insertig a row at index position rowPosition in the nested QList member variable      *
+     *          m_battleMapSquares. Afterwards, it increments the number of rows.                                                                   *
+     *                                                                                                                                              *
+     * \param   rowPosition                   Position of the row                                                                                   *
+     *                                                                                                                                              *
+     * \return  This function does not have any return value.                                                                                       *
+     ************************************************************************************************************************************************/
+    void insertRow(int rowPosition);
+
+    /*! *********************************************************************************************************************************************
+     * \brief   This function inserts a new Battle Map column.                                                                                      *
+     *                                                                                                                                              *
+     * \details This function inserts a new Battle Map column by insertig a column at index position columnPosition in the nested QList member      *
+     *          variable m_battleMapSquares. Afterwards, it increments the number of columns.                                                       *
+     *                                                                                                                                              *
+     * \param   columnPosition                Position of the column                                                                                *
+     *                                                                                                                                              *
+     * \return  This function does not have any return value.                                                                                       *
+     ************************************************************************************************************************************************/
+    void insertColumn(int columnPosition);
+
 protected: /* - */
 
 signals: /* - */
