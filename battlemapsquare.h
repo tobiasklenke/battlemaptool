@@ -25,7 +25,8 @@ public:
     /*! *********************************************************************************************************************************************
      * \brief   This function is the constructor of the class BattleMapSquare.                                                                      *
      *                                                                                                                                              *
-     * \details This function initializes the Battle Map square with the image of an empty Battle Map square.                                       *
+     * \details This function initializes the Battle Map square with the image of an empty Battle Map square and draws the Battle Map grid around   *
+     *          the Battle Map square.                                                                                                              *
      *                                                                                                                                              *
      * \return  This function does not have any return value.                                                                                       *
      ************************************************************************************************************************************************/
