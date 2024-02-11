@@ -120,7 +120,8 @@ private slots:
     /*! *********************************************************************************************************************************************
      * \brief   This function handles the action actionInsertRowAbove.                                                                              *
      *                                                                                                                                              *
-     * \details TODO                                                                                                                                *
+     * \details This function inserts a new Battle Map row above, increments the index of the first row of the Battle Map scene section and calls   *
+	 *          the respective functions of the screen handlers for inserting new Battle Map square graphics items above.                           *
      *                                                                                                                                              *
      * \return  This function does not have any return value.                                                                                       *
      ************************************************************************************************************************************************/
@@ -129,7 +130,8 @@ private slots:
     /*! *********************************************************************************************************************************************
      * \brief   This function handles the action actionInsertRowBelow.                                                                              *
      *                                                                                                                                              *
-     * \details TODO                                                                                                                                *
+     * \details This function inserts a new Battle Map row below and calls the respective functions of the screen handlers for inserting new Battle *
+	 *          Map square graphics items below.                                                                                                    *
      *                                                                                                                                              *
      * \return  This function does not have any return value.                                                                                       *
      ************************************************************************************************************************************************/
@@ -138,7 +140,8 @@ private slots:
     /*! *********************************************************************************************************************************************
      * \brief   This function handles the action actionInsertColumnLeft.                                                                            *
      *                                                                                                                                              *
-     * \details TODO                                                                                                                                *
+     * \details This function inserts a new Battle Map column left, increments the index of the first column of the Battle Map scene section and    *
+	 *          calls the respective functions of the screen handlers for inserting new Battle Map square graphics items left.                      *
      *                                                                                                                                              *
      * \return  This function does not have any return value.                                                                                       *
      ************************************************************************************************************************************************/
@@ -147,7 +150,8 @@ private slots:
     /*! *********************************************************************************************************************************************
      * \brief   This function handles the action actionInsertColumnRight.                                                                           *
      *                                                                                                                                              *
-     * \details TODO                                                                                                                                *
+     * \details This function inserts a new Battle Map column right and calls the respective functions of the screen handlers for inserting new     *
+	 *          Battle Map square graphics items right.                                                                                             *
      *                                                                                                                                              *
      * \return  This function does not have any return value.                                                                                       *
      ************************************************************************************************************************************************/

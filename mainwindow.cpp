@@ -221,9 +221,15 @@ void MainWindow::triggeredActionRedo()
  */
 void MainWindow::triggeredActionInsertRowAbove()
 {
-    //TODO  implement insert function
+    /* insert new Battle Map row above */
+    m_battleMap->insertRow(0);
 
-    qDebug() << __func__;
+    /* increment index of first row of Battle Map scene section */
+    m_battleMapSceneSection.setIndexFirstRowSceneSection(m_battleMapSceneSection.getIndexFirstRowSceneSection() + 1U);
+
+    /* insert new Battle Map square graphics items above for screen handlers */
+    m_masterScreenHandler.insertRow(0);
+    m_playerScreenHandler.insertRow(0);
 }
 
 /*!
@@ -231,9 +237,12 @@ void MainWindow::triggeredActionInsertRowAbove()
  */
 void MainWindow::triggeredActionInsertRowBelow()
 {
-    //TODO  implement insert function
+    /* insert new Battle Map row below */
+    m_battleMap->insertRow(m_battleMap->getNumberRows());
 
-    qDebug() << __func__;
+    /* insert new Battle square row graphics items below for screen handlers (row position is decremented because it has been incremented before when insertig row in Battle Map) */
+    m_masterScreenHandler.insertRow(m_battleMap->getNumberRows() - 1U);
+    m_playerScreenHandler.insertRow(m_battleMap->getNumberRows() - 1U);
 }
 
 /*!
@@ -241,9 +250,15 @@ void MainWindow::triggeredActionInsertRowBelow()
  */
 void MainWindow::triggeredActionInsertColumnLeft()
 {
-    //TODO  implement insert function
+    /* insert new Battle Map column left */
+    m_battleMap->insertColumn(0);
 
-    qDebug() << __func__;
+    /* increment index of first column of Battle Map scene section */
+    m_battleMapSceneSection.setIndexFirstColumnSceneSection(m_battleMapSceneSection.getIndexFirstColumnSceneSection() + 1U);
+
+    /* insert new Battle Map square graphics items left for screen handlers */
+    m_masterScreenHandler.insertColumn(0);
+    m_playerScreenHandler.insertColumn(0);
 }
 
 /*!
@@ -251,9 +266,12 @@ void MainWindow::triggeredActionInsertColumnLeft()
  */
 void MainWindow::triggeredActionInsertColumnRight()
 {
-    //TODO  implement insert function
+    /* insert new Battle Map column right */
+    m_battleMap->insertColumn(m_battleMap->getNumberColumns());
 
-    qDebug() << __func__;
+    /* insert new Battle Map square graphics items right for screen handlers (column position is decremented because it has been incremented before when insertig column in Battle Map) */
+    m_masterScreenHandler.insertColumn(m_battleMap->getNumberColumns() - 1U);
+    m_playerScreenHandler.insertColumn(m_battleMap->getNumberColumns() - 1U);
 }
 
 /*!
