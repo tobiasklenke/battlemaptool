@@ -165,7 +165,7 @@ void BattleMap::insertColumn(int columnPosition)
         /* construct new Battle Map square object */
         BattleMapSquare * battleMapSquare = new BattleMapSquare();
 
-        /* insert Battle Map square to row in nested QList member variable m_battleMapSquares */
+        /* insert Battle Map square in row of nested QList member variable m_battleMapSquares */
         m_battleMapSquares[rowIdx].insert(columnPosition, battleMapSquare);
     }
 
