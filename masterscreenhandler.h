@@ -281,7 +281,8 @@ private:
     /*! *********************************************************************************************************************************************
      * \brief   This function resets the selection area.                                                                                            *
      *                                                                                                                                              *
-     * \details This function unselects all selected graphics items.                                                                                *
+     * \details This function unselects all selected graphics items and stacks the unselected items beneath of the selected items so that the       *
+     *          selection rectangle is completely visible.                                                                                          *
      *                                                                                                                                              *
      * \return  This function does not have any return value.                                                                                       *
      ************************************************************************************************************************************************/

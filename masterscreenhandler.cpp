@@ -586,10 +586,10 @@ void MasterScreenHandler::handleSelect(QPointF positionPress, QPointF positionRe
  */
 void MasterScreenHandler::resetSelectionArea()
 {
-    /* unselect selected graphics items */
+    /* unselect selected graphics items and stack unselected items beneath of selected items so that selection rectangle is completely visible */
     for (QGraphicsItem * selectedItem : m_battleMapScene->selectedItems())
     {
         selectedItem->setSelected(false);
-        selectedItem->setZValue(FOREGROUNDEDGRAPHICSITEM_ZVALUE);
+        selectedItem->setZValue(BACKGROUNDEDGRAPHICSITEM_ZVALUE);
     }
 }
