@@ -431,6 +431,9 @@
    <property name="text">
     <string>Insert row above</string>
    </property>
+   <property name="shortcut">
+    <string>+, Up</string>
+   </property>
   </action>
   <action name="actionInsertRowBelow">
    <property name="icon">
@@ -439,6 +442,9 @@
    </property>
    <property name="text">
     <string>Insert row below</string>
+   </property>
+   <property name="shortcut">
+    <string>+, Down</string>
    </property>
   </action>
   <action name="actionInsertColumnLeft">
@@ -449,6 +455,9 @@
    <property name="text">
     <string>Insert column left</string>
    </property>
+   <property name="shortcut">
+    <string>+, Left</string>
+   </property>
   </action>
   <action name="actionInsertColumnRight">
    <property name="icon">
@@ -457,6 +466,9 @@
    </property>
    <property name="text">
     <string>Insert column right</string>
+   </property>
+   <property name="shortcut">
+    <string>+, Right</string>
    </property>
   </action>
   <action name="actionDeleteRow">
