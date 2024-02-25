@@ -16,8 +16,10 @@
         <file>icons/insertcolumnright.png</file>
         <file>icons/insertrowabove.png</file>
         <file>icons/insertrowbelow.png</file>
-        <file>icons/deletecolumn.png</file>
-        <file>icons/deleterow.png</file>
+        <file>icons/deletecolumnleft.png</file>
+        <file>icons/deletecolumnright.png</file>
+        <file>icons/deleterowabove.png</file>
+        <file>icons/deleterowbelow.png</file>
     </qresource>
     <qresource prefix="/"/>
 </RCC>
