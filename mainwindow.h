@@ -120,10 +120,10 @@ private slots:
     /*! *********************************************************************************************************************************************
      * \brief   This function handles the action actionInsertRowAbove.                                                                              *
      *                                                                                                                                              *
-     * \details This function inserts a new Battle Map row above. Afterwards, it checks whether the number of rows displayable on the player screen *
-     *          is greater than or equal to the total number of rows of the Battle Map. If so, it increments the number of rows of the Battle Map   *
-     *          scene section. Otherwise, it increments the index of the first row of the Battle Map scene section. Finally, it calls the           *
-     *          respective functions of the screen handlers for inserting new Battle Map square graphics items above.                               *
+     * \details This function inserts a new row above the Battle Map. Afterwards, it checks whether the number of rows displayable on the player    *
+	 *          screen is greater than or equal to the total number of rows of the Battle Map. If so, it increments the number of rows of the       *
+	 *          Battle Map scene section. Otherwise, it increments the index of the first row of the Battle Map scene section. Finally, it calls    *
+	 *          the respective functions of the screen handlers for inserting new Battle Map square graphics items.                                 *
      *                                                                                                                                              *
      * \return  This function does not have any return value.                                                                                       *
      ************************************************************************************************************************************************/
@@ -132,10 +132,10 @@ private slots:
     /*! *********************************************************************************************************************************************
      * \brief   This function handles the action actionInsertRowBelow.                                                                              *
      *                                                                                                                                              *
-     * \details This function inserts a new Battle Map row below. Afterwards, it checks whether the number of rows displayable on the player screen *
-     *          is greater than or equal to the total number of rows of the Battle Map. If so, it increments the number of rows of the Battle Map   *
-     *          scene section. Finally, it calls the respective functions of the screen handlers for inserting new Battle Map square graphics items *
-	 *          below.                                                                                                                              *
+     * \details This function inserts a new row below the Battle Map. Afterwards, it checks whether the number of rows displayable on the player    *
+	 *          screen is greater than or equal to the total number of rows of the Battle Map. If so, it increments the number of rows of the       *
+	 *          Battle Map scene section. Finally, it calls the respective functions of the screen handlers for inserting new Battle Map square     *
+	 *          graphics items.                                                                                                                     *
      *                                                                                                                                              *
      * \return  This function does not have any return value.                                                                                       *
      ************************************************************************************************************************************************/
@@ -144,10 +144,10 @@ private slots:
     /*! *********************************************************************************************************************************************
      * \brief   This function handles the action actionInsertColumnLeft.                                                                            *
      *                                                                                                                                              *
-     * \details This function inserts a new Battle Map column left. Afterwards, it checks whether the number of columns displayable on the player   *
-     *          screen is greater than or equal to the total number of columns of the Battle Map. If so, it increments the number of columns of the *
-     *          Battle Map scene section. Otherwise, it increments the index of the first column of the Battle Map scene section. Finally, it calls *
-     *          the respective functions of the screen handlers for inserting new Battle Map square graphics items left.                            *
+     * \details This function inserts a new column to the left of the Battle Map. Afterwards, it checks whether the number of columns displayable   *
+	 *          on the player screen is greater than or equal to the total number of columns of the Battle Map. If so, it increments the number of  *
+	 *          columns of the Battle Map scene section. Otherwise, it increments the index of the first column of the Battle Map scene section.    *
+	 *          Finally, it calls the respective functions of the screen handlers for inserting new Battle Map square graphics items.               *
      *                                                                                                                                              *
      * \return  This function does not have any return value.                                                                                       *
      ************************************************************************************************************************************************/
@@ -156,32 +156,66 @@ private slots:
     /*! *********************************************************************************************************************************************
      * \brief   This function handles the action actionInsertColumnRight.                                                                           *
      *                                                                                                                                              *
-     * \details This function inserts a new Battle Map column right. Afterwards, it checks whether the number of columns displayable on the player  *
-     *          screen is greater than or equal to the total number of columns of the Battle Map. If so, it increments the number of columns of the *
-     *          Battle Map scene section. Finally, it calls the respective functions of the screen handlers for inserting new Battle Map square     *
-     *          graphics items right.                                                                                                               *
+     * \details This function inserts a new column to the right of the Battle Map. Afterwards, it checks whether the number of columns displayable  *
+	 *          on the player screen is greater than or equal to the total number of columns of the Battle Map. If so, it increments the number of  *
+	 *          columns of the Battle Map scene section. Finally, it calls the respective functions of the screen handlers for inserting new Battle *
+	 *          Map square graphics items.                                                                                                          *
      *                                                                                                                                              *
      * \return  This function does not have any return value.                                                                                       *
      ************************************************************************************************************************************************/
     void triggeredActionInsertColumnRight();
 
     /*! *********************************************************************************************************************************************
-     * \brief   This function handles the action actionDeleteRow.                                                                                   *
+     * \brief   This function handles the action actionDeleteRowAbove.                                                                              *
      *                                                                                                                                              *
-     * \details TODO                                                                                                                                *
+     * \details This function deletes a row above the Battle Map. Afterwards, it checks whether the number of rows displayable on the player screen *
+	 *          is greater than the total number of rows of the Battle Map. If so, it decrements the number of rows of the Battle Map scene         *
+	 *          section. Otherwise, and if the index of the first row of the Battle Map scene section is greater than 0, it decrements the index of *
+	 *          the first row of the Battle Map scene section. Finally, it calls the respective functions of the screen handlers for deleting       *
+	 *          Battle Map square graphics items.                                                                                                   *
      *                                                                                                                                              *
      * \return  This function does not have any return value.                                                                                       *
      ************************************************************************************************************************************************/
-    void triggeredActionDeleteRow();
+    void triggeredActionDeleteRowAbove();
 
     /*! *********************************************************************************************************************************************
-     * \brief   This function handles the action actionDeleteColumn.                                                                                *
+     * \brief   This function handles the action actionDeleteRowBelow.                                                                              *
      *                                                                                                                                              *
-     * \details TODO                                                                                                                                *
+     * \details This function deletes a row below the Battle Map. Afterwards, it checks whether the number of rows displayable on the player screen *
+	 *          is greater than the total number of rows of the Battle Map. If so, it decrements the number of rows of the Battle Map scene         *
+	 *          section. Otherwise, and if the index of the last row of the Battle Map scene section is greater than the total number of rows of    *
+	 *          the Battle Map, it decrements the index of the first row of the Battle Map scene section. Finally, it calls the respective          *
+	 *          functions of the screen handlers for deleting Battle Map square graphics items.                                                     *
      *                                                                                                                                              *
      * \return  This function does not have any return value.                                                                                       *
      ************************************************************************************************************************************************/
-    void triggeredActionDeleteColumn();
+    void triggeredActionDeleteRowBelow();
+
+    /*! *********************************************************************************************************************************************
+     * \brief   This function handles the action actionDeleteColumnLeft.                                                                            *
+     *                                                                                                                                              *
+     * \details This function deletes a column to the left of the Battle Map. Afterwards, it checks whether the number of columns displayable on    *
+	 *          the player screen is greater than the total number of columns of the Battle Map. If so, it decrements the number of columns of the  *
+	 *          Battle Map scene section. Otherwise, and if the index of the first column of the Battle Map scene section is greater than 0, it     *
+	 *          decrements the index of the first column of the Battle Map scene section. Finally, it calls the respective functions of the screen  *
+	 *          handlers for deleting Battle Map square graphics items.                                                                             *
+     *                                                                                                                                              *
+     * \return  This function does not have any return value.                                                                                       *
+     ************************************************************************************************************************************************/
+    void triggeredActionDeleteColumnLeft();
+
+    /*! *********************************************************************************************************************************************
+     * \brief   This function handles the action actionDeleteColumnRight.                                                                           *
+     *                                                                                                                                              *
+     * \details This function deletes a column to the right of the Battle Map. Afterwards, it checks whether the number of columns displayable on   *
+	 *          the player screen is greater than the total number of columns of the Battle Map. If so, it decrements the number of columns of the  *
+	 *          Battle Map scene section. Otherwise, and if the index of the last column of the Battle Map scene section is greater than the total  *
+	 *          number of columns of the Battle Map, it decrements the index of the first column of the Battle Map scene section. Finally, it calls *
+	 *          the respective functions of the screen handlers for deleting Battle Map square graphics items.                                      *
+     *                                                                                                                                              *
+     * \return  This function does not have any return value.                                                                                       *
+     ************************************************************************************************************************************************/
+    void triggeredActionDeleteColumnRight();
 
     /*! *********************************************************************************************************************************************
      * \brief   This function handles the action actionUpdatePlayerScreen.                                                                          *
