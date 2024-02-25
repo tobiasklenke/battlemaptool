@@ -106,34 +106,92 @@ public:
     void showBattleMapImage();
 
     /*! *********************************************************************************************************************************************
-     * \brief   This function inserts a new Battle Map row.                                                                                         *
+     * \brief   This function inserts a new row above the Battle Map.                                                                               *
      *                                                                                                                                              *
-     * \details This function inserts a new Battle Map row at index position rowPosition in the nested QList member variable                        *
-     *          m_battleMapSquaresGraphicsItems. It makes the Battle Map squares in the inserted row selectable, stacks the unselected items        *
-	 *          beneath of the selected items so that the selection rectangle is completely visible and adds the Battle Map square to the Battle    *
-	 *          Map scene. Afterwards, it repositions the Battle Map squares on the Battle Map scene and updates the Battle Map scene section and   *
-	 *          the frame.                                                                                                                          *
-     *                                                                                                                                              *
-     * \param   rowPosition                   Position of the row                                                                                   *
+     * \details This function inserts a new row above the Battle Map. It makes the Battle Map squares in the inserted row selectable, stacks the    *
+	 *          unselected items beneath of the selected items so that the selection rectangle is completely visible and adds the Battle Map        *
+	 *          squares to the Battle Map scene. Afterwards, it repositions the Battle Map squares on the Battle Map scene and updates the Battle   *
+	 *          Map scene section and the frame.                                                                                                    *
      *                                                                                                                                              *
      * \return  This function does not have any return value.                                                                                       *
      ************************************************************************************************************************************************/
-    void insertRow(int rowPosition);
+    void insertRowAbove();
 
     /*! *********************************************************************************************************************************************
-     * \brief   This function inserts a new Battle Map column.                                                                                      *
+     * \brief   This function inserts a new row below the Battle Map.                                                                               *
      *                                                                                                                                              *
-     * \details This function inserts a new Battle Map column at index position columnPosition in the nested QList member variable                  *
-	 *          m_battleMapSquaresGraphicsItems. It makes the Battle Map squares in the inserted column selectable, stacks the unselected items     *
-	 *          beneath of the selected items so that the selection rectangle is completely visible and adds the Battle Map square to the Battle    *
-	 *          Map scene. Afterwards, it repositions the Battle Map squares on the Battle Map scene and updates the Battle Map scene section and   *
-	 *          the frame.                                                                                                                          *
-     *                                                                                                                                              *
-     * \param   columnPosition                Position of the column                                                                                *
+     * \details This function inserts a new row below the Battle Map. It makes the Battle Map squares in the inserted row selectable, stacks the    *
+	 *          unselected items beneath of the selected items so that the selection rectangle is completely visible and adds the Battle Map        *
+	 *          squares to the Battle Map scene. Afterwards, it repositions the Battle Map squares on the Battle Map scene and updates the Battle   *
+	 *          Map scene section and the frame.                                                                                                    *
      *                                                                                                                                              *
      * \return  This function does not have any return value.                                                                                       *
      ************************************************************************************************************************************************/
-    void insertColumn(int columnPosition);
+    void insertRowBelow();
+
+    /*! *********************************************************************************************************************************************
+     * \brief   This function inserts a new column to the left of the Battle Map.                                                                   *
+     *                                                                                                                                              *
+     * \details This function inserts a new column to the left of the Battle Map. It makes the Battle Map squares in the inserted column            *
+	 *          selectable, stacks the unselected items beneath of the selected items so that the selection rectangle is completely visible and     *
+	 *          adds the Battle Map squares to the Battle Map scene. Afterwards, it repositions the Battle Map squares on the Battle Map scene and  *
+	 *          updates the Battle Map scene section and the frame.                                                                                 *
+     *                                                                                                                                              *
+     * \return  This function does not have any return value.                                                                                       *
+     ************************************************************************************************************************************************/
+    void insertColumnLeft();
+
+    /*! *********************************************************************************************************************************************
+     * \brief   This function inserts a new column to the right of the Battle Map.                                                                  *
+     *                                                                                                                                              *
+     * \details This function inserts a new column to the right of the Battle Map. It makes the Battle Map squares in the inserted column           *
+	 *          selectable, stacks the unselected items beneath of the selected items so that the selection rectangle is completely visible and     *
+	 *          adds the Battle Map squares to the Battle Map scene. Afterwards, it repositions the Battle Map squares on the Battle Map scene and  *
+	 *          updates the Battle Map scene section and the frame.                                                                                 *
+     *                                                                                                                                              *
+     * \return  This function does not have any return value.                                                                                       *
+     ************************************************************************************************************************************************/
+    void insertColumnRight();
+
+    /*! *********************************************************************************************************************************************
+     * \brief   This function deletes a row above the Battle Map.                                                                                   *
+     *                                                                                                                                              *
+     * \details This function deletes a row above the Battle Map. Afterwards, it repositions the Battle Map squares on the Battle Map scene and     *
+	 *          updates the Battle Map scene section and the frame.                                                                                 *
+     *                                                                                                                                              *
+     * \return  This function does not have any return value.                                                                                       *
+     ************************************************************************************************************************************************/
+    void deleteRowAbove();
+
+    /*! *********************************************************************************************************************************************
+     * \brief   This function deletes a row below the Battle Map.                                                                                   *
+     *                                                                                                                                              *
+     * \details This function deletes a row below the Battle Map. Afterwards, it repositions the Battle Map squares on the Battle Map scene and     *
+	 *          updates the Battle Map scene section and the frame.                                                                                 *
+     *                                                                                                                                              *
+     * \return  This function does not have any return value.                                                                                       *
+     ************************************************************************************************************************************************/
+    void deleteRowBelow();
+
+    /*! *********************************************************************************************************************************************
+     * \brief   This function deletes a column to the left of the Battle Map.                                                                       *
+     *                                                                                                                                              *
+     * \details This function deletes a column to the left of the Battle Map. Afterwards, it repositions the Battle Map squares on the Battle Map   *
+	 *          scene and updates the Battle Map scene section and the frame.                                                                       *
+     *                                                                                                                                              *
+     * \return  This function does not have any return value.                                                                                       *
+     ************************************************************************************************************************************************/
+    void deleteColumnLeft();
+
+    /*! *********************************************************************************************************************************************
+     * \brief   This function deletes a column to the right of the Battle Map.                                                                      *
+     *                                                                                                                                              *
+     * \details This function deletes a column to the right of the Battle Map. Afterwards, it repositions the Battle Map squares on the Battle Map  *
+	 *          scene and updates the Battle Map scene section and the frame.                                                                       *
+     *                                                                                                                                              *
+     * \return  This function does not have any return value.                                                                                       *
+     ************************************************************************************************************************************************/
+    void deleteColumnRight();
 
     /*! *********************************************************************************************************************************************
      * \brief   This function updates the coverage state of Battle Map squares.                                                                     *

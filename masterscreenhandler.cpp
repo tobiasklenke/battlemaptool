@@ -140,26 +140,26 @@ void MasterScreenHandler::showBattleMapImage()
 }
 
 /*!
- * \brief This function inserts a new Battle Map row.
+ * \brief This function inserts a new row above the Battle Map.
  */
-void MasterScreenHandler::insertRow(int rowPosition)
+void MasterScreenHandler::insertRowAbove()
 {
-    /* insert row in nested QList member variable m_battleMapSquaresGraphicsItems */
-    m_battleMapSquaresGraphicsItems.insert(rowPosition, QList<QGraphicsPixmapItem*>());
+    /* insert new row above Battle Map */
+    m_battleMapSquaresGraphicsItems.prepend(QList<QGraphicsPixmapItem*>());
 
     for (quint32 columnIdx = 0U; columnIdx < m_battleMap->getNumberColumns(); columnIdx++)
     {
-        /* append graphics item of Battle Map square to row of nested QList member variable m_battleMapSquaresGraphicsItems */
-        m_battleMapSquaresGraphicsItems[rowPosition].append(new QGraphicsPixmapItem(m_battleMap->getBattleMapSquarePixmap(rowPosition, columnIdx)));
+        /* append graphics item of Battle Map square to row */
+        m_battleMapSquaresGraphicsItems.first().append(new QGraphicsPixmapItem(m_battleMap->getBattleMapSquarePixmap(0U, columnIdx)));
 
-        /* make Battle Mal square selectable */
-        m_battleMapSquaresGraphicsItems[rowPosition][columnIdx]->setFlag(QGraphicsItem::ItemIsSelectable, true);
+        /* make Battle Map square selectable */
+        m_battleMapSquaresGraphicsItems.first()[columnIdx]->setFlag(QGraphicsItem::ItemIsSelectable, true);
 
         /* stack unselected items beneath of selected items so that selection rectangle is completely visible */
-        m_battleMapSquaresGraphicsItems[rowPosition][columnIdx]->setZValue(BACKGROUNDEDGRAPHICSITEM_ZVALUE);
+        m_battleMapSquaresGraphicsItems.first()[columnIdx]->setZValue(BACKGROUNDEDGRAPHICSITEM_ZVALUE);
 
         /* add Battle Map square to Battle Map scene */
-        m_battleMapScene->addItem(m_battleMapSquaresGraphicsItems[rowPosition][columnIdx]);
+        m_battleMapScene->addItem(m_battleMapSquaresGraphicsItems.first()[columnIdx]);
     }
 
     /* reposition Battle Map squares on Battle Map scene */
@@ -177,24 +177,212 @@ void MasterScreenHandler::insertRow(int rowPosition)
 }
 
 /*!
- * \brief This function inserts a new Battle Map column.
+ * \brief This function inserts a new row below the Battle Map.
  */
-void MasterScreenHandler::insertColumn(int columnPosition)
+void MasterScreenHandler::insertRowBelow()
 {
-    /* insert column in nested QList member variable m_battleMapSquaresGraphicsItems */
-    for (quint32 rowIdx = 0U; rowIdx < m_battleMap->getNumberRows(); rowIdx++)
-    {
-        /* insert graphics item of Battle Map square in row of nested QList member variable m_battleMapSquaresGraphicsItems */
-        m_battleMapSquaresGraphicsItems[rowIdx].insert(columnPosition, new QGraphicsPixmapItem(m_battleMap->getBattleMapSquarePixmap(rowIdx, columnPosition)));
+    /* insert new row below Battle Map */
+    m_battleMapSquaresGraphicsItems.append(QList<QGraphicsPixmapItem*>());
 
-        /* make Battle Mal square selectable */
-        m_battleMapSquaresGraphicsItems[rowIdx][columnPosition]->setFlag(QGraphicsItem::ItemIsSelectable, true);
+    for (quint32 columnIdx = 0U; columnIdx < m_battleMap->getNumberColumns(); columnIdx++)
+    {
+        /* append graphics item of Battle Map square to row */
+        m_battleMapSquaresGraphicsItems.last().append(new QGraphicsPixmapItem(m_battleMap->getBattleMapSquarePixmap(m_battleMap->getNumberRows() - 1U, columnIdx)));
+
+        /* make Battle Map square selectable */
+        m_battleMapSquaresGraphicsItems.last()[columnIdx]->setFlag(QGraphicsItem::ItemIsSelectable, true);
 
         /* stack unselected items beneath of selected items so that selection rectangle is completely visible */
-        m_battleMapSquaresGraphicsItems[rowIdx][columnPosition]->setZValue(BACKGROUNDEDGRAPHICSITEM_ZVALUE);
+        m_battleMapSquaresGraphicsItems.last()[columnIdx]->setZValue(BACKGROUNDEDGRAPHICSITEM_ZVALUE);
 
-        /* add Battle Map squares to Battle Map scene */
-        m_battleMapScene->addItem(m_battleMapSquaresGraphicsItems[rowIdx][columnPosition]);
+        /* add Battle Map square to Battle Map scene */
+        m_battleMapScene->addItem(m_battleMapSquaresGraphicsItems.last()[columnIdx]);
+    }
+
+    /* reposition Battle Map squares on Battle Map scene */
+    for (quint32 rowIdx = 0U; rowIdx < m_battleMap->getNumberRows(); rowIdx++)
+    {
+        for (quint32 columnIdx = 0U; columnIdx < m_battleMap->getNumberColumns(); columnIdx++)
+        {
+            m_battleMapSquaresGraphicsItems[rowIdx][columnIdx]->setPos(columnIdx * CONFIG_BATTLEMAPSQUARE_SIZE, rowIdx * CONFIG_BATTLEMAPSQUARE_SIZE);
+        }
+    }
+
+    /* update Battle Map scene section and frame */
+    updateBattleMapSceneSection();
+    m_battleMapScene->setSceneRect(0, 0, m_battleMap->getNumberColumns() * CONFIG_BATTLEMAPSQUARE_SIZE, m_battleMap->getNumberRows() * CONFIG_BATTLEMAPSQUARE_SIZE);
+}
+
+/*!
+ * \brief This function inserts a new column to the left of the Battle Map.
+ */
+void MasterScreenHandler::insertColumnLeft()
+{
+    /* insert new column to the left of Battle Map */
+    for (quint32 rowIdx = 0U; rowIdx < m_battleMap->getNumberRows(); rowIdx++)
+    {
+        /* prepend graphics item of Battle Map square to row */
+        m_battleMapSquaresGraphicsItems[rowIdx].prepend(new QGraphicsPixmapItem(m_battleMap->getBattleMapSquarePixmap(rowIdx, 0U)));
+
+        /* make Battle Map square selectable */
+        m_battleMapSquaresGraphicsItems[rowIdx].first()->setFlag(QGraphicsItem::ItemIsSelectable, true);
+
+        /* stack unselected items beneath of selected items so that selection rectangle is completely visible */
+        m_battleMapSquaresGraphicsItems[rowIdx].first()->setZValue(BACKGROUNDEDGRAPHICSITEM_ZVALUE);
+
+        /* add Battle Map square to Battle Map scene */
+        m_battleMapScene->addItem(m_battleMapSquaresGraphicsItems[rowIdx].first());
+    }
+
+    /* reposition Battle Map squares on Battle Map scene */
+    for (quint32 rowIdx = 0U; rowIdx < m_battleMap->getNumberRows(); rowIdx++)
+    {
+        for (quint32 columnIdx = 0U; columnIdx < m_battleMap->getNumberColumns(); columnIdx++)
+        {
+            m_battleMapSquaresGraphicsItems[rowIdx][columnIdx]->setPos(columnIdx * CONFIG_BATTLEMAPSQUARE_SIZE, rowIdx * CONFIG_BATTLEMAPSQUARE_SIZE);
+        }
+    }
+
+    /* update Battle Map scene section and frame */
+    updateBattleMapSceneSection();
+    m_battleMapScene->setSceneRect(0, 0, m_battleMap->getNumberColumns() * CONFIG_BATTLEMAPSQUARE_SIZE, m_battleMap->getNumberRows() * CONFIG_BATTLEMAPSQUARE_SIZE);
+}
+
+/*!
+ * \brief This function inserts a new column to the right of the Battle Map.
+ */
+void MasterScreenHandler::insertColumnRight()
+{
+    /* insert new column to the right of Battle Map */
+    for (quint32 rowIdx = 0U; rowIdx < m_battleMap->getNumberRows(); rowIdx++)
+    {
+        /* append graphics item of Battle Map square to row */
+        m_battleMapSquaresGraphicsItems[rowIdx].append(new QGraphicsPixmapItem(m_battleMap->getBattleMapSquarePixmap(rowIdx, m_battleMap->getNumberColumns() - 1U)));
+
+        /* make Battle Map square selectable */
+        m_battleMapSquaresGraphicsItems[rowIdx].last()->setFlag(QGraphicsItem::ItemIsSelectable, true);
+
+        /* stack unselected items beneath of selected items so that selection rectangle is completely visible */
+        m_battleMapSquaresGraphicsItems[rowIdx].last()->setZValue(BACKGROUNDEDGRAPHICSITEM_ZVALUE);
+
+        /* add Battle Map square to Battle Map scene */
+        m_battleMapScene->addItem(m_battleMapSquaresGraphicsItems[rowIdx].last());
+    }
+
+    /* reposition Battle Map squares on Battle Map scene */
+    for (quint32 rowIdx = 0U; rowIdx < m_battleMap->getNumberRows(); rowIdx++)
+    {
+        for (quint32 columnIdx = 0U; columnIdx < m_battleMap->getNumberColumns(); columnIdx++)
+        {
+            m_battleMapSquaresGraphicsItems[rowIdx][columnIdx]->setPos(columnIdx * CONFIG_BATTLEMAPSQUARE_SIZE, rowIdx * CONFIG_BATTLEMAPSQUARE_SIZE);
+        }
+    }
+
+    /* update Battle Map scene section and frame */
+    updateBattleMapSceneSection();
+    m_battleMapScene->setSceneRect(0, 0, m_battleMap->getNumberColumns() * CONFIG_BATTLEMAPSQUARE_SIZE, m_battleMap->getNumberRows() * CONFIG_BATTLEMAPSQUARE_SIZE);
+}
+
+/*!
+ * \brief This function deletes a row above the Battle Map.
+ */
+void MasterScreenHandler::deleteRowAbove()
+{
+    /* delete row above Battle Map */
+    for (quint32 columnIdx = 0U; columnIdx < m_battleMapSquaresGraphicsItems.first().count(); columnIdx++)
+    {
+        /* remove Battle Map square from Battle Map scene */
+        m_battleMapScene->removeItem(m_battleMapSquaresGraphicsItems.first()[columnIdx]);
+
+        delete m_battleMapSquaresGraphicsItems.first()[columnIdx];
+    }
+    m_battleMapSquaresGraphicsItems.removeFirst();
+
+    /* reposition Battle Map squares on Battle Map scene */
+    for (quint32 rowIdx = 0U; rowIdx < m_battleMap->getNumberRows(); rowIdx++)
+    {
+        for (quint32 columnIdx = 0U; columnIdx < m_battleMap->getNumberColumns(); columnIdx++)
+        {
+            m_battleMapSquaresGraphicsItems[rowIdx][columnIdx]->setPos(columnIdx * CONFIG_BATTLEMAPSQUARE_SIZE, rowIdx * CONFIG_BATTLEMAPSQUARE_SIZE);
+        }
+    }
+
+    /* update Battle Map scene section and frame */
+    updateBattleMapSceneSection();
+    m_battleMapScene->setSceneRect(0, 0, m_battleMap->getNumberColumns() * CONFIG_BATTLEMAPSQUARE_SIZE, m_battleMap->getNumberRows() * CONFIG_BATTLEMAPSQUARE_SIZE);
+}
+
+/*!
+ * \brief This function deletes a row below the Battle Map.
+ */
+void MasterScreenHandler::deleteRowBelow()
+{
+    /* delete row below Battle Map */
+    for (quint32 columnIdx = 0U; columnIdx < m_battleMapSquaresGraphicsItems.last().count(); columnIdx++)
+    {
+        /* remove Battle Map square from Battle Map scene */
+        m_battleMapScene->removeItem(m_battleMapSquaresGraphicsItems.last()[columnIdx]);
+
+        delete m_battleMapSquaresGraphicsItems.last()[columnIdx];
+    }
+    m_battleMapSquaresGraphicsItems.removeLast();
+
+    /* reposition Battle Map squares on Battle Map scene */
+    for (quint32 rowIdx = 0U; rowIdx < m_battleMap->getNumberRows(); rowIdx++)
+    {
+        for (quint32 columnIdx = 0U; columnIdx < m_battleMap->getNumberColumns(); columnIdx++)
+        {
+            m_battleMapSquaresGraphicsItems[rowIdx][columnIdx]->setPos(columnIdx * CONFIG_BATTLEMAPSQUARE_SIZE, rowIdx * CONFIG_BATTLEMAPSQUARE_SIZE);
+        }
+    }
+
+    /* update Battle Map scene section and frame */
+    updateBattleMapSceneSection();
+    m_battleMapScene->setSceneRect(0, 0, m_battleMap->getNumberColumns() * CONFIG_BATTLEMAPSQUARE_SIZE, m_battleMap->getNumberRows() * CONFIG_BATTLEMAPSQUARE_SIZE);
+}
+
+/*!
+ * \brief This function deletes a column to the left of the Battle Map.
+ */
+void MasterScreenHandler::deleteColumnLeft()
+{
+    /* delete column to the left of Battle Map */
+    for (quint32 rowIdx = 0U; rowIdx < m_battleMapSquaresGraphicsItems.count(); rowIdx++)
+    {
+        /* remove Battle Map square from Battle Map scene */
+        m_battleMapScene->removeItem(m_battleMapSquaresGraphicsItems[rowIdx].first());
+
+        delete m_battleMapSquaresGraphicsItems[rowIdx].first();
+        m_battleMapSquaresGraphicsItems[rowIdx].removeFirst();
+    }
+
+    /* reposition Battle Map squares on Battle Map scene */
+    for (quint32 rowIdx = 0U; rowIdx < m_battleMap->getNumberRows(); rowIdx++)
+    {
+        for (quint32 columnIdx = 0U; columnIdx < m_battleMap->getNumberColumns(); columnIdx++)
+        {
+            m_battleMapSquaresGraphicsItems[rowIdx][columnIdx]->setPos(columnIdx * CONFIG_BATTLEMAPSQUARE_SIZE, rowIdx * CONFIG_BATTLEMAPSQUARE_SIZE);
+        }
+    }
+
+    /* update Battle Map scene section and frame */
+    updateBattleMapSceneSection();
+    m_battleMapScene->setSceneRect(0, 0, m_battleMap->getNumberColumns() * CONFIG_BATTLEMAPSQUARE_SIZE, m_battleMap->getNumberRows() * CONFIG_BATTLEMAPSQUARE_SIZE);
+}
+
+/*!
+ * \brief This function deletes a column to the right of the Battle Map.
+ */
+void MasterScreenHandler::deleteColumnRight()
+{
+    /* delete column to the right of Battle Map */
+    for (quint32 rowIdx = 0U; rowIdx < m_battleMapSquaresGraphicsItems.count(); rowIdx++)
+    {
+        /* remove Battle Map square from Battle Map scene */
+        m_battleMapScene->removeItem(m_battleMapSquaresGraphicsItems[rowIdx].last());
+
+        delete m_battleMapSquaresGraphicsItems[rowIdx].last();
+        m_battleMapSquaresGraphicsItems[rowIdx].removeLast();
     }
 
     /* reposition Battle Map squares on Battle Map scene */

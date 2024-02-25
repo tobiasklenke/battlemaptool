@@ -135,19 +135,19 @@ void BattleMap::setBattleMapSquareCovered(quint32 rowIdx, quint32 columnIdx, boo
 }
 
 /*!
- * \brief This function inserts a new Battle Map row.
+ * \brief This function inserts a new row above the Battle Map.
  */
-void BattleMap::insertRow(int rowPosition)
+void BattleMap::insertRowAbove()
 {
-    /* insert row in nested QList member variable m_battleMapSquares */
-    m_battleMapSquares.insert(rowPosition, QList<BattleMapSquare*>());
+    /* insert new row above Battle Map */
+    m_battleMapSquares.prepend(QList<BattleMapSquare*>());
     for (quint32 columnIdx = 0U; columnIdx < m_numberColumns; columnIdx++)
     {
         /* construct new Battle Map square object */
         BattleMapSquare * battleMapSquare = new BattleMapSquare();
 
-        /* append Battle Map square to row of nested QList member variable m_battleMapSquares */
-        m_battleMapSquares[rowPosition].append(battleMapSquare);
+        /* append Battle Map square to row */
+        m_battleMapSquares.first().append(battleMapSquare);
     }
 
     /* increment number of rows */
@@ -155,22 +155,125 @@ void BattleMap::insertRow(int rowPosition)
 }
 
 /*!
- * \brief This function inserts a new Battle Map column.
+ * \brief This function inserts a new row below the Battle Map.
  */
-void BattleMap::insertColumn(int columnPosition)
+void BattleMap::insertRowBelow()
 {
-    /* insert column in nested QList member variable m_battleMapSquares */
+    /* insert new row below Battle Map */
+    m_battleMapSquares.append(QList<BattleMapSquare*>());
+    for (quint32 columnIdx = 0U; columnIdx < m_numberColumns; columnIdx++)
+    {
+        /* construct new Battle Map square object */
+        BattleMapSquare * battleMapSquare = new BattleMapSquare();
+
+        /* append Battle Map square to row */
+        m_battleMapSquares.last().append(battleMapSquare);
+    }
+
+    /* increment number of rows */
+    m_numberRows++;
+}
+
+/*!
+ * \brief This function inserts a new column to the left of the Battle Map.
+ */
+void BattleMap::insertColumnLeft()
+{
+    /* insert new column to the left of Battle Map */
     for (quint32 rowIdx = 0U; rowIdx < m_numberRows; rowIdx++)
     {
         /* construct new Battle Map square object */
         BattleMapSquare * battleMapSquare = new BattleMapSquare();
 
-        /* insert Battle Map square in row of nested QList member variable m_battleMapSquares */
-        m_battleMapSquares[rowIdx].insert(columnPosition, battleMapSquare);
+        /* prepend Battle Map square to row */
+        m_battleMapSquares[rowIdx].prepend(battleMapSquare);
     }
 
     /* increment number of columns */
     m_numberColumns++;
+}
+
+/*!
+ * \brief This function inserts a new column to the right of the Battle Map.
+ */
+void BattleMap::insertColumnRight()
+{
+    /* insert new column to the right of Battle Map */
+    for (quint32 rowIdx = 0U; rowIdx < m_numberRows; rowIdx++)
+    {
+        /* construct new Battle Map square object */
+        BattleMapSquare * battleMapSquare = new BattleMapSquare();
+
+        /* append Battle Map square to row */
+        m_battleMapSquares[rowIdx].append(battleMapSquare);
+    }
+
+    /* increment number of columns */
+    m_numberColumns++;
+}
+
+/*!
+ * \brief This function deletes a row above the Battle Map.
+ */
+void BattleMap::deleteRowAbove()
+{
+    /* delete row above Battle Map */
+    for (quint32 columnIdx = 0U; columnIdx < m_battleMapSquares.first().count(); columnIdx++)
+    {
+        delete m_battleMapSquares.first()[columnIdx];
+    }
+    m_battleMapSquares.removeFirst();
+
+    /* decrement number of rows */
+    m_numberRows--;
+}
+
+/*!
+ * \brief This function deletes a row below the Battle Map.
+ */
+void BattleMap::deleteRowBelow()
+{
+    /* delete row below Battle Map */
+    for (quint32 columnIdx = 0U; columnIdx < m_battleMapSquares.last().count(); columnIdx++)
+    {
+        delete m_battleMapSquares.last()[columnIdx];
+    }
+    m_battleMapSquares.removeLast();
+
+    /* decrement number of rows */
+    m_numberRows--;
+}
+
+/*!
+ * \brief This function deletes a column to the left of the Battle Map.
+ */
+void BattleMap::deleteColumnLeft()
+{
+    /* delete column to the left of Battle Map */
+    for (quint32 rowIdx = 0U; rowIdx < m_battleMapSquares.count(); rowIdx++)
+    {
+        delete m_battleMapSquares[rowIdx].first();
+        m_battleMapSquares[rowIdx].removeFirst();
+    }
+
+    /* decrement number of columns */
+    m_numberColumns--;
+}
+
+/*!
+ * \brief This function deletes a column to the right of the Battle Map.
+ */
+void BattleMap::deleteColumnRight()
+{
+    /* delete column to the right of Battle Map */
+    for (quint32 rowIdx = 0U; rowIdx < m_battleMapSquares.count(); rowIdx++)
+    {
+        delete m_battleMapSquares[rowIdx].last();
+        m_battleMapSquares[rowIdx].removeLast();
+    }
+
+    /* decrement number of columns */
+    m_numberColumns--;
 }
 
 /****************************************************************************************************************************************************

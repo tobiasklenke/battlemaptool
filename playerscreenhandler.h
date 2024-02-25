@@ -98,7 +98,8 @@ public:
      * \details This function resets the Battle Map scene and adds all the Battle Map squares from the Battle Map to the Battle Map scene after it  *
 	 *          positions the Battle Map squares on theBattle Map scene, makes the Battle Map squares invisible and puts the Battle Map squares     *
 	 *          graphics items to the background so that the wind rose graphics item is completely visible. Afterwards, it initializes the Battle   *
-	 *          Map scene rect according to the Battle Map scene section and adds and positions the wind rose graphics item.                        *
+	 *          Map scene rect according to the Battle Map scene section. Finally, it initializes the member variables m_deleteRowsOnUpdate and     *
+	 *          m_deleteColumnsOnUpdate and adds and positions the wind rose graphics item.                                                         *
 	 *                                                                                                                                              *
      * \return  This function does not have any return value.                                                                                       *
      ************************************************************************************************************************************************/
@@ -107,43 +108,113 @@ public:
     /*! *********************************************************************************************************************************************
      * \brief   This function updates the Battle Map image.                                                                                         *
      *                                                                                                                                              *
-     * \details This function updates the Battle Map image by repositioning the Battle Map squares on the Battle Map scene if required. Afterwards, *
-	 *          it updates the visibility and opacity of the Battle Map squares. Finally, it updates the Battle Map scene rect according to the     *
-	 *          Battle Map scene section and it updates the position of the wind rose graphics item.                                                *
+     * \details This function updates the Battle Map image by deleting and repositioning the Battle Map squares on the Battle Map scene if          *
+	 *          required. Afterwards, it updates the visibility and opacity of the Battle Map squares. Finally, it updates the Battle Map scene     *
+	 *          rect according to the Battle Map scene section and it updates the position of the wind rose graphics item.                          *
      *                                                                                                                                              *
      * \return  This function does not have any return value.                                                                                       *
      ************************************************************************************************************************************************/
     void updateBattleMapImage();
 
     /*! *********************************************************************************************************************************************
-     * \brief   This function inserts a new Battle Map row.                                                                                         *
+     * \brief   This function inserts a new row above the Battle Map.                                                                               *
      *                                                                                                                                              *
-     * \details This function inserts a new Battle Map row at index position rowPosition in the nested QList member variable                        *
-     *          m_battleMapSquaresGraphicsItems. It puts the Battle Map square graphics items to the background so that the wind rose graphics item *
-	 *          is completely visible and adds the Battle Map square to the Battle Map scene. Afterwards, it sets the member variable               *
-	 *          m_repositioningRequired to true so that the reposition of the Battle Map squares on Battle Map scene takes place on the next update *
-	 *          of Battle Map image.                                                                                                                *
-     *                                                                                                                                              *
-     * \param   rowPosition                   Position of the row                                                                                   *
+     * \details This function inserts a new row above the Battle Map. It puts the Battle Map square graphics items to the background so that the    *
+	 *          wind rose graphics item is completely visible and adds the Battle Map squares to the Battle Map scene. Afterwards, it adds the      *
+	 *          newly inserted row that shall not be deleted on update to the member variable m_deleteRowsOnUpdate. Finally, it sets the member     *
+	 *          variable m_repositioningRequired to true so that the reposition of the Battle Map squares on Battle Map scene takes place on the    *
+	 *          next update of the Battle Map image.                                                                                                *
      *                                                                                                                                              *
      * \return  This function does not have any return value.                                                                                       *
      ************************************************************************************************************************************************/
-    void insertRow(int rowPosition);
+    void insertRowAbove();
 
     /*! *********************************************************************************************************************************************
-     * \brief   This function inserts a new Battle Map column.                                                                                      *
+     * \brief   This function inserts a new row below the Battle Map.                                                                               *
      *                                                                                                                                              *
-     * \details This function inserts a new Battle Map column at index position columnPosition in the nested QList member variable                  *
-	 *          m_battleMapSquaresGraphicsItems. It makes the Battle Map squares in the inserted column selectable, stacks the unselected items     *
-	 *          beneath of the selected items so that the selection rectangle is completely visible and adds the Battle Map squares to the Battle   *
-	 *          Map scene. Afterwards, it repositions the Battle Map squares on the Battle Map scene and updates the Battle Map scene section and   *
-	 *          the frame.                                                                                                                          *
-     *                                                                                                                                              *
-     * \param   columnPosition                Position of the column                                                                                *
+     * \details This function inserts a new row below the Battle Map. It puts the Battle Map square graphics items to the background so that the    *
+	 *          wind rose graphics item is completely visible and adds the Battle Map squares to the Battle Map scene. Afterwards, it adds the      *
+	 *          newly inserted row that shall not be deleted on update to the member variable m_deleteRowsOnUpdate. Finally, it sets the member     *
+	 *          variable m_repositioningRequired to true so that the reposition of the Battle Map squares on Battle Map scene takes place on the    *
+	 *          next update of the Battle Map image.                                                                                                *
      *                                                                                                                                              *
      * \return  This function does not have any return value.                                                                                       *
      ************************************************************************************************************************************************/
-    void insertColumn(int columnPosition);
+    void insertRowBelow();
+
+    /*! *********************************************************************************************************************************************
+     * \brief   This function inserts a new column to the left of the Battle Map.                                                                   *
+     *                                                                                                                                              *
+     * \details This function inserts a new column to the left of the Battle Map. It puts the Battle Map square graphics items to the background so *
+	 *          that the wind rose graphics item is completely visible and adds the Battle Map squares to the Battle Map scene. Afterwards, it adds *
+	 *          the newly inserted column that shall not be deleted on update to the member variable m_deleteColumnsOnUpdate. Finally, it sets the  *
+	 *          member variable m_repositioningRequired to true so that the reposition of the Battle Map squares on Battle Map scene takes place on *
+	 *          the next update of the Battle Map image.                                                                                            *
+     *                                                                                                                                              *
+     * \return  This function does not have any return value.                                                                                       *
+     ************************************************************************************************************************************************/
+    void insertColumnLeft();
+
+    /*! *********************************************************************************************************************************************
+     * \brief   This function inserts a new column to the right of the Battle Map.                                                                  *
+     *                                                                                                                                              *
+     * \details This function inserts a new column to the right of the Battle Map. It puts the Battle Map square graphics items to the background   *
+	 *          so that the wind rose graphics item is completely visible and adds the Battle Map squares to the Battle Map scene. Afterwards, it   *
+	 *          adds the newly inserted column that shall not be deleted on update to the member variable m_deleteColumnsOnUpdate. Finally, it sets *
+	 *          the member variable m_repositioningRequired to true so that the reposition of the Battle Map squares on Battle Map scene takes      *
+	 *          place on the next update of the Battle Map image.                                                                                   *
+     *                                                                                                                                              *
+     * \return  This function does not have any return value.                                                                                       *
+     ************************************************************************************************************************************************/
+    void insertColumnRight();
+
+    /*! *********************************************************************************************************************************************
+     * \brief   This function prepares the deletion of a row above the Battle Map.                                                                  *
+     *                                                                                                                                              *
+     * \details This function prepares the deletion of a row above the Battle Map by setting the row from m_deleteRowsOnUpdate that shall be        *
+	 *          deleted on update. Finally, it sets the member variables m_deletionRequired and m_repositioningRequired to true so that the         *
+	 *          deletion and the repositioning of the Battle Map squares on the Battle Map scene takes place on the next update of the Battle Map   *
+	 *          image.                                                                                                                              *
+     *                                                                                                                                              *
+     * \return  This function does not have any return value.                                                                                       *
+     ************************************************************************************************************************************************/
+    void deleteRowAbove();
+
+    /*! *********************************************************************************************************************************************
+     * \brief   This function prepares the deletion of a row below the Battle Map.                                                                  *
+     *                                                                                                                                              *
+     * \details This function prepares the deletion of a row below the Battle Map by setting the row from m_deleteRowsOnUpdate that shall be        *
+	 *          deleted on update. Finally, it sets the member variables m_deletionRequired and m_repositioningRequired to true so that the         *
+	 *          deletion and the repositioning of the Battle Map squares on the Battle Map scene takes place on the next update of the Battle Map   *
+	 *          image.                                                                                                                              *
+     *                                                                                                                                              *
+     * \return  This function does not have any return value.                                                                                       *
+     ************************************************************************************************************************************************/
+    void deleteRowBelow();
+
+    /*! *********************************************************************************************************************************************
+     * \brief   This function prepares the deletion of a column to the left of the Battle Map.                                                      *
+     *                                                                                                                                              *
+     * \details This function prepares the deletion of a column to the left of the Battle Map by setting the column from m_deleteColumnsOnUpdate    *
+	 *          that shall be deleted on update. Finally, it sets the member variables m_deletionRequired and m_repositioningRequired to true so    *
+	 *          that the deletion and the repositioning of the Battle Map squares on the Battle Map scene takes place on the next update of the     *
+	 *          Battle Map image.                                                                                                                   *
+     *                                                                                                                                              *
+     * \return  This function does not have any return value.                                                                                       *
+     ************************************************************************************************************************************************/
+    void deleteColumnLeft();
+
+    /*! *********************************************************************************************************************************************
+     * \brief   This function prepares the deletion of a column to the right of the Battle Map.                                                     *
+     *                                                                                                                                              *
+     * \details This function prepares the deletion of a column to the right of the Battle Map by setting the column from m_deleteColumnsOnUpdate   *
+	 *          that shall be deleted on update. Finally, it sets the member variables m_deletionRequired and m_repositioningRequired to true so    *
+	 *          that the deletion and the repositioning of the Battle Map squares on the Battle Map scene takes place on the next update of the     *
+	 *          Battle Map image.                                                                                                                   *
+     *                                                                                                                                              *
+     * \return  This function does not have any return value.                                                                                       *
+     ************************************************************************************************************************************************/
+    void deleteColumnRight();
 
     /*! *********************************************************************************************************************************************
      * \brief   This function sets the visibility state of the wind rose graphics item.                                                             *
@@ -259,6 +330,16 @@ private:
     QList<QList<CustomGraphicsPixmapItem*>> m_battleMapSquaresGraphicsItems;
 
     /*!
+     * \brief This is the information whether the graphics items of the Battle Map squares in the rows shall be deleted on the next update.
+     */
+    QList<bool> m_deleteRowsOnUpdate;
+
+    /*!
+     * \brief This is the information whether the graphics items of the Battle Map squares in the columns shall be deleted on the next update.
+     */
+    QList<bool> m_deleteColumnsOnUpdate;
+
+    /*!
      * \brief This is the variable contaiting the graphics item of the wind rose.
      */
     QGraphicsPixmapItem m_windRoseGraphicsItem;
@@ -267,6 +348,11 @@ private:
      * \brief This is the edge length of a Battle Map square in pixels.
      */
     quint32 m_edgeLengthInPixels;
+
+    /*!
+     * \brief This is the information whether the deletion of some Battle Map squares is required due to newly deleted Battle Map squares.
+     */
+    bool m_deletionRequired;
 
     /*!
      * \brief This is the information whether the repositioning of the Battle Map squares is required due to newly inserted or deleted Battle Map squares.

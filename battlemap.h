@@ -155,28 +155,76 @@ public:
     void setBattleMapSquareCovered(quint32 rowIdx, quint32 columnIdx, bool covered);
 
     /*! *********************************************************************************************************************************************
-     * \brief   This function inserts a new Battle Map row.                                                                                         *
+     * \brief   This function inserts a new row above the Battle Map.                                                                               *
      *                                                                                                                                              *
-     * \details This function inserts a new Battle Map row at index position rowPosition in the nested QList member variable m_battleMapSquares.    *
-	 *          Afterwards, it increments the number of rows.                                                                                       *
-     *                                                                                                                                              *
-     * \param   rowPosition                   Position of the row                                                                                   *
+     * \details This function inserts a new row above the Battle Map and increments the number of rows.                                             *
      *                                                                                                                                              *
      * \return  This function does not have any return value.                                                                                       *
      ************************************************************************************************************************************************/
-    void insertRow(int rowPosition);
+    void insertRowAbove();
 
     /*! *********************************************************************************************************************************************
-     * \brief   This function inserts a new Battle Map column.                                                                                      *
+     * \brief   This function inserts a new row below the Battle Map.                                                                               *
      *                                                                                                                                              *
-     * \details This function inserts a new Battle Map column at index position columnPosition in the nested QList member variable                  *
-	 *          m_battleMapSquares. Afterwards, it increments the number of columns.                                                                *
-     *                                                                                                                                              *
-     * \param   columnPosition                Position of the column                                                                                *
+     * \details This function inserts a new row below the Battle Map and increments the number of rows.                                             *
      *                                                                                                                                              *
      * \return  This function does not have any return value.                                                                                       *
      ************************************************************************************************************************************************/
-    void insertColumn(int columnPosition);
+    void insertRowBelow();
+
+    /*! *********************************************************************************************************************************************
+     * \brief   This function inserts a new column to the left of the Battle Map.                                                                   *
+     *                                                                                                                                              *
+     * \details This function inserts a new column to the left of the Battle Map and increments the number of columns.                              *
+     *                                                                                                                                              *
+     * \return  This function does not have any return value.                                                                                       *
+     ************************************************************************************************************************************************/
+    void insertColumnLeft();
+
+    /*! *********************************************************************************************************************************************
+     * \brief   This function inserts a new column to the right of the Battle Map.                                                                  *
+     *                                                                                                                                              *
+     * \details This function inserts a new column to the right of the Battle Map and increments the number of columns.                             *
+     *                                                                                                                                              *
+     * \return  This function does not have any return value.                                                                                       *
+     ************************************************************************************************************************************************/
+    void insertColumnRight();
+
+    /*! *********************************************************************************************************************************************
+     * \brief   This function deletes a row above the Battle Map.                                                                                   *
+     *                                                                                                                                              *
+     * \details This function deletes a row above the Battle Map and decrements the number of rows.                                                 *
+     *                                                                                                                                              *
+     * \return  This function does not have any return value.                                                                                       *
+     ************************************************************************************************************************************************/
+    void deleteRowAbove();
+
+    /*! *********************************************************************************************************************************************
+     * \brief   This function deletes a row below the Battle Map.                                                                                   *
+     *                                                                                                                                              *
+     * \details This function deletes a row below the Battle Map and decrements the number of rows.                                                 *
+     *                                                                                                                                              *
+     * \return  This function does not have any return value.                                                                                       *
+     ************************************************************************************************************************************************/
+    void deleteRowBelow();
+
+    /*! *********************************************************************************************************************************************
+     * \brief   This function deletes a column to the left of the Battle Map.                                                                       *
+     *                                                                                                                                              *
+     * \details This function deletes a column to the left of the Battle Map and decrements the number of columns.                                  *
+     *                                                                                                                                              *
+     * \return  This function does not have any return value.                                                                                       *
+     ************************************************************************************************************************************************/
+    void deleteColumnLeft();
+
+    /*! *********************************************************************************************************************************************
+     * \brief   This function deletes a column to the right of the Battle Map.                                                                      *
+     *                                                                                                                                              *
+     * \details This function deletes a column to the right of the Battle Map and decrements the number of columns.                                 *
+     *                                                                                                                                              *
+     * \return  This function does not have any return value.                                                                                       *
+     ************************************************************************************************************************************************/
+    void deleteColumnRight();
 
 protected: /* - */
 
