@@ -131,6 +131,9 @@
      <string>Edit</string>
     </property>
     <widget class="QMenu" name="submenuExpandBattleMap">
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
      <property name="title">
       <string>Expand Battle Map</string>
      </property>
@@ -144,6 +147,9 @@
      <addaction name="actionInsertColumnRight"/>
     </widget>
     <widget class="QMenu" name="submenuReduceBattleMap">
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
      <property name="title">
       <string>Reduce Battle Map</string>
      </property>
@@ -151,8 +157,10 @@
       <iconset resource="icons.qrc">
        <normaloff>:/icons/icons/reducebattlemap.png</normaloff>:/icons/icons/reducebattlemap.png</iconset>
      </property>
-     <addaction name="actionDeleteRow"/>
-     <addaction name="actionDeleteColumn"/>
+     <addaction name="actionDeleteRowAbove"/>
+     <addaction name="actionDeleteRowBelow"/>
+     <addaction name="actionDeleteColumnLeft"/>
+     <addaction name="actionDeleteColumnRight"/>
     </widget>
     <addaction name="actionUndo"/>
     <addaction name="actionRedo"/>
@@ -424,6 +432,9 @@
    </property>
   </action>
   <action name="actionInsertRowAbove">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="icon">
     <iconset resource="icons.qrc">
      <normaloff>:/icons/icons/insertrowabove.png</normaloff>:/icons/icons/insertrowabove.png</iconset>
@@ -436,6 +447,9 @@
    </property>
   </action>
   <action name="actionInsertRowBelow">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="icon">
     <iconset resource="icons.qrc">
      <normaloff>:/icons/icons/insertrowbelow.png</normaloff>:/icons/icons/insertrowbelow.png</iconset>
@@ -448,6 +462,9 @@
    </property>
   </action>
   <action name="actionInsertColumnLeft">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="icon">
     <iconset resource="icons.qrc">
      <normaloff>:/icons/icons/insertcolumnleft.png</normaloff>:/icons/icons/insertcolumnleft.png</iconset>
@@ -460,6 +477,9 @@
    </property>
   </action>
   <action name="actionInsertColumnRight">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="icon">
     <iconset resource="icons.qrc">
      <normaloff>:/icons/icons/insertcolumnright.png</normaloff>:/icons/icons/insertcolumnright.png</iconset>
@@ -471,22 +491,64 @@
     <string>+, Right</string>
    </property>
   </action>
-  <action name="actionDeleteRow">
+  <action name="actionDeleteRowAbove">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="icon">
     <iconset resource="icons.qrc">
-     <normaloff>:/icons/icons/deleterow.png</normaloff>:/icons/icons/deleterow.png</iconset>
+     <normaloff>:/icons/icons/deleterowabove.png</normaloff>:/icons/icons/deleterowabove.png</iconset>
    </property>
    <property name="text">
-    <string>Delete row</string>
+    <string>Delete row above</string>
+   </property>
+   <property name="shortcut">
+    <string>-, Down</string>
    </property>
   </action>
-  <action name="actionDeleteColumn">
+  <action name="actionDeleteColumnLeft">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="icon">
     <iconset resource="icons.qrc">
-     <normaloff>:/icons/icons/deletecolumn.png</normaloff>:/icons/icons/deletecolumn.png</iconset>
+     <normaloff>:/icons/icons/deletecolumnleft.png</normaloff>:/icons/icons/deletecolumnleft.png</iconset>
    </property>
    <property name="text">
-    <string>Delete column</string>
+    <string>Delete column left</string>
+   </property>
+   <property name="shortcut">
+    <string>-, Right</string>
+   </property>
+  </action>
+  <action name="actionDeleteRowBelow">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="icons.qrc">
+     <normaloff>:/icons/icons/deleterowbelow.png</normaloff>:/icons/icons/deleterowbelow.png</iconset>
+   </property>
+   <property name="text">
+    <string>Delete row below</string>
+   </property>
+   <property name="shortcut">
+    <string>-, Up</string>
+   </property>
+  </action>
+  <action name="actionDeleteColumnRight">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="icons.qrc">
+     <normaloff>:/icons/icons/deletecolumnright.png</normaloff>:/icons/icons/deletecolumnright.png</iconset>
+   </property>
+   <property name="text">
+    <string>Delete column right</string>
+   </property>
+   <property name="shortcut">
+    <string>-, Left</string>
    </property>
   </action>
  </widget>
