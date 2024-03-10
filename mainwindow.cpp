@@ -236,6 +236,13 @@ void MainWindow::triggeredActionInsertRowAbove()
     /* insert new row above Battle Map */
     m_battleMap->insertRowAbove();
 
+    /* enable actions for decrement depending on current number of rows */
+    if (BATTLEMAP_MINIMUMNUMBERROWSANDCOLUMNS < m_battleMap->getNumberRows())
+    {
+        m_userInterface->actionDeleteRowAbove->setEnabled(true);
+        m_userInterface->actionDeleteRowBelow->setEnabled(true);
+    }
+
     /* check whether number of rows displayable on player screen is greater than or equal to total number of rows of Battle Map */
     quint32 numberRowsOnPlayerScreen = static_cast<quint32>(calcScreenHeightInInches(CONFIG_PLAYER_SCREEN_DIAGONAL, CONFIG_PLAYER_SCREEN_RESOLUTION.height(), CONFIG_PLAYER_SCREEN_RESOLUTION.width()));
     if (m_battleMap->getNumberRows() <= numberRowsOnPlayerScreen)
@@ -262,6 +269,13 @@ void MainWindow::triggeredActionInsertRowBelow()
     /* insert new row below Battle Map */
     m_battleMap->insertRowBelow();
 
+    /* enable actions for decrement depending on current number of rows */
+    if (BATTLEMAP_MINIMUMNUMBERROWSANDCOLUMNS < m_battleMap->getNumberRows())
+    {
+        m_userInterface->actionDeleteRowAbove->setEnabled(true);
+        m_userInterface->actionDeleteRowBelow->setEnabled(true);
+    }
+
     /* check whether number of rows displayable on player screen is greater than or equal to total number of rows of Battle Map */
     quint32 numberRowsOnPlayerScreen = static_cast<quint32>(calcScreenHeightInInches(CONFIG_PLAYER_SCREEN_DIAGONAL, CONFIG_PLAYER_SCREEN_RESOLUTION.height(), CONFIG_PLAYER_SCREEN_RESOLUTION.width()));
     if (m_battleMap->getNumberRows() <= numberRowsOnPlayerScreen)
@@ -282,6 +296,13 @@ void MainWindow::triggeredActionInsertColumnLeft()
 {
     /* insert new column to the left of Battle Map */
     m_battleMap->insertColumnLeft();
+
+    /* enable actions for decrement depending on current number of columns */
+    if (BATTLEMAP_MINIMUMNUMBERROWSANDCOLUMNS < m_battleMap->getNumberColumns())
+    {
+        m_userInterface->actionDeleteColumnLeft->setEnabled(true);
+        m_userInterface->actionDeleteColumnRight->setEnabled(true);
+    }
 
     /* check whether number of columns displayable on player screen is greater than or equal to total number of columns of Battle Map */
     quint32 numberColumnsOnPlayerScreen = static_cast<quint32>(calcScreenWidthInInches(CONFIG_PLAYER_SCREEN_DIAGONAL, CONFIG_PLAYER_SCREEN_RESOLUTION.height(), CONFIG_PLAYER_SCREEN_RESOLUTION.width()));
@@ -309,6 +330,13 @@ void MainWindow::triggeredActionInsertColumnRight()
     /* insert new column to the right of Battle Map */
     m_battleMap->insertColumnRight();
 
+    /* enable actions for decrement depending on current number of columns */
+    if (BATTLEMAP_MINIMUMNUMBERROWSANDCOLUMNS < m_battleMap->getNumberColumns())
+    {
+        m_userInterface->actionDeleteColumnLeft->setEnabled(true);
+        m_userInterface->actionDeleteColumnRight->setEnabled(true);
+    }
+
     /* check whether number of columns displayable on player screen is greater than or equal to total number of columns of Battle Map */
     quint32 numberColumnsOnPlayerScreen = static_cast<quint32>(calcScreenWidthInInches(CONFIG_PLAYER_SCREEN_DIAGONAL, CONFIG_PLAYER_SCREEN_RESOLUTION.height(), CONFIG_PLAYER_SCREEN_RESOLUTION.width()));
     if (m_battleMap->getNumberColumns() <= numberColumnsOnPlayerScreen)
@@ -329,6 +357,18 @@ void MainWindow::triggeredActionDeleteRowAbove()
 {
     /* delete row above Battle Map */
     m_battleMap->deleteRowAbove();
+
+    /* enable or disable actions for decrement depending on current number of rows */
+    if (BATTLEMAP_MINIMUMNUMBERROWSANDCOLUMNS == m_battleMap->getNumberRows())
+    {
+        m_userInterface->actionDeleteRowAbove->setEnabled(false);
+        m_userInterface->actionDeleteRowBelow->setEnabled(false);
+    }
+    else
+    {
+        m_userInterface->actionDeleteRowAbove->setEnabled(true);
+        m_userInterface->actionDeleteRowBelow->setEnabled(true);
+    }
 
     /* check whether number of rows displayable on player screen is greater than total number of rows of Battle Map */
     quint32 numberRowsOnPlayerScreen = static_cast<quint32>(calcScreenHeightInInches(CONFIG_PLAYER_SCREEN_DIAGONAL, CONFIG_PLAYER_SCREEN_RESOLUTION.height(), CONFIG_PLAYER_SCREEN_RESOLUTION.width()));
@@ -359,6 +399,18 @@ void MainWindow::triggeredActionDeleteRowBelow()
     /* delete row below Battle Map */
     m_battleMap->deleteRowBelow();
 
+    /* enable or disable actions for decrement depending on current number of rows */
+    if (BATTLEMAP_MINIMUMNUMBERROWSANDCOLUMNS == m_battleMap->getNumberRows())
+    {
+        m_userInterface->actionDeleteRowAbove->setEnabled(false);
+        m_userInterface->actionDeleteRowBelow->setEnabled(false);
+    }
+    else
+    {
+        m_userInterface->actionDeleteRowAbove->setEnabled(true);
+        m_userInterface->actionDeleteRowBelow->setEnabled(true);
+    }
+
     /* check whether number of rows displayable on player screen is greater than total number of rows of Battle Map */
     quint32 numberRowsOnPlayerScreen = static_cast<quint32>(calcScreenHeightInInches(CONFIG_PLAYER_SCREEN_DIAGONAL, CONFIG_PLAYER_SCREEN_RESOLUTION.height(), CONFIG_PLAYER_SCREEN_RESOLUTION.width()));
     if (m_battleMap->getNumberRows() < numberRowsOnPlayerScreen)
@@ -388,6 +440,18 @@ void MainWindow::triggeredActionDeleteColumnLeft()
     /* delete column to the left of Battle Map */
     m_battleMap->deleteColumnLeft();
 
+    /* enable or disable actions for decrement depending on current number of columns */
+    if (BATTLEMAP_MINIMUMNUMBERROWSANDCOLUMNS == m_battleMap->getNumberColumns())
+    {
+        m_userInterface->actionDeleteColumnLeft->setEnabled(false);
+        m_userInterface->actionDeleteColumnRight->setEnabled(false);
+    }
+    else
+    {
+        m_userInterface->actionDeleteColumnLeft->setEnabled(true);
+        m_userInterface->actionDeleteColumnRight->setEnabled(true);
+    }
+
     /* check whether number of columns displayable on player screen is greater than total number of columns of Battle Map */
     quint32 numberColumnsOnPlayerScreen = static_cast<quint32>(calcScreenWidthInInches(CONFIG_PLAYER_SCREEN_DIAGONAL, CONFIG_PLAYER_SCREEN_RESOLUTION.height(), CONFIG_PLAYER_SCREEN_RESOLUTION.width()));
     if (m_battleMap->getNumberColumns() < numberColumnsOnPlayerScreen)
@@ -416,6 +480,18 @@ void MainWindow::triggeredActionDeleteColumnRight()
 {
     /* delete column to the right of Battle Map */
     m_battleMap->deleteColumnRight();
+
+    /* enable or disable actions for decrement depending on current number of columns */
+    if (BATTLEMAP_MINIMUMNUMBERROWSANDCOLUMNS == m_battleMap->getNumberColumns())
+    {
+        m_userInterface->actionDeleteColumnLeft->setEnabled(false);
+        m_userInterface->actionDeleteColumnRight->setEnabled(false);
+    }
+    else
+    {
+        m_userInterface->actionDeleteColumnLeft->setEnabled(true);
+        m_userInterface->actionDeleteColumnRight->setEnabled(true);
+    }
 
     /* check whether number of columns displayable on player screen is greater than total number of columns of Battle Map */
     quint32 numberColumnsOnPlayerScreen = static_cast<quint32>(calcScreenWidthInInches(CONFIG_PLAYER_SCREEN_DIAGONAL, CONFIG_PLAYER_SCREEN_RESOLUTION.height(), CONFIG_PLAYER_SCREEN_RESOLUTION.width()));
