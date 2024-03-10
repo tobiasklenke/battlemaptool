@@ -178,7 +178,10 @@ void PlayerScreenHandler::updateBattleMapImage()
                     quint32 columnToHandle = numberColumns - 1U - columnIdx;
 
                     /* remove Battle Map square from Battle Map scene */
-                    m_battleMapScene->removeItem(m_battleMapSquaresGraphicsItems[rowToHandle][columnToHandle]);
+                    if (m_battleMapScene->items().contains(m_battleMapSquaresGraphicsItems[rowToHandle][columnToHandle]))
+                    {
+                        m_battleMapScene->removeItem(m_battleMapSquaresGraphicsItems[rowToHandle][columnToHandle]);
+                    }
 
                     delete m_battleMapSquaresGraphicsItems[rowToHandle][columnToHandle];
                 }
@@ -205,7 +208,10 @@ void PlayerScreenHandler::updateBattleMapImage()
                     quint32 rowToHandle = numberRows - 1U - rowIdx;
 
                     /* remove Battle Map square from Battle Map scene */
-                    m_battleMapScene->removeItem(m_battleMapSquaresGraphicsItems[rowToHandle][columnToHandle]);
+                    if (m_battleMapScene->items().contains(m_battleMapSquaresGraphicsItems[rowToHandle][columnToHandle]))
+                    {
+                        m_battleMapScene->removeItem(m_battleMapSquaresGraphicsItems[rowToHandle][columnToHandle]);
+                    }
 
                     delete m_battleMapSquaresGraphicsItems[rowToHandle][columnToHandle];
                     m_battleMapSquaresGraphicsItems[rowToHandle].removeAt(columnToHandle);
@@ -255,18 +261,33 @@ void PlayerScreenHandler::insertRowAbove()
     /* insert new row above Battle Map */
     m_battleMapSquaresGraphicsItems.prepend(QList<CustomGraphicsPixmapItem*>());
 
-    for (quint32 columnIdx = 0U; columnIdx < m_battleMap->getNumberColumns(); columnIdx++)
+    /* columnIdx only considers columns that shall not be deleted on update */
+    quint32 columnIdx = 0U;
+
+    /* totalColumnIdx considers all columns, including those that shall be deleted on update */
+    for (quint32 totalColumnIdx = 0U; totalColumnIdx < m_deleteColumnsOnUpdate.count(); totalColumnIdx++)
     {
-        /* append graphics item of Battle Map square to row */
-        QPixmap scaledPixmap = m_battleMap->getBattleMapSquarePixmap(0U, columnIdx).scaled(QSize(m_edgeLengthInPixels, m_edgeLengthInPixels));
-        m_battleMapSquaresGraphicsItems.first().append(new CustomGraphicsPixmapItem(scaledPixmap));
-        m_battleMapSquaresGraphicsItems.first()[columnIdx]->setVisible(false);
+        if (m_deleteColumnsOnUpdate[totalColumnIdx])
+        {
+            /* append empty graphics item since row shall be deleted on update */
+            m_battleMapSquaresGraphicsItems.first().append(new CustomGraphicsPixmapItem());
+        }
+        else
+        {
+            /* append graphics item of Battle Map square to row */
+            QPixmap scaledPixmap = m_battleMap->getBattleMapSquarePixmap(0U, columnIdx).scaled(QSize(m_edgeLengthInPixels, m_edgeLengthInPixels));
+            m_battleMapSquaresGraphicsItems.first().append(new CustomGraphicsPixmapItem(scaledPixmap));
+            m_battleMapSquaresGraphicsItems.first()[totalColumnIdx]->setVisible(false);
 
-        /* put Battle Map square graphics items to background so that wind rose graphics item is completely visible */
-        m_battleMapSquaresGraphicsItems.first()[columnIdx]->setZValue(BACKGROUNDEDGRAPHICSITEM_ZVALUE);
+            /* put Battle Map square graphics items to background so that wind rose graphics item is completely visible */
+            m_battleMapSquaresGraphicsItems.first()[totalColumnIdx]->setZValue(BACKGROUNDEDGRAPHICSITEM_ZVALUE);
 
-        /* add Battle Map square to Battle Map scene */
-        m_battleMapScene->addItem(m_battleMapSquaresGraphicsItems.first()[columnIdx]);
+            /* add Battle Map square to Battle Map scene */
+            m_battleMapScene->addItem(m_battleMapSquaresGraphicsItems.first()[totalColumnIdx]);
+
+            /* increment column index of Battle Map */
+            columnIdx++;
+        }
     }
 
     /* add row to m_deleteRowsOnUpdate that shall not be deleted on update */
@@ -284,18 +305,33 @@ void PlayerScreenHandler::insertRowBelow()
     /* insert new row below Battle Map */
     m_battleMapSquaresGraphicsItems.append(QList<CustomGraphicsPixmapItem*>());
 
-    for (quint32 columnIdx = 0U; columnIdx < m_battleMap->getNumberColumns(); columnIdx++)
+    /* columnIdx only considers columns that shall not be deleted on update */
+    quint32 columnIdx = 0U;
+
+    /* totalColumnIdx considers all columns, including those that shall be deleted on update */
+    for (quint32 totalColumnIdx = 0U; totalColumnIdx < m_deleteColumnsOnUpdate.count(); totalColumnIdx++)
     {
-        /* append graphics item of Battle Map square to row */
-        QPixmap scaledPixmap = m_battleMap->getBattleMapSquarePixmap(m_battleMap->getNumberRows() - 1U, columnIdx).scaled(QSize(m_edgeLengthInPixels, m_edgeLengthInPixels));
-        m_battleMapSquaresGraphicsItems.last().append(new CustomGraphicsPixmapItem(scaledPixmap));
-        m_battleMapSquaresGraphicsItems.last()[columnIdx]->setVisible(false);
+        if (m_deleteColumnsOnUpdate[totalColumnIdx])
+        {
+            /* append empty graphics item since row shall be deleted on update */
+            m_battleMapSquaresGraphicsItems.last().append(new CustomGraphicsPixmapItem());
+        }
+        else
+        {
+            /* append graphics item of Battle Map square to row */
+            QPixmap scaledPixmap = m_battleMap->getBattleMapSquarePixmap(m_battleMap->getNumberRows() - 1U, columnIdx).scaled(QSize(m_edgeLengthInPixels, m_edgeLengthInPixels));
+            m_battleMapSquaresGraphicsItems.last().append(new CustomGraphicsPixmapItem(scaledPixmap));
+            m_battleMapSquaresGraphicsItems.last()[totalColumnIdx]->setVisible(false);
 
-        /* put Battle Map square graphics items to background so that wind rose graphics item is completely visible */
-        m_battleMapSquaresGraphicsItems.last()[columnIdx]->setZValue(BACKGROUNDEDGRAPHICSITEM_ZVALUE);
+            /* put Battle Map square graphics items to background so that wind rose graphics item is completely visible */
+            m_battleMapSquaresGraphicsItems.last()[totalColumnIdx]->setZValue(BACKGROUNDEDGRAPHICSITEM_ZVALUE);
 
-        /* add Battle Map square to Battle Map scene */
-        m_battleMapScene->addItem(m_battleMapSquaresGraphicsItems.last()[columnIdx]);
+            /* add Battle Map square to Battle Map scene */
+            m_battleMapScene->addItem(m_battleMapSquaresGraphicsItems.last()[totalColumnIdx]);
+
+            /* increment column index of Battle Map */
+            columnIdx++;
+        }
     }
 
     /* add row to m_deleteRowsOnUpdate that shall not be deleted on update */
@@ -310,19 +346,34 @@ void PlayerScreenHandler::insertRowBelow()
  */
 void PlayerScreenHandler::insertColumnLeft()
 {
+    /* rowIdx only considers rows that shall not be deleted on update */
+    quint32 rowIdx = 0U;
+
     /* insert new column to the left of Battle Map */
-    for (quint32 rowIdx = 0U; rowIdx < m_battleMap->getNumberRows(); rowIdx++)
+    /* totalRowIdx considers all rows, including those that shall be deleted on update */
+    for (quint32 totalRowIdx = 0U; totalRowIdx < m_deleteRowsOnUpdate.count(); totalRowIdx++)
     {
-        /* append graphics item of Battle Map square to column */
-        QPixmap scaledPixmap = m_battleMap->getBattleMapSquarePixmap(rowIdx, 0U).scaled(QSize(m_edgeLengthInPixels, m_edgeLengthInPixels));
-        m_battleMapSquaresGraphicsItems[rowIdx].prepend(new CustomGraphicsPixmapItem(scaledPixmap));
-        m_battleMapSquaresGraphicsItems[rowIdx].first()->setVisible(false);
+        if (m_deleteRowsOnUpdate[totalRowIdx])
+        {
+            /* prepend empty graphics item since row shall be deleted on update */
+            m_battleMapSquaresGraphicsItems[totalRowIdx].prepend(new CustomGraphicsPixmapItem());
+        }
+        else
+        {
+            /* prepend graphics item of Battle Map square to column */
+            QPixmap scaledPixmap = m_battleMap->getBattleMapSquarePixmap(rowIdx, 0U).scaled(QSize(m_edgeLengthInPixels, m_edgeLengthInPixels));
+            m_battleMapSquaresGraphicsItems[totalRowIdx].prepend(new CustomGraphicsPixmapItem(scaledPixmap));
+            m_battleMapSquaresGraphicsItems[totalRowIdx].first()->setVisible(false);
 
-        /* put Battle Map square graphics items to background so that wind rose graphics item is completely visible */
-        m_battleMapSquaresGraphicsItems[rowIdx].first()->setZValue(BACKGROUNDEDGRAPHICSITEM_ZVALUE);
+            /* put Battle Map square graphics items to background so that wind rose graphics item is completely visible */
+            m_battleMapSquaresGraphicsItems[totalRowIdx].first()->setZValue(BACKGROUNDEDGRAPHICSITEM_ZVALUE);
 
-        /* add Battle Map square to Battle Map scene */
-        m_battleMapScene->addItem(m_battleMapSquaresGraphicsItems[rowIdx].first());
+            /* add Battle Map square to Battle Map scene */
+            m_battleMapScene->addItem(m_battleMapSquaresGraphicsItems[totalRowIdx].first());
+
+            /* increment row index of Battle Map */
+            rowIdx++;
+        }
     }
 
     /* add column to m_deleteColumnsOnUpdate that shall not be deleted on update */
@@ -337,19 +388,34 @@ void PlayerScreenHandler::insertColumnLeft()
  */
 void PlayerScreenHandler::insertColumnRight()
 {
-    /* insert new column to the right of Battle Map */
-    for (quint32 rowIdx = 0U; rowIdx < m_battleMap->getNumberRows(); rowIdx++)
+    /* rowIdx only considers rows that shall not be deleted on update */
+    quint32 rowIdx = 0U;
+
+    /* insert new column to the left of Battle Map */
+    /* totalRowIdx considers all rows, including those that shall be deleted on update */
+    for (quint32 totalRowIdx = 0U; totalRowIdx < m_deleteRowsOnUpdate.count(); totalRowIdx++)
     {
-        /* append graphics item of Battle Map square to column */
-        QPixmap scaledPixmap = m_battleMap->getBattleMapSquarePixmap(rowIdx, m_battleMap->getNumberColumns() - 1U).scaled(QSize(m_edgeLengthInPixels, m_edgeLengthInPixels));
-        m_battleMapSquaresGraphicsItems[rowIdx].append(new CustomGraphicsPixmapItem(scaledPixmap));
-        m_battleMapSquaresGraphicsItems[rowIdx].last()->setVisible(false);
+        if (m_deleteRowsOnUpdate[totalRowIdx])
+        {
+            /* append empty graphics item since row shall be deleted on update */
+            m_battleMapSquaresGraphicsItems[totalRowIdx].append(new CustomGraphicsPixmapItem());
+        }
+        else
+        {
+            /* append graphics item of Battle Map square to column */
+            QPixmap scaledPixmap = m_battleMap->getBattleMapSquarePixmap(rowIdx, m_battleMap->getNumberColumns() - 1U).scaled(QSize(m_edgeLengthInPixels, m_edgeLengthInPixels));
+            m_battleMapSquaresGraphicsItems[totalRowIdx].append(new CustomGraphicsPixmapItem(scaledPixmap));
+            m_battleMapSquaresGraphicsItems[totalRowIdx].last()->setVisible(false);
 
-        /* put Battle Map square graphics items to background so that wind rose graphics item is completely visible */
-        m_battleMapSquaresGraphicsItems[rowIdx].last()->setZValue(BACKGROUNDEDGRAPHICSITEM_ZVALUE);
+            /* put Battle Map square graphics items to background so that wind rose graphics item is completely visible */
+            m_battleMapSquaresGraphicsItems[totalRowIdx].last()->setZValue(BACKGROUNDEDGRAPHICSITEM_ZVALUE);
 
-        /* add Battle Map square to Battle Map scene */
-        m_battleMapScene->addItem(m_battleMapSquaresGraphicsItems[rowIdx].last());
+            /* add Battle Map square to Battle Map scene */
+            m_battleMapScene->addItem(m_battleMapSquaresGraphicsItems[totalRowIdx].last());
+
+            /* increment row index of Battle Map */
+            rowIdx++;
+        }
     }
 
     /* add column to m_deleteColumnsOnUpdate that shall not be deleted on update */
