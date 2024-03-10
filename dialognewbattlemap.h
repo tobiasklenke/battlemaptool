@@ -122,8 +122,8 @@ private slots:
      * \brief   This function handles the editing of lineEditNumberRows.                                                                            *
      *                                                                                                                                              *
      * \details This function checks the text string of lineEditNumberRows for a valid format and updates the number of rows according to the input *
-	 *          value if the text string is interpretable as positive number. In case of an invalid format or a negative number, it shows a message *
-	 *          box. Afterwards, it enables or disables the push button for decrement depending on the current number of rows. If                   *
+	 *          value if the text string is interpretable as positive number. In case of an invalid format or a not possible number, it shows a     *
+	 *          message box. Afterwards, it enables or disables the push button for decrement depending on the current number of rows. If           *
 	 *          radioButtonSourceBattleMap is checked, it corrects the number of columns considering the Battle Map image aspect ratio, checks if   *
 	 *          the Battle Map grid covers the complete Battle Map image (which affects push button with AcceptRole) and draws the Battle Map grid. *
 	 *          Otherwise, it checks if the number of rows and columns are both greater 0 (which affects push button with AcceptRole) and shows the *
@@ -137,8 +137,8 @@ private slots:
      * \brief   This function handles the editing of lineEditNumberColumns.                                                                         *
      *                                                                                                                                              *
      * \details This function checks the text string of lineEditNumberColumns for a valid format and updates the number of columns according to the *
-	 *          input value if the text string is interpretable as positive number. In case of an invalid format or a negative number, it shows a   *
-	 *          message box. Afterwards, it enables or disables the push button for decrement depending on the current number of columns. If        *
+	 *          input value if the text string is interpretable as positive number. In case of an invalid format or a not possible number, it shows *
+	 *          a message box. Afterwards, it enables or disables the push button for decrement depending on the current number of columns. If      *
 	 *          radioButtonSourceBattleMap is checked, it corrects the number of rows considering the Battle Map image aspect ratio, checks if the  *
 	 *          Battle Map grid covers the complete Battle Map image (which affects push button with AcceptRole) and draws the Battle Map grid.     *
 	 *          Otherwise, it checks if the number of rows and columns are both greater 0 (which affects push button with AcceptRole) and shows the *
@@ -164,10 +164,11 @@ private slots:
     /*! *********************************************************************************************************************************************
      * \brief   This function handles a click on pushButtonIncrementNumberRows.                                                                     *
      *                                                                                                                                              *
-     * \details This function increments the number of rows. If radioButtonSourceBattleMap is checked, it corrects the number of columns            *
-	 *          considering the Battle Map image aspect ratio, checks if the Battle Map grid covers the complete Battle Map image (which affects    *
-	 *          push button with AcceptRole) and draws the Battle Map grid. Otherwise, it checks if the number of rows and columns are both greater *
-	 *          0 (which affects push button with AcceptRole) and shows the empty Battle Map image.                                                 *
+     * \details This function increments the number of rows. Afterwards, it enables the push button for decrement depending on the current number   *
+	 *          of rows. If radioButtonSourceBattleMap is checked, it corrects the number of columns considering the Battle Map image aspect ratio, *
+	 *          checks if the Battle Map grid covers the complete Battle Map image (which affects push button with AcceptRole) and draws the Battle *
+	 *          Map grid. Otherwise, it checks if the number of rows and columns are both greater 0 (which affects push button with AcceptRole) and *
+	 *          shows the empty Battle Map image.                                                                                                   *
      *                                                                                                                                              *
      * \return  This function does not have any return value.                                                                                       *
      ************************************************************************************************************************************************/
@@ -189,10 +190,11 @@ private slots:
     /*! *********************************************************************************************************************************************
      * \brief   This function handles a click on pushButtonIncrementNumberColumns.                                                                  *
      *                                                                                                                                              *
-     * \details This function increments the number of columns. If radioButtonSourceBattleMap is checked, it corrects the number of rows            *
-	 *          considering the Battle Map image aspect ratio, checks if the Battle Map grid covers the complete Battle Map image (which affects    *
-	 *          push button with AcceptRole) and draws the Battle Map grid. Otherwise, it checks if the number of rows and columns are both greater *
-	 *          0 (which affects push button with AcceptRole) and shows the empty Battle Map image.                                                 *
+     * \details This function increments the number of columns. Afterwards, it enables the push button for decrement depending on the current       *
+	 *          number of columns. If radioButtonSourceBattleMap is checked, it corrects the number of rows considering the Battle Map image aspect *
+	 *          ratio, checks if the Battle Map grid covers the complete Battle Map image (which affects push button with AcceptRole) and draws the *
+	 *          Battle Map grid. Otherwise, it checks if the number of rows and columns are both greater 0 (which affects push button with          *
+	 *          AcceptRole) and shows the empty Battle Map image.                                                                                   *
      *                                                                                                                                              *
      * \return  This function does not have any return value.                                                                                       *
      ************************************************************************************************************************************************/

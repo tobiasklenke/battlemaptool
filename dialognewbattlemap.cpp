@@ -204,9 +204,9 @@ void DialogNewBattleMap::editingFinishedLineEditNumberRows()
     bool validNumber;
     qint32 inputValue = m_userInterface->lineEditNumberRows->text().toInt(&validNumber, 10);
 
-    if (!validNumber || 0 > inputValue)
+    if (!validNumber || BATTLEMAP_MINIMUMNUMBERROWSANDCOLUMNS > inputValue)
     {
-        /* show message box in case of invalid format or negative number */
+        /* show message box in case of invalid format or not positive number */
         QMessageBox msgBox(this);
         msgBox.setWindowTitle("Invalid input");
         msgBox.setText("Input '" + m_userInterface->lineEditNumberRows->text() + "' is invalid.");
@@ -223,7 +223,7 @@ void DialogNewBattleMap::editingFinishedLineEditNumberRows()
     }
 
     /* enable or disable push button for decrement depending on current number of rows */
-    if (0U == m_battleMap->getNumberRows())
+    if (BATTLEMAP_MINIMUMNUMBERROWSANDCOLUMNS == m_battleMap->getNumberRows())
     {
         m_userInterface->pushButtonDecrementNumberRows->setEnabled(false);
     }
@@ -258,9 +258,9 @@ void DialogNewBattleMap::editingFinishedLineEditNumberColumns()
     bool validNumber;
     qint32 inputValue = m_userInterface->lineEditNumberColumns->text().toInt(&validNumber, 10);
 
-    if (!validNumber || 0 > inputValue)
+    if (!validNumber || BATTLEMAP_MINIMUMNUMBERROWSANDCOLUMNS > inputValue)
     {
-        /* show message box in case of invalid format or negative number */
+        /* show message box in case of invalid format or not positive number */
         QMessageBox msgBox(this);
         msgBox.setWindowTitle("Invalid input");
         msgBox.setText("Input '" + m_userInterface->lineEditNumberColumns->text() + "' is invalid.");
@@ -277,7 +277,7 @@ void DialogNewBattleMap::editingFinishedLineEditNumberColumns()
     }
 
     /* enable or disable push button for decrement depending on current number of columns */
-    if (0U == m_battleMap->getNumberColumns())
+    if (BATTLEMAP_MINIMUMNUMBERROWSANDCOLUMNS == m_battleMap->getNumberColumns())
     {
         m_userInterface->pushButtonDecrementNumberColumns->setEnabled(false);
     }
@@ -313,7 +313,7 @@ void DialogNewBattleMap::releasedPushButtonDecrementNumberRows()
     m_userInterface->lineEditNumberRows->setText(QString::number(m_battleMap->getNumberRows()));
 
     /* enable or disable push button for decrement depending on current number of rows */
-    if (0U == m_battleMap->getNumberRows())
+    if (BATTLEMAP_MINIMUMNUMBERROWSANDCOLUMNS == m_battleMap->getNumberRows())
     {
         m_userInterface->pushButtonDecrementNumberRows->setEnabled(false);
     }
@@ -348,6 +348,12 @@ void DialogNewBattleMap::releasedPushButtonIncrementNumberRows()
     m_battleMap->setNumberRows(m_battleMap->getNumberRows() + 1);
     m_userInterface->lineEditNumberRows->setText(QString::number(m_battleMap->getNumberRows()));
 
+    /* enable push button for decrement depending on current number of rows */
+    if (BATTLEMAP_MINIMUMNUMBERROWSANDCOLUMNS < m_battleMap->getNumberRows())
+    {
+        m_userInterface->pushButtonDecrementNumberRows->setEnabled(true);
+    }
+
     if (m_userInterface->radioButtonSourceBattleMap->isChecked())
     {
         /* correct number of columns considering Battle Map image aspect ratio */
@@ -375,7 +381,7 @@ void DialogNewBattleMap::releasedPushButtonDecrementNumberColumns()
     m_userInterface->lineEditNumberColumns->setText(QString::number(m_battleMap->getNumberColumns()));
 
     /* enable or disable push button for decrement depending on current number of columns */
-    if (0U == m_battleMap->getNumberColumns())
+    if (BATTLEMAP_MINIMUMNUMBERROWSANDCOLUMNS == m_battleMap->getNumberColumns())
     {
         m_userInterface->pushButtonDecrementNumberColumns->setEnabled(false);
     }
@@ -409,6 +415,12 @@ void DialogNewBattleMap::releasedPushButtonIncrementNumberColumns()
     /* increment number of columns */
     m_battleMap->setNumberColumns(m_battleMap->getNumberColumns() + 1);
     m_userInterface->lineEditNumberColumns->setText(QString::number(m_battleMap->getNumberColumns()));
+
+    /* enable push button for decrement depending on current number of columns */
+    if (BATTLEMAP_MINIMUMNUMBERROWSANDCOLUMNS < m_battleMap->getNumberColumns())
+    {
+        m_userInterface->pushButtonDecrementNumberColumns->setEnabled(true);
+    }
 
     if (m_userInterface->radioButtonSourceBattleMap->isChecked())
     {
