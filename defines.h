@@ -42,6 +42,11 @@
 /* Battle Map parameters */
 
 /*!
+ * \brief This is the minimum number of rows and columns of the Battle Map.
+ */
+#define BATTLEMAP_MINIMUMNUMBERROWSANDCOLUMNS              1
+
+/*!
  * \brief This is the line color of the Battle Map grid.
  */
 #define BATTLEMAPGRID_COLOR                                Qt::black
