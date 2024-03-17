@@ -131,6 +131,16 @@
 /* Icon resource paths */
 
 /*!
+ * \brief This is the resource file path of the Undo icon.
+ */
+#define UNDOICON_SOURCE                                    ":/icons/icons/undo.png"
+
+/*!
+ * \brief This is the resource file path of the Redo icon.
+ */
+#define REDOICON_SOURCE                                    ":/icons/icons/redo.png"
+
+/*!
  * \brief This is the resource file path of the CoverBattleMap icon.
  */
 #define COVERBATTLEMAPICON_SOURCE                          ":/icons/icons/coverbattlemap.png"
