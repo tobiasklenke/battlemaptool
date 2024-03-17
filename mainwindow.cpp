@@ -15,6 +15,7 @@
 MainWindow::MainWindow(QGraphicsView *playerWindow, QWidget *parent) :
     QMainWindow(parent),
     m_userInterface(new Ui::MainWindow),
+    m_undoStack(new QUndoStack(this)),
     m_operationModeActionGroup(new QActionGroup(this)),
     m_windRoseOrientationActionGroup(new QActionGroup(this)),
     m_dialogNewBattleMap(nullptr),
@@ -22,6 +23,15 @@ MainWindow::MainWindow(QGraphicsView *playerWindow, QWidget *parent) :
 {
     /* set up the user interface */
     m_userInterface->setupUi(this);
+
+    /* add undo stack actions to menu */
+    m_undoAction = m_undoStack->createUndoAction(this, "Undo");
+    m_undoAction->setIcon(QIcon(UNDOICON_SOURCE));
+    m_undoAction->setShortcuts(QKeySequence::Undo);
+    m_redoAction = m_undoStack->createRedoAction(this, "Redo");
+    m_redoAction->setIcon(QIcon(REDOICON_SOURCE));
+    m_redoAction->setShortcuts(QKeySequence::Redo);
+    m_userInterface->menuEdit->insertActions(m_userInterface->menuEdit->actions().at(0), QList<QAction *>({m_undoAction, m_redoAction}));
 
     /* pass graphics views and Battle Map scene sections to master and player screen handlers */
     m_masterScreenHandler.setGraphicsView(m_userInterface->graphicsViewBattleMapMasterScreen);
@@ -47,8 +57,6 @@ MainWindow::MainWindow(QGraphicsView *playerWindow, QWidget *parent) :
     connect(m_userInterface->actionQuit, SIGNAL(triggered()), QApplication::instance(), SLOT(quit()));
 
     /* connect signals and slots of actions from menu Edit */
-    connect(m_userInterface->actionUndo, SIGNAL(triggered()), this, SLOT(triggeredActionUndo()));
-    connect(m_userInterface->actionRedo, SIGNAL(triggered()), this, SLOT(triggeredActionRedo()));
     connect(m_userInterface->actionInsertRowAbove, SIGNAL(triggered()), this, SLOT(triggeredActionInsertRowAbove()));
     connect(m_userInterface->actionInsertRowBelow, SIGNAL(triggered()), this, SLOT(triggeredActionInsertRowBelow()));
     connect(m_userInterface->actionInsertColumnLeft, SIGNAL(triggered()), this, SLOT(triggeredActionInsertColumnLeft()));
@@ -209,56 +217,12 @@ void MainWindow::rejectedDialogNewBattleMap()
 }
 
 /*!
- * \brief This function handles the action actionUndo.
- */
-void MainWindow::triggeredActionUndo()
-{
-    //TODO  implement undo framework
-
-    qDebug() << __func__;
-}
-
-/*!
- * \brief This function handles the action actionUndo.
- */
-void MainWindow::triggeredActionRedo()
-{
-    //TODO  implement undo framework
-
-    qDebug() << __func__;
-}
-
-/*!
  * \brief This function handles the action actionInsertRowAbove.
  */
 void MainWindow::triggeredActionInsertRowAbove()
 {
-    /* insert new row above Battle Map */
-    m_battleMap->insertRowAbove();
-
-    /* enable actions for decrement depending on current number of rows */
-    if (BATTLEMAP_MINIMUMNUMBERROWSANDCOLUMNS < m_battleMap->getNumberRows())
-    {
-        m_userInterface->actionDeleteRowAbove->setEnabled(true);
-        m_userInterface->actionDeleteRowBelow->setEnabled(true);
-    }
-
-    /* check whether number of rows displayable on player screen is greater than or equal to total number of rows of Battle Map */
-    quint32 numberRowsOnPlayerScreen = static_cast<quint32>(calcScreenHeightInInches(CONFIG_PLAYER_SCREEN_DIAGONAL, CONFIG_PLAYER_SCREEN_RESOLUTION.height(), CONFIG_PLAYER_SCREEN_RESOLUTION.width()));
-    if (m_battleMap->getNumberRows() <= numberRowsOnPlayerScreen)
-    {
-        /* increment number of rows of Battle Map scene section */
-        m_battleMapSceneSection.setNumberRowsSceneSection(m_battleMapSceneSection.getNumberRowsSceneSection() + 1U);
-    }
-    else
-    {
-        /* increment index of first row of Battle Map scene section */
-        m_battleMapSceneSection.setIndexFirstRowSceneSection(m_battleMapSceneSection.getIndexFirstRowSceneSection() + 1U);
-    }
-
-    /* insert new Battle Map square graphics items for screen handlers */
-    m_masterScreenHandler.insertRowAbove();
-    m_playerScreenHandler.insertRowAbove();
+    /* push command UndoCommandInsertRowAbove to undo stack and apply it by calling its function redo() */
+    m_undoStack->push(new UndoCommandInsertRowAbove(m_userInterface, m_battleMap, &m_battleMapSceneSection, &m_masterScreenHandler, &m_playerScreenHandler));
 }
 
 /*!
@@ -266,27 +230,8 @@ void MainWindow::triggeredActionInsertRowAbove()
  */
 void MainWindow::triggeredActionInsertRowBelow()
 {
-    /* insert new row below Battle Map */
-    m_battleMap->insertRowBelow();
-
-    /* enable actions for decrement depending on current number of rows */
-    if (BATTLEMAP_MINIMUMNUMBERROWSANDCOLUMNS < m_battleMap->getNumberRows())
-    {
-        m_userInterface->actionDeleteRowAbove->setEnabled(true);
-        m_userInterface->actionDeleteRowBelow->setEnabled(true);
-    }
-
-    /* check whether number of rows displayable on player screen is greater than or equal to total number of rows of Battle Map */
-    quint32 numberRowsOnPlayerScreen = static_cast<quint32>(calcScreenHeightInInches(CONFIG_PLAYER_SCREEN_DIAGONAL, CONFIG_PLAYER_SCREEN_RESOLUTION.height(), CONFIG_PLAYER_SCREEN_RESOLUTION.width()));
-    if (m_battleMap->getNumberRows() <= numberRowsOnPlayerScreen)
-    {
-        /* increment number of rows of Battle Map scene section */
-        m_battleMapSceneSection.setNumberRowsSceneSection(m_battleMapSceneSection.getNumberRowsSceneSection() + 1U);
-    }
-
-    /* insert new Battle Map square graphics items for screen handlers */
-    m_masterScreenHandler.insertRowBelow();
-    m_playerScreenHandler.insertRowBelow();
+    /* push command UndoCommandInsertRowBelow to undo stack and apply it by calling its function redo() */
+    m_undoStack->push(new UndoCommandInsertRowBelow(m_userInterface, m_battleMap, &m_battleMapSceneSection, &m_masterScreenHandler, &m_playerScreenHandler));
 }
 
 /*!
@@ -294,32 +239,8 @@ void MainWindow::triggeredActionInsertRowBelow()
  */
 void MainWindow::triggeredActionInsertColumnLeft()
 {
-    /* insert new column to the left of Battle Map */
-    m_battleMap->insertColumnLeft();
-
-    /* enable actions for decrement depending on current number of columns */
-    if (BATTLEMAP_MINIMUMNUMBERROWSANDCOLUMNS < m_battleMap->getNumberColumns())
-    {
-        m_userInterface->actionDeleteColumnLeft->setEnabled(true);
-        m_userInterface->actionDeleteColumnRight->setEnabled(true);
-    }
-
-    /* check whether number of columns displayable on player screen is greater than or equal to total number of columns of Battle Map */
-    quint32 numberColumnsOnPlayerScreen = static_cast<quint32>(calcScreenWidthInInches(CONFIG_PLAYER_SCREEN_DIAGONAL, CONFIG_PLAYER_SCREEN_RESOLUTION.height(), CONFIG_PLAYER_SCREEN_RESOLUTION.width()));
-    if (m_battleMap->getNumberColumns() <= numberColumnsOnPlayerScreen)
-    {
-        /* increment number of columns of Battle Map scene section */
-        m_battleMapSceneSection.setNumberColumnsSceneSection(m_battleMapSceneSection.getNumberColumnsSceneSection() + 1U);
-    }
-    else
-    {
-        /* increment index of first column of Battle Map scene section */
-        m_battleMapSceneSection.setIndexFirstColumnSceneSection(m_battleMapSceneSection.getIndexFirstColumnSceneSection() + 1U);
-    }
-
-    /* insert new Battle Map square graphics items for screen handlers */
-    m_masterScreenHandler.insertColumnLeft();
-    m_playerScreenHandler.insertColumnLeft();
+    /* push command UndoCommandInsertColumnLeft to undo stack and apply it by calling its function redo() */
+    m_undoStack->push(new UndoCommandInsertColumnLeft(m_userInterface, m_battleMap, &m_battleMapSceneSection, &m_masterScreenHandler, &m_playerScreenHandler));
 }
 
 /*!
@@ -327,27 +248,8 @@ void MainWindow::triggeredActionInsertColumnLeft()
  */
 void MainWindow::triggeredActionInsertColumnRight()
 {
-    /* insert new column to the right of Battle Map */
-    m_battleMap->insertColumnRight();
-
-    /* enable actions for decrement depending on current number of columns */
-    if (BATTLEMAP_MINIMUMNUMBERROWSANDCOLUMNS < m_battleMap->getNumberColumns())
-    {
-        m_userInterface->actionDeleteColumnLeft->setEnabled(true);
-        m_userInterface->actionDeleteColumnRight->setEnabled(true);
-    }
-
-    /* check whether number of columns displayable on player screen is greater than or equal to total number of columns of Battle Map */
-    quint32 numberColumnsOnPlayerScreen = static_cast<quint32>(calcScreenWidthInInches(CONFIG_PLAYER_SCREEN_DIAGONAL, CONFIG_PLAYER_SCREEN_RESOLUTION.height(), CONFIG_PLAYER_SCREEN_RESOLUTION.width()));
-    if (m_battleMap->getNumberColumns() <= numberColumnsOnPlayerScreen)
-    {
-        /* increment number of columns of Battle Map scene section */
-        m_battleMapSceneSection.setNumberColumnsSceneSection(m_battleMapSceneSection.getNumberColumnsSceneSection() + 1U);
-    }
-
-    /* insert new Battle Map square graphics items for screen handlers */
-    m_masterScreenHandler.insertColumnRight();
-    m_playerScreenHandler.insertColumnRight();
+    /* push command UndoCommandInsertColumnRight to undo stack and apply it by calling its function redo() */
+    m_undoStack->push(new UndoCommandInsertColumnRight(m_userInterface, m_battleMap, &m_battleMapSceneSection, &m_masterScreenHandler, &m_playerScreenHandler));
 }
 
 /*!
@@ -355,40 +257,8 @@ void MainWindow::triggeredActionInsertColumnRight()
  */
 void MainWindow::triggeredActionDeleteRowAbove()
 {
-    /* delete row above Battle Map */
-    m_battleMap->deleteRowAbove();
-
-    /* enable or disable actions for decrement depending on current number of rows */
-    if (BATTLEMAP_MINIMUMNUMBERROWSANDCOLUMNS == m_battleMap->getNumberRows())
-    {
-        m_userInterface->actionDeleteRowAbove->setEnabled(false);
-        m_userInterface->actionDeleteRowBelow->setEnabled(false);
-    }
-    else
-    {
-        m_userInterface->actionDeleteRowAbove->setEnabled(true);
-        m_userInterface->actionDeleteRowBelow->setEnabled(true);
-    }
-
-    /* check whether number of rows displayable on player screen is greater than total number of rows of Battle Map */
-    quint32 numberRowsOnPlayerScreen = static_cast<quint32>(calcScreenHeightInInches(CONFIG_PLAYER_SCREEN_DIAGONAL, CONFIG_PLAYER_SCREEN_RESOLUTION.height(), CONFIG_PLAYER_SCREEN_RESOLUTION.width()));
-    if (m_battleMap->getNumberRows() < numberRowsOnPlayerScreen)
-    {
-        /* decrement number of rows of Battle Map scene section */
-        m_battleMapSceneSection.setNumberRowsSceneSection(m_battleMapSceneSection.getNumberRowsSceneSection() - 1U);
-    }
-    else
-    {
-        if (0U < m_battleMapSceneSection.getIndexFirstRowSceneSection())
-        {
-            /* decrement index of first row of Battle Map scene section */
-            m_battleMapSceneSection.setIndexFirstRowSceneSection(m_battleMapSceneSection.getIndexFirstRowSceneSection() - 1U);
-        }
-    }
-
-    /* delete Battle Map square graphics items for screen handlers */
-    m_masterScreenHandler.deleteRowAbove();
-    m_playerScreenHandler.deleteRowAbove();
+    /* push command UndoCommandDeleteRowAbove to undo stack and apply it by calling its function redo() */
+    m_undoStack->push(new UndoCommandDeleteRowAbove(m_userInterface, m_battleMap, &m_battleMapSceneSection, &m_masterScreenHandler, &m_playerScreenHandler));
 }
 
 /*!
@@ -396,40 +266,8 @@ void MainWindow::triggeredActionDeleteRowAbove()
  */
 void MainWindow::triggeredActionDeleteRowBelow()
 {
-    /* delete row below Battle Map */
-    m_battleMap->deleteRowBelow();
-
-    /* enable or disable actions for decrement depending on current number of rows */
-    if (BATTLEMAP_MINIMUMNUMBERROWSANDCOLUMNS == m_battleMap->getNumberRows())
-    {
-        m_userInterface->actionDeleteRowAbove->setEnabled(false);
-        m_userInterface->actionDeleteRowBelow->setEnabled(false);
-    }
-    else
-    {
-        m_userInterface->actionDeleteRowAbove->setEnabled(true);
-        m_userInterface->actionDeleteRowBelow->setEnabled(true);
-    }
-
-    /* check whether number of rows displayable on player screen is greater than total number of rows of Battle Map */
-    quint32 numberRowsOnPlayerScreen = static_cast<quint32>(calcScreenHeightInInches(CONFIG_PLAYER_SCREEN_DIAGONAL, CONFIG_PLAYER_SCREEN_RESOLUTION.height(), CONFIG_PLAYER_SCREEN_RESOLUTION.width()));
-    if (m_battleMap->getNumberRows() < numberRowsOnPlayerScreen)
-    {
-        /* decrement number of rows of Battle Map scene section */
-        m_battleMapSceneSection.setNumberRowsSceneSection(m_battleMapSceneSection.getNumberRowsSceneSection() - 1U);
-    }
-    else
-    {
-        if (m_battleMap->getNumberRows() < m_battleMapSceneSection.getIndexFirstRowSceneSection() + m_battleMapSceneSection.getNumberRowsSceneSection())
-        {
-            /* decrement index of first row of Battle Map scene section */
-            m_battleMapSceneSection.setIndexFirstRowSceneSection(m_battleMapSceneSection.getIndexFirstRowSceneSection() - 1U);
-        }
-    }
-
-    /* delete Battle Map square graphics items for screen handlers */
-    m_masterScreenHandler.deleteRowBelow();
-    m_playerScreenHandler.deleteRowBelow();
+    /* push command UndoCommandDeleteRowBelow to undo stack and apply it by calling its function redo() */
+    m_undoStack->push(new UndoCommandDeleteRowBelow(m_userInterface, m_battleMap, &m_battleMapSceneSection, &m_masterScreenHandler, &m_playerScreenHandler));
 }
 
 /*!
@@ -437,40 +275,8 @@ void MainWindow::triggeredActionDeleteRowBelow()
  */
 void MainWindow::triggeredActionDeleteColumnLeft()
 {
-    /* delete column to the left of Battle Map */
-    m_battleMap->deleteColumnLeft();
-
-    /* enable or disable actions for decrement depending on current number of columns */
-    if (BATTLEMAP_MINIMUMNUMBERROWSANDCOLUMNS == m_battleMap->getNumberColumns())
-    {
-        m_userInterface->actionDeleteColumnLeft->setEnabled(false);
-        m_userInterface->actionDeleteColumnRight->setEnabled(false);
-    }
-    else
-    {
-        m_userInterface->actionDeleteColumnLeft->setEnabled(true);
-        m_userInterface->actionDeleteColumnRight->setEnabled(true);
-    }
-
-    /* check whether number of columns displayable on player screen is greater than total number of columns of Battle Map */
-    quint32 numberColumnsOnPlayerScreen = static_cast<quint32>(calcScreenWidthInInches(CONFIG_PLAYER_SCREEN_DIAGONAL, CONFIG_PLAYER_SCREEN_RESOLUTION.height(), CONFIG_PLAYER_SCREEN_RESOLUTION.width()));
-    if (m_battleMap->getNumberColumns() < numberColumnsOnPlayerScreen)
-    {
-        /* decrement number of columns of Battle Map scene section */
-        m_battleMapSceneSection.setNumberColumnsSceneSection(m_battleMapSceneSection.getNumberColumnsSceneSection() - 1U);
-    }
-    else
-    {
-        if (0U < m_battleMapSceneSection.getIndexFirstColumnSceneSection())
-        {
-            /* decrement index of first column of Battle Map scene section */
-            m_battleMapSceneSection.setIndexFirstColumnSceneSection(m_battleMapSceneSection.getIndexFirstColumnSceneSection() - 1U);
-        }
-    }
-
-    /* delete Battle Map square graphics items for screen handlers */
-    m_masterScreenHandler.deleteColumnLeft();
-    m_playerScreenHandler.deleteColumnLeft();
+    /* push command UndoCommandDeleteColumnLeft to undo stack and apply it by calling its function redo() */
+    m_undoStack->push(new UndoCommandDeleteColumnLeft(m_userInterface, m_battleMap, &m_battleMapSceneSection, &m_masterScreenHandler, &m_playerScreenHandler));
 }
 
 /*!
@@ -478,40 +284,8 @@ void MainWindow::triggeredActionDeleteColumnLeft()
  */
 void MainWindow::triggeredActionDeleteColumnRight()
 {
-    /* delete column to the right of Battle Map */
-    m_battleMap->deleteColumnRight();
-
-    /* enable or disable actions for decrement depending on current number of columns */
-    if (BATTLEMAP_MINIMUMNUMBERROWSANDCOLUMNS == m_battleMap->getNumberColumns())
-    {
-        m_userInterface->actionDeleteColumnLeft->setEnabled(false);
-        m_userInterface->actionDeleteColumnRight->setEnabled(false);
-    }
-    else
-    {
-        m_userInterface->actionDeleteColumnLeft->setEnabled(true);
-        m_userInterface->actionDeleteColumnRight->setEnabled(true);
-    }
-
-    /* check whether number of columns displayable on player screen is greater than total number of columns of Battle Map */
-    quint32 numberColumnsOnPlayerScreen = static_cast<quint32>(calcScreenWidthInInches(CONFIG_PLAYER_SCREEN_DIAGONAL, CONFIG_PLAYER_SCREEN_RESOLUTION.height(), CONFIG_PLAYER_SCREEN_RESOLUTION.width()));
-    if (m_battleMap->getNumberColumns() < numberColumnsOnPlayerScreen)
-    {
-        /* decrement number of columns of Battle Map scene section */
-        m_battleMapSceneSection.setNumberColumnsSceneSection(m_battleMapSceneSection.getNumberColumnsSceneSection() - 1U);
-    }
-    else
-    {
-        if (m_battleMap->getNumberColumns() < m_battleMapSceneSection.getIndexFirstColumnSceneSection() + m_battleMapSceneSection.getNumberColumnsSceneSection())
-        {
-            /* decrement index of first column of Battle Map scene section */
-            m_battleMapSceneSection.setIndexFirstColumnSceneSection(m_battleMapSceneSection.getIndexFirstColumnSceneSection() - 1U);
-        }
-    }
-
-    /* delete Battle Map square graphics items for screen handlers */
-    m_masterScreenHandler.deleteColumnRight();
-    m_playerScreenHandler.deleteColumnRight();
+    /* push command UndoCommandDeleteColumnRight to undo stack and apply it by calling its function redo() */
+    m_undoStack->push(new UndoCommandDeleteColumnRight(m_userInterface, m_battleMap, &m_battleMapSceneSection, &m_masterScreenHandler, &m_playerScreenHandler));
 }
 
 /*!
@@ -521,6 +295,9 @@ void MainWindow::triggeredActionUpdatePlayerScreen()
 {
     /*  update Battle Map image on player screen */
     m_playerScreenHandler.updateBattleMapImage();
+
+    /* clear undo stack */
+    m_undoStack->clear();
 }
 
 /*!

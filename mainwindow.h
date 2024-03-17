@@ -7,12 +7,21 @@
 
 #include <QActionGroup>
 #include <QMainWindow>
+#include <QUndoStack>
 
 #include "battlemap.h"
 #include "battlemapscenesection.h"
 #include "dialognewbattlemap.h"
 #include "playerscreenhandler.h"
 #include "masterscreenhandler.h"
+#include "undocommanddeletecolumnleft.h"
+#include "undocommanddeletecolumnright.h"
+#include "undocommanddeleterowabove.h"
+#include "undocommanddeleterowbelow.h"
+#include "undocommandinsertcolumnleft.h"
+#include "undocommandinsertcolumnright.h"
+#include "undocommandinsertrowabove.h"
+#include "undocommandinsertrowbelow.h"
 
 /****************************************************************************************************************************************************
  * CLASS DECLARATION                                                                                                                                *
@@ -37,10 +46,11 @@ public:
     /*! *********************************************************************************************************************************************
      * \brief   This function is the constructor of the class MainWindow.                                                                           *
      *                                                                                                                                              *
-     * \details This function sets up the user interface, passes the graphics views and Battle Map scene sections to the master and player screen   *
-	 *          handlers and creates the action groups for the operation mode and the wind rose orientation. Afterwards, it connects several        *
-	 *          signals and slots. Finally, it makes the labels invisible so that they are not shown initially when there is no Battle Map and also *
-	 *          makes the labels transparent for mouse events so that they do not process them instead of the graphics view.                        *
+     * \details This function sets up the user interface, adds the undo stack actions to the menu, passes the graphics views and Battle Map scene   *
+	 *          sections to the master and player screen handlers and creates the action groups for the operation mode and the wind rose            *
+	 *          orientation. Afterwards, it connects several signals and slots. Finally, it makes the labels invisible so that they are not shown   *
+	 *          initially when there is no Battle Map and also makes the labels transparent for mouse events so that they do not process them       *
+	 *          instead of the graphics view.                                                                                                       *
      *                                                                                                                                              *
      * \param   playerWindow                  Address of the graphics view to display the players window                                            *
      * \param   parent                        Parent of the class MainWindow                                                                        *
@@ -100,31 +110,9 @@ private slots:
     void rejectedDialogNewBattleMap();
 
     /*! *********************************************************************************************************************************************
-     * \brief   This function handles the action actionUndo.                                                                                        *
-     *                                                                                                                                              *
-     * \details TODO                                                                                                                                *
-     *                                                                                                                                              *
-     * \return  This function does not have any return value.                                                                                       *
-     ************************************************************************************************************************************************/
-    void triggeredActionUndo();
-
-    /*! *********************************************************************************************************************************************
-     * \brief   This function handles the action actionRedo.                                                                                        *
-     *                                                                                                                                              *
-     * \details TODO                                                                                                                                *
-     *                                                                                                                                              *
-     * \return  This function does not have any return value.                                                                                       *
-     ************************************************************************************************************************************************/
-    void triggeredActionRedo();
-
-    /*! *********************************************************************************************************************************************
      * \brief   This function handles the action actionInsertRowAbove.                                                                              *
      *                                                                                                                                              *
-     * \details This function inserts a new row above the Battle Map. Afterwards, it enables the actions for decrement depending on the current     *
-	 *          number of rows and it checks whether the number of rows displayable on the player screen is greater than or equal to the total      *
-	 *          number of rows of the Battle Map. If so, it increments the number of rows of the Battle Map scene section. Otherwise, it increments *
-	 *          the index of the first row of the Battle Map scene section. Finally, it calls the respective functions of the screen handlers for   *
-	 *          inserting new Battle Map square graphics items.                                                                                     *
+     * \details This function pushes the command UndoCommandInsertRowAbove to the undo stack and applies it by calling its function redo().         *
      *                                                                                                                                              *
      * \return  This function does not have any return value.                                                                                       *
      ************************************************************************************************************************************************/
@@ -133,10 +121,7 @@ private slots:
     /*! *********************************************************************************************************************************************
      * \brief   This function handles the action actionInsertRowBelow.                                                                              *
      *                                                                                                                                              *
-     * \details This function inserts a new row below the Battle Map. Afterwards, it enables the actions for decrement depending on the current     *
-	 *          number of rows and it checks whether the number of rows displayable on the player screen is greater than or equal to the total      *
-	 *          number of rows of the Battle Map. If so, it increments the number of rows of the Battle Map scene section. Finally, it calls the    *
-	 *          respective functions of the screen handlers for inserting new Battle Map square graphics items.                                     *
+     * \details This function pushes the command UndoCommandInsertRowBelow to the undo stack and applies it by calling its function redo().         *
      *                                                                                                                                              *
      * \return  This function does not have any return value.                                                                                       *
      ************************************************************************************************************************************************/
@@ -145,11 +130,7 @@ private slots:
     /*! *********************************************************************************************************************************************
      * \brief   This function handles the action actionInsertColumnLeft.                                                                            *
      *                                                                                                                                              *
-     * \details This function inserts a new column to the left of the Battle Map. Afterwards, it enables the actions for decrement depending on the *
-	 *          current number of columns and it checks whether the number of columns displayable on the player screen is greater than or equal to  *
-	 *          the total number of columns of the Battle Map. If so, it increments the number of columns of the Battle Map scene section.          *
-	 *          Otherwise, it increments the index of the first column of the Battle Map scene section. Finally, it calls the respective functions  *
-	 *          of the screen handlers for inserting new Battle Map square graphics items.                                                          *
+     * \details This function pushes the command UndoCommandInsertColumnLeft to the undo stack and applies it by calling its function redo().       *
      *                                                                                                                                              *
      * \return  This function does not have any return value.                                                                                       *
      ************************************************************************************************************************************************/
@@ -158,10 +139,7 @@ private slots:
     /*! *********************************************************************************************************************************************
      * \brief   This function handles the action actionInsertColumnRight.                                                                           *
      *                                                                                                                                              *
-     * \details This function inserts a new column to the right of the Battle Map. Afterwards, it enables the actions for decrement depending on    *
-	 *          the current number of columns and it checks whether the number of columns displayable on the player screen is greater than or equal *
-	 *          to the total number of columns of the Battle Map. If so, it increments the number of columns of the Battle Map scene section.       *
-	 *          Finally, it calls the respective functions of the screen handlers for inserting new Battle Map square graphics items.               *
+     * \details This function pushes the command UndoCommandInsertColumnRight to the undo stack and applies it by calling its function redo().      *
      *                                                                                                                                              *
      * \return  This function does not have any return value.                                                                                       *
      ************************************************************************************************************************************************/
@@ -170,11 +148,7 @@ private slots:
     /*! *********************************************************************************************************************************************
      * \brief   This function handles the action actionDeleteRowAbove.                                                                              *
      *                                                                                                                                              *
-     * \details This function deletes a row above the Battle Map. Afterwards, it enables or disables the actions for decrement depending on the     *
-	 *          current number of rows and it checks whether the number of rows displayable on the player screen is greater than the total number   *
-	 *          of rows of the Battle Map. If so, it decrements the number of rows of the Battle Map scene section. Otherwise, and if the index of  *
-	 *          the first row of the Battle Map scene section is greater than 0, it decrements the index of the first row of the Battle Map scene   *
-	 *          section. Finally, it calls the respective functions of the screen handlers for deleting Battle Map square graphics items.           *
+     * \details This function pushes the command UndoCommandDeleteRowAbove to the undo stack and applies it by calling its function redo().         *
      *                                                                                                                                              *
      * \return  This function does not have any return value.                                                                                       *
      ************************************************************************************************************************************************/
@@ -183,12 +157,7 @@ private slots:
     /*! *********************************************************************************************************************************************
      * \brief   This function handles the action actionDeleteRowBelow.                                                                              *
      *                                                                                                                                              *
-     * \details This function deletes a row below the Battle Map. Afterwards, it enables or disables the actions for decrement depending on the     *
-	 *          current number of rows and it checks whether the number of rows displayable on the player screen is greater than the total number   *
-	 *          of rows of the Battle Map. If so, it decrements the number of rows of the Battle Map scene section. Otherwise, and if the index of  *
-	 *          the last row of the Battle Map scene section is greater than the total number of rows of the Battle Map, it decrements the index of *
-	 *          the first row of the Battle Map scene section. Finally, it calls the respective functions of the screen handlers for deleting       *
-	 *          Battle Map square graphics items.                                                                                                   *
+     * \details This function pushes the command UndoCommandDeleteRowBelow to the undo stack and applies it by calling its function redo().         *
      *                                                                                                                                              *
      * \return  This function does not have any return value.                                                                                       *
      ************************************************************************************************************************************************/
@@ -197,12 +166,7 @@ private slots:
     /*! *********************************************************************************************************************************************
      * \brief   This function handles the action actionDeleteColumnLeft.                                                                            *
      *                                                                                                                                              *
-     * \details This function deletes a column to the left of the Battle Map. Afterwards, it enables or disables the actions for decrement          *
-	 *          depending on the current number of columns and it checks whether the number of columns displayable on the player screen is greater  *
-	 *          than the total number of columns of the Battle Map. If so, it decrements the number of columns of the Battle Map scene section.     *
-	 *          Otherwise, and if the index of the first column of the Battle Map scene section is greater than 0, it decrements the index of the   *
-	 *          first column of the Battle Map scene section. Finally, it calls the respective functions of the screen handlers for deleting Battle *
-	 *          Map square graphics items.                                                                                                          *
+     * \details This function pushes the command UndoCommandDeleteColumnLeft to the undo stack and applies it by calling its function redo().       *
      *                                                                                                                                              *
      * \return  This function does not have any return value.                                                                                       *
      ************************************************************************************************************************************************/
@@ -211,12 +175,7 @@ private slots:
     /*! *********************************************************************************************************************************************
      * \brief   This function handles the action actionDeleteColumnRight.                                                                           *
      *                                                                                                                                              *
-     * \details This function deletes a column to the right of the Battle Map. Afterwards, it enables or disables the actions for decrement         *
-	 *          depending on the current number of columns and it checks whether the number of columns displayable on the player screen is greater  *
-	 *          than the total number of columns of the Battle Map. If so, it decrements the number of columns of the Battle Map scene section.     *
-	 *          Otherwise, and if the index of the last column of the Battle Map scene section is greater than the total number of columns of the   *
-	 *          Battle Map, it decrements the index of the first column of the Battle Map scene section. Finally, it calls the respective functions *
-	 *          of the screen handlers for deleting Battle Map square graphics items.                                                               *
+     * \details This function pushes the command UndoCommandDeleteColumnRight to the undo stack and applies it by calling its function redo().      *
      *                                                                                                                                              *
      * \return  This function does not have any return value.                                                                                       *
      ************************************************************************************************************************************************/
@@ -225,7 +184,7 @@ private slots:
     /*! *********************************************************************************************************************************************
      * \brief   This function handles the action actionUpdatePlayerScreen.                                                                          *
      *                                                                                                                                              *
-     * \details This function updates the Battle Map image on the player screen.                                                                    *
+     * \details This function updates the Battle Map image on the player screen and clears the undo stack afterwards.                               *
      *                                                                                                                                              *
      * \return  This function does not have any return value.                                                                                       *
      ************************************************************************************************************************************************/
@@ -314,6 +273,21 @@ private:
      * \brief This is a pointer to the user interface of the class MainWindow.
      */
     Ui::MainWindow *m_userInterface;
+
+    /*!
+     * \brief This is a pointer to the undo stack that maintains a stack of commands that have been applied to the Battle Map.
+     */
+    QUndoStack *m_undoStack;
+
+    /*!
+     * \brief TODO
+     */
+    QAction *m_undoAction;
+
+    /*!
+     * \brief TODO
+     */
+    QAction *m_redoAction;
 
     /*!
      * \brief This is a pointer to the action group containing the operation mode actions.

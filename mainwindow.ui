@@ -162,8 +162,6 @@
      <addaction name="actionDeleteColumnLeft"/>
      <addaction name="actionDeleteColumnRight"/>
     </widget>
-    <addaction name="actionUndo"/>
-    <addaction name="actionRedo"/>
     <addaction name="separator"/>
     <addaction name="submenuExpandBattleMap"/>
     <addaction name="submenuReduceBattleMap"/>
@@ -405,30 +403,6 @@
    </property>
    <property name="text">
     <string>West</string>
-   </property>
-  </action>
-  <action name="actionUndo">
-   <property name="icon">
-    <iconset resource="icons.qrc">
-     <normaloff>:/icons/icons/undo.png</normaloff>:/icons/icons/undo.png</iconset>
-   </property>
-   <property name="text">
-    <string>Undo</string>
-   </property>
-   <property name="shortcut">
-    <string>Ctrl+Z</string>
-   </property>
-  </action>
-  <action name="actionRedo">
-   <property name="icon">
-    <iconset resource="icons.qrc">
-     <normaloff>:/icons/icons/redo.png</normaloff>:/icons/icons/redo.png</iconset>
-   </property>
-   <property name="text">
-    <string>Redo</string>
-   </property>
-   <property name="shortcut">
-    <string>Ctrl+Shift+Z</string>
    </property>
   </action>
   <action name="actionInsertRowAbove">
