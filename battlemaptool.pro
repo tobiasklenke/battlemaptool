@@ -23,7 +23,15 @@ SOURCES += \
     mainwindow.cpp \
     masterscreenhandler.cpp \
     playerscreenhandler.cpp \
-    screencalc.cpp
+    screencalc.cpp \
+    undocommanddeletecolumnleft.cpp \
+    undocommanddeletecolumnright.cpp \
+    undocommanddeleterowabove.cpp \
+    undocommanddeleterowbelow.cpp \
+    undocommandinsertcolumnleft.cpp \
+    undocommandinsertcolumnright.cpp \
+    undocommandinsertrowabove.cpp \
+    undocommandinsertrowbelow.cpp
 
 HEADERS += \
     battlemap.h \
@@ -40,7 +48,15 @@ HEADERS += \
     mainwindow.h \
     masterscreenhandler.h \
     playerscreenhandler.h \
-    screencalc.h
+    screencalc.h \
+    undocommanddeletecolumnleft.h \
+    undocommanddeletecolumnright.h \
+    undocommanddeleterowabove.h \
+    undocommanddeleterowbelow.h \
+    undocommandinsertcolumnleft.h \
+    undocommandinsertcolumnright.h \
+    undocommandinsertrowabove.h \
+    undocommandinsertrowbelow.h
 
 FORMS += \
     dialognewbattlemap.ui \
