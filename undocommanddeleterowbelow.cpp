@@ -13,6 +13,7 @@
  */
 UndoCommandDeleteRowBelow::UndoCommandDeleteRowBelow(Ui::MainWindow *userInterface, BattleMap *battleMap, BattleMapSceneSection *battleMapSceneSection, MasterScreenHandler *masterScreenHandler, PlayerScreenHandler *playerScreenHandler, QUndoCommand *parent) :
     QUndoCommand(parent),
+    m_rowBelow(QList<BattleMapSquare*>()),
     m_userInterface(userInterface),
     m_battleMap(battleMap),
     m_battleMapSceneSection(battleMapSceneSection),
@@ -26,6 +27,11 @@ UndoCommandDeleteRowBelow::UndoCommandDeleteRowBelow(Ui::MainWindow *userInterfa
  */
 UndoCommandDeleteRowBelow::~UndoCommandDeleteRowBelow()
 {
+    /* delete row below */
+    for (quint32 columnIdx = 0U; columnIdx < m_rowBelow.count(); columnIdx++)
+    {
+        delete m_rowBelow[columnIdx];
+    }
 }
 
 /*!
@@ -33,7 +39,28 @@ UndoCommandDeleteRowBelow::~UndoCommandDeleteRowBelow()
  */
 void UndoCommandDeleteRowBelow::undo()
 {
-    //TODO
+    /* insert new row below Battle Map */
+    m_battleMap->insertRowBelow(m_rowBelow);
+    m_rowBelow.clear();
+
+    /* enable actions for decrement depending on current number of rows */
+    if (BATTLEMAP_MINIMUMNUMBERROWSANDCOLUMNS < m_battleMap->getNumberRows())
+    {
+        m_userInterface->actionDeleteRowAbove->setEnabled(true);
+        m_userInterface->actionDeleteRowBelow->setEnabled(true);
+    }
+
+    /* check whether number of rows displayable on player screen is greater than or equal to total number of rows of Battle Map */
+    quint32 numberRowsOnPlayerScreen = static_cast<quint32>(calcScreenHeightInInches(CONFIG_PLAYER_SCREEN_DIAGONAL, CONFIG_PLAYER_SCREEN_RESOLUTION.height(), CONFIG_PLAYER_SCREEN_RESOLUTION.width()));
+    if (m_battleMap->getNumberRows() <= numberRowsOnPlayerScreen)
+    {
+        /* increment number of rows of Battle Map scene section */
+        m_battleMapSceneSection->setNumberRowsSceneSection(m_battleMapSceneSection->getNumberRowsSceneSection() + 1U);
+    }
+
+    /* insert new Battle Map square graphics items for screen handlers */
+    m_masterScreenHandler->insertRowBelow();
+    m_playerScreenHandler->insertRowBelow();
 }
 
 /*!
@@ -42,7 +69,7 @@ void UndoCommandDeleteRowBelow::undo()
 void UndoCommandDeleteRowBelow::redo()
 {
     /* delete row below Battle Map */
-    m_battleMap->deleteRowBelow();
+    m_rowBelow = m_battleMap->deleteRowBelow();
 
     /* enable or disable actions for decrement depending on current number of rows */
     if (BATTLEMAP_MINIMUMNUMBERROWSANDCOLUMNS == m_battleMap->getNumberRows())

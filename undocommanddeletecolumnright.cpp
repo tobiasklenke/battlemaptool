@@ -13,6 +13,7 @@
  */
 UndoCommandDeleteColumnRight::UndoCommandDeleteColumnRight(Ui::MainWindow *userInterface, BattleMap *battleMap, BattleMapSceneSection *battleMapSceneSection, MasterScreenHandler *masterScreenHandler, PlayerScreenHandler *playerScreenHandler, QUndoCommand *parent) :
     QUndoCommand(parent),
+    m_columnRight(QList<BattleMapSquare*>()),
     m_userInterface(userInterface),
     m_battleMap(battleMap),
     m_battleMapSceneSection(battleMapSceneSection),
@@ -26,6 +27,11 @@ UndoCommandDeleteColumnRight::UndoCommandDeleteColumnRight(Ui::MainWindow *userI
  */
 UndoCommandDeleteColumnRight::~UndoCommandDeleteColumnRight()
 {
+    /* delete column right */
+    for (quint32 columnIdx = 0U; columnIdx < m_columnRight.count(); columnIdx++)
+    {
+        delete m_columnRight[columnIdx];
+    }
 }
 
 /*!
@@ -33,7 +39,28 @@ UndoCommandDeleteColumnRight::~UndoCommandDeleteColumnRight()
  */
 void UndoCommandDeleteColumnRight::undo()
 {
-    //TODO
+    /* insert new column to the right of Battle Map */
+    m_battleMap->insertColumnRight(m_columnRight);
+    m_columnRight.clear();
+
+    /* enable actions for decrement depending on current number of columns */
+    if (BATTLEMAP_MINIMUMNUMBERROWSANDCOLUMNS < m_battleMap->getNumberColumns())
+    {
+        m_userInterface->actionDeleteColumnLeft->setEnabled(true);
+        m_userInterface->actionDeleteColumnRight->setEnabled(true);
+    }
+
+    /* check whether number of columns displayable on player screen is greater than or equal to total number of columns of Battle Map */
+    quint32 numberColumnsOnPlayerScreen = static_cast<quint32>(calcScreenWidthInInches(CONFIG_PLAYER_SCREEN_DIAGONAL, CONFIG_PLAYER_SCREEN_RESOLUTION.height(), CONFIG_PLAYER_SCREEN_RESOLUTION.width()));
+    if (m_battleMap->getNumberColumns() <= numberColumnsOnPlayerScreen)
+    {
+        /* increment number of columns of Battle Map scene section */
+        m_battleMapSceneSection->setNumberColumnsSceneSection(m_battleMapSceneSection->getNumberColumnsSceneSection() + 1U);
+    }
+
+    /* insert new Battle Map square graphics items for screen handlers */
+    m_masterScreenHandler->insertColumnRight();
+    m_playerScreenHandler->insertColumnRight();
 }
 
 /*!
@@ -42,7 +69,7 @@ void UndoCommandDeleteColumnRight::undo()
 void UndoCommandDeleteColumnRight::redo()
 {
     /* delete column to the right of Battle Map */
-    m_battleMap->deleteColumnRight();
+    m_columnRight = m_battleMap->deleteColumnRight();
 
     /* enable or disable actions for decrement depending on current number of columns */
     if (BATTLEMAP_MINIMUMNUMBERROWSANDCOLUMNS == m_battleMap->getNumberColumns())

@@ -44,7 +44,7 @@ public:
     /*! *********************************************************************************************************************************************
      * \brief   This function is the destructor of the class UndoCommandDeleteRowAbove.                                                             *
      *                                                                                                                                              *
-     * \details -                                                                                                                                   *
+     * \details This function deletes the Battle Map squares contained in member variable m_rowAbove.                                               *
      *                                                                                                                                              *
      * \return  This function does not have any return value.                                                                                       *
      ************************************************************************************************************************************************/
@@ -53,7 +53,12 @@ public:
     /*! *********************************************************************************************************************************************
      * \brief   This function undos this command.                                                                                                   *
      *                                                                                                                                              *
-     * \details TODO                                                                                                                                *
+     * \details This function inserts a new row above the Battle Map, using the member variable m_rowAbove which contains the row that has          *
+     *          previously been deleted. Afterwards, it enables the actions for decrement depending on the current number of rows and it checks     *
+     *          whether the number of rows displayable on the player screen is greater than or equal to the total number of rows of the Battle Map. *
+     *          If so, it increments the number of rows of the Battle Map scene section. Otherwise, it increments the index of the first row of the *
+     *          Battle Map scene section. Finally, it calls the respective functions of the screen handlers for inserting new Battle Map square     *
+     *          graphics items.                                                                                                                     *
      *                                                                                                                                              *
      * \return  This function does not have any return value.                                                                                       *
      ************************************************************************************************************************************************/
@@ -62,11 +67,12 @@ public:
     /*! *********************************************************************************************************************************************
      * \brief   This function applies or redos this command.                                                                                        *
      *                                                                                                                                              *
-     * \details This function deletes a row above the Battle Map. Afterwards, it enables or disables the actions for decrement depending on the     *
-     *          current number of rows and it checks whether the number of rows displayable on the player screen is greater than the total number   *
-     *          of rows of the Battle Map. If so, it decrements the number of rows of the Battle Map scene section. Otherwise, and if the index of  *
-     *          the first row of the Battle Map scene section is greater than 0, it decrements the index of the first row of the Battle Map scene   *
-     *          section. Finally, it calls the respective functions of the screen handlers for deleting Battle Map square graphics items.           *
+     * \details This function deletes a row above the Battle Map and stores it in the member variable m_rowAbove for undoing the command.           *
+     *          Afterwards, it enables or disables the actions for decrement depending on the current number of rows and it checks whether the      *
+     *          number of rows displayable on the player screen is greater than the total number of rows of the Battle Map. If so, it decrements    *
+     *          the number of rows of the Battle Map scene section. Otherwise, and if the index of the first row of the Battle Map scene section is *
+     *          greater than 0, it decrements the index of the first row of the Battle Map scene section. Finally, it calls the respective          *
+     *          functions of the screen handlers for deleting Battle Map square graphics items.                                                     *
      *                                                                                                                                              *
      * \return  This function does not have any return value.                                                                                       *
      ************************************************************************************************************************************************/
@@ -79,6 +85,11 @@ signals: /* - */
 private slots: /* - */
 
 private:
+
+    /*!
+     * \brief This is the variable containing the Battle Map squares building the deleted Battle Map row.
+     */
+    QList<BattleMapSquare*> m_rowAbove;
 
     /*!
      * \brief This is a pointer to the user interface of the class MainWindow.
