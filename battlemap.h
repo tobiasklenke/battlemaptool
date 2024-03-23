@@ -157,74 +157,82 @@ public:
     /*! *********************************************************************************************************************************************
      * \brief   This function inserts a new row above the Battle Map.                                                                               *
      *                                                                                                                                              *
-     * \details This function inserts a new row above the Battle Map and increments the number of rows.                                             *
+     * \details This function inserts a new row above the Battle Map, using the parameter rowAbove. If the parameter rowAbove does not contain any  *
+     *          Battle Map squares, it is filled with empty Battle Map squares. Finally, the function increments the number of rows.                *
+     *                                                                                                                                              *
+     * \param   rowAbove                      Row to insert above                                                                                   *
      *                                                                                                                                              *
      * \return  This function does not have any return value.                                                                                       *
      ************************************************************************************************************************************************/
-    void insertRowAbove();
+    void insertRowAbove(QList<BattleMapSquare*> rowAbove);
 
     /*! *********************************************************************************************************************************************
      * \brief   This function inserts a new row below the Battle Map.                                                                               *
      *                                                                                                                                              *
-     * \details This function inserts a new row below the Battle Map and increments the number of rows.                                             *
+     * \details This function inserts a new row below the Battle Map, using the parameter rowBelow. If the parameter rowBelow does not contain any  *
+     *          Battle Map squares, it is filled with empty Battle Map squares. Finally, the function increments the number of rows.                *
      *                                                                                                                                              *
      * \return  This function does not have any return value.                                                                                       *
      ************************************************************************************************************************************************/
-    void insertRowBelow();
+    void insertRowBelow(QList<BattleMapSquare*> rowBelow);
 
     /*! *********************************************************************************************************************************************
      * \brief   This function inserts a new column to the left of the Battle Map.                                                                   *
      *                                                                                                                                              *
-     * \details This function inserts a new column to the left of the Battle Map and increments the number of columns.                              *
+     * \details This function inserts a new column to the left of the Battle Map. If the parameter columnLeft contains any Battle Map squares,      *
+     *          these are inserted to the left of the Battle Map. Otherwise, the new column is built from empty Battle Map squares. Finally, the    *
+     *          function increments the number of columns.                                                                                          *
      *                                                                                                                                              *
      * \return  This function does not have any return value.                                                                                       *
      ************************************************************************************************************************************************/
-    void insertColumnLeft();
+    void insertColumnLeft(QList<BattleMapSquare*> columnLeft);
 
     /*! *********************************************************************************************************************************************
      * \brief   This function inserts a new column to the right of the Battle Map.                                                                  *
      *                                                                                                                                              *
-     * \details This function inserts a new column to the right of the Battle Map and increments the number of columns.                             *
+     * \details This function inserts a new column to the right of the Battle Map. If the parameter columnRight contains any Battle Map squares,    *
+     *          these are inserted to the right of the Battle Map. Otherwise, the new column is built from empty Battle Map squares. Finally, the   *
+     *          function increments the number of columns.                                                                                          *
      *                                                                                                                                              *
      * \return  This function does not have any return value.                                                                                       *
      ************************************************************************************************************************************************/
-    void insertColumnRight();
+    void insertColumnRight(QList<BattleMapSquare*> columnRight);
 
     /*! *********************************************************************************************************************************************
      * \brief   This function deletes a row above the Battle Map.                                                                                   *
      *                                                                                                                                              *
      * \details This function deletes a row above the Battle Map and decrements the number of rows.                                                 *
      *                                                                                                                                              *
-     * \return  This function does not have any return value.                                                                                       *
+     * \return  This function returns the deleted row.                                                                                              *
      ************************************************************************************************************************************************/
-    void deleteRowAbove();
+    QList<BattleMapSquare*> deleteRowAbove();
 
     /*! *********************************************************************************************************************************************
      * \brief   This function deletes a row below the Battle Map.                                                                                   *
      *                                                                                                                                              *
      * \details This function deletes a row below the Battle Map and decrements the number of rows.                                                 *
      *                                                                                                                                              *
-     * \return  This function does not have any return value.                                                                                       *
+     * \return  This function returns the deleted row.                                                                                              *
      ************************************************************************************************************************************************/
-    void deleteRowBelow();
+     QList<BattleMapSquare*> deleteRowBelow();
 
     /*! *********************************************************************************************************************************************
      * \brief   This function deletes a column to the left of the Battle Map.                                                                       *
      *                                                                                                                                              *
      * \details This function deletes a column to the left of the Battle Map and decrements the number of columns.                                  *
      *                                                                                                                                              *
-     * \return  This function does not have any return value.                                                                                       *
+     * \return  This function returns the deleted column.                                                                                           *
      ************************************************************************************************************************************************/
-    void deleteColumnLeft();
+    QList<BattleMapSquare*> deleteColumnLeft();
 
     /*! *********************************************************************************************************************************************
      * \brief   This function deletes a column to the right of the Battle Map.                                                                      *
      *                                                                                                                                              *
      * \details This function deletes a column to the right of the Battle Map and decrements the number of columns.                                 *
      *                                                                                                                                              *
-     * \return  This function does not have any return value.                                                                                       *
+     * \return  This function returns the deleted column.                                                                                           *
      ************************************************************************************************************************************************/
-    void deleteColumnRight();
+    QList<BattleMapSquare*> deleteColumnRight();
 
 protected: /* - */
 
