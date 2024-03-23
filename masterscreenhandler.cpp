@@ -162,6 +162,9 @@ void MasterScreenHandler::insertRowAbove()
         m_battleMapScene->addItem(m_battleMapSquaresGraphicsItems.first()[columnIdx]);
     }
 
+    /* update Battle Map square pixmaps according to coverage state in case that row has been inserted as a result of a redo action */
+    updatePixmapAccordingCoverageState();
+
     /* reposition Battle Map squares on Battle Map scene */
     for (quint32 rowIdx = 0U; rowIdx < m_battleMap->getNumberRows(); rowIdx++)
     {
@@ -199,6 +202,9 @@ void MasterScreenHandler::insertRowBelow()
         m_battleMapScene->addItem(m_battleMapSquaresGraphicsItems.last()[columnIdx]);
     }
 
+    /* update Battle Map square pixmaps according to coverage state in case that row has been inserted as a result of a redo action */
+    updatePixmapAccordingCoverageState();
+
     /* reposition Battle Map squares on Battle Map scene */
     for (quint32 rowIdx = 0U; rowIdx < m_battleMap->getNumberRows(); rowIdx++)
     {
@@ -234,6 +240,9 @@ void MasterScreenHandler::insertColumnLeft()
         m_battleMapScene->addItem(m_battleMapSquaresGraphicsItems[rowIdx].first());
     }
 
+    /* update Battle Map square pixmaps according to coverage state in case that column has been inserted as a result of a redo action */
+    updatePixmapAccordingCoverageState();
+
     /* reposition Battle Map squares on Battle Map scene */
     for (quint32 rowIdx = 0U; rowIdx < m_battleMap->getNumberRows(); rowIdx++)
     {
@@ -268,6 +277,9 @@ void MasterScreenHandler::insertColumnRight()
         /* add Battle Map square to Battle Map scene */
         m_battleMapScene->addItem(m_battleMapSquaresGraphicsItems[rowIdx].last());
     }
+
+    /* update Battle Map square pixmaps according to coverage state in case that column has been inserted as a result of a redo action */
+    updatePixmapAccordingCoverageState();
 
     /* reposition Battle Map squares on Battle Map scene */
     for (quint32 rowIdx = 0U; rowIdx < m_battleMap->getNumberRows(); rowIdx++)
