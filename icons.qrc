@@ -20,6 +20,8 @@
         <file>icons/deletecolumnright.png</file>
         <file>icons/deleterowabove.png</file>
         <file>icons/deleterowbelow.png</file>
+        <file>icons/copy.png</file>
+        <file>icons/paste.png</file>
     </qresource>
     <qresource prefix="/"/>
 </RCC>
