@@ -95,6 +95,28 @@ public:
     void setOperationMode(operationMode_t operationMode);
 
     /*! *********************************************************************************************************************************************
+     * \brief   This function returns the pixmaps of the Battle Map squares from the selection area.                                                *
+     *                                                                                                                                              *
+     * \details -                                                                                                                                   *
+     *                                                                                                                                              *
+     * \return  This function returns the pixmaps of the Battle Map squares from the selection area.                                                *
+     ************************************************************************************************************************************************/
+    QList<QList<QPixmap>> getPixmapsFromSelectionArea();
+
+    /*! *********************************************************************************************************************************************
+     * \brief   This function returns the indexes of the first selected Battle Map square via its parameters.                                       *
+     *                                                                                                                                              *
+     * \details This function checks the Battle Map squares for the first selected one and sets the indexes of the first selected Battle Map square *
+     *          to the values of parameters firstSelectedRowIdx and firstSelectedColumnIdx.                                                         *
+     *                                                                                                                                              *
+     * \param   firstSelectedRowIdx              Address of the row index of the first selected Battle Map square                                   *
+     * \param   firstSelectedColumnIdx           Address of the column index of the first selected Battle Map square                                *
+     *                                                                                                                                              *
+     * \return  This function does not have any return value.                                                                                       *
+     ************************************************************************************************************************************************/
+    void getIndexesOfFirstBattleMapSquareFromSelectionArea(quint32 *firstSelectedRowIdx, quint32 *firstSelectedColumnIdx);
+
+    /*! *********************************************************************************************************************************************
      * \brief   This function shows the Battle Map image.                                                                                           *
      *                                                                                                                                              *
      * \details This function resets and reconnects the Battle Map scene, resets the scaling of the graphics view and adds the Battle Map squares   *
@@ -106,13 +128,28 @@ public:
     void showBattleMapImage();
 
     /*! *********************************************************************************************************************************************
+     * \brief   This function changes the pixmaps of the Battle Map squares according to the Battle Map.                                            *
+     *                                                                                                                                              *
+     * \details -                                                                                                                                   *
+     *                                                                                                                                              *
+     * \param   firstRowIdx                   Index of the first row                                                                                *
+     * \param   firstColumnIdx                Index of the first column                                                                             *
+     * \param   numberRows                    Number of rows to be changed                                                                          *
+     * \param   numberColumns                 Number of columns to be changed                                                                       *
+     *                                                                                                                                              *
+     * \return  This function does not have any return value.                                                                                       *
+     ************************************************************************************************************************************************/
+    void changeBattleMapSquarePixmaps(quint32 firstRowIdx, quint32 firstColumnIdx, quint32 numberRows, quint32 numberColumns);
+
+    /*! *********************************************************************************************************************************************
      * \brief   This function inserts a new row above the Battle Map.                                                                               *
      *                                                                                                                                              *
      * \details This function inserts a new row above the Battle Map. It makes the Battle Map squares in the inserted row selectable, stacks the    *
-	 *          unselected items beneath of the selected items so that the selection rectangle is completely visible and adds the Battle Map        *
-	 *          squares to the Battle Map scene. Afterwards, it updates the Battle Map square pixmaps according to their coverage state in case     *
-	 *          that the row has been inserted as a result of a redo action. Finally, it repositions the Battle Map squares on the Battle Map scene *
-	 *          and updates the Battle Map scene section and the frame.                                                                             *
+     *          unselected items beneath of the selected items so that the selection rectangle is completely visible and adds the Battle Map        *
+     *          squares to the Battle Map scene. Afterwards, it updates the Battle Map square pixmaps according to their coverage state in case     *
+     *          that the row has been inserted as a result of a redo action. Finally, it repositions the Battle Map squares on the Battle Map       *
+     *          scene, updates the Battle Map scene section and the frame and resets the selection area when the editing of the Battle Map is       *
+     *          finished.                                                                                                                           *
      *                                                                                                                                              *
      * \return  This function does not have any return value.                                                                                       *
      ************************************************************************************************************************************************/
@@ -122,10 +159,11 @@ public:
      * \brief   This function inserts a new row below the Battle Map.                                                                               *
      *                                                                                                                                              *
      * \details This function inserts a new row below the Battle Map. It makes the Battle Map squares in the inserted row selectable, stacks the    *
-	 *          unselected items beneath of the selected items so that the selection rectangle is completely visible and adds the Battle Map        *
-	 *          squares to the Battle Map scene. Afterwards, it updates the Battle Map square pixmaps according to their coverage state in case     *
-	 *          that the row has been inserted as a result of a redo action. Finally, it repositions the Battle Map squares on the Battle Map scene *
-	 *          and updates the Battle Map scene section and the frame.                                                                             *
+     *          unselected items beneath of the selected items so that the selection rectangle is completely visible and adds the Battle Map        *
+     *          squares to the Battle Map scene. Afterwards, it updates the Battle Map square pixmaps according to their coverage state in case     *
+     *          that the row has been inserted as a result of a redo action. Finally, it repositions the Battle Map squares on the Battle Map       *
+     *          scene, updates the Battle Map scene section and the frame and resets the selection area when the editing of the Battle Map is       *
+     *          finished.                                                                                                                           *
      *                                                                                                                                              *
      * \return  This function does not have any return value.                                                                                       *
      ************************************************************************************************************************************************/
@@ -135,10 +173,11 @@ public:
      * \brief   This function inserts a new column to the left of the Battle Map.                                                                   *
      *                                                                                                                                              *
      * \details This function inserts a new column to the left of the Battle Map. It makes the Battle Map squares in the inserted column            *
-	 *          selectable, stacks the unselected items beneath of the selected items so that the selection rectangle is completely visible and     *
-	 *          adds the Battle Map squares to the Battle Map scene. Afterwards, it updates the Battle Map square pixmaps according to their        *
-	 *          coverage state in case that the column has been inserted as a result of a redo action. Finally, it repositions the Battle Map       *
-	 *          squares on the Battle Map scene and updates the Battle Map scene section and the frame.                                             *
+     *          selectable, stacks the unselected items beneath of the selected items so that the selection rectangle is completely visible and     *
+     *          adds the Battle Map squares to the Battle Map scene. Afterwards, it updates the Battle Map square pixmaps according to their        *
+     *          coverage state in case that the column has been inserted as a result of a redo action. Finally, it repositions the Battle Map       *
+     *          squares on the Battle Map scene, updates the Battle Map scene section and the frame and resets the selection area when the editing  *
+     *          of the Battle Map is finished.                                                                                                      *
      *                                                                                                                                              *
      * \return  This function does not have any return value.                                                                                       *
      ************************************************************************************************************************************************/
@@ -148,10 +187,11 @@ public:
      * \brief   This function inserts a new column to the right of the Battle Map.                                                                  *
      *                                                                                                                                              *
      * \details This function inserts a new column to the right of the Battle Map. It makes the Battle Map squares in the inserted column           *
-	 *          selectable, stacks the unselected items beneath of the selected items so that the selection rectangle is completely visible and     *
-	 *          adds the Battle Map squares to the Battle Map scene. Afterwards, it updates the Battle Map square pixmaps according to their        *
-	 *          coverage state in case that the column has been inserted as a result of a redo action. Finally, it repositions the Battle Map       *
-	 *          squares on the Battle Map scene and updates the Battle Map scene section and the frame.                                             *
+     *          selectable, stacks the unselected items beneath of the selected items so that the selection rectangle is completely visible and     *
+     *          adds the Battle Map squares to the Battle Map scene. Afterwards, it updates the Battle Map square pixmaps according to their        *
+     *          coverage state in case that the column has been inserted as a result of a redo action. Finally, it repositions the Battle Map       *
+     *          squares on the Battle Map scene, updates the Battle Map scene section and the frame and resets the selection area when the editing  *
+     *          of the Battle Map is finished.                                                                                                      *
      *                                                                                                                                              *
      * \return  This function does not have any return value.                                                                                       *
      ************************************************************************************************************************************************/
@@ -160,8 +200,8 @@ public:
     /*! *********************************************************************************************************************************************
      * \brief   This function deletes a row above the Battle Map.                                                                                   *
      *                                                                                                                                              *
-     * \details This function deletes a row above the Battle Map. Afterwards, it repositions the Battle Map squares on the Battle Map scene and     *
-	 *          updates the Battle Map scene section and the frame.                                                                                 *
+     * \details This function deletes a row above the Battle Map. Afterwards, it repositions the Battle Map squares on the Battle Map scene,        *
+     *          updates the Battle Map scene section and the frame and resets the selection area when the editing of the Battle Map is finished.    *
      *                                                                                                                                              *
      * \return  This function does not have any return value.                                                                                       *
      ************************************************************************************************************************************************/
@@ -170,8 +210,8 @@ public:
     /*! *********************************************************************************************************************************************
      * \brief   This function deletes a row below the Battle Map.                                                                                   *
      *                                                                                                                                              *
-     * \details This function deletes a row below the Battle Map. Afterwards, it repositions the Battle Map squares on the Battle Map scene and     *
-	 *          updates the Battle Map scene section and the frame.                                                                                 *
+     * \details This function deletes a row below the Battle Map. Afterwards, it repositions the Battle Map squares on the Battle Map scene,        *
+     *          updates the Battle Map scene section and the frame and resets the selection area when the editing of the Battle Map is finished.    *
      *                                                                                                                                              *
      * \return  This function does not have any return value.                                                                                       *
      ************************************************************************************************************************************************/
@@ -181,7 +221,8 @@ public:
      * \brief   This function deletes a column to the left of the Battle Map.                                                                       *
      *                                                                                                                                              *
      * \details This function deletes a column to the left of the Battle Map. Afterwards, it repositions the Battle Map squares on the Battle Map   *
-	 *          scene and updates the Battle Map scene section and the frame.                                                                       *
+     *          scene, updates the Battle Map scene section and the frame and resets the selection area when the editing of the Battle Map is       *
+     *          finished.                                                                                                                           *
      *                                                                                                                                              *
      * \return  This function does not have any return value.                                                                                       *
      ************************************************************************************************************************************************/
@@ -191,7 +232,8 @@ public:
      * \brief   This function deletes a column to the right of the Battle Map.                                                                      *
      *                                                                                                                                              *
      * \details This function deletes a column to the right of the Battle Map. Afterwards, it repositions the Battle Map squares on the Battle Map  *
-	 *          scene and updates the Battle Map scene section and the frame.                                                                       *
+     *          scene, updates the Battle Map scene section and the frame and resets the selection area when the editing of the Battle Map is       *
+     *          finished.                                                                                                                           *
      *                                                                                                                                              *
      * \return  This function does not have any return value.                                                                                       *
      ************************************************************************************************************************************************/
@@ -211,7 +253,12 @@ public:
 
 protected: /* - */
 
-signals: /* - */
+signals:
+
+    /*! *********************************************************************************************************************************************
+     * \brief This signal is emitted as soon as the selection has been changed.                                                                     *
+     ************************************************************************************************************************************************/
+    void changedSelection(bool selectionCopyable);
 
 private slots:
 
@@ -288,7 +335,7 @@ private:
      * \details This function deletes the Battle Map squares of the previous Battle Map. Afterwards, it appends all the rows of the new Battle Map  *
      *          to the nested QList member variable m_battleMapSquaresGraphicsItems if the respective rows do not already exist. To each row it     *
      *          appends the graphics items of the Battle Map squares which are made selectable. Finally, it stacks the unselected items beneath of  *
-	 *          the selected items so that the selection rectangle is completely visible.                                                           *
+     *          the selected items so that the selection rectangle is completely visible.                                                           *
      *                                                                                                                                              *
      * \return  This function does not have any return value.                                                                                       *
      ************************************************************************************************************************************************/
@@ -298,8 +345,8 @@ private:
      * \brief   This function updates the pixmaps of the Battle Map squares according to their coverage state.                                      *
      *                                                                                                                                              *
      * \details This function updates the pixmaps of the Battle Map squares according to their coverage state. If the Battle Map squares are        *
-	 *          covered, its pixmap is converted to grayscale and a transparent black layer is added in order to darken it. Otherwise, the original *
-	 *          pixmap is used.                                                                                                                     *
+     *          covered, its pixmap is converted to grayscale and a transparent black layer is added in order to darken it. Otherwise, the original *
+     *          pixmap is used.                                                                                                                     *
      *                                                                                                                                              *
      * \return  This function does not have any return value.                                                                                       *
      ************************************************************************************************************************************************/
@@ -328,10 +375,11 @@ private:
      * \brief   This function handles the selection of some Battle Map squares in case of operation mode Select.                                    *
      *                                                                                                                                              *
      * \details This function checks first whether the Ctrl key on the keyboard is pressed and sets the item selection operation accordingly which  *
-	 *          decides if the new selection will replace or extend the previous selection. If the mouse has not been moved between mouse press and *
-	 *          mouse release event, only a single Battle Map square is selected. Otherwise, multiple Battle Map squares are selected. Finally, the *
-     *          selected items and the Battle Map scene section rectangle are stacked on top of the unselected items so that the selection          *
-     *          rectangle is completely visible.                                                                                                    *
+     *          decides if the new selection will replace or extend the previous selection. If the mouse has not been moved between mouse press and *
+     *          mouse release event, only a single Battle Map square is selected. Otherwise, multiple Battle Map squares are selected. Afterwards,  *
+     *          the selected items and the Battle Map scene section rectangle are stacked on top of the unselected items so that the selection      *
+     *          rectangle is completely visible. Finally, the function determines the indexes of the rows and columns limiting the selection area   *
+     *          and checks if the selection is copyable, which is shared with the main window by emitting the signal changedSelection().            *
      *                                                                                                                                              *
      * \param   positionPress                 Position of the mouse button press                                                                    *
      * \param   positionRelease               Position of the mouse button release                                                                  *
@@ -344,7 +392,8 @@ private:
      * \brief   This function resets the selection area.                                                                                            *
      *                                                                                                                                              *
      * \details This function unselects all selected graphics items and stacks the unselected items beneath of the selected items so that the       *
-     *          selection rectangle is completely visible.                                                                                          *
+     *          selection rectangle is completely visible. Afterwards, it emits the signal changedSelection() indicating that the selection is not  *
+     *          copyable.                                                                                                                           *
      *                                                                                                                                              *
      * \return  This function does not have any return value.                                                                                       *
      ************************************************************************************************************************************************/

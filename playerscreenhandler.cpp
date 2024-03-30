@@ -240,7 +240,8 @@ void PlayerScreenHandler::updateBattleMapImage()
         m_repositioningRequired = false;
     }
 
-    /* update visibility and opacity of Battle Map squares */
+    /* update pixmaps, visibility and opacity of Battle Map squares */
+    updateBattleMapSquaresPixmaps();
     updateBattleMapSquaresVisibility();
     updateBattleMapSquaresOpacity();
 
@@ -604,6 +605,22 @@ void PlayerScreenHandler::deleteBattleMapScene()
     }
 
     delete m_battleMapScene;
+}
+
+/*!
+ * \brief This function updates the pixmaps of the Battle Map squares.
+ */
+void PlayerScreenHandler::updateBattleMapSquaresPixmaps()
+{
+    for (quint32 rowIdx = 0U; rowIdx < m_battleMap->getNumberRows(); rowIdx++)
+    {
+        for (quint32 columnIdx = 0U; columnIdx < m_battleMap->getNumberColumns(); columnIdx++)
+        {
+            /* update pixmaps of Battle Map squares */
+            QPixmap scaledPixmap = m_battleMap->getBattleMapSquarePixmap(rowIdx, columnIdx).scaled(QSize(m_edgeLengthInPixels, m_edgeLengthInPixels));
+            m_battleMapSquaresGraphicsItems[rowIdx][columnIdx]->setPixmap(scaledPixmap);
+        }
+    }
 }
 
 /*!

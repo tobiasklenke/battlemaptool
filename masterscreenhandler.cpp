@@ -104,6 +104,59 @@ void MasterScreenHandler::setOperationMode(operationMode_t operationMode)
 }
 
 /*!
+ * \brief This function returns the pixmaps of the Battle Map squares from the selection area.
+ */
+QList<QList<QPixmap>> MasterScreenHandler::getPixmapsFromSelectionArea()
+{
+    QList<QList<QPixmap>> pixmapsFromSelectionArea;
+
+    for (quint32 rowIdx = 0U; rowIdx < m_battleMap->getNumberRows(); rowIdx++)
+    {
+        /* append new row of pixmaps */
+        pixmapsFromSelectionArea.append(QList<QPixmap>());
+
+        for (quint32 columnIdx = 0U; columnIdx < m_battleMap->getNumberColumns(); columnIdx++)
+        {
+            /* append new pixmap to row if corresponding Battle Map square is selected */
+            if (m_battleMapSquaresGraphicsItems[rowIdx][columnIdx]->isSelected())
+            {
+                pixmapsFromSelectionArea.last().append(m_battleMap->getBattleMapSquarePixmap(rowIdx, columnIdx));
+            }
+        }
+
+        /* remove row of pixmaps if no pixmaps have been appended */
+        if (0U == pixmapsFromSelectionArea.last().count())
+        {
+            pixmapsFromSelectionArea.removeLast();
+        }
+    }
+
+    return pixmapsFromSelectionArea;
+}
+
+/*!
+ * \brief This function returns the indexes of the first selected Battle Map square via its parameters.
+ */
+void MasterScreenHandler::getIndexesOfFirstBattleMapSquareFromSelectionArea(quint32 *firstSelectedRowIdx, quint32 *firstSelectedColumnIdx)
+{
+    for (quint32 rowIdx = 0U; rowIdx < m_battleMap->getNumberRows(); rowIdx++)
+    {
+        for (quint32 columnIdx = 0U; columnIdx < m_battleMap->getNumberColumns(); columnIdx++)
+        {
+            /* check for first selected Battle Map square */
+            if (m_battleMapSquaresGraphicsItems[rowIdx][columnIdx]->isSelected())
+            {
+                /* set indexes of first selected Battle Map square */
+                *firstSelectedRowIdx = rowIdx;
+                *firstSelectedColumnIdx = columnIdx;
+
+                return;
+            }
+        }
+    }
+}
+
+/*!
  * \brief This function shows the Battle Map image.
  */
 void MasterScreenHandler::showBattleMapImage()
@@ -137,6 +190,24 @@ void MasterScreenHandler::showBattleMapImage()
     /* enable event processing of graphics view as soon as Battle Map image is shown */
     m_graphicsView->setEventProcessingEnabled(true);
     m_graphicsView->setInteractive(true);
+}
+
+/*!
+ * \brief This function changes the pixmaps of the Battle Map squares according to the Battle Map.
+ */
+void MasterScreenHandler::changeBattleMapSquarePixmaps(quint32 firstRowIdx, quint32 firstColumnIdx, quint32 numberRows, quint32 numberColumns)
+{
+    for (quint32 rowIdx = 0U; rowIdx < numberRows; rowIdx++)
+    {
+        for (quint32 columnIdx = 0U; columnIdx < numberColumns; columnIdx++)
+        {
+            if ((firstRowIdx + rowIdx < m_battleMap->getNumberRows()) && (firstColumnIdx + columnIdx < m_battleMap->getNumberColumns()))
+            {
+                /* change pixmaps of Battle Map squares according to Battle Map */
+                m_battleMapSquaresGraphicsItems[firstRowIdx + rowIdx][firstColumnIdx + columnIdx]->setPixmap(m_battleMap->getBattleMapSquarePixmap(firstRowIdx + rowIdx, firstColumnIdx + columnIdx));
+            }
+        }
+    }
 }
 
 /*!
@@ -177,6 +248,9 @@ void MasterScreenHandler::insertRowAbove()
     /* update Battle Map scene section and frame */
     updateBattleMapSceneSection();
     m_battleMapScene->setSceneRect(0, 0, m_battleMap->getNumberColumns() * CONFIG_BATTLEMAPSQUARE_SIZE, m_battleMap->getNumberRows() * CONFIG_BATTLEMAPSQUARE_SIZE);
+
+    /* reset selection area when editing of Battle Map is finished */
+    resetSelectionArea();
 }
 
 /*!
@@ -217,6 +291,9 @@ void MasterScreenHandler::insertRowBelow()
     /* update Battle Map scene section and frame */
     updateBattleMapSceneSection();
     m_battleMapScene->setSceneRect(0, 0, m_battleMap->getNumberColumns() * CONFIG_BATTLEMAPSQUARE_SIZE, m_battleMap->getNumberRows() * CONFIG_BATTLEMAPSQUARE_SIZE);
+
+    /* reset selection area when editing of Battle Map is finished */
+    resetSelectionArea();
 }
 
 /*!
@@ -255,6 +332,9 @@ void MasterScreenHandler::insertColumnLeft()
     /* update Battle Map scene section and frame */
     updateBattleMapSceneSection();
     m_battleMapScene->setSceneRect(0, 0, m_battleMap->getNumberColumns() * CONFIG_BATTLEMAPSQUARE_SIZE, m_battleMap->getNumberRows() * CONFIG_BATTLEMAPSQUARE_SIZE);
+
+    /* reset selection area when editing of Battle Map is finished */
+    resetSelectionArea();
 }
 
 /*!
@@ -293,6 +373,9 @@ void MasterScreenHandler::insertColumnRight()
     /* update Battle Map scene section and frame */
     updateBattleMapSceneSection();
     m_battleMapScene->setSceneRect(0, 0, m_battleMap->getNumberColumns() * CONFIG_BATTLEMAPSQUARE_SIZE, m_battleMap->getNumberRows() * CONFIG_BATTLEMAPSQUARE_SIZE);
+
+    /* reset selection area when editing of Battle Map is finished */
+    resetSelectionArea();
 }
 
 /*!
@@ -322,6 +405,9 @@ void MasterScreenHandler::deleteRowAbove()
     /* update Battle Map scene section and frame */
     updateBattleMapSceneSection();
     m_battleMapScene->setSceneRect(0, 0, m_battleMap->getNumberColumns() * CONFIG_BATTLEMAPSQUARE_SIZE, m_battleMap->getNumberRows() * CONFIG_BATTLEMAPSQUARE_SIZE);
+
+    /* reset selection area when editing of Battle Map is finished */
+    resetSelectionArea();
 }
 
 /*!
@@ -351,6 +437,9 @@ void MasterScreenHandler::deleteRowBelow()
     /* update Battle Map scene section and frame */
     updateBattleMapSceneSection();
     m_battleMapScene->setSceneRect(0, 0, m_battleMap->getNumberColumns() * CONFIG_BATTLEMAPSQUARE_SIZE, m_battleMap->getNumberRows() * CONFIG_BATTLEMAPSQUARE_SIZE);
+
+    /* reset selection area when editing of Battle Map is finished */
+    resetSelectionArea();
 }
 
 /*!
@@ -380,6 +469,9 @@ void MasterScreenHandler::deleteColumnLeft()
     /* update Battle Map scene section and frame */
     updateBattleMapSceneSection();
     m_battleMapScene->setSceneRect(0, 0, m_battleMap->getNumberColumns() * CONFIG_BATTLEMAPSQUARE_SIZE, m_battleMap->getNumberRows() * CONFIG_BATTLEMAPSQUARE_SIZE);
+
+    /* reset selection area when editing of Battle Map is finished */
+    resetSelectionArea();
 }
 
 /*!
@@ -409,6 +501,9 @@ void MasterScreenHandler::deleteColumnRight()
     /* update Battle Map scene section and frame */
     updateBattleMapSceneSection();
     m_battleMapScene->setSceneRect(0, 0, m_battleMap->getNumberColumns() * CONFIG_BATTLEMAPSQUARE_SIZE, m_battleMap->getNumberRows() * CONFIG_BATTLEMAPSQUARE_SIZE);
+
+    /* reset selection area when editing of Battle Map is finished */
+    resetSelectionArea();
 }
 
 /*!
@@ -779,6 +874,46 @@ void MasterScreenHandler::handleSelect(QPointF positionPress, QPointF positionRe
 
     /* stack Battle Map scene section rectangle on top of all other items */
     m_sceneSectionRect.setZValue(FOREGROUNDEDGRAPHICSITEM_ZVALUE);
+
+    /* determine indexes of rows and columns limiting selection area */
+    qint32 firstSelectedRowIdx = -1;
+    qint32 lastSelectedRowIdx = -1;
+    qint32 firstSelectedColumnIdx = -1;
+    qint32 lastSelectedColumnIdx = -1;
+    for (quint32 rowIdx = 0U; rowIdx < m_battleMap->getNumberRows(); rowIdx++)
+    {
+        for (quint32 columnIdx = 0U; columnIdx < m_battleMap->getNumberColumns(); columnIdx++)
+        {
+            if (m_battleMapSquaresGraphicsItems[rowIdx][columnIdx]->isSelected())
+            {
+                /* set index of first selected row, no update required */
+                if (0 > firstSelectedRowIdx)
+                {
+                    firstSelectedRowIdx = rowIdx;
+                }
+
+                /* set index of last selected row, update for each selected graphics item */
+                lastSelectedRowIdx = rowIdx;
+
+                /* set index of first selected column, update if selected graphics item is left to previous index of first selected column */
+                if (0 > firstSelectedColumnIdx || static_cast<qint32>(columnIdx) < firstSelectedColumnIdx)
+                {
+                    firstSelectedColumnIdx = columnIdx;
+                }
+
+                /* set index of last selected column, update if selected graphics item is right to previous index of last selected column */
+                if (lastSelectedColumnIdx < static_cast<qint32>(columnIdx))
+                {
+                    lastSelectedColumnIdx = columnIdx;
+                }
+            }
+        }
+    }
+
+    /* check if selection is copyable */
+    bool selectionCopyable = (lastSelectedRowIdx - firstSelectedRowIdx + 1) * (lastSelectedColumnIdx - firstSelectedColumnIdx + 1) == m_battleMapScene->selectedItems().count();
+
+    emit changedSelection(selectionCopyable);
 }
 
 /*!
@@ -792,4 +927,6 @@ void MasterScreenHandler::resetSelectionArea()
         selectedItem->setSelected(false);
         selectedItem->setZValue(BACKGROUNDEDGRAPHICSITEM_ZVALUE);
     }
+
+    emit changedSelection(false);
 }
