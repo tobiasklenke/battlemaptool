@@ -54,11 +54,12 @@ public:
      * \brief   This function undos this command.                                                                                                   *
      *                                                                                                                                              *
      * \details This function deletes a row above the Battle Map and stores it in the member variable m_rowAbove for redoing the command.           *
-	 *          Afterwards, it enables or disables the actions for decrement depending on the current number of rows and it checks whether the      *
-	 *          number of rows displayable on the player screen is greater than the total number of rows of the Battle Map. If so, it decrements    *
-	 *          the number of rows of the Battle Map scene section. Otherwise, and if the index of the first row of the Battle Map scene section is *
-	 *          greater than 0, it decrements the index of the first row of the Battle Map scene section. Finally, it calls the respective          *
-	 *          functions of the screen handlers for deleting Battle Map square graphics items.                                                     *                                                                                                                  *                                                                                                                                              *
+     *          Afterwards, it enables or disables the actions for decrement depending on the current number of rows and it checks whether the      *
+     *          number of rows displayable on the player screen is greater than the total number of rows of the Battle Map. If so, it decrements    *
+     *          the number of rows of the Battle Map scene section. Otherwise, and if the index of the first row of the Battle Map scene section is *
+     *          greater than 0, it decrements the index of the first row of the Battle Map scene section. Finally, it calls the respective          *
+     *          functions of the screen handlers for deleting Battle Map square graphics items.                                                     *
+     *                                                                                                                                              *
      * \return  This function does not have any return value.                                                                                       *
      ************************************************************************************************************************************************/
     void undo() override;
@@ -67,11 +68,11 @@ public:
      * \brief   This function applies or redos this command.                                                                                        *
      *                                                                                                                                              *
      * \details This function inserts a new row above the Battle Map, using the member variable m_rowAbove which is empty when the command is       *
-	 *          initially applied, or otherwise contains the inserted row above which has previously been undone. Afterwards, it enables the        *
-	 *          actions for decrement depending on the current number of rows and it checks whether the number of rows displayable on the player    *
-	 *          screen is greater than or equal to the total number of rows of the Battle Map. If so, it increments the number of rows of the       *
-	 *          Battle Map scene section. Otherwise, it increments the index of the first row of the Battle Map scene section. Finally, it calls    *
-	 *          the respective functions of the screen handlers for inserting new Battle Map square graphics items.                                 *
+     *          initially applied, or otherwise contains the inserted row above which has previously been undone. Afterwards, it enables the        *
+     *          actions for decrement depending on the current number of rows and it checks whether the number of rows displayable on the player    *
+     *          screen is greater than or equal to the total number of rows of the Battle Map. If so, it increments the number of rows of the       *
+     *          Battle Map scene section. Otherwise, it increments the index of the first row of the Battle Map scene section. Finally, it calls    *
+     *          the respective functions of the screen handlers for inserting new Battle Map square graphics items.                                 *
      *                                                                                                                                              *
      * \return  This function does not have any return value.                                                                                       *
      ************************************************************************************************************************************************/
