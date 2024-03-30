@@ -290,9 +290,11 @@ private slots:
     /*! *********************************************************************************************************************************************
      * \brief   This function enables or disables the actions actionCopy and actionPaste.                                                           *
      *                                                                                                                                              *
-     * \details -                                                                                                                                   *
+     * \details This function enables the action actionCopy if the pixmaps of the selected Battle Map squares are copyable and it enables the       *
+     *          action actionPaste if the pixmaps of the selected Battle Map squares are copyable and if the pixmaps of the Battle Map squares have *
+     *          already been copied.                                                                                                                *
      *                                                                                                                                              *
-     * \param   selectionCopyable               Information whether selected Battle Map squares are copyable                                        *
+     * \param   selectionCopyable             Information whether pixmaps of selected Battle Map squares are copyable                               *
      *                                                                                                                                              *
      * \return  This function does not have any return value.                                                                                       *
      ************************************************************************************************************************************************/

@@ -155,6 +155,19 @@ public:
     void setBattleMapSquareCovered(quint32 rowIdx, quint32 columnIdx, bool covered);
 
     /*! *********************************************************************************************************************************************
+     * \brief   This function changes the pixmaps of entries of the member variable m_battleMapSquares.                                             *
+     *                                                                                                                                              *
+     * \details -                                                                                                                                   *
+     *                                                                                                                                              *
+     * \param   firstRowIdx                   Index of the first row                                                                                *
+     * \param   firstColumnIdx                Index of the first column                                                                             *
+     * \param   battleMapSquarePixmaps        Pixmaps of the Battle Map squares                                                                     *
+     *                                                                                                                                              *
+     * \return  This function does not have any return value.                                                                                       *
+     ************************************************************************************************************************************************/
+    void changeBattleMapSquarePixmaps(quint32 firstRowIdx, quint32 firstColumnIdx, QList<QList<QPixmap>> battleMapSquarePixmaps);
+
+    /*! *********************************************************************************************************************************************
      * \brief   This function inserts a new row above the Battle Map.                                                                               *
      *                                                                                                                                              *
      * \details This function inserts a new row above the Battle Map, using the parameter rowAbove. If the parameter rowAbove does not contain any  *

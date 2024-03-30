@@ -135,6 +135,24 @@ void BattleMap::setBattleMapSquareCovered(quint32 rowIdx, quint32 columnIdx, boo
 }
 
 /*!
+ * \brief This function changes the pixmaps of entries of the member variable m_battleMapSquares.
+ */
+void BattleMap::changeBattleMapSquarePixmaps(quint32 firstRowIdx, quint32 firstColumnIdx, QList<QList<QPixmap>> battleMapSquarePixmaps)
+{
+    for (quint32 rowIdx = 0U; rowIdx < battleMapSquarePixmaps.count(); rowIdx++)
+    {
+        for (quint32 columnIdx = 0U; columnIdx < battleMapSquarePixmaps.first().count(); columnIdx++)
+        {
+            if ((firstRowIdx + rowIdx < m_numberRows) && (firstColumnIdx + columnIdx < m_numberColumns))
+            {
+                /* change pixmaps of entries of member variable m_battleMapSquares */
+                m_battleMapSquares[firstRowIdx + rowIdx][firstColumnIdx + columnIdx]->setBattleMapSquarePixmap(battleMapSquarePixmaps[rowIdx][columnIdx]);
+            }
+        }
+    }
+}
+
+/*!
  * \brief This function inserts a new row above the Battle Map.
  */
 void BattleMap::insertRowAbove(QList<BattleMapSquare*> rowAbove)
