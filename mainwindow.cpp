@@ -57,6 +57,8 @@ MainWindow::MainWindow(QGraphicsView *playerWindow, QWidget *parent) :
     connect(m_userInterface->actionQuit, SIGNAL(triggered()), QApplication::instance(), SLOT(quit()));
 
     /* connect signals and slots of actions from menu Edit */
+    connect(m_userInterface->actionCopy, SIGNAL(triggered()), this, SLOT(triggeredActionCopy()));
+    connect(m_userInterface->actionPaste, SIGNAL(triggered()), this, SLOT(triggeredActionPaste()));
     connect(m_userInterface->actionInsertRowAbove, SIGNAL(triggered()), this, SLOT(triggeredActionInsertRowAbove()));
     connect(m_userInterface->actionInsertRowBelow, SIGNAL(triggered()), this, SLOT(triggeredActionInsertRowBelow()));
     connect(m_userInterface->actionInsertColumnLeft, SIGNAL(triggered()), this, SLOT(triggeredActionInsertColumnLeft()));
@@ -65,6 +67,9 @@ MainWindow::MainWindow(QGraphicsView *playerWindow, QWidget *parent) :
     connect(m_userInterface->actionDeleteRowBelow, SIGNAL(triggered()), this, SLOT(triggeredActionDeleteRowBelow()));
     connect(m_userInterface->actionDeleteColumnLeft, SIGNAL(triggered()), this, SLOT(triggeredActionDeleteColumnLeft()));
     connect(m_userInterface->actionDeleteColumnRight, SIGNAL(triggered()), this, SLOT(triggeredActionDeleteColumnRight()));
+
+    /* connect signals and slots of master screen handler */
+    connect(&m_masterScreenHandler, SIGNAL(changedSelection(bool)), this, SLOT(changedSelection(bool)));
 
     /* connect signals and slots of actions from menu View */
     connect(m_userInterface->actionUpdatePlayerScreen, SIGNAL(triggered()), this, SLOT(triggeredActionUpdatePlayerScreen()));
@@ -214,6 +219,27 @@ void MainWindow::rejectedDialogNewBattleMap()
 {
     /* delete dialog DialogNewBattleMap */
     delete m_dialogNewBattleMap;
+}
+
+/*!
+ * \brief This function handles the action actionCopy.
+ */
+void MainWindow::triggeredActionCopy()
+{
+    /* get pixmaps of Battle Map squares from selection area */
+    m_copiedPixmaps = m_masterScreenHandler.getPixmapsFromSelectionArea();
+
+    /* enable action actionPaste since pixmaps of Battle Map squares from selection area have been copied */
+    m_userInterface->actionPaste->setEnabled(true);
+}
+
+/*!
+ * \brief This function handles the action actionPaste.
+ */
+void MainWindow::triggeredActionPaste()
+{
+    /* push command UndoCommandPaste to undo stack and apply it by calling its function redo() */
+    m_undoStack->push(new UndoCommandPaste(m_copiedPixmaps, m_battleMap, &m_masterScreenHandler));
 }
 
 /*!
@@ -425,10 +451,25 @@ void MainWindow::pressedRightMouseButton(QPoint position)
         /* create menu, add actions and show it at right mouse button press position */
         QMenu *menu = new QMenu();
         menu->setAttribute(Qt::WA_DeleteOnClose);
+        menu->addAction(m_userInterface->actionCopy);
+        menu->addAction(m_userInterface->actionPaste);
+        menu->addSeparator();
         menu->addAction(m_userInterface->actionCoverBattleMap);
         menu->addAction(m_userInterface->actionUncoverBattleMap);
         menu->popup(m_userInterface->graphicsViewBattleMapMasterScreen->viewport()->mapToGlobal(position));
     }
+}
+
+/*!
+ * \brief This function enables or disables the actions actionCopy and actionPaste.
+ */
+void MainWindow::changedSelection(bool selectionCopyable)
+{
+    /* enable action actionCopy if pixmaps of selected Battle Map squares are copyable */
+    m_userInterface->actionCopy->setEnabled(selectionCopyable);
+
+    /* enable action actionPaste if pixmaps of selected Battle Map squares are copyable and if pixmaps of Battle Map squares have already been copied */
+    m_userInterface->actionPaste->setEnabled(selectionCopyable && !m_copiedPixmaps.isEmpty());
 }
 
 /****************************************************************************************************************************************************

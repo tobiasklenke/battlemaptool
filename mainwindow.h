@@ -22,6 +22,7 @@
 #include "undocommandinsertcolumnright.h"
 #include "undocommandinsertrowabove.h"
 #include "undocommandinsertrowbelow.h"
+#include "undocommandpaste.h"
 
 /****************************************************************************************************************************************************
  * CLASS DECLARATION                                                                                                                                *
@@ -108,6 +109,25 @@ private slots:
      * \return  This function does not have any return value.                                                                                       *
      ************************************************************************************************************************************************/
     void rejectedDialogNewBattleMap();
+
+    /*! *********************************************************************************************************************************************
+     * \brief   This function handles the action actionCopy.                                                                                        *
+     *                                                                                                                                              *
+     * \details This function gets the pixmaps of the Battle Map squares from the selection area of the master screen handler and enables the       *
+	 *          action actionPaste since the pixmaps of the Battle Map squares from the selection area have been copied.                            *
+     *                                                                                                                                              *
+     * \return  This function does not have any return value.                                                                                       *
+     ************************************************************************************************************************************************/
+    void triggeredActionCopy();
+
+    /*! *********************************************************************************************************************************************
+     * \brief   This function handles the action actionPaste.                                                                                       *
+     *                                                                                                                                              *
+     * \details This function pushes the command UndoCommandPaste to the undo stack and applies it by calling its function redo().                  *
+     *                                                                                                                                              *
+     * \return  This function does not have any return value.                                                                                       *
+     ************************************************************************************************************************************************/
+    void triggeredActionPaste();
 
     /*! *********************************************************************************************************************************************
      * \brief   This function handles the action actionInsertRowAbove.                                                                              *
@@ -267,6 +287,17 @@ private slots:
      ************************************************************************************************************************************************/
     void pressedRightMouseButton(QPoint position);
 
+    /*! *********************************************************************************************************************************************
+     * \brief   This function enables or disables the actions actionCopy and actionPaste.                                                           *
+     *                                                                                                                                              *
+     * \details -                                                                                                                                   *
+     *                                                                                                                                              *
+     * \param   selectionCopyable               Information whether selected Battle Map squares are copyable                                        *
+     *                                                                                                                                              *
+     * \return  This function does not have any return value.                                                                                       *
+     ************************************************************************************************************************************************/
+    void changedSelection(bool selectionCopyable);
+
 private:
 
     /*!
@@ -280,12 +311,12 @@ private:
     QUndoStack *m_undoStack;
 
     /*!
-     * \brief TODO
+     * \brief This is a pointer to the undo action that accesses the undo stack.
      */
     QAction *m_undoAction;
 
     /*!
-     * \brief TODO
+     * \brief This is a pointer to the redo action that accesses the undo stack.
      */
     QAction *m_redoAction;
 
@@ -323,5 +354,10 @@ private:
      * \brief This is the handler for displaying the Battle Map scene on the player screen.
      */
     PlayerScreenHandler m_playerScreenHandler;
+
+    /*!
+     * \brief This is the variable containing the pixmaps of the copied Battle Map squares.
+     */
+    QList<QList<QPixmap>> m_copiedPixmaps;
 };
 #endif // MAINWINDOW_H
