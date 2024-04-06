@@ -43,28 +43,31 @@ void UndoCommandPaste::undo()
  */
 void UndoCommandPaste::redo()
 {
-    /* determine indexes of row and column of the first Battle Map Square from selection area */
-    m_masterScreenHandler->getIndexesOfFirstBattleMapSquareFromSelectionArea(&m_firstRowIdx, &m_firstColumnIdx);
-
-    /* store pixmaps of Battle Map squares to be overwritten */
-    for (quint32 rowIdx = 0U; rowIdx < m_copiedPixmaps.count(); rowIdx++)
+    if (m_overwrittenPixmaps.isEmpty())
     {
-        /* append new row of pixmaps */
-        m_overwrittenPixmaps.append(QList<QPixmap>());
+        /* determine indexes of row and column of the first Battle Map Square from selection area */
+        m_masterScreenHandler->getIndexesOfFirstBattleMapSquareFromSelectionArea(&m_firstRowIdx, &m_firstColumnIdx);
 
-        for (quint32 columnIdx = 0U; columnIdx < m_copiedPixmaps.first().count(); columnIdx++)
+        /* store pixmaps of Battle Map squares to be overwritten */
+        for (quint32 rowIdx = 0U; rowIdx < m_copiedPixmaps.count(); rowIdx++)
         {
-            /* append new pixmap to row */
-            if ((m_firstRowIdx + rowIdx < m_battleMap->getNumberRows()) && (m_firstColumnIdx + columnIdx < m_battleMap->getNumberColumns()))
+            /* append new row of pixmaps */
+            m_overwrittenPixmaps.append(QList<QPixmap>());
+
+            for (quint32 columnIdx = 0U; columnIdx < m_copiedPixmaps.first().count(); columnIdx++)
             {
-                m_overwrittenPixmaps.last().append(m_battleMap->getBattleMapSquarePixmap(m_firstRowIdx + rowIdx, m_firstColumnIdx + columnIdx));
+                /* append new pixmap to row */
+                if ((m_firstRowIdx + rowIdx < m_battleMap->getNumberRows()) && (m_firstColumnIdx + columnIdx < m_battleMap->getNumberColumns()))
+                {
+                    m_overwrittenPixmaps.last().append(m_battleMap->getBattleMapSquarePixmap(m_firstRowIdx + rowIdx, m_firstColumnIdx + columnIdx));
+                }
             }
-        }
 
-        /* remove row of pixmaps if no pixmaps have been appended */
-        if (0U == m_overwrittenPixmaps.last().count())
-        {
-            m_overwrittenPixmaps.removeLast();
+            /* remove row of pixmaps if no pixmaps have been appended */
+            if (0U == m_overwrittenPixmaps.last().count())
+            {
+                m_overwrittenPixmaps.removeLast();
+            }
         }
     }
 
