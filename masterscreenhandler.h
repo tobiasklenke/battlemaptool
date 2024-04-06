@@ -128,18 +128,15 @@ public:
     void showBattleMapImage();
 
     /*! *********************************************************************************************************************************************
-     * \brief   This function changes the pixmaps of the Battle Map squares according to the Battle Map.                                            *
+     * \brief   This function updates the pixmaps of the Battle Map squares according to their coverage state.                                      *
      *                                                                                                                                              *
-     * \details -                                                                                                                                   *
-     *                                                                                                                                              *
-     * \param   firstRowIdx                   Index of the first row                                                                                *
-     * \param   firstColumnIdx                Index of the first column                                                                             *
-     * \param   numberRows                    Number of rows to be changed                                                                          *
-     * \param   numberColumns                 Number of columns to be changed                                                                       *
+     * \details This function updates the pixmaps of the Battle Map squares according to their coverage state. If the Battle Map squares are        *
+     *          covered, its pixmap is converted to grayscale and a transparent black layer is added in order to darken it. Otherwise, the original *
+     *          pixmap is used.                                                                                                                     *
      *                                                                                                                                              *
      * \return  This function does not have any return value.                                                                                       *
      ************************************************************************************************************************************************/
-    void changeBattleMapSquarePixmaps(quint32 firstRowIdx, quint32 firstColumnIdx, quint32 numberRows, quint32 numberColumns);
+    void updatePixmapAccordingCoverageState();
 
     /*! *********************************************************************************************************************************************
      * \brief   This function inserts a new row above the Battle Map.                                                                               *
@@ -340,17 +337,6 @@ private:
      * \return  This function does not have any return value.                                                                                       *
      ************************************************************************************************************************************************/
     void updateBattleMapSquaresGraphicsItems();
-
-    /*! *********************************************************************************************************************************************
-     * \brief   This function updates the pixmaps of the Battle Map squares according to their coverage state.                                      *
-     *                                                                                                                                              *
-     * \details This function updates the pixmaps of the Battle Map squares according to their coverage state. If the Battle Map squares are        *
-     *          covered, its pixmap is converted to grayscale and a transparent black layer is added in order to darken it. Otherwise, the original *
-     *          pixmap is used.                                                                                                                     *
-     *                                                                                                                                              *
-     * \return  This function does not have any return value.                                                                                       *
-     ************************************************************************************************************************************************/
-    void updatePixmapAccordingCoverageState();
 
     /*! *********************************************************************************************************************************************
      * \brief   This function updates the Battle Map scene section.                                                                                 *

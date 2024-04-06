@@ -193,19 +193,33 @@ void MasterScreenHandler::showBattleMapImage()
 }
 
 /*!
- * \brief This function changes the pixmaps of the Battle Map squares according to the Battle Map.
+ * \brief This function updates the pixmaps of the Battle Map squares according to their coverage state.
  */
-void MasterScreenHandler::changeBattleMapSquarePixmaps(quint32 firstRowIdx, quint32 firstColumnIdx, quint32 numberRows, quint32 numberColumns)
+void MasterScreenHandler::updatePixmapAccordingCoverageState()
 {
-    for (quint32 rowIdx = 0U; rowIdx < numberRows; rowIdx++)
+    QPixmap temporaryPixmap;
+
+    for (quint32 rowIdx = 0U; rowIdx < m_battleMap->getNumberRows(); rowIdx++)
     {
-        for (quint32 columnIdx = 0U; columnIdx < numberColumns; columnIdx++)
+        for (quint32 columnIdx = 0U; columnIdx < m_battleMap->getNumberColumns(); columnIdx++)
         {
-            if ((firstRowIdx + rowIdx < m_battleMap->getNumberRows()) && (firstColumnIdx + columnIdx < m_battleMap->getNumberColumns()))
+            if (m_battleMap->getBattleMapSquareCovered(rowIdx, columnIdx))
             {
-                /* change pixmaps of Battle Map squares according to Battle Map */
-                m_battleMapSquaresGraphicsItems[firstRowIdx + rowIdx][firstColumnIdx + columnIdx]->setPixmap(m_battleMap->getBattleMapSquarePixmap(firstRowIdx + rowIdx, firstColumnIdx + columnIdx));
+                /* convert pixmap to grayscale and add transparent black layer in order to darken pixmap */
+                temporaryPixmap = QPixmap::fromImage(m_battleMap->getBattleMapSquarePixmap(rowIdx, columnIdx).toImage().convertToFormat(QImage::Format_Grayscale16));
+                QPainter *painter = new QPainter(&temporaryPixmap);
+                painter->setBrush(QBrush(BATTLEMAPSQUARECOVERED_COLOR));
+                painter->setPen(Qt::NoPen);
+                painter->drawRect(temporaryPixmap.rect());
+                delete painter;
             }
+            else
+            {
+                /* use original pixmap */
+                temporaryPixmap = m_battleMap->getBattleMapSquarePixmap(rowIdx, columnIdx);
+            }
+
+            m_battleMapSquaresGraphicsItems[rowIdx][columnIdx]->setPixmap(temporaryPixmap);
         }
     }
 }
@@ -744,38 +758,6 @@ void MasterScreenHandler::updateBattleMapSquaresGraphicsItems()
 
             /* stack unselected items beneath of selected items so that selection rectangle is completely visible */
             m_battleMapSquaresGraphicsItems[rowIdx][columnIdx]->setZValue(BACKGROUNDEDGRAPHICSITEM_ZVALUE);
-        }
-    }
-}
-
-/*!
- * \brief This function updates the pixmaps of the Battle Map squares according to their coverage state.
- */
-void MasterScreenHandler::updatePixmapAccordingCoverageState()
-{
-    QPixmap temporaryPixmap;
-
-    for (quint32 rowIdx = 0U; rowIdx < m_battleMap->getNumberRows(); rowIdx++)
-    {
-        for (quint32 columnIdx = 0U; columnIdx < m_battleMap->getNumberColumns(); columnIdx++)
-        {
-            if (m_battleMap->getBattleMapSquareCovered(rowIdx, columnIdx))
-            {
-                /* convert pixmap to grayscale and add transparent black layer in order to darken pixmap */
-                temporaryPixmap = QPixmap::fromImage(m_battleMap->getBattleMapSquarePixmap(rowIdx, columnIdx).toImage().convertToFormat(QImage::Format_Grayscale16));
-                QPainter *painter = new QPainter(&temporaryPixmap);
-                painter->setBrush(QBrush(BATTLEMAPSQUARECOVERED_COLOR));
-                painter->setPen(Qt::NoPen);
-                painter->drawRect(temporaryPixmap.rect());
-                delete painter;
-            }
-            else
-            {
-                /* use original pixmap */
-                temporaryPixmap = m_battleMap->getBattleMapSquarePixmap(rowIdx, columnIdx);
-            }
-
-            m_battleMapSquaresGraphicsItems[rowIdx][columnIdx]->setPixmap(temporaryPixmap);
         }
     }
 }

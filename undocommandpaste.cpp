@@ -34,8 +34,8 @@ void UndoCommandPaste::undo()
     /* paste pixmaps of overwritten Battle Map squares to Battle Map */
     m_battleMap->changeBattleMapSquarePixmaps(m_firstRowIdx, m_firstColumnIdx, m_overwrittenPixmaps);
 
-    /* apply pixmaps of overwritten Battle Map squares to graphics items of master screen handler */
-    m_masterScreenHandler->changeBattleMapSquarePixmaps(m_firstRowIdx, m_firstColumnIdx, m_overwrittenPixmaps.count(), m_overwrittenPixmaps.first().count());
+    /* update pixmaps of overwritten Battle Map squares considering the coverage states */
+    m_masterScreenHandler->updatePixmapAccordingCoverageState();
 }
 
 /*!
@@ -71,8 +71,8 @@ void UndoCommandPaste::redo()
     /* paste pixmaps of copied Battle Map squares to Battle Map */
     m_battleMap->changeBattleMapSquarePixmaps(m_firstRowIdx, m_firstColumnIdx, m_copiedPixmaps);
 
-    /* apply pixmaps of copied Battle Map squares to graphics items of master screen handler */
-    m_masterScreenHandler->changeBattleMapSquarePixmaps(m_firstRowIdx, m_firstColumnIdx, m_copiedPixmaps.count(), m_copiedPixmaps.first().count());
+    /* update pixmaps of copied Battle Map squares considering the coverage states */
+    m_masterScreenHandler->updatePixmapAccordingCoverageState();
 }
 
 /****************************************************************************************************************************************************

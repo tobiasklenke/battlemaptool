@@ -48,8 +48,8 @@ public:
     /*! *********************************************************************************************************************************************
      * \brief   This function undos this command.                                                                                                   *
      *                                                                                                                                              *
-     * \details This function pastes the pixmaps of the overwritten Battle Map squares to the Battle Map and applies these pixmaps to the graphics  *
-     *          items of the master screen handler.                                                                                                 *
+     * \details This function pastes the pixmaps of the overwritten Battle Map squares to the Battle Map and updates the pixmaps of the overwritten *
+     *          Battle Map squares considering the coverage states.                                                                                 *
      *                                                                                                                                              *
      * \return  This function does not have any return value.                                                                                       *
      ************************************************************************************************************************************************/
@@ -60,7 +60,7 @@ public:
      *                                                                                                                                              *
      * \details This function determines the indexes of the row and the column of the first Battle Map Square from the selection area. Afterwards,  *
      *          it stores the pixmaps of the Battle Map squares to be overwritten. Finally, it pastes the pixmaps of the copied Battle Map squares  *
-     *          to the Battle Map and applies these pixmaps to the graphics items of the master screen handler.                                     *
+     *          to the Battle Map and updates the pixmaps of the copied Battle Map squares considering the coverage states.                         *
      *                                                                                                                                              *
      * \return  This function does not have any return value.                                                                                       *
      ************************************************************************************************************************************************/
