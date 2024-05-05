@@ -182,16 +182,6 @@
  */
 #define WINDROSESIZE_BATTLEMAPSQUARES                      3
 
-/*!
- * \brief This is the z value of foregrounded graphics items on the master screen.
- */
-#define FOREGROUNDEDGRAPHICSITEM_ZVALUE                    0.0
-
-/*!
- * \brief This is the z value of backgrounded graphics items on the master screen.
- */
-#define BACKGROUNDEDGRAPHICSITEM_ZVALUE                    -1.0
-
 /****************************************************************************************************************************************************
  * MACROS                                                                                                                                           *
  ****************************************************************************************************************************************************/
@@ -220,6 +210,32 @@ typedef enum
      */
     UncoverBattleMap
 } operationMode_t;
+
+/*!
+ * \brief This enum lists the z values of graphics items.
+ */
+typedef enum
+{
+    /*!
+     * \brief This is the z value of backgrounded graphics items.
+     */
+    ZValueBackgroundedGraphicsItem,
+
+    /*!
+     * \brief This is the z value of selected graphics items.
+     */
+    ZValueSelectedGraphicsItem,
+
+    /*!
+     * \brief This is the z value of coverage graphics items.
+     */
+    ZValueCoverageGraphicsItem,
+
+    /*!
+     * \brief This is the z value of foregrounded graphics items.
+     */
+    ZValueForegroundedGraphicsItem
+} zValue_t;
 
 /****************************************************************************************************************************************************
  * GLOBAL DECLARATIONS                                                                                                                              *
