@@ -59,7 +59,7 @@ protected:
      *                                                                                                                                              *
      * \details This function handles a mouse press event. In case that the left button has been pressed, it calls the base class function in order *
      *          to set press position. Afterwards, it checks whether the mouse press event is positioned at the Battle Map scene and if so, it adds *
-     *          the selection rectangle to the Battle Map scene and sets its pen properties.                                                        *
+     *          the selection rectangle to the foreground of the Battle Map scene and sets its pen properties.                                      *
      *                                                                                                                                              *
      * \param   event                         Mouse press event to be handled                                                                       *
      *                                                                                                                                              *

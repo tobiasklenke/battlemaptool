@@ -52,8 +52,9 @@ void BattleMapSceneMasterScreen::mousePressEvent(QGraphicsSceneMouseEvent *event
         /* check whether mouse press event is positioned at Battle Map scene */
         if (checkMouseEventScenePos(event))
         {
-            /* add selection rectangle to Battle Map scene and set pen properties */
+            /* add selection rectangle to foreground of Battle Map scene and set pen properties */
             addItem(&m_battleMapSelectionRectToDraw);
+            m_battleMapSelectionRectToDraw.setZValue(ZValueForegroundedGraphicsItem);
             m_battleMapSelectionRectToDraw.setPen(QPen(BATTLEMAPSELECTIONRECT_COLOR, BATTLEMAPSELECTIONRECT_LINEWIDTH * (1 / m_scaleFactor), Qt::DotLine));
         }
     }
