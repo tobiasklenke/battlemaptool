@@ -49,7 +49,7 @@ public:
      * \brief   This function undos this command.                                                                                                   *
      *                                                                                                                                              *
      * \details This function pastes the pixmaps of the overwritten Battle Map squares to the Battle Map and updates the pixmaps of the overwritten *
-     *          Battle Map squares considering the coverage states.                                                                                 *
+     *          Battle Map squares according to the Battle Map.                                                                                     *
      *                                                                                                                                              *
      * \return  This function does not have any return value.                                                                                       *
      ************************************************************************************************************************************************/
@@ -60,8 +60,7 @@ public:
      *                                                                                                                                              *
      * \details This function determines the indexes of the row and the column of the first Battle Map Square from the selection area and stores    *
      *          the pixmaps of the Battle Map squares to be overwritten only if it applies this command. Finally, it pastes the pixmaps of the      *
-     *          copied Battle Map squares to the Battle Map and updates the pixmaps of the copied Battle Map squares considering the coverage       *
-     *          states.                                                                                                                             *
+     *          copied Battle Map squares to the Battle Map and updates the pixmaps of the copied Battle Map squares according to the Battle Map.   *                                                                                                                             *
      *                                                                                                                                              *
      * \return  This function does not have any return value.                                                                                       *
      ************************************************************************************************************************************************/
