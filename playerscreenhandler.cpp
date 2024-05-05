@@ -124,7 +124,7 @@ void PlayerScreenHandler::initBattleMapImage()
             m_battleMapSquaresGraphicsItems[rowIdx][columnIdx]->setVisible(false);
 
             /* put Battle Map square graphics items to background so that wind rose graphics item is completely visible */
-            m_battleMapSquaresGraphicsItems[rowIdx][columnIdx]->setZValue(BACKGROUNDEDGRAPHICSITEM_ZVALUE);
+            m_battleMapSquaresGraphicsItems[rowIdx][columnIdx]->setZValue(ZValueBackgroundedGraphicsItem);
 
              /* add Battle Map square to Battle Map scene */
             m_battleMapScene->addItem(m_battleMapSquaresGraphicsItems[rowIdx][columnIdx]);
@@ -281,7 +281,7 @@ void PlayerScreenHandler::insertRowAbove()
             m_battleMapSquaresGraphicsItems.first()[totalColumnIdx]->setVisible(false);
 
             /* put Battle Map square graphics items to background so that wind rose graphics item is completely visible */
-            m_battleMapSquaresGraphicsItems.first()[totalColumnIdx]->setZValue(BACKGROUNDEDGRAPHICSITEM_ZVALUE);
+            m_battleMapSquaresGraphicsItems.first()[totalColumnIdx]->setZValue(ZValueBackgroundedGraphicsItem);
 
             /* add Battle Map square to Battle Map scene */
             m_battleMapScene->addItem(m_battleMapSquaresGraphicsItems.first()[totalColumnIdx]);
@@ -325,7 +325,7 @@ void PlayerScreenHandler::insertRowBelow()
             m_battleMapSquaresGraphicsItems.last()[totalColumnIdx]->setVisible(false);
 
             /* put Battle Map square graphics items to background so that wind rose graphics item is completely visible */
-            m_battleMapSquaresGraphicsItems.last()[totalColumnIdx]->setZValue(BACKGROUNDEDGRAPHICSITEM_ZVALUE);
+            m_battleMapSquaresGraphicsItems.last()[totalColumnIdx]->setZValue(ZValueBackgroundedGraphicsItem);
 
             /* add Battle Map square to Battle Map scene */
             m_battleMapScene->addItem(m_battleMapSquaresGraphicsItems.last()[totalColumnIdx]);
@@ -367,7 +367,7 @@ void PlayerScreenHandler::insertColumnLeft()
             m_battleMapSquaresGraphicsItems[totalRowIdx].first()->setVisible(false);
 
             /* put Battle Map square graphics items to background so that wind rose graphics item is completely visible */
-            m_battleMapSquaresGraphicsItems[totalRowIdx].first()->setZValue(BACKGROUNDEDGRAPHICSITEM_ZVALUE);
+            m_battleMapSquaresGraphicsItems[totalRowIdx].first()->setZValue(ZValueBackgroundedGraphicsItem);
 
             /* add Battle Map square to Battle Map scene */
             m_battleMapScene->addItem(m_battleMapSquaresGraphicsItems[totalRowIdx].first());
@@ -409,7 +409,7 @@ void PlayerScreenHandler::insertColumnRight()
             m_battleMapSquaresGraphicsItems[totalRowIdx].last()->setVisible(false);
 
             /* put Battle Map square graphics items to background so that wind rose graphics item is completely visible */
-            m_battleMapSquaresGraphicsItems[totalRowIdx].last()->setZValue(BACKGROUNDEDGRAPHICSITEM_ZVALUE);
+            m_battleMapSquaresGraphicsItems[totalRowIdx].last()->setZValue(ZValueBackgroundedGraphicsItem);
 
             /* add Battle Map square to Battle Map scene */
             m_battleMapScene->addItem(m_battleMapSquaresGraphicsItems[totalRowIdx].last());
