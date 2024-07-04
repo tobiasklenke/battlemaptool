@@ -350,7 +350,8 @@ private:
      * \brief   This function updates the Battle Map scene section.                                                                                 *
      *                                                                                                                                              *
      * \details This function updates the rect that frames the Battle Map scene section to be displayed on the player screen and the opacity of the *
-     *          Battle Map squares depending on whether they are displayed on the player screen.                                                    *
+     *          Battle Map squares depending on whether they are displayed on the player screen. Finally, the Battle Map scene section rectangle is *
+     *          stacked on top of all other items so that the selection rectangle is completely visible.                                            *
      *                                                                                                                                              *
      * \return  This function does not have any return value.                                                                                       *
      ************************************************************************************************************************************************/

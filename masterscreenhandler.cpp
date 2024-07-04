@@ -853,6 +853,9 @@ void MasterScreenHandler::updateBattleMapSceneSection()
             }
         }
     }
+
+    /* stack Battle Map scene section rectangle on top of all other items */
+    m_sceneSectionRect.setZValue(ZValueForegroundedGraphicsItem);
 }
 
 /*!
