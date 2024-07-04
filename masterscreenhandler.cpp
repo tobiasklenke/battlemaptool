@@ -191,6 +191,9 @@ void MasterScreenHandler::showBattleMapImage()
     m_sceneSectionRect.setPen(QPen(Qt::black, BATTLEMAPSECTIONFRAME_LINEWIDTH * (1 / m_scaleFactor), Qt::SolidLine));
     m_battleMapScene->addItem(&m_sceneSectionRect);
 
+    /* stack Battle Map scene section rectangle on top of all other items */
+    m_sceneSectionRect.setZValue(ZValueForegroundedGraphicsItem);
+
     /* enable event processing of graphics view as soon as Battle Map image is shown */
     m_graphicsView->setEventProcessingEnabled(true);
     m_graphicsView->setInteractive(true);
@@ -853,9 +856,6 @@ void MasterScreenHandler::updateBattleMapSceneSection()
             }
         }
     }
-
-    /* stack Battle Map scene section rectangle on top of all other items */
-    m_sceneSectionRect.setZValue(ZValueForegroundedGraphicsItem);
 }
 
 /*!
@@ -910,7 +910,7 @@ void MasterScreenHandler::handleSelect(QPointF positionPress, QPointF positionRe
         m_battleMapScene->setSelectionArea(path, itemSelectionOperation);
     }
 
-    /* stack selected items on top of unselected items so that selection rectangle is completely visible */
+    /* stack selected items on top of unselected items */
     for (QGraphicsItem * item : m_battleMapScene->items())
     {
         if (item->isSelected())
@@ -925,9 +925,6 @@ void MasterScreenHandler::handleSelect(QPointF positionPress, QPointF positionRe
             }
         }
     }
-
-    /* stack Battle Map scene section rectangle on top of all other items */
-    m_sceneSectionRect.setZValue(ZValueForegroundedGraphicsItem);
 
     /* determine indexes of rows and columns limiting selection area */
     qint32 firstSelectedRowIdx = -1;

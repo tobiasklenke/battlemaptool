@@ -121,7 +121,8 @@ public:
      *                                                                                                                                              *
      * \details This function resets and reconnects the Battle Map scene, resets the scaling of the graphics view and adds the Battle Map squares   *
      *          and the coverage rectangles to the Battle Map scene. Afterwards, it updates the Battle Map scene section and adds a frame. Finally, *
-     *          as soon as the Battle Map image is shown, it enables the event processing of the graphics view.                                     *
+     *          as soon as the Battle Map image is shown, it stacks the Battle Map scene section rectangle on top of all other items so that the    *
+     *          selection rectangle is completely visible and it enables the event processing of the graphics view.                                 *
      *                                                                                                                                              *
      * \return  This function does not have any return value.                                                                                       *
      ************************************************************************************************************************************************/
@@ -350,8 +351,7 @@ private:
      * \brief   This function updates the Battle Map scene section.                                                                                 *
      *                                                                                                                                              *
      * \details This function updates the rect that frames the Battle Map scene section to be displayed on the player screen and the opacity of the *
-     *          Battle Map squares depending on whether they are displayed on the player screen. Finally, the Battle Map scene section rectangle is *
-     *          stacked on top of all other items so that the selection rectangle is completely visible.                                            *
+     *          Battle Map squares depending on whether they are displayed on the player screen.                                                    *
      *                                                                                                                                              *
      * \return  This function does not have any return value.                                                                                       *
      ************************************************************************************************************************************************/
@@ -372,9 +372,9 @@ private:
      * \details This function checks first whether the Ctrl key on the keyboard is pressed and sets the item selection operation accordingly which  *
      *          decides if the new selection will replace or extend the previous selection. If the mouse has not been moved between mouse press and *
      *          mouse release event, only a single Battle Map square is selected. Otherwise, multiple Battle Map squares are selected. Afterwards,  *
-     *          the selected items and the Battle Map scene section rectangle are stacked on top of the unselected items so that the selection      *
-     *          rectangle is completely visible. Finally, the function determines the indexes of the rows and columns limiting the selection area   *
-     *          and checks if the selection is copyable, which is shared with the main window by emitting the signal changedSelection().            *
+     *          the selected items and the Battle Map scene section rectangle are stacked on top of the unselected items. Finally, the function     *
+     *          determines the indexes of the rows and columns limiting the selection area and checks if the selection is copyable, which is shared *
+     *          with the main window by emitting the signal changedSelection().                                                                     *
      *                                                                                                                                              *
      * \param   positionPress                 Position of the mouse button press                                                                    *
      * \param   positionRelease               Position of the mouse button release                                                                  *
