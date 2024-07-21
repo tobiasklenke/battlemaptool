@@ -253,7 +253,7 @@ private:
      *                                                                                                                                              *
      * \return  This function does not have any return value.                                                                                       *
      ************************************************************************************************************************************************/
-    void deleteBattleMapSquaresGraphicsItems();
+    void deleteBattleMapSquareGraphicsItems();
 
     /*! *********************************************************************************************************************************************
      * \brief   This function updates the graphics items of the Battle Map squares.                                                                 *
@@ -264,7 +264,7 @@ private:
      *                                                                                                                                              *
      * \return  This function does not have any return value.                                                                                       *
      ************************************************************************************************************************************************/
-    void updateBattleMapSquaresGraphicsItems();
+    void updateBattleMapSquareGraphicsItems();
 
     /*! *********************************************************************************************************************************************
      * \brief   This function deletes the Battle Map scene.                                                                                         *
@@ -336,7 +336,7 @@ private:
     /*!
      * \brief This is the variable containing the graphics items of the Battle Map squares.
      */
-    QList<QList<CustomGraphicsPixmapItem*>> m_battleMapSquaresGraphicsItems;
+    QList<QList<CustomGraphicsPixmapItem*>> m_battleMapSquareGraphicsItems;
 
     /*!
      * \brief This is the information whether the graphics items of the Battle Map squares in the rows shall be deleted on the next update.
