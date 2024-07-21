@@ -17,8 +17,8 @@ MasterScreenHandler::MasterScreenHandler() :
     m_battleMapSceneSection(nullptr),
     m_battleMapScene(new BattleMapSceneMasterScreen()),
     m_operationMode(Select),
-    m_battleMapSquaresGraphicsItems(QList<QList<QGraphicsPixmapItem*>>()),
-    m_coverageGraphicsItems(QList<QList<QGraphicsRectItem*>>()),
+    m_battleMapSquareGraphicsItems(QList<QList<QGraphicsPixmapItem*>>()),
+    m_coverageSquareGraphicsItems(QList<QList<QGraphicsRectItem*>>()),
     m_scaleFactor(1.0)
 {
 }
@@ -30,7 +30,7 @@ MasterScreenHandler::~MasterScreenHandler()
 {
     /* delete objects created in the constructor */
     deleteBattleMapScene();
-    deleteBattleMapSquaresGraphicsItems();
+    deleteBattleMapSquareGraphicsItems();
 }
 
 /*!
@@ -63,7 +63,7 @@ void MasterScreenHandler::setBattleMap(BattleMap *battleMap)
     m_battleMap = battleMap;
 
     /* update Battle Map square graphics items according to set Battle Map */
-    updateBattleMapSquaresGraphicsItems();
+    updateBattleMapSquareGraphicsItems();
 }
 
 /*!
@@ -119,7 +119,7 @@ QList<QList<QPixmap>> MasterScreenHandler::getPixmapsFromSelectionArea()
         for (quint32 columnIdx = 0U; columnIdx < m_battleMap->getNumberColumns(); columnIdx++)
         {
             /* append new pixmap to row if corresponding Battle Map square is selected */
-            if (m_battleMapSquaresGraphicsItems[rowIdx][columnIdx]->isSelected())
+            if (m_battleMapSquareGraphicsItems[rowIdx][columnIdx]->isSelected() || m_coverageSquareGraphicsItems[rowIdx][columnIdx]->isSelected())
             {
                 pixmapsFromSelectionArea.last().append(m_battleMap->getBattleMapSquarePixmap(rowIdx, columnIdx));
             }
@@ -145,7 +145,7 @@ void MasterScreenHandler::getIndexesOfFirstBattleMapSquareFromSelectionArea(quin
         for (quint32 columnIdx = 0U; columnIdx < m_battleMap->getNumberColumns(); columnIdx++)
         {
             /* check for first selected Battle Map square */
-            if (m_battleMapSquaresGraphicsItems[rowIdx][columnIdx]->isSelected())
+            if (m_battleMapSquareGraphicsItems[rowIdx][columnIdx]->isSelected() || m_coverageSquareGraphicsItems[rowIdx][columnIdx]->isSelected())
             {
                 /* set indexes of first selected Battle Map square */
                 *firstSelectedRowIdx = rowIdx;
@@ -172,16 +172,16 @@ void MasterScreenHandler::showBattleMapImage()
     /* reset scaling of graphics view */
     m_graphicsView->resetScaling();
 
-    /* add Battle Map squares and coverage rectangles to Battle Map scene */
+    /* add Battle Map squares and coverage squares to Battle Map scene */
     for (quint32 rowIdx = 0U; rowIdx < m_battleMap->getNumberRows(); rowIdx++)
     {
         for (quint32 columnIdx = 0U; columnIdx < m_battleMap->getNumberColumns(); columnIdx++)
         {
-            m_battleMapSquaresGraphicsItems[rowIdx][columnIdx]->setPos(columnIdx * CONFIG_BATTLEMAPSQUARE_SIZE, rowIdx * CONFIG_BATTLEMAPSQUARE_SIZE);
-            m_battleMapScene->addItem(m_battleMapSquaresGraphicsItems[rowIdx][columnIdx]);
+            m_battleMapSquareGraphicsItems[rowIdx][columnIdx]->setPos(columnIdx * CONFIG_BATTLEMAPSQUARE_SIZE, rowIdx * CONFIG_BATTLEMAPSQUARE_SIZE);
+            m_battleMapScene->addItem(m_battleMapSquareGraphicsItems[rowIdx][columnIdx]);
 
-            m_coverageGraphicsItems[rowIdx][columnIdx]->setPos(columnIdx * CONFIG_BATTLEMAPSQUARE_SIZE, rowIdx * CONFIG_BATTLEMAPSQUARE_SIZE);
-            m_battleMapScene->addItem(m_coverageGraphicsItems[rowIdx][columnIdx]);
+            m_coverageSquareGraphicsItems[rowIdx][columnIdx]->setPos(columnIdx * CONFIG_BATTLEMAPSQUARE_SIZE, rowIdx * CONFIG_BATTLEMAPSQUARE_SIZE);
+            m_battleMapScene->addItem(m_coverageSquareGraphicsItems[rowIdx][columnIdx]);
         }
     }
     m_battleMapScene->setSceneRect(0, 0, m_battleMap->getNumberColumns() * CONFIG_BATTLEMAPSQUARE_SIZE, m_battleMap->getNumberRows() * CONFIG_BATTLEMAPSQUARE_SIZE);
@@ -209,7 +209,7 @@ void MasterScreenHandler::updatePixmapsAccordingBattleMap()
     {
         for (quint32 columnIdx = 0U; columnIdx < m_battleMap->getNumberColumns(); columnIdx++)
         {
-            m_battleMapSquaresGraphicsItems[rowIdx][columnIdx]->setPixmap(m_battleMap->getBattleMapSquarePixmap(rowIdx, columnIdx));
+            m_battleMapSquareGraphicsItems[rowIdx][columnIdx]->setPixmap(m_battleMap->getBattleMapSquarePixmap(rowIdx, columnIdx));
         }
     }
 }
@@ -220,46 +220,49 @@ void MasterScreenHandler::updatePixmapsAccordingBattleMap()
 void MasterScreenHandler::insertRowAbove()
 {
     /* insert new row above Battle Map */
-    m_battleMapSquaresGraphicsItems.prepend(QList<QGraphicsPixmapItem*>());
-    m_coverageGraphicsItems.prepend(QList<QGraphicsRectItem*>());
+    m_battleMapSquareGraphicsItems.prepend(QList<QGraphicsPixmapItem*>());
+    m_coverageSquareGraphicsItems.prepend(QList<QGraphicsRectItem*>());
 
     for (quint32 columnIdx = 0U; columnIdx < m_battleMap->getNumberColumns(); columnIdx++)
     {
         /* append graphics item of Battle Map square to row */
-        m_battleMapSquaresGraphicsItems.first().append(new QGraphicsPixmapItem(m_battleMap->getBattleMapSquarePixmap(0U, columnIdx)));
+        m_battleMapSquareGraphicsItems.first().append(new QGraphicsPixmapItem(m_battleMap->getBattleMapSquarePixmap(0U, columnIdx)));
 
         /* make Battle Map square selectable */
-        m_battleMapSquaresGraphicsItems.first()[columnIdx]->setFlag(QGraphicsItem::ItemIsSelectable, true);
+        m_battleMapSquareGraphicsItems.first()[columnIdx]->setFlag(QGraphicsItem::ItemIsSelectable, true);
 
         /* set graphics item of Battle Map square to background layer */
-        m_battleMapSquaresGraphicsItems.first()[columnIdx]->setZValue(ZValueBackgroundedGraphicsItem);
+        m_battleMapSquareGraphicsItems.first()[columnIdx]->setZValue(ZValueNotSelectedBattleMapSquareGraphicsItem);
 
         /* add Battle Map square to Battle Map scene */
-        m_battleMapScene->addItem(m_battleMapSquaresGraphicsItems.first()[columnIdx]);
+        m_battleMapScene->addItem(m_battleMapSquareGraphicsItems.first()[columnIdx]);
 
-        /* append graphics item of coverage rectangle to row */
-        m_coverageGraphicsItems.first().append(new QGraphicsRectItem(m_battleMap->getBattleMapSquarePixmap(0U, columnIdx).rect()));
-        m_coverageGraphicsItems.first()[columnIdx]->setBrush(QBrush(BATTLEMAPSQUARECOVERED_COLOR));
-        m_coverageGraphicsItems.first()[columnIdx]->setPen(Qt::NoPen);
-        m_coverageGraphicsItems.first()[columnIdx]->setVisible(false);
+        /* append graphics item of coverage square to row */
+        m_coverageSquareGraphicsItems.first().append(new QGraphicsRectItem(m_battleMap->getBattleMapSquarePixmap(0U, columnIdx).rect()));
+        m_coverageSquareGraphicsItems.first()[columnIdx]->setBrush(QBrush(BATTLEMAPSQUARECOVERED_COLOR));
+        m_coverageSquareGraphicsItems.first()[columnIdx]->setPen(QPen(QColor(0, 0, 0, 0)));
+        m_coverageSquareGraphicsItems.first()[columnIdx]->setVisible(false);
 
-        /* set graphics item of coverage rectangle to coverage layer */
-        m_coverageGraphicsItems.first()[columnIdx]->setZValue(ZValueCoverageGraphicsItem);
+        /* make graphics item of coverage square selectable */
+        m_coverageSquareGraphicsItems.first()[columnIdx]->setFlag(QGraphicsItem::ItemIsSelectable, true);
 
-        /* add coverage rectangle to Battle Map scene */
-        m_battleMapScene->addItem(m_coverageGraphicsItems.first()[columnIdx]);
+        /* set graphics item of coverage square to coverage layer */
+        m_coverageSquareGraphicsItems.first()[columnIdx]->setZValue(ZValueNotSelectedCoverageSquareGraphicsItem);
 
-        /* set visibility state of coverage rectangle according to coverage state of Battle Map square */
-        m_coverageGraphicsItems.first()[columnIdx]->setVisible(m_battleMap->getBattleMapSquareCovered(0U, columnIdx));
+        /* add coverage square to Battle Map scene */
+        m_battleMapScene->addItem(m_coverageSquareGraphicsItems.first()[columnIdx]);
+
+        /* set visibility state of coverage square according to coverage state of Battle Map square */
+        m_coverageSquareGraphicsItems.first()[columnIdx]->setVisible(m_battleMap->getBattleMapSquareCovered(0U, columnIdx));
     }
 
-    /* reposition Battle Map squares and coverage rectangles on Battle Map scene */
+    /* reposition Battle Map squares and coverage squares on Battle Map scene */
     for (quint32 rowIdx = 0U; rowIdx < m_battleMap->getNumberRows(); rowIdx++)
     {
         for (quint32 columnIdx = 0U; columnIdx < m_battleMap->getNumberColumns(); columnIdx++)
         {
-            m_battleMapSquaresGraphicsItems[rowIdx][columnIdx]->setPos(columnIdx * CONFIG_BATTLEMAPSQUARE_SIZE, rowIdx * CONFIG_BATTLEMAPSQUARE_SIZE);
-            m_coverageGraphicsItems[rowIdx][columnIdx]->setPos(columnIdx * CONFIG_BATTLEMAPSQUARE_SIZE, rowIdx * CONFIG_BATTLEMAPSQUARE_SIZE);
+            m_battleMapSquareGraphicsItems[rowIdx][columnIdx]->setPos(columnIdx * CONFIG_BATTLEMAPSQUARE_SIZE, rowIdx * CONFIG_BATTLEMAPSQUARE_SIZE);
+            m_coverageSquareGraphicsItems[rowIdx][columnIdx]->setPos(columnIdx * CONFIG_BATTLEMAPSQUARE_SIZE, rowIdx * CONFIG_BATTLEMAPSQUARE_SIZE);
         }
     }
 
@@ -277,46 +280,49 @@ void MasterScreenHandler::insertRowAbove()
 void MasterScreenHandler::insertRowBelow()
 {
     /* insert new row below Battle Map */
-    m_battleMapSquaresGraphicsItems.append(QList<QGraphicsPixmapItem*>());
-    m_coverageGraphicsItems.append(QList<QGraphicsRectItem*>());
+    m_battleMapSquareGraphicsItems.append(QList<QGraphicsPixmapItem*>());
+    m_coverageSquareGraphicsItems.append(QList<QGraphicsRectItem*>());
 
     for (quint32 columnIdx = 0U; columnIdx < m_battleMap->getNumberColumns(); columnIdx++)
     {
         /* append graphics item of Battle Map square to row */
-        m_battleMapSquaresGraphicsItems.last().append(new QGraphicsPixmapItem(m_battleMap->getBattleMapSquarePixmap(m_battleMap->getNumberRows() - 1U, columnIdx)));
+        m_battleMapSquareGraphicsItems.last().append(new QGraphicsPixmapItem(m_battleMap->getBattleMapSquarePixmap(m_battleMap->getNumberRows() - 1U, columnIdx)));
 
         /* make Battle Map square selectable */
-        m_battleMapSquaresGraphicsItems.last()[columnIdx]->setFlag(QGraphicsItem::ItemIsSelectable, true);
+        m_battleMapSquareGraphicsItems.last()[columnIdx]->setFlag(QGraphicsItem::ItemIsSelectable, true);
 
         /* set graphics item of Battle Map square to background layer */
-        m_battleMapSquaresGraphicsItems.last()[columnIdx]->setZValue(ZValueBackgroundedGraphicsItem);
+        m_battleMapSquareGraphicsItems.last()[columnIdx]->setZValue(ZValueNotSelectedBattleMapSquareGraphicsItem);
 
         /* add Battle Map square to Battle Map scene */
-        m_battleMapScene->addItem(m_battleMapSquaresGraphicsItems.last()[columnIdx]);
+        m_battleMapScene->addItem(m_battleMapSquareGraphicsItems.last()[columnIdx]);
 
-        /* append graphics item of coverage rectangle to row */
-        m_coverageGraphicsItems.last().append(new QGraphicsRectItem(m_battleMap->getBattleMapSquarePixmap(m_battleMap->getNumberRows() - 1U, columnIdx).rect()));
-        m_coverageGraphicsItems.last()[columnIdx]->setBrush(QBrush(BATTLEMAPSQUARECOVERED_COLOR));
-        m_coverageGraphicsItems.last()[columnIdx]->setPen(Qt::NoPen);
-        m_coverageGraphicsItems.last()[columnIdx]->setVisible(false);
+        /* append graphics item of coverage square to row */
+        m_coverageSquareGraphicsItems.last().append(new QGraphicsRectItem(m_battleMap->getBattleMapSquarePixmap(m_battleMap->getNumberRows() - 1U, columnIdx).rect()));
+        m_coverageSquareGraphicsItems.last()[columnIdx]->setBrush(QBrush(BATTLEMAPSQUARECOVERED_COLOR));
+        m_coverageSquareGraphicsItems.last()[columnIdx]->setPen(QPen(QColor(0, 0, 0, 0)));
+        m_coverageSquareGraphicsItems.last()[columnIdx]->setVisible(false);
 
-        /* set graphics item of coverage rectangle to coverage layer */
-        m_coverageGraphicsItems.last()[columnIdx]->setZValue(ZValueCoverageGraphicsItem);
+        /* make graphics item of coverage square selectable */
+        m_coverageSquareGraphicsItems.last()[columnIdx]->setFlag(QGraphicsItem::ItemIsSelectable, true);
 
-        /* add coverage rectangle to Battle Map scene */
-        m_battleMapScene->addItem(m_coverageGraphicsItems.last()[columnIdx]);
+        /* set graphics item of coverage square to coverage layer */
+        m_coverageSquareGraphicsItems.last()[columnIdx]->setZValue(ZValueNotSelectedCoverageSquareGraphicsItem);
 
-        /* set visibility state of coverage rectangle according to coverage state of Battle Map square */
-        m_coverageGraphicsItems.last()[columnIdx]->setVisible(m_battleMap->getBattleMapSquareCovered(m_battleMap->getNumberRows() - 1U, columnIdx));
+        /* add coverage square to Battle Map scene */
+        m_battleMapScene->addItem(m_coverageSquareGraphicsItems.last()[columnIdx]);
+
+        /* set visibility state of coverage square according to coverage state of Battle Map square */
+        m_coverageSquareGraphicsItems.last()[columnIdx]->setVisible(m_battleMap->getBattleMapSquareCovered(m_battleMap->getNumberRows() - 1U, columnIdx));
     }
 
-    /* reposition Battle Map squares and coverage rectangles on Battle Map scene */
+    /* reposition Battle Map squares and coverage squares on Battle Map scene */
     for (quint32 rowIdx = 0U; rowIdx < m_battleMap->getNumberRows(); rowIdx++)
     {
         for (quint32 columnIdx = 0U; columnIdx < m_battleMap->getNumberColumns(); columnIdx++)
         {
-            m_battleMapSquaresGraphicsItems[rowIdx][columnIdx]->setPos(columnIdx * CONFIG_BATTLEMAPSQUARE_SIZE, rowIdx * CONFIG_BATTLEMAPSQUARE_SIZE);
-            m_coverageGraphicsItems[rowIdx][columnIdx]->setPos(columnIdx * CONFIG_BATTLEMAPSQUARE_SIZE, rowIdx * CONFIG_BATTLEMAPSQUARE_SIZE);
+            m_battleMapSquareGraphicsItems[rowIdx][columnIdx]->setPos(columnIdx * CONFIG_BATTLEMAPSQUARE_SIZE, rowIdx * CONFIG_BATTLEMAPSQUARE_SIZE);
+            m_coverageSquareGraphicsItems[rowIdx][columnIdx]->setPos(columnIdx * CONFIG_BATTLEMAPSQUARE_SIZE, rowIdx * CONFIG_BATTLEMAPSQUARE_SIZE);
         }
     }
 
@@ -337,40 +343,43 @@ void MasterScreenHandler::insertColumnLeft()
     for (quint32 rowIdx = 0U; rowIdx < m_battleMap->getNumberRows(); rowIdx++)
     {
         /* prepend graphics item of Battle Map square to row */
-        m_battleMapSquaresGraphicsItems[rowIdx].prepend(new QGraphicsPixmapItem(m_battleMap->getBattleMapSquarePixmap(rowIdx, 0U)));
+        m_battleMapSquareGraphicsItems[rowIdx].prepend(new QGraphicsPixmapItem(m_battleMap->getBattleMapSquarePixmap(rowIdx, 0U)));
 
         /* make Battle Map square selectable */
-        m_battleMapSquaresGraphicsItems[rowIdx].first()->setFlag(QGraphicsItem::ItemIsSelectable, true);
+        m_battleMapSquareGraphicsItems[rowIdx].first()->setFlag(QGraphicsItem::ItemIsSelectable, true);
 
         /* set graphics item of Battle Map square to background layer */
-        m_battleMapSquaresGraphicsItems[rowIdx].first()->setZValue(ZValueBackgroundedGraphicsItem);
+        m_battleMapSquareGraphicsItems[rowIdx].first()->setZValue(ZValueNotSelectedBattleMapSquareGraphicsItem);
 
         /* add Battle Map square to Battle Map scene */
-        m_battleMapScene->addItem(m_battleMapSquaresGraphicsItems[rowIdx].first());
+        m_battleMapScene->addItem(m_battleMapSquareGraphicsItems[rowIdx].first());
 
-        /* prepend graphics item of coverage rectangle to row */
-        m_coverageGraphicsItems[rowIdx].prepend(new QGraphicsRectItem(m_battleMap->getBattleMapSquarePixmap(rowIdx, 0U).rect()));
-        m_coverageGraphicsItems[rowIdx].first()->setBrush(QBrush(BATTLEMAPSQUARECOVERED_COLOR));
-        m_coverageGraphicsItems[rowIdx].first()->setPen(Qt::NoPen);
-        m_coverageGraphicsItems[rowIdx].first()->setVisible(false);
+        /* prepend graphics item of coverage square to row */
+        m_coverageSquareGraphicsItems[rowIdx].prepend(new QGraphicsRectItem(m_battleMap->getBattleMapSquarePixmap(rowIdx, 0U).rect()));
+        m_coverageSquareGraphicsItems[rowIdx].first()->setBrush(QBrush(BATTLEMAPSQUARECOVERED_COLOR));
+        m_coverageSquareGraphicsItems[rowIdx].first()->setPen(QPen(QColor(0, 0, 0, 0)));
+        m_coverageSquareGraphicsItems[rowIdx].first()->setVisible(false);
 
-        /* set graphics item of Battle Map square to coverage layer */
-        m_coverageGraphicsItems[rowIdx].first()->setZValue(ZValueCoverageGraphicsItem);
+        /* make graphics item of coverage square selectable */
+        m_coverageSquareGraphicsItems[rowIdx].first()->setFlag(QGraphicsItem::ItemIsSelectable, true);
 
-        /* add coverage rectangle to Battle Map scene */
-        m_battleMapScene->addItem(m_coverageGraphicsItems[rowIdx].first());
+        /* set graphics item of coverage square to coverage layer */
+        m_coverageSquareGraphicsItems[rowIdx].first()->setZValue(ZValueNotSelectedCoverageSquareGraphicsItem);
 
-        /* set visibility state of coverage rectangle according to coverage state of Battle Map square */
-        m_coverageGraphicsItems[rowIdx].first()->setVisible(m_battleMap->getBattleMapSquareCovered(rowIdx, 0U));
+        /* add coverage square to Battle Map scene */
+        m_battleMapScene->addItem(m_coverageSquareGraphicsItems[rowIdx].first());
+
+        /* set visibility state of coverage square according to coverage state of Battle Map square */
+        m_coverageSquareGraphicsItems[rowIdx].first()->setVisible(m_battleMap->getBattleMapSquareCovered(rowIdx, 0U));
     }
 
-    /* reposition Battle Map squares and coverage rectangles on Battle Map scene */
+    /* reposition Battle Map squares and coverage squares on Battle Map scene */
     for (quint32 rowIdx = 0U; rowIdx < m_battleMap->getNumberRows(); rowIdx++)
     {
         for (quint32 columnIdx = 0U; columnIdx < m_battleMap->getNumberColumns(); columnIdx++)
         {
-            m_battleMapSquaresGraphicsItems[rowIdx][columnIdx]->setPos(columnIdx * CONFIG_BATTLEMAPSQUARE_SIZE, rowIdx * CONFIG_BATTLEMAPSQUARE_SIZE);
-            m_coverageGraphicsItems[rowIdx][columnIdx]->setPos(columnIdx * CONFIG_BATTLEMAPSQUARE_SIZE, rowIdx * CONFIG_BATTLEMAPSQUARE_SIZE);
+            m_battleMapSquareGraphicsItems[rowIdx][columnIdx]->setPos(columnIdx * CONFIG_BATTLEMAPSQUARE_SIZE, rowIdx * CONFIG_BATTLEMAPSQUARE_SIZE);
+            m_coverageSquareGraphicsItems[rowIdx][columnIdx]->setPos(columnIdx * CONFIG_BATTLEMAPSQUARE_SIZE, rowIdx * CONFIG_BATTLEMAPSQUARE_SIZE);
         }
     }
 
@@ -391,40 +400,43 @@ void MasterScreenHandler::insertColumnRight()
     for (quint32 rowIdx = 0U; rowIdx < m_battleMap->getNumberRows(); rowIdx++)
     {
         /* append graphics item of Battle Map square to row */
-        m_battleMapSquaresGraphicsItems[rowIdx].append(new QGraphicsPixmapItem(m_battleMap->getBattleMapSquarePixmap(rowIdx, m_battleMap->getNumberColumns() - 1U)));
+        m_battleMapSquareGraphicsItems[rowIdx].append(new QGraphicsPixmapItem(m_battleMap->getBattleMapSquarePixmap(rowIdx, m_battleMap->getNumberColumns() - 1U)));
 
         /* make Battle Map square selectable */
-        m_battleMapSquaresGraphicsItems[rowIdx].last()->setFlag(QGraphicsItem::ItemIsSelectable, true);
+        m_battleMapSquareGraphicsItems[rowIdx].last()->setFlag(QGraphicsItem::ItemIsSelectable, true);
 
         /* set graphics item of Battle Map square to background layer */
-        m_battleMapSquaresGraphicsItems[rowIdx].last()->setZValue(ZValueBackgroundedGraphicsItem);
+        m_battleMapSquareGraphicsItems[rowIdx].last()->setZValue(ZValueNotSelectedBattleMapSquareGraphicsItem);
 
         /* add Battle Map square to Battle Map scene */
-        m_battleMapScene->addItem(m_battleMapSquaresGraphicsItems[rowIdx].last());
+        m_battleMapScene->addItem(m_battleMapSquareGraphicsItems[rowIdx].last());
 
-        /* append graphics item of coverage rectangle to row */
-        m_coverageGraphicsItems[rowIdx].append(new QGraphicsRectItem(m_battleMap->getBattleMapSquarePixmap(rowIdx, m_battleMap->getNumberColumns() - 1U).rect()));
-        m_coverageGraphicsItems[rowIdx].last()->setBrush(QBrush(BATTLEMAPSQUARECOVERED_COLOR));
-        m_coverageGraphicsItems[rowIdx].last()->setPen(Qt::NoPen);
-        m_coverageGraphicsItems[rowIdx].last()->setVisible(false);
+        /* append graphics item of coverage square to row */
+        m_coverageSquareGraphicsItems[rowIdx].append(new QGraphicsRectItem(m_battleMap->getBattleMapSquarePixmap(rowIdx, m_battleMap->getNumberColumns() - 1U).rect()));
+        m_coverageSquareGraphicsItems[rowIdx].last()->setBrush(QBrush(BATTLEMAPSQUARECOVERED_COLOR));
+        m_coverageSquareGraphicsItems[rowIdx].last()->setPen(QPen(QColor(0, 0, 0, 0)));
+        m_coverageSquareGraphicsItems[rowIdx].last()->setVisible(false);
+
+        /* make graphics item of coverage square selectable */
+        m_coverageSquareGraphicsItems[rowIdx].last()->setFlag(QGraphicsItem::ItemIsSelectable, true);
 
         /* set graphics item of Battle Map square to coverage layer */
-        m_coverageGraphicsItems[rowIdx].last()->setZValue(ZValueCoverageGraphicsItem);
+        m_coverageSquareGraphicsItems[rowIdx].last()->setZValue(ZValueNotSelectedCoverageSquareGraphicsItem);
 
-        /* add coverage rectangle to Battle Map scene */
-        m_battleMapScene->addItem(m_coverageGraphicsItems[rowIdx].last());
+        /* add coverage square to Battle Map scene */
+        m_battleMapScene->addItem(m_coverageSquareGraphicsItems[rowIdx].last());
 
-        /* set visibility state of coverage rectangle according to coverage state of Battle Map square */
-        m_coverageGraphicsItems[rowIdx].last()->setVisible(m_battleMap->getBattleMapSquareCovered(rowIdx, m_battleMap->getNumberColumns() - 1U));
+        /* set visibility state of coverage square according to coverage state of Battle Map square */
+        m_coverageSquareGraphicsItems[rowIdx].last()->setVisible(m_battleMap->getBattleMapSquareCovered(rowIdx, m_battleMap->getNumberColumns() - 1U));
     }
 
-    /* reposition Battle Map squares and coverage rectangles on Battle Map scene */
+    /* reposition Battle Map squares and coverage squares on Battle Map scene */
     for (quint32 rowIdx = 0U; rowIdx < m_battleMap->getNumberRows(); rowIdx++)
     {
         for (quint32 columnIdx = 0U; columnIdx < m_battleMap->getNumberColumns(); columnIdx++)
         {
-            m_battleMapSquaresGraphicsItems[rowIdx][columnIdx]->setPos(columnIdx * CONFIG_BATTLEMAPSQUARE_SIZE, rowIdx * CONFIG_BATTLEMAPSQUARE_SIZE);
-            m_coverageGraphicsItems[rowIdx][columnIdx]->setPos(columnIdx * CONFIG_BATTLEMAPSQUARE_SIZE, rowIdx * CONFIG_BATTLEMAPSQUARE_SIZE);
+            m_battleMapSquareGraphicsItems[rowIdx][columnIdx]->setPos(columnIdx * CONFIG_BATTLEMAPSQUARE_SIZE, rowIdx * CONFIG_BATTLEMAPSQUARE_SIZE);
+            m_coverageSquareGraphicsItems[rowIdx][columnIdx]->setPos(columnIdx * CONFIG_BATTLEMAPSQUARE_SIZE, rowIdx * CONFIG_BATTLEMAPSQUARE_SIZE);
         }
     }
 
@@ -442,24 +454,24 @@ void MasterScreenHandler::insertColumnRight()
 void MasterScreenHandler::deleteRowAbove()
 {
     /* delete row above Battle Map */
-    for (quint32 columnIdx = 0U; columnIdx < m_battleMapSquaresGraphicsItems.first().count(); columnIdx++)
+    for (quint32 columnIdx = 0U; columnIdx < m_battleMapSquareGraphicsItems.first().count(); columnIdx++)
     {
-        /* remove Battle Map square and coverage rectangle from Battle Map scene */
-        m_battleMapScene->removeItem(m_battleMapSquaresGraphicsItems.first()[columnIdx]);
-        m_battleMapScene->removeItem(m_coverageGraphicsItems.first()[columnIdx]);
-        delete m_battleMapSquaresGraphicsItems.first()[columnIdx];
-        delete m_coverageGraphicsItems.first()[columnIdx];
+        /* remove Battle Map square and coverage square from Battle Map scene */
+        m_battleMapScene->removeItem(m_battleMapSquareGraphicsItems.first()[columnIdx]);
+        m_battleMapScene->removeItem(m_coverageSquareGraphicsItems.first()[columnIdx]);
+        delete m_battleMapSquareGraphicsItems.first()[columnIdx];
+        delete m_coverageSquareGraphicsItems.first()[columnIdx];
     }
-    m_battleMapSquaresGraphicsItems.removeFirst();
-    m_coverageGraphicsItems.removeFirst();
+    m_battleMapSquareGraphicsItems.removeFirst();
+    m_coverageSquareGraphicsItems.removeFirst();
 
-    /* reposition Battle Map squares and coverage rectangles on Battle Map scene */
+    /* reposition Battle Map squares and coverage squares on Battle Map scene */
     for (quint32 rowIdx = 0U; rowIdx < m_battleMap->getNumberRows(); rowIdx++)
     {
         for (quint32 columnIdx = 0U; columnIdx < m_battleMap->getNumberColumns(); columnIdx++)
         {
-            m_battleMapSquaresGraphicsItems[rowIdx][columnIdx]->setPos(columnIdx * CONFIG_BATTLEMAPSQUARE_SIZE, rowIdx * CONFIG_BATTLEMAPSQUARE_SIZE);
-            m_coverageGraphicsItems[rowIdx][columnIdx]->setPos(columnIdx * CONFIG_BATTLEMAPSQUARE_SIZE, rowIdx * CONFIG_BATTLEMAPSQUARE_SIZE);
+            m_battleMapSquareGraphicsItems[rowIdx][columnIdx]->setPos(columnIdx * CONFIG_BATTLEMAPSQUARE_SIZE, rowIdx * CONFIG_BATTLEMAPSQUARE_SIZE);
+            m_coverageSquareGraphicsItems[rowIdx][columnIdx]->setPos(columnIdx * CONFIG_BATTLEMAPSQUARE_SIZE, rowIdx * CONFIG_BATTLEMAPSQUARE_SIZE);
         }
     }
 
@@ -477,24 +489,24 @@ void MasterScreenHandler::deleteRowAbove()
 void MasterScreenHandler::deleteRowBelow()
 {
     /* delete row below Battle Map */
-    for (quint32 columnIdx = 0U; columnIdx < m_battleMapSquaresGraphicsItems.last().count(); columnIdx++)
+    for (quint32 columnIdx = 0U; columnIdx < m_battleMapSquareGraphicsItems.last().count(); columnIdx++)
     {
-        /* remove Battle Map square and coverage rectangle from Battle Map scene */
-        m_battleMapScene->removeItem(m_battleMapSquaresGraphicsItems.last()[columnIdx]);
-        m_battleMapScene->removeItem(m_coverageGraphicsItems.last()[columnIdx]);
-        delete m_battleMapSquaresGraphicsItems.last()[columnIdx];
-        delete m_coverageGraphicsItems.last()[columnIdx];
+        /* remove Battle Map square and coverage square from Battle Map scene */
+        m_battleMapScene->removeItem(m_battleMapSquareGraphicsItems.last()[columnIdx]);
+        m_battleMapScene->removeItem(m_coverageSquareGraphicsItems.last()[columnIdx]);
+        delete m_battleMapSquareGraphicsItems.last()[columnIdx];
+        delete m_coverageSquareGraphicsItems.last()[columnIdx];
     }
-    m_battleMapSquaresGraphicsItems.removeLast();
-    m_coverageGraphicsItems.removeLast();
+    m_battleMapSquareGraphicsItems.removeLast();
+    m_coverageSquareGraphicsItems.removeLast();
 
-    /* reposition Battle Map squares and coverage rectangles on Battle Map scene */
+    /* reposition Battle Map squares and coverage squares on Battle Map scene */
     for (quint32 rowIdx = 0U; rowIdx < m_battleMap->getNumberRows(); rowIdx++)
     {
         for (quint32 columnIdx = 0U; columnIdx < m_battleMap->getNumberColumns(); columnIdx++)
         {
-            m_battleMapSquaresGraphicsItems[rowIdx][columnIdx]->setPos(columnIdx * CONFIG_BATTLEMAPSQUARE_SIZE, rowIdx * CONFIG_BATTLEMAPSQUARE_SIZE);
-            m_coverageGraphicsItems[rowIdx][columnIdx]->setPos(columnIdx * CONFIG_BATTLEMAPSQUARE_SIZE, rowIdx * CONFIG_BATTLEMAPSQUARE_SIZE);
+            m_battleMapSquareGraphicsItems[rowIdx][columnIdx]->setPos(columnIdx * CONFIG_BATTLEMAPSQUARE_SIZE, rowIdx * CONFIG_BATTLEMAPSQUARE_SIZE);
+            m_coverageSquareGraphicsItems[rowIdx][columnIdx]->setPos(columnIdx * CONFIG_BATTLEMAPSQUARE_SIZE, rowIdx * CONFIG_BATTLEMAPSQUARE_SIZE);
         }
     }
 
@@ -512,25 +524,25 @@ void MasterScreenHandler::deleteRowBelow()
 void MasterScreenHandler::deleteColumnLeft()
 {
     /* delete column to the left of Battle Map */
-    for (quint32 rowIdx = 0U; rowIdx < m_battleMapSquaresGraphicsItems.count(); rowIdx++)
+    for (quint32 rowIdx = 0U; rowIdx < m_battleMapSquareGraphicsItems.count(); rowIdx++)
     {
-        /* remove Battle Map square and coverage rectangle from Battle Map scene */
-        m_battleMapScene->removeItem(m_battleMapSquaresGraphicsItems[rowIdx].first());
-        m_battleMapScene->removeItem(m_coverageGraphicsItems[rowIdx].first());
-        delete m_battleMapSquaresGraphicsItems[rowIdx].first();
-        delete m_coverageGraphicsItems[rowIdx].first();
+        /* remove Battle Map square and coverage square from Battle Map scene */
+        m_battleMapScene->removeItem(m_battleMapSquareGraphicsItems[rowIdx].first());
+        m_battleMapScene->removeItem(m_coverageSquareGraphicsItems[rowIdx].first());
+        delete m_battleMapSquareGraphicsItems[rowIdx].first();
+        delete m_coverageSquareGraphicsItems[rowIdx].first();
 
-        m_battleMapSquaresGraphicsItems[rowIdx].removeFirst();
-        m_coverageGraphicsItems[rowIdx].removeFirst();
+        m_battleMapSquareGraphicsItems[rowIdx].removeFirst();
+        m_coverageSquareGraphicsItems[rowIdx].removeFirst();
     }
 
-    /* reposition Battle Map squares and coverage rectangles on Battle Map scene */
+    /* reposition Battle Map squares and coverage squares on Battle Map scene */
     for (quint32 rowIdx = 0U; rowIdx < m_battleMap->getNumberRows(); rowIdx++)
     {
         for (quint32 columnIdx = 0U; columnIdx < m_battleMap->getNumberColumns(); columnIdx++)
         {
-            m_battleMapSquaresGraphicsItems[rowIdx][columnIdx]->setPos(columnIdx * CONFIG_BATTLEMAPSQUARE_SIZE, rowIdx * CONFIG_BATTLEMAPSQUARE_SIZE);
-            m_coverageGraphicsItems[rowIdx][columnIdx]->setPos(columnIdx * CONFIG_BATTLEMAPSQUARE_SIZE, rowIdx * CONFIG_BATTLEMAPSQUARE_SIZE);
+            m_battleMapSquareGraphicsItems[rowIdx][columnIdx]->setPos(columnIdx * CONFIG_BATTLEMAPSQUARE_SIZE, rowIdx * CONFIG_BATTLEMAPSQUARE_SIZE);
+            m_coverageSquareGraphicsItems[rowIdx][columnIdx]->setPos(columnIdx * CONFIG_BATTLEMAPSQUARE_SIZE, rowIdx * CONFIG_BATTLEMAPSQUARE_SIZE);
         }
     }
 
@@ -548,25 +560,25 @@ void MasterScreenHandler::deleteColumnLeft()
 void MasterScreenHandler::deleteColumnRight()
 {
     /* delete column to the right of Battle Map */
-    for (quint32 rowIdx = 0U; rowIdx < m_battleMapSquaresGraphicsItems.count(); rowIdx++)
+    for (quint32 rowIdx = 0U; rowIdx < m_battleMapSquareGraphicsItems.count(); rowIdx++)
     {
-        /* remove Battle Map square and coverage rectangle from Battle Map scene */
-        m_battleMapScene->removeItem(m_battleMapSquaresGraphicsItems[rowIdx].last());
-        m_battleMapScene->removeItem(m_coverageGraphicsItems[rowIdx].last());
-        delete m_battleMapSquaresGraphicsItems[rowIdx].last();
-        delete m_coverageGraphicsItems[rowIdx].last();
+        /* remove Battle Map square and coverage square from Battle Map scene */
+        m_battleMapScene->removeItem(m_battleMapSquareGraphicsItems[rowIdx].last());
+        m_battleMapScene->removeItem(m_coverageSquareGraphicsItems[rowIdx].last());
+        delete m_battleMapSquareGraphicsItems[rowIdx].last();
+        delete m_coverageSquareGraphicsItems[rowIdx].last();
 
-        m_battleMapSquaresGraphicsItems[rowIdx].removeLast();
-        m_coverageGraphicsItems[rowIdx].removeLast();
+        m_battleMapSquareGraphicsItems[rowIdx].removeLast();
+        m_coverageSquareGraphicsItems[rowIdx].removeLast();
     }
 
-    /* reposition Battle Map squares and coverage rectangles on Battle Map scene */
+    /* reposition Battle Map squares and coverage squares on Battle Map scene */
     for (quint32 rowIdx = 0U; rowIdx < m_battleMap->getNumberRows(); rowIdx++)
     {
         for (quint32 columnIdx = 0U; columnIdx < m_battleMap->getNumberColumns(); columnIdx++)
         {
-            m_battleMapSquaresGraphicsItems[rowIdx][columnIdx]->setPos(columnIdx * CONFIG_BATTLEMAPSQUARE_SIZE, rowIdx * CONFIG_BATTLEMAPSQUARE_SIZE);
-            m_coverageGraphicsItems[rowIdx][columnIdx]->setPos(columnIdx * CONFIG_BATTLEMAPSQUARE_SIZE, rowIdx * CONFIG_BATTLEMAPSQUARE_SIZE);
+            m_battleMapSquareGraphicsItems[rowIdx][columnIdx]->setPos(columnIdx * CONFIG_BATTLEMAPSQUARE_SIZE, rowIdx * CONFIG_BATTLEMAPSQUARE_SIZE);
+            m_coverageSquareGraphicsItems[rowIdx][columnIdx]->setPos(columnIdx * CONFIG_BATTLEMAPSQUARE_SIZE, rowIdx * CONFIG_BATTLEMAPSQUARE_SIZE);
         }
     }
 
@@ -590,17 +602,23 @@ void MasterScreenHandler::handleCoverBattleMap(bool covered)
         /* get row and column indexes of selected Battle Map squares */
         for (rowIdx = 0U; rowIdx < m_battleMap->getNumberRows(); rowIdx++)
         {
-            if (-1 < m_battleMapSquaresGraphicsItems[rowIdx].indexOf(selectedItem))
+            if (-1 < m_battleMapSquareGraphicsItems[rowIdx].indexOf(selectedItem))
             {
-                columnIdx = m_battleMapSquaresGraphicsItems[rowIdx].indexOf(selectedItem);
+                columnIdx = m_battleMapSquareGraphicsItems[rowIdx].indexOf(selectedItem);
+                break;
+            }
+
+            if (-1 < m_coverageSquareGraphicsItems[rowIdx].indexOf(selectedItem))
+            {
+                columnIdx = m_coverageSquareGraphicsItems[rowIdx].indexOf(selectedItem);
                 break;
             }
 
         }
 
-        /* update coverage state of selected Battle Map square and visibility state of corresponding coverage rectangle */
+        /* update coverage state of selected Battle Map square and visibility state of corresponding coverage square */
         m_battleMap->setBattleMapSquareCovered(rowIdx, columnIdx, covered);
-        m_coverageGraphicsItems[rowIdx][columnIdx]->setVisible(covered);
+        m_coverageSquareGraphicsItems[rowIdx][columnIdx]->setVisible(covered);
     }
 
     /* reset selection area when update of coverage state is finished */
@@ -722,15 +740,25 @@ void MasterScreenHandler::pressedKey(Qt::Key key)
  */
 void MasterScreenHandler::pressedRightMouseButton(QPoint position)
 {
+    bool itemIsSelected = false;
+
     /* handle only graphics items positioned at right mouse button press position */
     for (QGraphicsItem * item : m_battleMapScene->items(m_graphicsView->mapToScene(position)))
     {
         /* handle only selectable graphics items that are not selected */
-        if (item->flags().testFlag(QGraphicsItem::ItemIsSelectable) && !item->isSelected())
+        if (item->flags().testFlag(QGraphicsItem::ItemIsSelectable))
         {
-            /* handle selection of Battle Map squares */
-            handleSelect(m_graphicsView->mapToScene(position), m_graphicsView->mapToScene(position));
+            if (item->isSelected())
+            {
+                itemIsSelected = true;
+            }
         }
+    }
+
+    if (!itemIsSelected)
+    {
+        /* handle selection of Battle Map squares */
+        handleSelect(m_graphicsView->mapToScene(position), m_graphicsView->mapToScene(position));
     }
 }
 
@@ -771,62 +799,64 @@ void MasterScreenHandler::unselectedBattleMapSquares()
  ****************************************************************************************************************************************************/
 
 /*!
- * \brief This function deletes the graphics items of the Battle Map squares and coverage rectangles.
+ * \brief This function deletes the graphics items of the Battle Map squares and coverage squares.
  */
-void MasterScreenHandler::deleteBattleMapSquaresGraphicsItems()
+void MasterScreenHandler::deleteBattleMapSquareGraphicsItems()
 {
-    for (quint32 rowIdx = 0U; rowIdx < m_battleMapSquaresGraphicsItems.count(); rowIdx++)
+    for (quint32 rowIdx = 0U; rowIdx < m_battleMapSquareGraphicsItems.count(); rowIdx++)
     {
-        for (quint32 columnIdx = 0U; columnIdx < m_battleMapSquaresGraphicsItems[rowIdx].count(); columnIdx++)
+        for (quint32 columnIdx = 0U; columnIdx < m_battleMapSquareGraphicsItems[rowIdx].count(); columnIdx++)
         {
             /* delete graphics items */
-            delete m_battleMapSquaresGraphicsItems[rowIdx][columnIdx];
-            delete m_coverageGraphicsItems[rowIdx][columnIdx];
+            delete m_battleMapSquareGraphicsItems[rowIdx][columnIdx];
+            delete m_coverageSquareGraphicsItems[rowIdx][columnIdx];
         }
     }
 
     /* remove all graphics items from list */
-    m_battleMapSquaresGraphicsItems.clear();
-    m_coverageGraphicsItems.clear();
+    m_battleMapSquareGraphicsItems.clear();
+    m_coverageSquareGraphicsItems.clear();
 }
 
 /*!
- * \brief This function updates the graphics items of the Battle Map squares and coverage rectangles.
+ * \brief This function updates the graphics items of the Battle Map squares and coverage squares.
  */
-void MasterScreenHandler::updateBattleMapSquaresGraphicsItems()
+void MasterScreenHandler::updateBattleMapSquareGraphicsItems()
 {
-    /* delete Battle Map squares and coverage rectangles of previous Battle Map */
-    deleteBattleMapSquaresGraphicsItems();
+    /* delete Battle Map squares and coverage squares of previous Battle Map */
+    deleteBattleMapSquareGraphicsItems();
 
     for (quint32 rowIdx = 0U; rowIdx < m_battleMap->getNumberRows(); rowIdx++)
     {
         /* append row to nested QList member variables m_battleMapSquaresGraphicsItems and m_coverageGraphicsItems if row does not already exist */
-        if (rowIdx + 1 > m_battleMapSquaresGraphicsItems.count())
+        if (rowIdx + 1 > m_battleMapSquareGraphicsItems.count())
         {
-            m_battleMapSquaresGraphicsItems.append(QList<QGraphicsPixmapItem*>());
-            m_coverageGraphicsItems.append(QList<QGraphicsRectItem*>());
+            m_battleMapSquareGraphicsItems.append(QList<QGraphicsPixmapItem*>());
+            m_coverageSquareGraphicsItems.append(QList<QGraphicsRectItem*>());
         }
 
         for (quint32 columnIdx = 0U; columnIdx < m_battleMap->getNumberColumns(); columnIdx++)
         {
             /* append graphics item of Battle Map square to row of nested QList member variable m_battleMapSquaresGraphicsItems */
-            m_battleMapSquaresGraphicsItems[rowIdx].append(new QGraphicsPixmapItem(m_battleMap->getBattleMapSquarePixmap(rowIdx, columnIdx)));
+            m_battleMapSquareGraphicsItems[rowIdx].append(new QGraphicsPixmapItem(m_battleMap->getBattleMapSquarePixmap(rowIdx, columnIdx)));
 
             /* make Battle Mal square selectable */
-            m_battleMapSquaresGraphicsItems[rowIdx][columnIdx]->setFlag(QGraphicsItem::ItemIsSelectable, true);
+            m_battleMapSquareGraphicsItems[rowIdx][columnIdx]->setFlag(QGraphicsItem::ItemIsSelectable, true);
 
             /* set graphics item of Battle Map square to background layer */
-            m_battleMapSquaresGraphicsItems[rowIdx][columnIdx]->setZValue(ZValueBackgroundedGraphicsItem);
+            m_battleMapSquareGraphicsItems[rowIdx][columnIdx]->setZValue(ZValueNotSelectedBattleMapSquareGraphicsItem);
 
-            /* append graphics item of coverage rectangle to row of nested QList member variable m_coverageGraphicsItems */
-            m_coverageGraphicsItems[rowIdx].append(new QGraphicsRectItem(m_battleMap->getBattleMapSquarePixmap(rowIdx, columnIdx).rect()));
-            m_coverageGraphicsItems[rowIdx][columnIdx]->setBrush(QBrush(BATTLEMAPSQUARECOVERED_COLOR));
-            m_coverageGraphicsItems[rowIdx][columnIdx]->setPen(Qt::NoPen);
-            m_coverageGraphicsItems[rowIdx][columnIdx]->setVisible(false);
+            /* append graphics item of coverage square to row of nested QList member variable m_coverageGraphicsItems */
+            m_coverageSquareGraphicsItems[rowIdx].append(new QGraphicsRectItem(m_battleMap->getBattleMapSquarePixmap(rowIdx, columnIdx).rect()));
+            m_coverageSquareGraphicsItems[rowIdx][columnIdx]->setBrush(QBrush(BATTLEMAPSQUARECOVERED_COLOR));
+            m_coverageSquareGraphicsItems[rowIdx][columnIdx]->setPen(QPen(QColor(0, 0, 0, 0)));
+            m_coverageSquareGraphicsItems[rowIdx][columnIdx]->setVisible(false);
+
+            /* make graphics item of coverage square selectable */
+            m_coverageSquareGraphicsItems[rowIdx][columnIdx]->setFlag(QGraphicsItem::ItemIsSelectable, true);
 
             /* set graphics item of Battle Map square to coverage layer */
-            m_coverageGraphicsItems[rowIdx][columnIdx]->setZValue(ZValueCoverageGraphicsItem);
-
+            m_coverageSquareGraphicsItems[rowIdx][columnIdx]->setZValue(ZValueNotSelectedCoverageSquareGraphicsItem);
         }
     }
 }
@@ -848,11 +878,11 @@ void MasterScreenHandler::updateBattleMapSceneSection()
             if ((rowIdx < m_battleMapSceneSection->getIndexFirstRowSceneSection()) || (m_battleMapSceneSection->getIndexFirstRowSceneSection() + m_battleMapSceneSection->getNumberRowsSceneSection() - 1U < rowIdx) ||
                     (columnIdx < m_battleMapSceneSection->getIndexFirstColumnSceneSection()) || (m_battleMapSceneSection->getIndexFirstColumnSceneSection() + m_battleMapSceneSection->getNumberColumnsSceneSection() - 1U < columnIdx))
             {
-                m_battleMapSquaresGraphicsItems[rowIdx][columnIdx]->setOpacity(BATTLEMAPSQUAREOUTSIDESECTIONFRAME_OPACITY);
+                m_battleMapSquareGraphicsItems[rowIdx][columnIdx]->setOpacity(BATTLEMAPSQUAREOUTSIDESECTIONFRAME_OPACITY);
             }
             else
             {
-                m_battleMapSquaresGraphicsItems[rowIdx][columnIdx]->setOpacity(BATTLEMAPSQUAREWITHINSECTIONFRAME_OPACITY);
+                m_battleMapSquareGraphicsItems[rowIdx][columnIdx]->setOpacity(BATTLEMAPSQUAREWITHINSECTIONFRAME_OPACITY);
             }
         }
     }
@@ -910,19 +940,39 @@ void MasterScreenHandler::handleSelect(QPointF positionPress, QPointF positionRe
         m_battleMapScene->setSelectionArea(path, itemSelectionOperation);
     }
 
+    /* ensure that only graphics item of coverage square is selected */
+    for (quint32 rowIdx = 0U; rowIdx < m_battleMap->getNumberRows(); rowIdx++)
+    {
+        for (quint32 columnIdx = 0U; columnIdx < m_battleMap->getNumberColumns(); columnIdx++)
+        {
+            if (m_coverageSquareGraphicsItems[rowIdx][columnIdx]->isSelected())
+            {
+                m_battleMapSquareGraphicsItems[rowIdx][columnIdx]->setSelected(false);
+            }
+        }
+    }
+
     /* stack selected items on top of unselected items */
     for (QGraphicsItem * item : m_battleMapScene->items())
     {
-        if (item->isSelected())
+        if (item->isSelected() && ZValueNotSelectedBattleMapSquareGraphicsItem == item->zValue())
         {
-            item->setZValue(ZValueSelectedGraphicsItem);
+            item->setZValue(ZValueSelectedBattleMapSquareGraphicsItem);
         }
-        else
+
+        if (!item->isSelected() && ZValueSelectedBattleMapSquareGraphicsItem == item->zValue())
         {
-            if (item->flags().testFlag(QGraphicsItem::ItemIsSelectable))
-            {
-                item->setZValue(ZValueBackgroundedGraphicsItem);
-            }
+            item->setZValue(ZValueNotSelectedBattleMapSquareGraphicsItem);
+        }
+
+        if (item->isSelected() && ZValueNotSelectedCoverageSquareGraphicsItem == item->zValue())
+        {
+            item->setZValue(ZValueSelectedCoverageSquareGraphicsItem);
+        }
+
+        if (!item->isSelected() && ZValueSelectedCoverageSquareGraphicsItem == item->zValue())
+        {
+            item->setZValue(ZValueNotSelectedCoverageSquareGraphicsItem);
         }
     }
 
@@ -935,7 +985,7 @@ void MasterScreenHandler::handleSelect(QPointF positionPress, QPointF positionRe
     {
         for (quint32 columnIdx = 0U; columnIdx < m_battleMap->getNumberColumns(); columnIdx++)
         {
-            if (m_battleMapSquaresGraphicsItems[rowIdx][columnIdx]->isSelected())
+            if (m_battleMapSquareGraphicsItems[rowIdx][columnIdx]->isSelected() || m_coverageSquareGraphicsItems[rowIdx][columnIdx]->isSelected())
             {
                 /* set index of first selected row, no update required */
                 if (0 > firstSelectedRowIdx)
@@ -976,7 +1026,16 @@ void MasterScreenHandler::resetSelectionArea()
     for (QGraphicsItem * selectedItem : m_battleMapScene->selectedItems())
     {
         selectedItem->setSelected(false);
-        selectedItem->setZValue(ZValueBackgroundedGraphicsItem);
+
+        if (selectedItem->zValue() == ZValueSelectedBattleMapSquareGraphicsItem)
+        {
+            selectedItem->setZValue(ZValueNotSelectedBattleMapSquareGraphicsItem);
+        }
+
+        if (selectedItem->zValue() == ZValueSelectedCoverageSquareGraphicsItem)
+        {
+            selectedItem->setZValue(ZValueNotSelectedCoverageSquareGraphicsItem);
+        }
     }
 
     emit changedSelection(false);
