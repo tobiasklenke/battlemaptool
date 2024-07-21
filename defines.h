@@ -222,14 +222,24 @@ typedef enum
     ZValueBackgroundedGraphicsItem,
 
     /*!
-     * \brief This is the z value of selected graphics items.
+     * \brief This is the z value of not selected graphics items of Battle Map squares.
      */
-    ZValueSelectedGraphicsItem,
+    ZValueNotSelectedBattleMapSquareGraphicsItem,
 
     /*!
-     * \brief This is the z value of coverage graphics items.
+     * \brief This is the z value of not selected graphics items of coverage squares.
      */
-    ZValueCoverageGraphicsItem,
+    ZValueNotSelectedCoverageSquareGraphicsItem,
+
+    /*!
+     * \brief This is the z value of selected graphics items of Battle Map squares.
+     */
+    ZValueSelectedBattleMapSquareGraphicsItem,
+
+    /*!
+     * \brief This is the z value of selected graphics items of coverage squares.
+     */
+    ZValueSelectedCoverageSquareGraphicsItem,
 
     /*!
      * \brief This is the z value of foregrounded graphics items.
