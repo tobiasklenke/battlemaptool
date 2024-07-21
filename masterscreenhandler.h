@@ -242,6 +242,15 @@ public:
     void deleteColumnRight();
 
     /*! *********************************************************************************************************************************************
+     * \brief   This function repositions the Battle Map squares and coverage squares on the Battle Map scene.                                      *
+     *                                                                                                                                              *
+     * \details -                                                                                                                                   *
+     *                                                                                                                                              *
+     * \return  This function does not have any return value.                                                                                       *
+     ************************************************************************************************************************************************/
+    void repositionGraphicsItemsOnBattleMapScene();
+
+    /*! *********************************************************************************************************************************************
      * \brief   This function updates the coverage state of Battle Map squares.                                                                     *
      *                                                                                                                                              *
      * \details This function gets the row and column indexes of the selected Battle Map squares and updates the coverage states of these Battle    *

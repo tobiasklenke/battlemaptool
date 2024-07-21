@@ -257,14 +257,7 @@ void MasterScreenHandler::insertRowAbove()
     }
 
     /* reposition Battle Map squares and coverage squares on Battle Map scene */
-    for (quint32 rowIdx = 0U; rowIdx < m_battleMap->getNumberRows(); rowIdx++)
-    {
-        for (quint32 columnIdx = 0U; columnIdx < m_battleMap->getNumberColumns(); columnIdx++)
-        {
-            m_battleMapSquareGraphicsItems[rowIdx][columnIdx]->setPos(columnIdx * CONFIG_BATTLEMAPSQUARE_SIZE, rowIdx * CONFIG_BATTLEMAPSQUARE_SIZE);
-            m_coverageSquareGraphicsItems[rowIdx][columnIdx]->setPos(columnIdx * CONFIG_BATTLEMAPSQUARE_SIZE, rowIdx * CONFIG_BATTLEMAPSQUARE_SIZE);
-        }
-    }
+    repositionGraphicsItemsOnBattleMapScene();
 
     /* update Battle Map scene section and frame */
     updateBattleMapSceneSection();
@@ -317,14 +310,7 @@ void MasterScreenHandler::insertRowBelow()
     }
 
     /* reposition Battle Map squares and coverage squares on Battle Map scene */
-    for (quint32 rowIdx = 0U; rowIdx < m_battleMap->getNumberRows(); rowIdx++)
-    {
-        for (quint32 columnIdx = 0U; columnIdx < m_battleMap->getNumberColumns(); columnIdx++)
-        {
-            m_battleMapSquareGraphicsItems[rowIdx][columnIdx]->setPos(columnIdx * CONFIG_BATTLEMAPSQUARE_SIZE, rowIdx * CONFIG_BATTLEMAPSQUARE_SIZE);
-            m_coverageSquareGraphicsItems[rowIdx][columnIdx]->setPos(columnIdx * CONFIG_BATTLEMAPSQUARE_SIZE, rowIdx * CONFIG_BATTLEMAPSQUARE_SIZE);
-        }
-    }
+    repositionGraphicsItemsOnBattleMapScene();
 
     /* update Battle Map scene section and frame */
     updateBattleMapSceneSection();
@@ -374,14 +360,7 @@ void MasterScreenHandler::insertColumnLeft()
     }
 
     /* reposition Battle Map squares and coverage squares on Battle Map scene */
-    for (quint32 rowIdx = 0U; rowIdx < m_battleMap->getNumberRows(); rowIdx++)
-    {
-        for (quint32 columnIdx = 0U; columnIdx < m_battleMap->getNumberColumns(); columnIdx++)
-        {
-            m_battleMapSquareGraphicsItems[rowIdx][columnIdx]->setPos(columnIdx * CONFIG_BATTLEMAPSQUARE_SIZE, rowIdx * CONFIG_BATTLEMAPSQUARE_SIZE);
-            m_coverageSquareGraphicsItems[rowIdx][columnIdx]->setPos(columnIdx * CONFIG_BATTLEMAPSQUARE_SIZE, rowIdx * CONFIG_BATTLEMAPSQUARE_SIZE);
-        }
-    }
+    repositionGraphicsItemsOnBattleMapScene();
 
     /* update Battle Map scene section and frame */
     updateBattleMapSceneSection();
@@ -431,14 +410,7 @@ void MasterScreenHandler::insertColumnRight()
     }
 
     /* reposition Battle Map squares and coverage squares on Battle Map scene */
-    for (quint32 rowIdx = 0U; rowIdx < m_battleMap->getNumberRows(); rowIdx++)
-    {
-        for (quint32 columnIdx = 0U; columnIdx < m_battleMap->getNumberColumns(); columnIdx++)
-        {
-            m_battleMapSquareGraphicsItems[rowIdx][columnIdx]->setPos(columnIdx * CONFIG_BATTLEMAPSQUARE_SIZE, rowIdx * CONFIG_BATTLEMAPSQUARE_SIZE);
-            m_coverageSquareGraphicsItems[rowIdx][columnIdx]->setPos(columnIdx * CONFIG_BATTLEMAPSQUARE_SIZE, rowIdx * CONFIG_BATTLEMAPSQUARE_SIZE);
-        }
-    }
+    repositionGraphicsItemsOnBattleMapScene();
 
     /* update Battle Map scene section and frame */
     updateBattleMapSceneSection();
@@ -466,14 +438,7 @@ void MasterScreenHandler::deleteRowAbove()
     m_coverageSquareGraphicsItems.removeFirst();
 
     /* reposition Battle Map squares and coverage squares on Battle Map scene */
-    for (quint32 rowIdx = 0U; rowIdx < m_battleMap->getNumberRows(); rowIdx++)
-    {
-        for (quint32 columnIdx = 0U; columnIdx < m_battleMap->getNumberColumns(); columnIdx++)
-        {
-            m_battleMapSquareGraphicsItems[rowIdx][columnIdx]->setPos(columnIdx * CONFIG_BATTLEMAPSQUARE_SIZE, rowIdx * CONFIG_BATTLEMAPSQUARE_SIZE);
-            m_coverageSquareGraphicsItems[rowIdx][columnIdx]->setPos(columnIdx * CONFIG_BATTLEMAPSQUARE_SIZE, rowIdx * CONFIG_BATTLEMAPSQUARE_SIZE);
-        }
-    }
+    repositionGraphicsItemsOnBattleMapScene();
 
     /* update Battle Map scene section and frame */
     updateBattleMapSceneSection();
@@ -501,14 +466,7 @@ void MasterScreenHandler::deleteRowBelow()
     m_coverageSquareGraphicsItems.removeLast();
 
     /* reposition Battle Map squares and coverage squares on Battle Map scene */
-    for (quint32 rowIdx = 0U; rowIdx < m_battleMap->getNumberRows(); rowIdx++)
-    {
-        for (quint32 columnIdx = 0U; columnIdx < m_battleMap->getNumberColumns(); columnIdx++)
-        {
-            m_battleMapSquareGraphicsItems[rowIdx][columnIdx]->setPos(columnIdx * CONFIG_BATTLEMAPSQUARE_SIZE, rowIdx * CONFIG_BATTLEMAPSQUARE_SIZE);
-            m_coverageSquareGraphicsItems[rowIdx][columnIdx]->setPos(columnIdx * CONFIG_BATTLEMAPSQUARE_SIZE, rowIdx * CONFIG_BATTLEMAPSQUARE_SIZE);
-        }
-    }
+    repositionGraphicsItemsOnBattleMapScene();
 
     /* update Battle Map scene section and frame */
     updateBattleMapSceneSection();
@@ -537,14 +495,7 @@ void MasterScreenHandler::deleteColumnLeft()
     }
 
     /* reposition Battle Map squares and coverage squares on Battle Map scene */
-    for (quint32 rowIdx = 0U; rowIdx < m_battleMap->getNumberRows(); rowIdx++)
-    {
-        for (quint32 columnIdx = 0U; columnIdx < m_battleMap->getNumberColumns(); columnIdx++)
-        {
-            m_battleMapSquareGraphicsItems[rowIdx][columnIdx]->setPos(columnIdx * CONFIG_BATTLEMAPSQUARE_SIZE, rowIdx * CONFIG_BATTLEMAPSQUARE_SIZE);
-            m_coverageSquareGraphicsItems[rowIdx][columnIdx]->setPos(columnIdx * CONFIG_BATTLEMAPSQUARE_SIZE, rowIdx * CONFIG_BATTLEMAPSQUARE_SIZE);
-        }
-    }
+    repositionGraphicsItemsOnBattleMapScene();
 
     /* update Battle Map scene section and frame */
     updateBattleMapSceneSection();
@@ -573,6 +524,22 @@ void MasterScreenHandler::deleteColumnRight()
     }
 
     /* reposition Battle Map squares and coverage squares on Battle Map scene */
+    repositionGraphicsItemsOnBattleMapScene();
+
+    /* update Battle Map scene section and frame */
+    updateBattleMapSceneSection();
+    m_battleMapScene->setSceneRect(0, 0, m_battleMap->getNumberColumns() * CONFIG_BATTLEMAPSQUARE_SIZE, m_battleMap->getNumberRows() * CONFIG_BATTLEMAPSQUARE_SIZE);
+
+    /* reset selection area when editing of Battle Map is finished */
+    resetSelectionArea();
+}
+
+/*!
+ * \brief This function repositions the Battle Map squares and coverage squares on the Battle Map scene.
+ */
+void MasterScreenHandler::repositionGraphicsItemsOnBattleMapScene()
+{
+    /* reposition Battle Map squares and coverage squares on Battle Map scene */
     for (quint32 rowIdx = 0U; rowIdx < m_battleMap->getNumberRows(); rowIdx++)
     {
         for (quint32 columnIdx = 0U; columnIdx < m_battleMap->getNumberColumns(); columnIdx++)
@@ -581,13 +548,6 @@ void MasterScreenHandler::deleteColumnRight()
             m_coverageSquareGraphicsItems[rowIdx][columnIdx]->setPos(columnIdx * CONFIG_BATTLEMAPSQUARE_SIZE, rowIdx * CONFIG_BATTLEMAPSQUARE_SIZE);
         }
     }
-
-    /* update Battle Map scene section and frame */
-    updateBattleMapSceneSection();
-    m_battleMapScene->setSceneRect(0, 0, m_battleMap->getNumberColumns() * CONFIG_BATTLEMAPSQUARE_SIZE, m_battleMap->getNumberRows() * CONFIG_BATTLEMAPSQUARE_SIZE);
-
-    /* reset selection area when editing of Battle Map is finished */
-    resetSelectionArea();
 }
 
 /*!
