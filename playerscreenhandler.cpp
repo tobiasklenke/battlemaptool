@@ -151,6 +151,9 @@ void PlayerScreenHandler::initBattleMapImage()
     m_battleMapScene->addItem(&m_windRoseGraphicsItem);
     m_windRoseGraphicsItem.setPos((m_battleMapSceneSection->getIndexFirstColumnSceneSection() + m_battleMapSceneSection->getNumberColumnsSceneSection() - WINDROSESIZE_BATTLEMAPSQUARES) * m_edgeLengthInPixels,
                                   m_battleMapSceneSection->getIndexFirstRowSceneSection() * m_edgeLengthInPixels);
+
+    /* put wind rose graphics items to foreground */
+    m_windRoseGraphicsItem.setZValue(ZValueForegroundedGraphicsItem);
 }
 
 /*!

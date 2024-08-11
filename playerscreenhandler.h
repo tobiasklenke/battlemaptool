@@ -99,7 +99,7 @@ public:
      *          positions the Battle Map squares on theBattle Map scene, makes the Battle Map squares invisible and puts the Battle Map squares     *
      *          graphics items to the background so that the wind rose graphics item is completely visible. Afterwards, it initializes the Battle   *
      *          Map scene rect according to the Battle Map scene section. Finally, it initializes the member variables m_deleteRowsOnUpdate and     *
-     *          m_deleteColumnsOnUpdate and adds and positions the wind rose graphics item.                                                         *
+     *          m_deleteColumnsOnUpdate, adds and positions the wind rose graphics item and puts it to the foreground.                              *
      *                                                                                                                                              *
      * \return  This function does not have any return value.                                                                                       *
      ************************************************************************************************************************************************/
