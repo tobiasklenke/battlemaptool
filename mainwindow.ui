@@ -169,6 +169,8 @@
     <addaction name="separator"/>
     <addaction name="submenuExpandBattleMap"/>
     <addaction name="submenuReduceBattleMap"/>
+    <addaction name="actionRotateBattleMapLeft"/>
+    <addaction name="actionRotateBattleMapRight"/>
    </widget>
    <widget class="QMenu" name="menuView">
     <property name="title">
@@ -566,6 +568,30 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+V</string>
+   </property>
+  </action>
+  <action name="actionRotateBattleMapLeft">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="icons.qrc">
+     <normaloff>:/icons/icons/rotateleft.png</normaloff>:/icons/icons/rotateleft.png</iconset>
+   </property>
+   <property name="text">
+    <string>Rotate Battle Map left</string>
+   </property>
+  </action>
+  <action name="actionRotateBattleMapRight">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="icons.qrc">
+     <normaloff>:/icons/icons/rotateright.png</normaloff>:/icons/icons/rotateright.png</iconset>
+   </property>
+   <property name="text">
+    <string>Rotate Battle Map right</string>
    </property>
   </action>
  </widget>

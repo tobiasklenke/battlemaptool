@@ -23,6 +23,8 @@
 #include "undocommandinsertrowabove.h"
 #include "undocommandinsertrowbelow.h"
 #include "undocommandpaste.h"
+#include "undocommandrotatebattlemapleft.h"
+#include "undocommandrotatebattlemapright.h"
 
 /****************************************************************************************************************************************************
  * CLASS DECLARATION                                                                                                                                *
@@ -48,10 +50,10 @@ public:
      * \brief   This function is the constructor of the class MainWindow.                                                                           *
      *                                                                                                                                              *
      * \details This function sets up the user interface, adds the undo stack actions to the menu, passes the graphics views and Battle Map scene   *
-	 *          sections to the master and player screen handlers and creates the action groups for the operation mode and the wind rose            *
-	 *          orientation. Afterwards, it connects several signals and slots. Finally, it makes the labels invisible so that they are not shown   *
-	 *          initially when there is no Battle Map and also makes the labels transparent for mouse events so that they do not process them       *
-	 *          instead of the graphics view.                                                                                                       *
+     *          sections to the master and player screen handlers and creates the action groups for the operation mode and the wind rose            *
+     *          orientation. Afterwards, it connects several signals and slots. Finally, it makes the labels invisible so that they are not shown   *
+     *          initially when there is no Battle Map and also makes the labels transparent for mouse events so that they do not process them       *
+     *          instead of the graphics view.                                                                                                       *
      *                                                                                                                                              *
      * \param   playerWindow                  Address of the graphics view to display the players window                                            *
      * \param   parent                        Parent of the class MainWindow                                                                        *
@@ -89,13 +91,13 @@ private slots:
      * \brief   This function handles the acceptance of the dialog DialogNewBattleMap.                                                              *
      *                                                                                                                                              *
      * \details This function first sets the wait cursor as the following process may take some time, stores the Battle Map from the accepted       *
-	 *          dialog DialogNewBattleMap and deletes the dialog afterwards. Then, it resets the indexes of the first row and column of the Battle  *
-	 *          Map scene section, checks whether the number of rows respectively columns displayable on the player screen is less than the total   *
-	 *          number of rows respectively columns of the Battle Map and sets the number of rows respectively columns of the Battle Map scene      *
-	 *          section to the less number. It shares the Battle Map with the screen handlers, shows the Battle Map image on the master screen and  *
-	 *          initializes the Battle Map image on the player screen. Afterwards, it enables the actions that shall only be available when the     *
-	 *          Battle Map is shared with the screen handlers and it also makes the label labelScaleFactor visible so that it is shown when Battle  *
-	 *          Map is shared with the screen handlers. Finally, it resets the arrow cursor as the process which takes some time is completed.      *
+     *          dialog DialogNewBattleMap and deletes the dialog afterwards. Then, it resets the indexes of the first row and column of the Battle  *
+     *          Map scene section, checks whether the number of rows respectively columns displayable on the player screen is less than the total   *
+     *          number of rows respectively columns of the Battle Map and sets the number of rows respectively columns of the Battle Map scene      *
+     *          section to the less number. It shares the Battle Map with the screen handlers, shows the Battle Map image on the master screen and  *
+     *          initializes the Battle Map image on the player screen. Afterwards, it enables the actions that shall only be available when the     *
+     *          Battle Map is shared with the screen handlers and it also makes the label labelScaleFactor visible so that it is shown when Battle  *
+     *          Map is shared with the screen handlers. Finally, it resets the arrow cursor as the process which takes some time is completed.      *
      *                                                                                                                                              *
      * \return  This function does not have any return value.                                                                                       *
      ************************************************************************************************************************************************/
@@ -114,7 +116,7 @@ private slots:
      * \brief   This function handles the action actionCopy.                                                                                        *
      *                                                                                                                                              *
      * \details This function gets the pixmaps of the Battle Map squares from the selection area of the master screen handler and enables the       *
-	 *          action actionPaste since the pixmaps of the Battle Map squares from the selection area have been copied.                            *
+     *          action actionPaste since the pixmaps of the Battle Map squares from the selection area have been copied.                            *
      *                                                                                                                                              *
      * \return  This function does not have any return value.                                                                                       *
      ************************************************************************************************************************************************/
@@ -202,6 +204,24 @@ private slots:
     void triggeredActionDeleteColumnRight();
 
     /*! *********************************************************************************************************************************************
+     * \brief   This function handles the action actionRotateBattleMapLeft.                                                                         *
+     *                                                                                                                                              *
+     * \details This function pushes the command UndoCommandRotateBattleMapLeft to the undo stack and applies it by calling its function redo().    *
+     *                                                                                                                                              *
+     * \return  This function does not have any return value.                                                                                       *
+     ************************************************************************************************************************************************/
+    void triggeredActionRotateBattleMapLeft();
+
+    /*! *********************************************************************************************************************************************
+     * \brief   This function handles the action actionRotateBattleMapRight.                                                                        *
+     *                                                                                                                                              *
+     * \details This function pushes the command UndoCommandRotateBattleMapRight to the undo stack and applies it by calling its function redo().   *
+     *                                                                                                                                              *
+     * \return  This function does not have any return value.                                                                                       *
+     ************************************************************************************************************************************************/
+    void triggeredActionRotateBattleMapRight();
+
+    /*! *********************************************************************************************************************************************
      * \brief   This function handles the action actionUpdatePlayerScreen.                                                                          *
      *                                                                                                                                              *
      * \details This function updates the Battle Map image on the player screen and clears the undo stack afterwards.                               *
@@ -214,8 +234,8 @@ private slots:
      * \brief   This function handles the actions actionWindRoseOrientationNorth to actionWindRoseOrientationWest.                                  *
      *                                                                                                                                              *
      * \details This function chooses the wind rose orientation depending on the action and updates the visibility of the wind rose on master and   *
-	 *          player screen. Afterwards, it rotates the wind rose image according to the chosen wind rose orientation and sets the wind rose      *
-	 *          pixmap to the screen handlers.                                                                                                      *
+     *          player screen. Afterwards, it rotates the wind rose image according to the chosen wind rose orientation and sets the wind rose      *
+     *          pixmap to the screen handlers.                                                                                                      *
      *                                                                                                                                              *
      * \return  This function does not have any return value.                                                                                       *
      ************************************************************************************************************************************************/

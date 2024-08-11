@@ -67,6 +67,8 @@ MainWindow::MainWindow(QGraphicsView *playerWindow, QWidget *parent) :
     connect(m_userInterface->actionDeleteRowBelow, SIGNAL(triggered()), this, SLOT(triggeredActionDeleteRowBelow()));
     connect(m_userInterface->actionDeleteColumnLeft, SIGNAL(triggered()), this, SLOT(triggeredActionDeleteColumnLeft()));
     connect(m_userInterface->actionDeleteColumnRight, SIGNAL(triggered()), this, SLOT(triggeredActionDeleteColumnRight()));
+    connect(m_userInterface->actionRotateBattleMapLeft, SIGNAL(triggered()), this, SLOT(triggeredActionRotateBattleMapLeft()));
+    connect(m_userInterface->actionRotateBattleMapRight, SIGNAL(triggered()), this, SLOT(triggeredActionRotateBattleMapRight()));
 
     /* connect signals and slots of master screen handler */
     connect(&m_masterScreenHandler, SIGNAL(changedSelection(bool)), this, SLOT(changedSelection(bool)));
@@ -194,6 +196,8 @@ void MainWindow::acceptedDialogNewBattleMap()
     m_userInterface->actionDeleteRowBelow->setEnabled(true);
     m_userInterface->actionDeleteColumnLeft->setEnabled(true);
     m_userInterface->actionDeleteColumnRight->setEnabled(true);
+    m_userInterface->actionRotateBattleMapLeft->setEnabled(true);
+    m_userInterface->actionRotateBattleMapRight->setEnabled(true);
     m_userInterface->actionUpdatePlayerScreen->setEnabled(true);
     m_userInterface->submenuWindRoseOrientation->setEnabled(true);
     for (QAction *action : m_windRoseOrientationActionGroup->actions())
@@ -315,6 +319,24 @@ void MainWindow::triggeredActionDeleteColumnRight()
 }
 
 /*!
+ * \brief This function handles the action triggeredActionRotateBattleMapLeft.
+ */
+void MainWindow::triggeredActionRotateBattleMapLeft()
+{
+    /* push command UndoCommandRotateBattleMapLeft to undo stack and apply it by calling its function redo() */
+    m_undoStack->push(new UndoCommandRotateBattleMapLeft(m_userInterface, m_battleMap, &m_battleMapSceneSection, &m_masterScreenHandler, &m_playerScreenHandler));
+}
+
+/*!
+ * \brief This function handles the action triggeredActionRotateBattleMapRight.
+ */
+void MainWindow::triggeredActionRotateBattleMapRight()
+{
+    /* push command UndoCommandRotateBattleMapRight to undo stack and apply it by calling its function redo() */
+    m_undoStack->push(new UndoCommandRotateBattleMapRight(m_userInterface, m_battleMap, &m_battleMapSceneSection, &m_masterScreenHandler, &m_playerScreenHandler));
+}
+
+/*!
  * \brief This function handles the action actionUpdatePlayerScreen.
  */
 void MainWindow::triggeredActionUpdatePlayerScreen()
@@ -336,31 +358,31 @@ void MainWindow::triggeredActionWindRoseOrientation()
     /* choose wind rose orientation depending on action and update visibility of wind rose on master and player screen */
     if (m_userInterface->actionWindRoseOrientationNorth->isChecked())
     {
-        orientation = WINDROSEORIENTATIONNORTH_DEGREES;
+        orientation = ORIENTATION_0_DEGREES;
         m_userInterface->labelWindRose->setVisible(true);
         m_playerScreenHandler.setWindRoseGraphicsItemVisibility(true);
     }
     else if (m_userInterface->actionWindRoseOrientationEast->isChecked())
     {
-        orientation = WINDROSEORIENTATIONEAST_DEGREES;
+        orientation = ORIENTATION_270_DEGREES;
         m_userInterface->labelWindRose->setVisible(true);
         m_playerScreenHandler.setWindRoseGraphicsItemVisibility(true);
     }
     else if (m_userInterface->actionWindRoseOrientationSouth->isChecked())
     {
-        orientation = WINDROSEORIENTATIONSOUTH_DEGREES;
+        orientation = ORIENTATION_180_DEGREES;
         m_userInterface->labelWindRose->setVisible(true);
         m_playerScreenHandler.setWindRoseGraphicsItemVisibility(true);
     }
     else if (m_userInterface->actionWindRoseOrientationWest->isChecked())
     {
-        orientation = WINDROSEORIENTATIONWEST_DEGREES;
+        orientation = ORIENTATION_90_DEGREES;
         m_userInterface->labelWindRose->setVisible(true);
         m_playerScreenHandler.setWindRoseGraphicsItemVisibility(true);
     }
     else
     {
-        orientation = WINDROSEORIENTATIONNORTH_DEGREES;
+        orientation = ORIENTATION_0_DEGREES;
         m_userInterface->labelWindRose->setVisible(false);
         m_playerScreenHandler.setWindRoseGraphicsItemVisibility(false);
     }
