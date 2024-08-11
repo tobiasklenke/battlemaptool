@@ -32,7 +32,9 @@ SOURCES += \
     undocommandinsertcolumnright.cpp \
     undocommandinsertrowabove.cpp \
     undocommandinsertrowbelow.cpp \
-    undocommandpaste.cpp
+    undocommandpaste.cpp \
+    undocommandrotatebattlemapleft.cpp \
+    undocommandrotatebattlemapright.cpp
 
 HEADERS += \
     battlemap.h \
@@ -58,7 +60,9 @@ HEADERS += \
     undocommandinsertcolumnright.h \
     undocommandinsertrowabove.h \
     undocommandinsertrowbelow.h \
-    undocommandpaste.h
+    undocommandpaste.h \
+    undocommandrotatebattlemapleft.h \
+    undocommandrotatebattlemapright.h
 
 FORMS += \
     dialognewbattlemap.ui \
