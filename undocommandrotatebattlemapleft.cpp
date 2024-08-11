@@ -62,8 +62,9 @@ void UndoCommandRotateBattleMapLeft::undo()
         m_battleMapSceneSection->setNumberColumnsSceneSection(m_battleMap->getNumberColumns());
     }
 
-    /* rotate Battle Map right on the master screen handler */
+    /* rotate Battle Map right on the screen handlers */
     m_masterScreenHandler->rotateBattleMapRight();
+    m_playerScreenHandler->rotateBattleMapRight();
 }
 
 /*!
@@ -100,8 +101,9 @@ void UndoCommandRotateBattleMapLeft::redo()
         m_battleMapSceneSection->setNumberColumnsSceneSection(m_battleMap->getNumberColumns());
     }
 
-    /* rotate Battle Map left on the master screen handler */
+    /* rotate Battle Map left on the screen handlers */
     m_masterScreenHandler->rotateBattleMapLeft();
+    m_playerScreenHandler->rotateBattleMapLeft();
 }
 
 /****************************************************************************************************************************************************

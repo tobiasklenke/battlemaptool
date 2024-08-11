@@ -55,7 +55,7 @@ public:
      *                                                                                                                                              *
      * \details This function rotates the Battle Map left and checks whether the number of rows respectively columns displayable on the player      *
      *          screen is less than the total number of rows respectively columns of the Battle Map and sets the number of rows respectively        *
-     *          columns of the Battle Map scene section to the less number. Finally, it rotates the Battle Map left on the master screen handler.   *
+     *          columns of the Battle Map scene section to the less number. Finally, it rotates the Battle Map left on the screen handlers.         *
      *                                                                                                                                              *
      * \return  This function does not have any return value.                                                                                       *
      ************************************************************************************************************************************************/
@@ -66,7 +66,7 @@ public:
      *                                                                                                                                              *
      * \details This function rotates the Battle Map right and checks whether the number of rows respectively columns displayable on the player     *
      *          screen is less than the total number of rows respectively columns of the Battle Map and sets the number of rows respectively        *
-     *          columns of the Battle Map scene section to the less number. Finally, it rotates the Battle Map right on the master screen handler.  *
+     *          columns of the Battle Map scene section to the less number. Finally, it rotates the Battle Map right on the screen handlers.        *
      *                                                                                                                                              *
      * \return  This function does not have any return value.                                                                                       *
      ************************************************************************************************************************************************/
