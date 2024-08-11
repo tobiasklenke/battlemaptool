@@ -22,6 +22,8 @@
         <file>icons/deleterowbelow.png</file>
         <file>icons/copy.png</file>
         <file>icons/paste.png</file>
+        <file>icons/rotateleft.png</file>
+        <file>icons/rotateright.png</file>
     </qresource>
     <qresource prefix="/"/>
 </RCC>
