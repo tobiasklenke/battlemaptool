@@ -247,6 +247,26 @@ public:
      ************************************************************************************************************************************************/
     QList<BattleMapSquare*> deleteColumnRight();
 
+    /*! *********************************************************************************************************************************************
+     * \brief   This function rotates the Battle Map left.                                                                                          *
+     *                                                                                                                                              *
+     * \details This function gets the new numbers of rows and columns and resorts the Battle Map squares according to the left rotation. Finally,  *
+     *          it updates the variables for the numbers of rows and columns and for the Battle Map squares.                                        *
+     *                                                                                                                                              *
+     * \return  This function does not have any return value.                                                                                       *
+     ************************************************************************************************************************************************/
+    void rotateLeft();
+
+    /*! *********************************************************************************************************************************************
+     * \brief   This function rotates the Battle Map right.                                                                                         *
+     *                                                                                                                                              *
+     * \details This function gets the new numbers of rows and columns and resorts the Battle Map squares according to the right rotation. Finally, *
+     *          it updates the variables for the numbers of rows and columns and for the Battle Map squares.                                        *
+     *                                                                                                                                              *
+     * \return  This function does not have any return value.                                                                                       *
+     ************************************************************************************************************************************************/
+    void rotateRight();
+
 protected: /* - */
 
 signals: /* - */

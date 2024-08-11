@@ -242,6 +242,30 @@ public:
     void deleteColumnRight();
 
     /*! *********************************************************************************************************************************************
+     * \brief   This function rotates the Battle Map left.                                                                                          *
+     *                                                                                                                                              *
+     * \details This function resorts the Battle Map squares and the coverage squares according to the left rotation. Afterwards, it updates the    *
+     *          variables for the Battle Map squares and the coverage squares. Finally, it updates the pixmaps of the resorted Battle Map squares   *
+     *          according to the Battle Map, repositions the Battle Map squares and coverage squares on the Battle Map scene, updates the Battle    *
+     *          Map scene section and frame and resets the selection area when the editing of the Battle Map is finished.                           *
+     *                                                                                                                                              *
+     * \return  This function does not have any return value.                                                                                       *
+     ************************************************************************************************************************************************/
+    void rotateBattleMapLeft();
+
+    /*! *********************************************************************************************************************************************
+     * \brief   This function rotates the Battle Map right.                                                                                         *
+     *                                                                                                                                              *
+     * \details This function resorts the Battle Map squares and the coverage squares according to the right rotation. Afterwards, it updates the   *
+     *          variables for the Battle Map squares and the coverage squares. Finally, it updates the pixmaps of the resorted Battle Map squares   *
+     *          according to the Battle Map, repositions the Battle Map squares and coverage squares on the Battle Map scene, updates the Battle    *
+     *          Map scene section and frame and resets the selection area when the editing of the Battle Map is finished.                           *
+     *                                                                                                                                              *
+     * \return  This function does not have any return value.                                                                                       *
+     ************************************************************************************************************************************************/
+    void rotateBattleMapRight();
+
+    /*! *********************************************************************************************************************************************
      * \brief   This function repositions the Battle Map squares and coverage squares on the Battle Map scene.                                      *
      *                                                                                                                                              *
      * \details -                                                                                                                                   *

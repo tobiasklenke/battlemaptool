@@ -535,6 +535,80 @@ void MasterScreenHandler::deleteColumnRight()
 }
 
 /*!
+ * \brief This function rotates the Battle Map left.
+ */
+void MasterScreenHandler::rotateBattleMapLeft()
+{
+    /* resort Battle Map squares and coverage squares */
+    QList<QList<QGraphicsPixmapItem*>> newBattleMapSquareGraphicsItems;
+    QList<QList<QGraphicsRectItem*>> newCoverageSquareGraphicsItems;
+    for (quint32 rowIdx = 0U; rowIdx < m_battleMap->getNumberRows(); rowIdx++)
+    {
+        newBattleMapSquareGraphicsItems.append(QList<QGraphicsPixmapItem*>());
+        newCoverageSquareGraphicsItems.append(QList<QGraphicsRectItem*>());
+        for (quint32 columnIdx = 0U; columnIdx < m_battleMap->getNumberColumns(); columnIdx++)
+        {
+            newBattleMapSquareGraphicsItems.last().append(m_battleMapSquareGraphicsItems[columnIdx][m_battleMap->getNumberRows() - rowIdx - 1U]);
+            newCoverageSquareGraphicsItems.last().append(m_coverageSquareGraphicsItems[columnIdx][m_battleMap->getNumberRows() - rowIdx - 1U]);
+        }
+    }
+
+    /* update variables */
+    m_battleMapSquareGraphicsItems = newBattleMapSquareGraphicsItems;
+    m_coverageSquareGraphicsItems = newCoverageSquareGraphicsItems;
+
+    /* update pixmaps of resorted Battle Map squares according to Battle Map */
+    updatePixmapsAccordingBattleMap();
+
+    /* reposition Battle Map squares and coverage squares on Battle Map scene */
+    repositionGraphicsItemsOnBattleMapScene();
+
+    /* update Battle Map scene section and frame */
+    updateBattleMapSceneSection();
+    m_battleMapScene->setSceneRect(0, 0, m_battleMap->getNumberColumns() * CONFIG_BATTLEMAPSQUARE_SIZE, m_battleMap->getNumberRows() * CONFIG_BATTLEMAPSQUARE_SIZE);
+
+    /* reset selection area when editing of Battle Map is finished */
+    resetSelectionArea();
+}
+
+/*!
+ * \brief This function rotates the Battle Map right.
+ */
+void MasterScreenHandler::rotateBattleMapRight()
+{
+    /* resort Battle Map squares and coverage squares */
+    QList<QList<QGraphicsPixmapItem*>> newBattleMapSquareGraphicsItems;
+    QList<QList<QGraphicsRectItem*>> newCoverageSquareGraphicsItems;
+    for (quint32 rowIdx = 0U; rowIdx < m_battleMap->getNumberRows(); rowIdx++)
+    {
+        newBattleMapSquareGraphicsItems.append(QList<QGraphicsPixmapItem*>());
+        newCoverageSquareGraphicsItems.append(QList<QGraphicsRectItem*>());
+        for (quint32 columnIdx = 0U; columnIdx < m_battleMap->getNumberColumns(); columnIdx++)
+        {
+            newBattleMapSquareGraphicsItems.last().append(m_battleMapSquareGraphicsItems[m_battleMap->getNumberColumns() - columnIdx - 1U][rowIdx]);
+            newCoverageSquareGraphicsItems.last().append(m_coverageSquareGraphicsItems[m_battleMap->getNumberColumns() - columnIdx - 1U][rowIdx]);
+        }
+    }
+
+    /* update variables */
+    m_battleMapSquareGraphicsItems = newBattleMapSquareGraphicsItems;
+    m_coverageSquareGraphicsItems = newCoverageSquareGraphicsItems;
+
+    /* update pixmaps of resorted Battle Map squares according to Battle Map */
+    updatePixmapsAccordingBattleMap();
+
+    /* reposition Battle Map squares and coverage squares on Battle Map scene */
+    repositionGraphicsItemsOnBattleMapScene();
+
+    /* update Battle Map scene section and frame */
+    updateBattleMapSceneSection();
+    m_battleMapScene->setSceneRect(0, 0, m_battleMap->getNumberColumns() * CONFIG_BATTLEMAPSQUARE_SIZE, m_battleMap->getNumberRows() * CONFIG_BATTLEMAPSQUARE_SIZE);
+
+    /* reset selection area when editing of Battle Map is finished */
+    resetSelectionArea();
+}
+
+/*!
  * \brief This function repositions the Battle Map squares and coverage squares on the Battle Map scene.
  */
 void MasterScreenHandler::repositionGraphicsItemsOnBattleMapScene()

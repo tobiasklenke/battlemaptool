@@ -324,6 +324,68 @@ QList<BattleMapSquare*> BattleMap::deleteColumnRight()
     return columnToDelete;
 }
 
+/*!
+ * \brief This function rotates the Battle Map left.
+ */
+void BattleMap::rotateLeft()
+{
+    /* get new number of rows and columns */
+    quint32 newNumberRows = m_numberColumns;
+    quint32 newNumberColumns = m_numberRows;
+
+    /* resort Battle Map squares */
+    QList<QList<BattleMapSquare*>> newBattleMapSquares;
+    for (quint32 rowIdx = 0U; rowIdx < newNumberRows; rowIdx++)
+    {
+        newBattleMapSquares.append(QList<BattleMapSquare*>());
+
+        for (quint32 columnIdx = 0U; columnIdx < newNumberColumns; columnIdx++)
+        {
+            /* rotate Battle Map square left */
+            QPixmap newBattleMapSquarePixmap = m_battleMapSquares[columnIdx][newNumberRows - rowIdx - 1U]->getBattleMapSquarePixmap().transformed(QTransform().rotate(ORIENTATION_270_DEGREES));
+            m_battleMapSquares[columnIdx][newNumberRows - rowIdx - 1U]->setBattleMapSquarePixmap(newBattleMapSquarePixmap);
+
+            newBattleMapSquares.last().append(m_battleMapSquares[columnIdx][newNumberRows - rowIdx - 1U]);
+        }
+    }
+
+    /* update variables */
+    m_numberRows = newNumberRows;
+    m_numberColumns = newNumberColumns;
+    m_battleMapSquares = newBattleMapSquares;
+}
+
+/*!
+ * \brief This function rotates the Battle Map right.
+ */
+void BattleMap::rotateRight()
+{
+    /* get new number of rows and columns */
+    quint32 newNumberRows = m_numberColumns;
+    quint32 newNumberColumns = m_numberRows;
+
+    /* resort Battle Map squares */
+    QList<QList<BattleMapSquare*>> newBattleMapSquares;
+    for (quint32 rowIdx = 0U; rowIdx < newNumberRows; rowIdx++)
+    {
+        newBattleMapSquares.append(QList<BattleMapSquare*>());
+
+        for (quint32 columnIdx = 0U; columnIdx < newNumberColumns; columnIdx++)
+        {
+            /* rotate Battle Map square left */
+            QPixmap newBattleMapSquarePixmap = m_battleMapSquares[newNumberColumns - columnIdx - 1U][rowIdx]->getBattleMapSquarePixmap().transformed(QTransform().rotate(ORIENTATION_90_DEGREES));
+            m_battleMapSquares[newNumberColumns - columnIdx - 1U][rowIdx]->setBattleMapSquarePixmap(newBattleMapSquarePixmap);
+
+            newBattleMapSquares.last().append(m_battleMapSquares[newNumberColumns - columnIdx - 1U][rowIdx]);
+        }
+    }
+
+    /* update variables */
+    m_numberRows = newNumberRows;
+    m_numberColumns = newNumberColumns;
+    m_battleMapSquares = newBattleMapSquares;
+}
+
 /****************************************************************************************************************************************************
  * DEFINITION OF PROTECTED FUNCTIONS                                                                                                                *
  ****************************************************************************************************************************************************/
