@@ -160,66 +160,8 @@ void PlayerScreenHandler::updateBattleMapImage()
 {
     if (m_deletionRequired)
     {
-        /* determine number of rows and columns in lists m_deleteRowsOnUpdate and m_deleteColumnsOnUpdate since numbers can alter in case of deletion */
-        quint32 numberRows = m_deleteRowsOnUpdate.count();
-        quint32 numberColumns = m_deleteColumnsOnUpdate.count();
-
-        /* delete Battle Map rows from Battle Map scene */
-        for (quint32 rowIdx = 0U; rowIdx < numberRows; rowIdx++)
-        {
-            /* handle rows from behind so that indexing is not affected afterwards */
-            quint32 rowToHandle = numberRows - 1U - rowIdx;
-
-            if (m_deleteRowsOnUpdate[rowToHandle])
-            {
-                for (quint32 columnIdx = 0U; columnIdx < numberColumns; columnIdx++)
-                {
-                    /* handle columns from behind so that indexing is not affected afterwards */
-                    quint32 columnToHandle = numberColumns - 1U - columnIdx;
-
-                    /* remove Battle Map square from Battle Map scene */
-                    if (m_battleMapScene->items().contains(m_battleMapSquareGraphicsItems[rowToHandle][columnToHandle]))
-                    {
-                        m_battleMapScene->removeItem(m_battleMapSquareGraphicsItems[rowToHandle][columnToHandle]);
-                    }
-
-                    delete m_battleMapSquareGraphicsItems[rowToHandle][columnToHandle];
-                }
-
-                m_battleMapSquareGraphicsItems.removeAt(rowToHandle);
-                m_deleteRowsOnUpdate.removeAt(rowToHandle);
-            }
-        }
-
-        /* update number of rows in list m_deleteRowsOnUpdate since number could habe altered in case of deletion */
-        numberRows = m_deleteRowsOnUpdate.count();
-
-        /* delete Battle Map columns from Battle Map scene */
-        for (quint32 columnIdx = 0U; columnIdx < numberColumns; columnIdx++)
-        {
-            /* handle columns from behind so that indexing is not affected afterwards */
-            quint32 columnToHandle = numberColumns - 1U - columnIdx;
-
-            if (m_deleteColumnsOnUpdate[columnToHandle])
-            {
-                for (quint32 rowIdx = 0U; rowIdx < numberRows; rowIdx++)
-                {
-                    /* handle rows from behind so that indexing is not affected afterwards */
-                    quint32 rowToHandle = numberRows - 1U - rowIdx;
-
-                    /* remove Battle Map square from Battle Map scene */
-                    if (m_battleMapScene->items().contains(m_battleMapSquareGraphicsItems[rowToHandle][columnToHandle]))
-                    {
-                        m_battleMapScene->removeItem(m_battleMapSquareGraphicsItems[rowToHandle][columnToHandle]);
-                    }
-
-                    delete m_battleMapSquareGraphicsItems[rowToHandle][columnToHandle];
-                    m_battleMapSquareGraphicsItems[rowToHandle].removeAt(columnToHandle);
-                }
-
-                m_deleteColumnsOnUpdate.removeAt(columnToHandle);
-            }
-        }
+        /* delete Battle Map squares to be deleted from Battle Map scene */
+        deleteGraphicsItemsFromBattleMapScene();
 
         /* deletion is done */
         m_deletionRequired = false;
@@ -228,13 +170,7 @@ void PlayerScreenHandler::updateBattleMapImage()
     if (m_repositioningRequired)
     {
         /* reposition Battle Map squares on Battle Map scene */
-        for (quint32 rowIdx = 0U; rowIdx < m_battleMap->getNumberRows(); rowIdx++)
-        {
-            for (quint32 columnIdx = 0U; columnIdx < m_battleMap->getNumberColumns(); columnIdx++)
-            {
-                m_battleMapSquareGraphicsItems[rowIdx][columnIdx]->setPos(columnIdx * m_edgeLengthInPixels, rowIdx * m_edgeLengthInPixels);
-            }
-        }
+        repositionGraphicsItemsOnBattleMapScene();
 
         /* repositioning is done */
         m_repositioningRequired = false;
@@ -516,6 +452,88 @@ void PlayerScreenHandler::deleteColumnRight()
 
     /* repositioning of Battle Map squares on Battle Map scene is required on next update of Battle Map image */
     m_repositioningRequired = true;
+}
+
+/*!
+ * \brief This function deletes the Battle Map squares to be deleted from the Battle Map scene.
+ */
+void PlayerScreenHandler::deleteGraphicsItemsFromBattleMapScene()
+{
+    /* determine numbers of rows and columns in lists m_deleteRowsOnUpdate and m_deleteColumnsOnUpdate since numbers can alter in case of deletion */
+    quint32 numberRows = m_deleteRowsOnUpdate.count();
+    quint32 numberColumns = m_deleteColumnsOnUpdate.count();
+
+    /* delete Battle Map rows from Battle Map scene */
+    for (quint32 rowIdx = 0U; rowIdx < numberRows; rowIdx++)
+    {
+        /* handle rows from behind so that indexing is not affected afterwards */
+        quint32 rowToHandle = numberRows - 1U - rowIdx;
+
+        if (m_deleteRowsOnUpdate[rowToHandle])
+        {
+            for (quint32 columnIdx = 0U; columnIdx < numberColumns; columnIdx++)
+            {
+                /* handle columns from behind so that indexing is not affected afterwards */
+                quint32 columnToHandle = numberColumns - 1U - columnIdx;
+
+                /* remove Battle Map square from Battle Map scene */
+                if (m_battleMapScene->items().contains(m_battleMapSquareGraphicsItems[rowToHandle][columnToHandle]))
+                {
+                    m_battleMapScene->removeItem(m_battleMapSquareGraphicsItems[rowToHandle][columnToHandle]);
+                }
+
+                delete m_battleMapSquareGraphicsItems[rowToHandle][columnToHandle];
+            }
+
+            m_battleMapSquareGraphicsItems.removeAt(rowToHandle);
+            m_deleteRowsOnUpdate.removeAt(rowToHandle);
+        }
+    }
+
+    /* update number of rows in list m_deleteRowsOnUpdate since number could habe altered in case of deletion */
+    numberRows = m_deleteRowsOnUpdate.count();
+
+    /* delete Battle Map columns from Battle Map scene */
+    for (quint32 columnIdx = 0U; columnIdx < numberColumns; columnIdx++)
+    {
+        /* handle columns from behind so that indexing is not affected afterwards */
+        quint32 columnToHandle = numberColumns - 1U - columnIdx;
+
+        if (m_deleteColumnsOnUpdate[columnToHandle])
+        {
+            for (quint32 rowIdx = 0U; rowIdx < numberRows; rowIdx++)
+            {
+                /* handle rows from behind so that indexing is not affected afterwards */
+                quint32 rowToHandle = numberRows - 1U - rowIdx;
+
+                /* remove Battle Map square from Battle Map scene */
+                if (m_battleMapScene->items().contains(m_battleMapSquareGraphicsItems[rowToHandle][columnToHandle]))
+                {
+                    m_battleMapScene->removeItem(m_battleMapSquareGraphicsItems[rowToHandle][columnToHandle]);
+                }
+
+                delete m_battleMapSquareGraphicsItems[rowToHandle][columnToHandle];
+                m_battleMapSquareGraphicsItems[rowToHandle].removeAt(columnToHandle);
+            }
+
+            m_deleteColumnsOnUpdate.removeAt(columnToHandle);
+        }
+    }
+}
+
+/*!
+ * \brief This function repositions the Battle Map squares on the Battle Map scene.
+ */
+void PlayerScreenHandler::repositionGraphicsItemsOnBattleMapScene()
+{
+    /* reposition Battle Map squares on Battle Map scene */
+    for (quint32 rowIdx = 0U; rowIdx < m_battleMap->getNumberRows(); rowIdx++)
+    {
+        for (quint32 columnIdx = 0U; columnIdx < m_battleMap->getNumberColumns(); columnIdx++)
+        {
+            m_battleMapSquareGraphicsItems[rowIdx][columnIdx]->setPos(columnIdx * m_edgeLengthInPixels, rowIdx * m_edgeLengthInPixels);
+        }
+    }
 }
 
 /*!

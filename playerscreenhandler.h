@@ -217,6 +217,26 @@ public:
     void deleteColumnRight();
 
     /*! *********************************************************************************************************************************************
+     * \brief   This function deletes the Battle Map squares to be deleted from the Battle Map scene.                                               *
+     *                                                                                                                                              *
+     * \details This function determines the numbers of rows and columns in the lists m_deleteRowsOnUpdate and m_deleteColumnsOnUpdate since the    *
+     *          numbers can alter in case of deletion. Afterwards, it deletes the Battle Map rows and columns from the Battle Map scene and updates *
+     *          the number of rows and columns accordingly.                                                                                         *
+     *                                                                                                                                              *
+     * \return  This function does not have any return value.                                                                                       *
+     ************************************************************************************************************************************************/
+    void deleteGraphicsItemsFromBattleMapScene();
+
+    /*! *********************************************************************************************************************************************
+     * \brief   This function repositions the Battle Map squares on the Battle Map scene.                                                           *
+     *                                                                                                                                              *
+     * \details -                                                                                                                                   *
+     *                                                                                                                                              *
+     * \return  This function does not have any return value.                                                                                       *
+     ************************************************************************************************************************************************/
+    void repositionGraphicsItemsOnBattleMapScene();
+
+    /*! *********************************************************************************************************************************************
      * \brief   This function sets the visibility state of the wind rose graphics item.                                                             *
      *                                                                                                                                              *
      * \details -                                                                                                                                   *
