@@ -158,24 +158,24 @@
 #define CUSTOMPIXMAPCURSOR_SIZE                            32
 
 /*!
- * \brief This is the wind rose orientation in degrees for direction north.
+ * \brief This is the orientation value for 0 degrees.
  */
-#define WINDROSEORIENTATIONNORTH_DEGREES                   0.0
+#define ORIENTATION_0_DEGREES                              0.0
 
 /*!
- * \brief This is the wind rose orientation in degrees for direction east.
+ * \brief This is the orientation value for 90 degrees.
  */
-#define WINDROSEORIENTATIONEAST_DEGREES                    -90.0
+#define ORIENTATION_90_DEGREES                             90.0
 
 /*!
- * \brief This is the wind rose orientation in degrees for direction south.
+ * \brief This is the orientation value for 180 degrees.
  */
-#define WINDROSEORIENTATIONSOUTH_DEGREES                   -180.0
+#define ORIENTATION_180_DEGREES                            180.0
 
 /*!
- * \brief This is the wind rose orientation in degrees for direction west.
+ * \brief This is the orientation value for 270 degrees.
  */
-#define WINDROSEORIENTATIONWEST_DEGREES                    -270.0
+#define ORIENTATION_270_DEGREES                            270.0
 
 /*!
  * \brief This is the wind rose size in Battle Map squares.
