@@ -217,6 +217,30 @@ public:
     void deleteColumnRight();
 
     /*! *********************************************************************************************************************************************
+     * \brief   This function prepares the left rotation of the Battle Map.                                                                         *
+     *                                                                                                                                              *
+     * \details This function gets the new lists of rows and columns to be deleted and resorts the Battle Map squares according to the left         *
+     *          rotation. Finally, it updates the variables for the lists of rows and columns to be deleted and for the Battle Map squares and it   *
+     *          sets the member variable m_repositioningRequired to true so that the repositioning of the Battle Map squares on the Battle Map      *
+     *          scene takes place on the next update of the Battle Map image.                                                                       *
+     *                                                                                                                                              *
+     * \return  This function does not have any return value.                                                                                       *
+     ************************************************************************************************************************************************/
+    void rotateBattleMapLeft();
+
+    /*! *********************************************************************************************************************************************
+     * \brief   This function prepares the right rotation of the Battle Map.                                                                        *
+     *                                                                                                                                              *
+     * \details This function gets the new lists of rows and columns to be deleted and resorts the Battle Map squares according to the right        *
+     *          rotation. Finally, it updates the variables for the lists of rows and columns to be deleted and for the Battle Map squares and it   *
+     *          sets the member variable m_repositioningRequired to true so that the repositioning of the Battle Map squares on the Battle Map      *
+     *          scene takes place on the next update of the Battle Map image.                                                                       *
+     *                                                                                                                                              *
+     * \return  This function does not have any return value.                                                                                       *
+     ************************************************************************************************************************************************/
+    void rotateBattleMapRight();
+
+    /*! *********************************************************************************************************************************************
      * \brief   This function deletes the Battle Map squares to be deleted from the Battle Map scene.                                               *
      *                                                                                                                                              *
      * \details This function determines the numbers of rows and columns in the lists m_deleteRowsOnUpdate and m_deleteColumnsOnUpdate since the    *

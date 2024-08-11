@@ -458,6 +458,64 @@ void PlayerScreenHandler::deleteColumnRight()
 }
 
 /*!
+ * \brief This function prepares the left rotation of the Battle Map.
+ */
+void PlayerScreenHandler::rotateBattleMapLeft()
+{
+    /* get new lists of rows and columns to be deleted */
+    QList<bool> newDeleteRowsOnUpdate = m_deleteColumnsOnUpdate;
+    QList<bool> newDeleteColumnsOnUpdate = m_deleteRowsOnUpdate;
+
+    /* resort Battle Map squares  */
+    QList<QList<CustomGraphicsPixmapItem*>> newBattleMapSquareGraphicsItems;
+    for (quint32 rowIdx = 0U; rowIdx < newDeleteRowsOnUpdate.count(); rowIdx++)
+    {
+        newBattleMapSquareGraphicsItems.append(QList<CustomGraphicsPixmapItem*>());
+        for (quint32 columnIdx = 0U; columnIdx < newDeleteColumnsOnUpdate.count(); columnIdx++)
+        {
+            newBattleMapSquareGraphicsItems.last().append(m_battleMapSquareGraphicsItems[columnIdx][newDeleteRowsOnUpdate.count() - rowIdx - 1U]);
+        }
+    }
+
+    /* update variables */
+    m_deleteRowsOnUpdate = newDeleteRowsOnUpdate;
+    m_deleteColumnsOnUpdate = newDeleteColumnsOnUpdate;
+    m_battleMapSquareGraphicsItems = newBattleMapSquareGraphicsItems;
+
+    /* repositioning of Battle Map squares on Battle Map scene is required on next update of Battle Map image */
+    m_repositioningRequired = true;
+}
+
+/*!
+ * \brief This function prepares the right rotation of the Battle Map.
+ */
+void PlayerScreenHandler::rotateBattleMapRight()
+{
+    /* get new lists of rows and columns to be deleted */
+    QList<bool> newDeleteRowsOnUpdate = m_deleteColumnsOnUpdate;
+    QList<bool> newDeleteColumnsOnUpdate = m_deleteRowsOnUpdate;
+
+    /* resort Battle Map squares  */
+    QList<QList<CustomGraphicsPixmapItem*>> newBattleMapSquareGraphicsItems;
+    for (quint32 rowIdx = 0U; rowIdx < newDeleteRowsOnUpdate.count(); rowIdx++)
+    {
+        newBattleMapSquareGraphicsItems.append(QList<CustomGraphicsPixmapItem*>());
+        for (quint32 columnIdx = 0U; columnIdx < newDeleteColumnsOnUpdate.count(); columnIdx++)
+        {
+            newBattleMapSquareGraphicsItems.last().append(m_battleMapSquareGraphicsItems[newDeleteColumnsOnUpdate.count() - columnIdx - 1U][rowIdx]);
+        }
+    }
+
+    /* update variables */
+    m_deleteRowsOnUpdate = newDeleteRowsOnUpdate;
+    m_deleteColumnsOnUpdate = newDeleteColumnsOnUpdate;
+    m_battleMapSquareGraphicsItems = newBattleMapSquareGraphicsItems;
+
+    /* repositioning of Battle Map squares on Battle Map scene is required on next update of Battle Map image */
+    m_repositioningRequired = true;
+}
+
+/*!
  * \brief This function deletes the Battle Map squares to be deleted from the Battle Map scene.
  */
 void PlayerScreenHandler::deleteGraphicsItemsFromBattleMapScene()
