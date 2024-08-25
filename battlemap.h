@@ -251,7 +251,7 @@ public:
      * \brief   This function rotates the Battle Map left.                                                                                          *
      *                                                                                                                                              *
      * \details This function gets the new numbers of rows and columns and resorts the Battle Map squares according to the left rotation. Finally,  *
-     *          it updates the variables for the numbers of rows and columns and for the Battle Map squares.                                        *
+     *          it updates the variables for the numbers of rows and columns and for the Battle Map squares and the orientation of the Battle Map.  *
      *                                                                                                                                              *
      * \return  This function does not have any return value.                                                                                       *
      ************************************************************************************************************************************************/
@@ -261,7 +261,7 @@ public:
      * \brief   This function rotates the Battle Map right.                                                                                         *
      *                                                                                                                                              *
      * \details This function gets the new numbers of rows and columns and resorts the Battle Map squares according to the right rotation. Finally, *
-     *          it updates the variables for the numbers of rows and columns and for the Battle Map squares.                                        *
+     *          it updates the variables for the numbers of rows and columns and for the Battle Map squares and the orientation of the Battle Map.  *
      *                                                                                                                                              *
      * \return  This function does not have any return value.                                                                                       *
      ************************************************************************************************************************************************/
@@ -289,6 +289,11 @@ private:
      * \brief This is the variable containing the Battle Map squares building the Battle Map.
      */
     QList<QList<BattleMapSquare*>> m_battleMapSquares;
+
+    /*!
+     * \brief This is the orientation of the Battle Map in degrees.
+     */
+    quint32 m_orientation;
 };
 
 #endif // BATTLEMAP_H

@@ -11,11 +11,11 @@
 /*!
  * \brief This function is the constructor of the class BattleMapSquare.
  */
-BattleMapSquare::BattleMapSquare() :
+BattleMapSquare::BattleMapSquare(qreal orientation) :
     m_covered(false)
 {
-    /* initialize Battle Map square with image of empty Battle Map square */
-    m_battleMapSquarePixmap = QPixmap::fromImage(QImage((EMPTYBATTLEMAPSQUAREIMAGE_SOURCE)));
+    /* initialize Battle Map square with image of empty Battle Map square rotated according to Battle Map orientation */
+    m_battleMapSquarePixmap = QPixmap::fromImage(QImage((EMPTYBATTLEMAPSQUAREIMAGE_SOURCE))).transformed(QTransform().rotate(orientation));
     m_battleMapSquarePixmap = m_battleMapSquarePixmap.scaled(QSize(CONFIG_BATTLEMAPSQUARE_SIZE, CONFIG_BATTLEMAPSQUARE_SIZE));
 
     /* draw Battle Map grid around Battle Map square */

@@ -14,7 +14,8 @@
 BattleMap::BattleMap() :
     m_numberRows(0U),
     m_numberColumns(0U),
-    m_battleMapSquares(QList<QList<BattleMapSquare*>>())
+    m_battleMapSquares(QList<QList<BattleMapSquare*>>()),
+    m_orientation(ORIENTATION_0_DEGREES)
 {
 }
 
@@ -24,7 +25,8 @@ BattleMap::BattleMap() :
 BattleMap::BattleMap(BattleMap &battleMap) :
     m_numberRows(battleMap.getNumberRows()),
     m_numberColumns(battleMap.getNumberColumns()),
-    m_battleMapSquares(QList<QList<BattleMapSquare*>>())
+    m_battleMapSquares(QList<QList<BattleMapSquare*>>()),
+    m_orientation(ORIENTATION_0_DEGREES)
 {
     /* copy pixmaps of all Battle Map squares */
     for (quint32 rowIdx = 0U; rowIdx < m_numberRows; rowIdx++)
@@ -103,7 +105,7 @@ void BattleMap::setBattleMapSquarePixmap(quint32 rowIdx, QPixmap battleMapSquare
     }
 
     /* construct new Battle Map square object and set pixmap */
-    BattleMapSquare * battleMapSquare = new BattleMapSquare();
+    BattleMapSquare * battleMapSquare = new BattleMapSquare(m_orientation);
     battleMapSquare->setBattleMapSquarePixmap(battleMapSquarePixmap);
 
     /* append Battle Map square to row of nested QList member variable m_battleMapSquares */
@@ -165,7 +167,7 @@ void BattleMap::insertRowAbove(QList<BattleMapSquare*> rowAbove)
         for (quint32 columnIdx = 0U; columnIdx < m_numberColumns; columnIdx++)
         {
             /* construct new Battle Map square object */
-            BattleMapSquare * battleMapSquare = new BattleMapSquare();
+            BattleMapSquare * battleMapSquare = new BattleMapSquare(static_cast<qreal>(m_orientation));
 
             /* append empty Battle Map square to row */
             m_battleMapSquares.first().append(battleMapSquare);
@@ -189,7 +191,7 @@ void BattleMap::insertRowBelow(QList<BattleMapSquare*> rowBelow)
         for (quint32 columnIdx = 0U; columnIdx < m_numberColumns; columnIdx++)
         {
             /* construct new Battle Map square object */
-            BattleMapSquare * battleMapSquare = new BattleMapSquare();
+            BattleMapSquare * battleMapSquare = new BattleMapSquare(static_cast<qreal>(m_orientation));
 
             /* append empty Battle Map square to row */
             m_battleMapSquares.last().append(battleMapSquare);
@@ -211,7 +213,7 @@ void BattleMap::insertColumnLeft(QList<BattleMapSquare*> columnLeft)
         if (0U == columnLeft.count())
         {
             /* construct new Battle Map square object */
-            BattleMapSquare * battleMapSquare = new BattleMapSquare();
+            BattleMapSquare * battleMapSquare = new BattleMapSquare(static_cast<qreal>(m_orientation));
 
             /* prepend empty Battle Map square to row */
             m_battleMapSquares[rowIdx].prepend(battleMapSquare);
@@ -239,7 +241,7 @@ void BattleMap::insertColumnRight(QList<BattleMapSquare*> columnRight)
         if (0U == columnRight.count())
         {
             /* construct new Battle Map square object */
-            BattleMapSquare * battleMapSquare = new BattleMapSquare();
+            BattleMapSquare * battleMapSquare = new BattleMapSquare(static_cast<qreal>(m_orientation));
 
             /* append empty Battle Map square to row */
             m_battleMapSquares[rowIdx].append(battleMapSquare);
@@ -353,6 +355,9 @@ void BattleMap::rotateLeft()
     m_numberRows = newNumberRows;
     m_numberColumns = newNumberColumns;
     m_battleMapSquares = newBattleMapSquares;
+
+    /* update orientation of Battle Map */
+    m_orientation = (m_orientation + static_cast<quint32>(ORIENTATION_270_DEGREES)) % static_cast<quint32>(ORIENTATION_360_DEGREES);
 }
 
 /*!
@@ -384,6 +389,9 @@ void BattleMap::rotateRight()
     m_numberRows = newNumberRows;
     m_numberColumns = newNumberColumns;
     m_battleMapSquares = newBattleMapSquares;
+
+    /* update orientation of Battle Map */
+    m_orientation = (m_orientation + static_cast<quint32>(ORIENTATION_90_DEGREES)) % static_cast<quint32>(ORIENTATION_360_DEGREES);
 }
 
 /****************************************************************************************************************************************************

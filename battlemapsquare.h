@@ -25,12 +25,15 @@ public:
     /*! *********************************************************************************************************************************************
      * \brief   This function is the constructor of the class BattleMapSquare.                                                                      *
      *                                                                                                                                              *
-     * \details This function initializes the Battle Map square with the image of an empty Battle Map square and draws the Battle Map grid around   *
+     * \details This function initializes the Battle Map square with the image of an empty Battle Map square that is rotated according to the       *
+     *          Battle Map orientation and draws the Battle Map grid around                                                                         *
      *          the Battle Map square.                                                                                                              *
+     *                                                                                                                                              *
+     * \param   orientation                   Orientation of the Battle Map square                                                                  *
      *                                                                                                                                              *
      * \return  This function does not have any return value.                                                                                       *
      ************************************************************************************************************************************************/
-    BattleMapSquare();
+    BattleMapSquare(qreal orientation);
 
     /*! *********************************************************************************************************************************************
      * \brief   This function is the destructor of the class BattleMapSquare.                                                                       *
