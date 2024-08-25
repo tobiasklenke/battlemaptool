@@ -15,7 +15,7 @@
 #define CONFIG_PLAYER_SCREEN_RESOLUTION                    QSize(1920, 1080)
 #define CONFIG_BATTLEMAPSQUARE_SIZE                        200
 #define CONFIG_BATTLEMAPGRID_COLOR                         Qt::black
-#define CONFIG_BATTLEMAPGRID_LINEWIDTH                     3
+#define CONFIG_BATTLEMAPGRID_LINEWIDTH                     4
 
 /* Scaling parameters */
 
