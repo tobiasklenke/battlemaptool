@@ -178,6 +178,11 @@
 #define ORIENTATION_270_DEGREES                            270.0
 
 /*!
+ * \brief This is the orientation value for 360 degrees.
+ */
+#define ORIENTATION_360_DEGREES                            360.0
+
+/*!
  * \brief This is the wind rose size in Battle Map squares.
  */
 #define WINDROSESIZE_BATTLEMAPSQUARES                      3
