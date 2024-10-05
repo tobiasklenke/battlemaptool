@@ -9,13 +9,32 @@
  * DEFINES                                                                                                                                          *
  ****************************************************************************************************************************************************/
 
-/* CONFIGURATION PARAMETERS, TODO REMOVE */
-#define CONFIG_MASTER_SCREEN_RESOLUTION                    QSize(1920, 1080)
-#define CONFIG_PLAYER_SCREEN_DIAGONAL                      23.8
-#define CONFIG_PLAYER_SCREEN_RESOLUTION                    QSize(1920, 1080)
-#define CONFIG_BATTLEMAPSQUARE_SIZE                        200
-#define CONFIG_BATTLEMAPGRID_COLOR                         Qt::black
-#define CONFIG_BATTLEMAPGRID_LINEWIDTH                     4
+/* Configuration keys and additional information */
+
+/*!
+ * \brief This is the key of the configuration parameter for the information whether the application has initially been configured.
+ */
+#define CONFIGKEY_GENERAL_INITIALLY_CONFIGURED             "initiallyconfigured"
+
+/*!
+ * \brief This is the key of the configuration parameter for the diagonal of the player screen.
+ */
+#define CONFIGKEY_PLAYERSCREEN_DIAGONAL                    "Playerscreen/diagonal"
+
+/*!
+ * \brief This is the key of the configuration parameter for the resolution height of the player screen.
+ */
+#define CONFIGKEY_PLAYERSCREEN_RESOLUTION_HEIGHT           "Playerscreen/resolution/height"
+
+/*!
+ * \brief This is the key of the configuration parameter for the resolution width of the player screen.
+ */
+#define CONFIGKEY_PLAYERSCREEN_RESOLUTION_WIDTH            "Playerscreen/resolution/width"
+
+/*!
+ * \brief This is the number of decimal places of the configuration parameter for the diagonal of the player screen.
+ */
+#define PLAYERSCREEN_DIAGONAL_DECIMAL_PLACES               1
 
 /* Scaling parameters */
 
@@ -47,6 +66,11 @@
 #define BATTLEMAP_MINIMUMNUMBERROWSANDCOLUMNS              1
 
 /*!
+ * \brief This is the size of the Battle Map squares in pixels.
+ */
+#define BATTLEMAPSQUARE_SIZE                               200
+
+/*!
  * \brief This is the line color of the Battle Map grid.
  */
 #define BATTLEMAPGRID_COLOR                                Qt::black
@@ -54,7 +78,7 @@
 /*!
  * \brief This is the line width of the Battle Map grid.
  */
-#define BATTLEMAPGRID_LINEWIDTH                            3
+#define BATTLEMAPGRID_LINEWIDTH                            4
 
 /*!
  * \brief This is the line width of the Battle Map section frame.
