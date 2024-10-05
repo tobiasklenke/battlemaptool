@@ -8,6 +8,7 @@
 #include <QGraphicsView>
 #include <QParallelAnimationGroup>
 #include <QPropertyAnimation>
+#include <QSettings>
 
 #include "battlemap.h"
 #include "battlemapsceneplayerscreen.h"

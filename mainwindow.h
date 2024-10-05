@@ -7,6 +7,7 @@
 
 #include <QActionGroup>
 #include <QMainWindow>
+#include <QSettings>
 #include <QUndoStack>
 
 #include "battlemap.h"

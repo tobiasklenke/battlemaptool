@@ -20,10 +20,12 @@ PlayerScreenHandler::PlayerScreenHandler() :
     m_battleMapSquareGraphicsItems(QList<QList<CustomGraphicsPixmapItem*>>()),
     m_deleteRowsOnUpdate(QList<bool>()),
     m_deleteColumnsOnUpdate(QList<bool>()),
-    m_edgeLengthInPixels(static_cast<quint32>(calcNumberPixelsPerInch(CONFIG_PLAYER_SCREEN_DIAGONAL, CONFIG_PLAYER_SCREEN_RESOLUTION.height(), CONFIG_PLAYER_SCREEN_RESOLUTION.width()))),
     m_deletionRequired(false),
     m_repositioningRequired(false)
 {
+    QSettings settings;
+    m_edgeLengthInPixels = static_cast<quint32>(calcNumberPixelsPerInch(settings.value(CONFIGKEY_PLAYERSCREEN_DIAGONAL).toReal(), settings.value(CONFIGKEY_PLAYERSCREEN_RESOLUTION_HEIGHT).toUInt(), settings.value(CONFIGKEY_PLAYERSCREEN_RESOLUTION_WIDTH).toUInt()));
+
     m_windRoseGraphicsItem.setVisible(false);
 }
 

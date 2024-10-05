@@ -11,6 +11,7 @@
 #include <QGraphicsScene>
 #include <QMessageBox>
 #include <QPalette>
+#include <QSettings>
 
 #include "battlemap.h"
 #include "battlemapscenesquareselection.h"

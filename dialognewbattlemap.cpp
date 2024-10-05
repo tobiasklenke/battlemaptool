@@ -127,6 +127,8 @@ void DialogNewBattleMap::toggledRadioButtonSourceBattleMap(bool checked)
  */
 void DialogNewBattleMap::toggledRadioButtonEmptyBattleMap(bool checked)
 {
+    QSettings settings;
+
     if (checked)
     {
         /* enable and disable widgets according to their functional role for the creation of an empty Battle Map */
@@ -154,8 +156,8 @@ void DialogNewBattleMap::toggledRadioButtonEmptyBattleMap(bool checked)
         m_userInterface->graphicsViewNewBattleMap->setFrameShape(QFrame::Box);
 
         /* calculate maximum number of rows and columns displayable on the player screen (each square is one inch high and one inch wide) */
-        quint32 maximumNumberRows = static_cast<quint32>(calcScreenHeightInInches(CONFIG_PLAYER_SCREEN_DIAGONAL, CONFIG_PLAYER_SCREEN_RESOLUTION.height(), CONFIG_PLAYER_SCREEN_RESOLUTION.width()));
-        quint32 maximumNumberColumns = static_cast<quint32>(calcScreenWidthInInches(CONFIG_PLAYER_SCREEN_DIAGONAL, CONFIG_PLAYER_SCREEN_RESOLUTION.height(), CONFIG_PLAYER_SCREEN_RESOLUTION.width()));
+        quint32 maximumNumberRows = static_cast<quint32>(calcScreenHeightInInches(settings.value(CONFIGKEY_PLAYERSCREEN_DIAGONAL).toReal(), settings.value(CONFIGKEY_PLAYERSCREEN_RESOLUTION_HEIGHT).toUInt(), settings.value(CONFIGKEY_PLAYERSCREEN_RESOLUTION_WIDTH).toUInt()));
+        quint32 maximumNumberColumns = static_cast<quint32>(calcScreenWidthInInches(settings.value(CONFIGKEY_PLAYERSCREEN_DIAGONAL).toReal(), settings.value(CONFIGKEY_PLAYERSCREEN_RESOLUTION_HEIGHT).toUInt(), settings.value(CONFIGKEY_PLAYERSCREEN_RESOLUTION_WIDTH).toUInt()));
         m_battleMap->setNumberRows(maximumNumberRows);
         m_battleMap->setNumberColumns(maximumNumberColumns);
         m_userInterface->lineEditNumberRows->setText(QString::number(m_battleMap->getNumberRows()));
@@ -563,7 +565,7 @@ void DialogNewBattleMap::drawBattleMapGrid(int state)
     QPen pen;
     if (m_userInterface->checkBoxDrawBattleMapGrid->isChecked())
     {
-        pen = QPen(CONFIG_BATTLEMAPGRID_COLOR, CONFIG_BATTLEMAPGRID_LINEWIDTH * (1 / m_scaleFactor), Qt::SolidLine);
+        pen = QPen(BATTLEMAPGRID_COLOR, BATTLEMAPGRID_LINEWIDTH * (1 / m_scaleFactor), Qt::SolidLine);
     }
     else
     {
@@ -608,7 +610,7 @@ void DialogNewBattleMap::acceptedDialogButtonBox()
         /* draw Battle Map grid on Battle Map image */
         QPixmap temporaryPixmap(m_battleMapImagePixMap.pixmap());
         QPainter *painter = new QPainter(&temporaryPixmap);
-        painter->setPen(QPen(CONFIG_BATTLEMAPGRID_COLOR, CONFIG_BATTLEMAPGRID_LINEWIDTH, Qt::SolidLine));
+        painter->setPen(QPen(BATTLEMAPGRID_COLOR, BATTLEMAPGRID_LINEWIDTH, Qt::SolidLine));
         for (QGraphicsLineItem * item : m_battleMapLinesToDraw)
         {
             painter->drawLine(item->line());
@@ -626,7 +628,7 @@ void DialogNewBattleMap::acceptedDialogButtonBox()
             /* extract pixmap of Battle Map square from Battle Map image and scale it to configured size */
             QPixmap temporaryPixmap;
             temporaryPixmap = m_battleMapImagePixMap.pixmap().copy(QRect(columnIdx * edgeLength, rowIdx * edgeLength, edgeLength, edgeLength));
-            temporaryPixmap = temporaryPixmap.scaled(QSize(CONFIG_BATTLEMAPSQUARE_SIZE, CONFIG_BATTLEMAPSQUARE_SIZE));
+            temporaryPixmap = temporaryPixmap.scaled(QSize(BATTLEMAPSQUARE_SIZE, BATTLEMAPSQUARE_SIZE));
 
             /* add Battle Map square pixmap to Battle Map */
             m_battleMap->setBattleMapSquarePixmap(rowIdx, temporaryPixmap);
@@ -685,18 +687,18 @@ void DialogNewBattleMap::showEmptyBattleMapImage()
 
     /* load image of empty Battle Map square and scale it to configured size */
     QImage emptyBattleMapSquare(EMPTYBATTLEMAPSQUAREIMAGE_SOURCE);
-    emptyBattleMapSquare = emptyBattleMapSquare.scaledToWidth(CONFIG_BATTLEMAPSQUARE_SIZE);
+    emptyBattleMapSquare = emptyBattleMapSquare.scaledToWidth(BATTLEMAPSQUARE_SIZE);
 
     if (checkNumberRowsAndColumns())
     {
         /* construct empty Battle Map image from number of empty Battle Map squares according to number of rows and columns */
-        QPixmap temporaryPixmap(QSize(m_battleMap->getNumberColumns()* CONFIG_BATTLEMAPSQUARE_SIZE, m_battleMap->getNumberRows() * CONFIG_BATTLEMAPSQUARE_SIZE));
+        QPixmap temporaryPixmap(QSize(m_battleMap->getNumberColumns()* BATTLEMAPSQUARE_SIZE, m_battleMap->getNumberRows() * BATTLEMAPSQUARE_SIZE));
         QPainter *painter = new QPainter(&temporaryPixmap);
         for (quint32 rowIdx = 0U; rowIdx < m_battleMap->getNumberRows(); rowIdx++)
         {
             for (quint32 columnIdx = 0U; columnIdx < m_battleMap->getNumberColumns(); columnIdx++)
             {
-                QRect targetRect = QRect(columnIdx * CONFIG_BATTLEMAPSQUARE_SIZE, rowIdx * CONFIG_BATTLEMAPSQUARE_SIZE, CONFIG_BATTLEMAPSQUARE_SIZE, CONFIG_BATTLEMAPSQUARE_SIZE);
+                QRect targetRect = QRect(columnIdx * BATTLEMAPSQUARE_SIZE, rowIdx * BATTLEMAPSQUARE_SIZE, BATTLEMAPSQUARE_SIZE, BATTLEMAPSQUARE_SIZE);
                 QRect sourceRect = emptyBattleMapSquare.rect();
                 painter->drawPixmap(targetRect, QPixmap::fromImage(emptyBattleMapSquare), sourceRect);
             }

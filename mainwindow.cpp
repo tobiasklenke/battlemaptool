@@ -143,6 +143,8 @@ void MainWindow::triggeredActionNewBattleMap()
  */
 void MainWindow::acceptedDialogNewBattleMap()
 {
+    QSettings settings;
+
     /* set wait cursor as the following process may take some time */
     setCursor(Qt::WaitCursor);
 
@@ -156,7 +158,7 @@ void MainWindow::acceptedDialogNewBattleMap()
     m_battleMapSceneSection.setIndexFirstColumnSceneSection(0U);
 
     /* check whether number of rows displayable on player screen is less than total number of rows of Battle Map and set number of rows of Battle Map scene section to less number */
-    quint32 numberRowsOnPlayerScreen = static_cast<quint32>(calcScreenHeightInInches(CONFIG_PLAYER_SCREEN_DIAGONAL, CONFIG_PLAYER_SCREEN_RESOLUTION.height(), CONFIG_PLAYER_SCREEN_RESOLUTION.width()));
+    quint32 numberRowsOnPlayerScreen = static_cast<quint32>(calcScreenHeightInInches(settings.value(CONFIGKEY_PLAYERSCREEN_DIAGONAL).toReal(), settings.value(CONFIGKEY_PLAYERSCREEN_RESOLUTION_HEIGHT).toUInt(), settings.value(CONFIGKEY_PLAYERSCREEN_RESOLUTION_WIDTH).toUInt()));
     if (numberRowsOnPlayerScreen < m_battleMap->getNumberRows())
     {
         m_battleMapSceneSection.setNumberRowsSceneSection(numberRowsOnPlayerScreen);
@@ -167,7 +169,7 @@ void MainWindow::acceptedDialogNewBattleMap()
     }
 
     /* check whether number of columns displayable on player screen is less than total number of columns of Battle Map and set number of columns of Battle Map scene section to less number */
-    quint32 numberColumnsOnPlayerScreen = static_cast<quint32>(calcScreenWidthInInches(CONFIG_PLAYER_SCREEN_DIAGONAL, CONFIG_PLAYER_SCREEN_RESOLUTION.height(), CONFIG_PLAYER_SCREEN_RESOLUTION.width()));
+    quint32 numberColumnsOnPlayerScreen = static_cast<quint32>(calcScreenWidthInInches(settings.value(CONFIGKEY_PLAYERSCREEN_DIAGONAL).toReal(), settings.value(CONFIGKEY_PLAYERSCREEN_RESOLUTION_HEIGHT).toUInt(), settings.value(CONFIGKEY_PLAYERSCREEN_RESOLUTION_WIDTH).toUInt()));
     if (numberColumnsOnPlayerScreen < m_battleMap->getNumberColumns())
     {
         m_battleMapSceneSection.setNumberColumnsSceneSection(numberColumnsOnPlayerScreen);
