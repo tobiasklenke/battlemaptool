@@ -24,6 +24,7 @@
         <file>icons/paste.png</file>
         <file>icons/rotateleft.png</file>
         <file>icons/rotateright.png</file>
+        <file>icons/opensettings.png</file>
     </qresource>
     <qresource prefix="/"/>
 </RCC>
