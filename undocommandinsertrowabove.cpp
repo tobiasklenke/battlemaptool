@@ -39,6 +39,8 @@ UndoCommandInsertRowAbove::~UndoCommandInsertRowAbove()
  */
 void UndoCommandInsertRowAbove::undo()
 {
+    QSettings settings;
+
     /* delete row above Battle Map */
     m_rowAbove = m_battleMap->deleteRowAbove();
 
@@ -55,7 +57,7 @@ void UndoCommandInsertRowAbove::undo()
     }
 
     /* check whether number of rows displayable on player screen is greater than total number of rows of Battle Map */
-    quint32 numberRowsOnPlayerScreen = static_cast<quint32>(calcScreenHeightInInches(CONFIG_PLAYER_SCREEN_DIAGONAL, CONFIG_PLAYER_SCREEN_RESOLUTION.height(), CONFIG_PLAYER_SCREEN_RESOLUTION.width()));
+    quint32 numberRowsOnPlayerScreen = static_cast<quint32>(calcScreenHeightInInches(settings.value(CONFIGKEY_PLAYERSCREEN_DIAGONAL).toReal(), settings.value(CONFIGKEY_PLAYERSCREEN_RESOLUTION_HEIGHT).toUInt(), settings.value(CONFIGKEY_PLAYERSCREEN_RESOLUTION_WIDTH).toUInt()));
     if (m_battleMap->getNumberRows() < numberRowsOnPlayerScreen)
     {
         /* decrement number of rows of Battle Map scene section */
@@ -80,6 +82,8 @@ void UndoCommandInsertRowAbove::undo()
  */
 void UndoCommandInsertRowAbove::redo()
 {
+    QSettings settings;
+
     /* insert new row above Battle Map */
     m_battleMap->insertRowAbove(m_rowAbove);
     m_rowAbove.clear();
@@ -92,7 +96,7 @@ void UndoCommandInsertRowAbove::redo()
     }
 
     /* check whether number of rows displayable on player screen is greater than or equal to total number of rows of Battle Map */
-    quint32 numberRowsOnPlayerScreen = static_cast<quint32>(calcScreenHeightInInches(CONFIG_PLAYER_SCREEN_DIAGONAL, CONFIG_PLAYER_SCREEN_RESOLUTION.height(), CONFIG_PLAYER_SCREEN_RESOLUTION.width()));
+    quint32 numberRowsOnPlayerScreen = static_cast<quint32>(calcScreenHeightInInches(settings.value(CONFIGKEY_PLAYERSCREEN_DIAGONAL).toReal(), settings.value(CONFIGKEY_PLAYERSCREEN_RESOLUTION_HEIGHT).toUInt(), settings.value(CONFIGKEY_PLAYERSCREEN_RESOLUTION_WIDTH).toUInt()));
     if (m_battleMap->getNumberRows() <= numberRowsOnPlayerScreen)
     {
         /* increment number of rows of Battle Map scene section */

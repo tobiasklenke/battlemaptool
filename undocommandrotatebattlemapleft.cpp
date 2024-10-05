@@ -33,6 +33,8 @@ UndoCommandRotateBattleMapLeft::~UndoCommandRotateBattleMapLeft()
  */
 void UndoCommandRotateBattleMapLeft::undo()
 {
+    QSettings settings;
+
     /* rotate Battle Map right */
     m_battleMap->rotateRight();
 
@@ -41,7 +43,7 @@ void UndoCommandRotateBattleMapLeft::undo()
     m_battleMapSceneSection->setIndexFirstColumnSceneSection(0U);
 
     /* check whether number of rows displayable on player screen is less than total number of rows of Battle Map and set number of rows of Battle Map scene section to less number */
-    quint32 numberRowsOnPlayerScreen = static_cast<quint32>(calcScreenHeightInInches(CONFIG_PLAYER_SCREEN_DIAGONAL, CONFIG_PLAYER_SCREEN_RESOLUTION.height(), CONFIG_PLAYER_SCREEN_RESOLUTION.width()));
+    quint32 numberRowsOnPlayerScreen = static_cast<quint32>(calcScreenHeightInInches(settings.value(CONFIGKEY_PLAYERSCREEN_DIAGONAL).toReal(), settings.value(CONFIGKEY_PLAYERSCREEN_RESOLUTION_HEIGHT).toUInt(), settings.value(CONFIGKEY_PLAYERSCREEN_RESOLUTION_WIDTH).toUInt()));
     if (numberRowsOnPlayerScreen < m_battleMap->getNumberRows())
     {
         m_battleMapSceneSection->setNumberRowsSceneSection(numberRowsOnPlayerScreen);
@@ -52,7 +54,7 @@ void UndoCommandRotateBattleMapLeft::undo()
     }
 
     /* check whether number of columns displayable on player screen is less than total number of columns of Battle Map and set number of columns of Battle Map scene section to less number */
-    quint32 numberColumnsOnPlayerScreen = static_cast<quint32>(calcScreenWidthInInches(CONFIG_PLAYER_SCREEN_DIAGONAL, CONFIG_PLAYER_SCREEN_RESOLUTION.height(), CONFIG_PLAYER_SCREEN_RESOLUTION.width()));
+    quint32 numberColumnsOnPlayerScreen = static_cast<quint32>(calcScreenWidthInInches(settings.value(CONFIGKEY_PLAYERSCREEN_DIAGONAL).toReal(), settings.value(CONFIGKEY_PLAYERSCREEN_RESOLUTION_HEIGHT).toUInt(), settings.value(CONFIGKEY_PLAYERSCREEN_RESOLUTION_WIDTH).toUInt()));
     if (numberColumnsOnPlayerScreen < m_battleMap->getNumberColumns())
     {
         m_battleMapSceneSection->setNumberColumnsSceneSection(numberColumnsOnPlayerScreen);
@@ -72,6 +74,8 @@ void UndoCommandRotateBattleMapLeft::undo()
  */
 void UndoCommandRotateBattleMapLeft::redo()
 {
+    QSettings settings;
+
     /* rotate Battle Map left */
     m_battleMap->rotateLeft();
 
@@ -80,7 +84,7 @@ void UndoCommandRotateBattleMapLeft::redo()
     m_battleMapSceneSection->setIndexFirstColumnSceneSection(0U);
 
     /* check whether number of rows displayable on player screen is less than total number of rows of Battle Map and set number of rows of Battle Map scene section to less number */
-    quint32 numberRowsOnPlayerScreen = static_cast<quint32>(calcScreenHeightInInches(CONFIG_PLAYER_SCREEN_DIAGONAL, CONFIG_PLAYER_SCREEN_RESOLUTION.height(), CONFIG_PLAYER_SCREEN_RESOLUTION.width()));
+    quint32 numberRowsOnPlayerScreen = static_cast<quint32>(calcScreenHeightInInches(settings.value(CONFIGKEY_PLAYERSCREEN_DIAGONAL).toReal(), settings.value(CONFIGKEY_PLAYERSCREEN_RESOLUTION_HEIGHT).toUInt(), settings.value(CONFIGKEY_PLAYERSCREEN_RESOLUTION_WIDTH).toUInt()));
     if (numberRowsOnPlayerScreen < m_battleMap->getNumberRows())
     {
         m_battleMapSceneSection->setNumberRowsSceneSection(numberRowsOnPlayerScreen);
@@ -91,7 +95,7 @@ void UndoCommandRotateBattleMapLeft::redo()
     }
 
     /* check whether number of columns displayable on player screen is less than total number of columns of Battle Map and set number of columns of Battle Map scene section to less number */
-    quint32 numberColumnsOnPlayerScreen = static_cast<quint32>(calcScreenWidthInInches(CONFIG_PLAYER_SCREEN_DIAGONAL, CONFIG_PLAYER_SCREEN_RESOLUTION.height(), CONFIG_PLAYER_SCREEN_RESOLUTION.width()));
+    quint32 numberColumnsOnPlayerScreen = static_cast<quint32>(calcScreenWidthInInches(settings.value(CONFIGKEY_PLAYERSCREEN_DIAGONAL).toReal(), settings.value(CONFIGKEY_PLAYERSCREEN_RESOLUTION_HEIGHT).toUInt(), settings.value(CONFIGKEY_PLAYERSCREEN_RESOLUTION_WIDTH).toUInt()));
     if (numberColumnsOnPlayerScreen < m_battleMap->getNumberColumns())
     {
         m_battleMapSceneSection->setNumberColumnsSceneSection(numberColumnsOnPlayerScreen);

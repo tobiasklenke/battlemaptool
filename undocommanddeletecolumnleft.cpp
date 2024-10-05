@@ -39,6 +39,8 @@ UndoCommandDeleteColumnLeft::~UndoCommandDeleteColumnLeft()
  */
 void UndoCommandDeleteColumnLeft::undo()
 {
+    QSettings settings;
+
     /* insert new column to the left of Battle Map */
     m_battleMap->insertColumnLeft(m_columnLeft);
     m_columnLeft.clear();
@@ -51,7 +53,7 @@ void UndoCommandDeleteColumnLeft::undo()
     }
 
     /* check whether number of columns displayable on player screen is greater than or equal to total number of columns of Battle Map */
-    quint32 numberColumnsOnPlayerScreen = static_cast<quint32>(calcScreenWidthInInches(CONFIG_PLAYER_SCREEN_DIAGONAL, CONFIG_PLAYER_SCREEN_RESOLUTION.height(), CONFIG_PLAYER_SCREEN_RESOLUTION.width()));
+    quint32 numberColumnsOnPlayerScreen = static_cast<quint32>(calcScreenWidthInInches(settings.value(CONFIGKEY_PLAYERSCREEN_DIAGONAL).toReal(), settings.value(CONFIGKEY_PLAYERSCREEN_RESOLUTION_HEIGHT).toUInt(), settings.value(CONFIGKEY_PLAYERSCREEN_RESOLUTION_WIDTH).toUInt()));
     if (m_battleMap->getNumberColumns() <= numberColumnsOnPlayerScreen)
     {
         /* increment number of columns of Battle Map scene section */
@@ -73,6 +75,8 @@ void UndoCommandDeleteColumnLeft::undo()
  */
 void UndoCommandDeleteColumnLeft::redo()
 {
+    QSettings settings;
+
     /* delete column to the left of Battle Map */
     m_columnLeft = m_battleMap->deleteColumnLeft();
 
@@ -89,7 +93,7 @@ void UndoCommandDeleteColumnLeft::redo()
     }
 
     /* check whether number of columns displayable on player screen is greater than total number of columns of Battle Map */
-    quint32 numberColumnsOnPlayerScreen = static_cast<quint32>(calcScreenWidthInInches(CONFIG_PLAYER_SCREEN_DIAGONAL, CONFIG_PLAYER_SCREEN_RESOLUTION.height(), CONFIG_PLAYER_SCREEN_RESOLUTION.width()));
+    quint32 numberColumnsOnPlayerScreen = static_cast<quint32>(calcScreenWidthInInches(settings.value(CONFIGKEY_PLAYERSCREEN_DIAGONAL).toReal(), settings.value(CONFIGKEY_PLAYERSCREEN_RESOLUTION_HEIGHT).toUInt(), settings.value(CONFIGKEY_PLAYERSCREEN_RESOLUTION_WIDTH).toUInt()));
     if (m_battleMap->getNumberColumns() < numberColumnsOnPlayerScreen)
     {
         /* decrement number of columns of Battle Map scene section */
