@@ -16,11 +16,11 @@ BattleMapSquare::BattleMapSquare(qreal orientation) :
 {
     /* initialize Battle Map square with image of empty Battle Map square rotated according to Battle Map orientation */
     m_battleMapSquarePixmap = QPixmap::fromImage(QImage((EMPTYBATTLEMAPSQUAREIMAGE_SOURCE))).transformed(QTransform().rotate(orientation));
-    m_battleMapSquarePixmap = m_battleMapSquarePixmap.scaled(QSize(CONFIG_BATTLEMAPSQUARE_SIZE, CONFIG_BATTLEMAPSQUARE_SIZE));
+    m_battleMapSquarePixmap = m_battleMapSquarePixmap.scaled(QSize(BATTLEMAPSQUARE_SIZE, BATTLEMAPSQUARE_SIZE));
 
     /* draw Battle Map grid around Battle Map square */
     QPainter *painter = new QPainter(&m_battleMapSquarePixmap);
-    painter->setPen(QPen(CONFIG_BATTLEMAPGRID_COLOR, CONFIG_BATTLEMAPGRID_LINEWIDTH, Qt::SolidLine));
+    painter->setPen(QPen(BATTLEMAPGRID_COLOR, BATTLEMAPGRID_LINEWIDTH, Qt::SolidLine));
     painter->drawRect(m_battleMapSquarePixmap.rect());
     delete painter;
 }

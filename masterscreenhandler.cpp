@@ -177,14 +177,14 @@ void MasterScreenHandler::showBattleMapImage()
     {
         for (quint32 columnIdx = 0U; columnIdx < m_battleMap->getNumberColumns(); columnIdx++)
         {
-            m_battleMapSquareGraphicsItems[rowIdx][columnIdx]->setPos(columnIdx * CONFIG_BATTLEMAPSQUARE_SIZE, rowIdx * CONFIG_BATTLEMAPSQUARE_SIZE);
+            m_battleMapSquareGraphicsItems[rowIdx][columnIdx]->setPos(columnIdx * BATTLEMAPSQUARE_SIZE, rowIdx * BATTLEMAPSQUARE_SIZE);
             m_battleMapScene->addItem(m_battleMapSquareGraphicsItems[rowIdx][columnIdx]);
 
-            m_coverageSquareGraphicsItems[rowIdx][columnIdx]->setPos(columnIdx * CONFIG_BATTLEMAPSQUARE_SIZE, rowIdx * CONFIG_BATTLEMAPSQUARE_SIZE);
+            m_coverageSquareGraphicsItems[rowIdx][columnIdx]->setPos(columnIdx * BATTLEMAPSQUARE_SIZE, rowIdx * BATTLEMAPSQUARE_SIZE);
             m_battleMapScene->addItem(m_coverageSquareGraphicsItems[rowIdx][columnIdx]);
         }
     }
-    m_battleMapScene->setSceneRect(0, 0, m_battleMap->getNumberColumns() * CONFIG_BATTLEMAPSQUARE_SIZE, m_battleMap->getNumberRows() * CONFIG_BATTLEMAPSQUARE_SIZE);
+    m_battleMapScene->setSceneRect(0, 0, m_battleMap->getNumberColumns() * BATTLEMAPSQUARE_SIZE, m_battleMap->getNumberRows() * BATTLEMAPSQUARE_SIZE);
 
     /* update Battle Map scene section and add frame */
     updateBattleMapSceneSection();
@@ -261,7 +261,7 @@ void MasterScreenHandler::insertRowAbove()
 
     /* update Battle Map scene section and frame */
     updateBattleMapSceneSection();
-    m_battleMapScene->setSceneRect(0, 0, m_battleMap->getNumberColumns() * CONFIG_BATTLEMAPSQUARE_SIZE, m_battleMap->getNumberRows() * CONFIG_BATTLEMAPSQUARE_SIZE);
+    m_battleMapScene->setSceneRect(0, 0, m_battleMap->getNumberColumns() * BATTLEMAPSQUARE_SIZE, m_battleMap->getNumberRows() * BATTLEMAPSQUARE_SIZE);
 
     /* reset selection area when editing of Battle Map is finished */
     resetSelectionArea();
@@ -314,7 +314,7 @@ void MasterScreenHandler::insertRowBelow()
 
     /* update Battle Map scene section and frame */
     updateBattleMapSceneSection();
-    m_battleMapScene->setSceneRect(0, 0, m_battleMap->getNumberColumns() * CONFIG_BATTLEMAPSQUARE_SIZE, m_battleMap->getNumberRows() * CONFIG_BATTLEMAPSQUARE_SIZE);
+    m_battleMapScene->setSceneRect(0, 0, m_battleMap->getNumberColumns() * BATTLEMAPSQUARE_SIZE, m_battleMap->getNumberRows() * BATTLEMAPSQUARE_SIZE);
 
     /* reset selection area when editing of Battle Map is finished */
     resetSelectionArea();
@@ -364,7 +364,7 @@ void MasterScreenHandler::insertColumnLeft()
 
     /* update Battle Map scene section and frame */
     updateBattleMapSceneSection();
-    m_battleMapScene->setSceneRect(0, 0, m_battleMap->getNumberColumns() * CONFIG_BATTLEMAPSQUARE_SIZE, m_battleMap->getNumberRows() * CONFIG_BATTLEMAPSQUARE_SIZE);
+    m_battleMapScene->setSceneRect(0, 0, m_battleMap->getNumberColumns() * BATTLEMAPSQUARE_SIZE, m_battleMap->getNumberRows() * BATTLEMAPSQUARE_SIZE);
 
     /* reset selection area when editing of Battle Map is finished */
     resetSelectionArea();
@@ -414,7 +414,7 @@ void MasterScreenHandler::insertColumnRight()
 
     /* update Battle Map scene section and frame */
     updateBattleMapSceneSection();
-    m_battleMapScene->setSceneRect(0, 0, m_battleMap->getNumberColumns() * CONFIG_BATTLEMAPSQUARE_SIZE, m_battleMap->getNumberRows() * CONFIG_BATTLEMAPSQUARE_SIZE);
+    m_battleMapScene->setSceneRect(0, 0, m_battleMap->getNumberColumns() * BATTLEMAPSQUARE_SIZE, m_battleMap->getNumberRows() * BATTLEMAPSQUARE_SIZE);
 
     /* reset selection area when editing of Battle Map is finished */
     resetSelectionArea();
@@ -442,7 +442,7 @@ void MasterScreenHandler::deleteRowAbove()
 
     /* update Battle Map scene section and frame */
     updateBattleMapSceneSection();
-    m_battleMapScene->setSceneRect(0, 0, m_battleMap->getNumberColumns() * CONFIG_BATTLEMAPSQUARE_SIZE, m_battleMap->getNumberRows() * CONFIG_BATTLEMAPSQUARE_SIZE);
+    m_battleMapScene->setSceneRect(0, 0, m_battleMap->getNumberColumns() * BATTLEMAPSQUARE_SIZE, m_battleMap->getNumberRows() * BATTLEMAPSQUARE_SIZE);
 
     /* reset selection area when editing of Battle Map is finished */
     resetSelectionArea();
@@ -470,7 +470,7 @@ void MasterScreenHandler::deleteRowBelow()
 
     /* update Battle Map scene section and frame */
     updateBattleMapSceneSection();
-    m_battleMapScene->setSceneRect(0, 0, m_battleMap->getNumberColumns() * CONFIG_BATTLEMAPSQUARE_SIZE, m_battleMap->getNumberRows() * CONFIG_BATTLEMAPSQUARE_SIZE);
+    m_battleMapScene->setSceneRect(0, 0, m_battleMap->getNumberColumns() * BATTLEMAPSQUARE_SIZE, m_battleMap->getNumberRows() * BATTLEMAPSQUARE_SIZE);
 
     /* reset selection area when editing of Battle Map is finished */
     resetSelectionArea();
@@ -499,7 +499,7 @@ void MasterScreenHandler::deleteColumnLeft()
 
     /* update Battle Map scene section and frame */
     updateBattleMapSceneSection();
-    m_battleMapScene->setSceneRect(0, 0, m_battleMap->getNumberColumns() * CONFIG_BATTLEMAPSQUARE_SIZE, m_battleMap->getNumberRows() * CONFIG_BATTLEMAPSQUARE_SIZE);
+    m_battleMapScene->setSceneRect(0, 0, m_battleMap->getNumberColumns() * BATTLEMAPSQUARE_SIZE, m_battleMap->getNumberRows() * BATTLEMAPSQUARE_SIZE);
 
     /* reset selection area when editing of Battle Map is finished */
     resetSelectionArea();
@@ -528,7 +528,7 @@ void MasterScreenHandler::deleteColumnRight()
 
     /* update Battle Map scene section and frame */
     updateBattleMapSceneSection();
-    m_battleMapScene->setSceneRect(0, 0, m_battleMap->getNumberColumns() * CONFIG_BATTLEMAPSQUARE_SIZE, m_battleMap->getNumberRows() * CONFIG_BATTLEMAPSQUARE_SIZE);
+    m_battleMapScene->setSceneRect(0, 0, m_battleMap->getNumberColumns() * BATTLEMAPSQUARE_SIZE, m_battleMap->getNumberRows() * BATTLEMAPSQUARE_SIZE);
 
     /* reset selection area when editing of Battle Map is finished */
     resetSelectionArea();
@@ -565,7 +565,7 @@ void MasterScreenHandler::rotateBattleMapLeft()
 
     /* update Battle Map scene section and frame */
     updateBattleMapSceneSection();
-    m_battleMapScene->setSceneRect(0, 0, m_battleMap->getNumberColumns() * CONFIG_BATTLEMAPSQUARE_SIZE, m_battleMap->getNumberRows() * CONFIG_BATTLEMAPSQUARE_SIZE);
+    m_battleMapScene->setSceneRect(0, 0, m_battleMap->getNumberColumns() * BATTLEMAPSQUARE_SIZE, m_battleMap->getNumberRows() * BATTLEMAPSQUARE_SIZE);
 
     /* reset selection area when editing of Battle Map is finished */
     resetSelectionArea();
@@ -602,7 +602,7 @@ void MasterScreenHandler::rotateBattleMapRight()
 
     /* update Battle Map scene section and frame */
     updateBattleMapSceneSection();
-    m_battleMapScene->setSceneRect(0, 0, m_battleMap->getNumberColumns() * CONFIG_BATTLEMAPSQUARE_SIZE, m_battleMap->getNumberRows() * CONFIG_BATTLEMAPSQUARE_SIZE);
+    m_battleMapScene->setSceneRect(0, 0, m_battleMap->getNumberColumns() * BATTLEMAPSQUARE_SIZE, m_battleMap->getNumberRows() * BATTLEMAPSQUARE_SIZE);
 
     /* reset selection area when editing of Battle Map is finished */
     resetSelectionArea();
@@ -618,8 +618,8 @@ void MasterScreenHandler::repositionGraphicsItemsOnBattleMapScene()
     {
         for (quint32 columnIdx = 0U; columnIdx < m_battleMap->getNumberColumns(); columnIdx++)
         {
-            m_battleMapSquareGraphicsItems[rowIdx][columnIdx]->setPos(columnIdx * CONFIG_BATTLEMAPSQUARE_SIZE, rowIdx * CONFIG_BATTLEMAPSQUARE_SIZE);
-            m_coverageSquareGraphicsItems[rowIdx][columnIdx]->setPos(columnIdx * CONFIG_BATTLEMAPSQUARE_SIZE, rowIdx * CONFIG_BATTLEMAPSQUARE_SIZE);
+            m_battleMapSquareGraphicsItems[rowIdx][columnIdx]->setPos(columnIdx * BATTLEMAPSQUARE_SIZE, rowIdx * BATTLEMAPSQUARE_SIZE);
+            m_coverageSquareGraphicsItems[rowIdx][columnIdx]->setPos(columnIdx * BATTLEMAPSQUARE_SIZE, rowIdx * BATTLEMAPSQUARE_SIZE);
         }
     }
 }
@@ -702,7 +702,7 @@ void MasterScreenHandler::pressedKey(Qt::Key key)
 
             /* center graphics view on new position of scene center if border of Battle Map scene section is moved outside the viewport */
             qreal difference = m_graphicsView->mapToScene(m_graphicsView->viewport()->rect().topLeft()).x() -
-                    static_cast<qreal>(m_battleMapSceneSection->getIndexFirstColumnSceneSection() * CONFIG_BATTLEMAPSQUARE_SIZE);
+                    static_cast<qreal>(m_battleMapSceneSection->getIndexFirstColumnSceneSection() * BATTLEMAPSQUARE_SIZE);
 
             if (0 < difference)
             {
@@ -719,7 +719,7 @@ void MasterScreenHandler::pressedKey(Qt::Key key)
 
             /* center graphics view on new position of scene center if border of Battle Map scene section is moved outside the viewport */
             qreal difference = m_graphicsView->mapToScene(m_graphicsView->viewport()->rect().topLeft()).y() -
-                     static_cast<qreal>(m_battleMapSceneSection->getIndexFirstRowSceneSection() * CONFIG_BATTLEMAPSQUARE_SIZE);
+                     static_cast<qreal>(m_battleMapSceneSection->getIndexFirstRowSceneSection() * BATTLEMAPSQUARE_SIZE);
 
             if (0 < difference)
             {
@@ -735,7 +735,7 @@ void MasterScreenHandler::pressedKey(Qt::Key key)
             m_battleMapSceneSection->setIndexFirstColumnSceneSection(m_battleMapSceneSection->getIndexFirstColumnSceneSection() + 1U);
 
             /* center graphics view on new position of scene center if border of Battle Map scene section is moved outside the viewport */
-            qreal difference = static_cast<qreal>((m_battleMapSceneSection->getIndexFirstColumnSceneSection() + m_battleMapSceneSection->getNumberColumnsSceneSection()) * CONFIG_BATTLEMAPSQUARE_SIZE -
+            qreal difference = static_cast<qreal>((m_battleMapSceneSection->getIndexFirstColumnSceneSection() + m_battleMapSceneSection->getNumberColumnsSceneSection()) * BATTLEMAPSQUARE_SIZE -
                                             m_graphicsView->mapToScene(m_graphicsView->viewport()->rect().bottomRight()).x());
 
             if (0 < difference)
@@ -752,7 +752,7 @@ void MasterScreenHandler::pressedKey(Qt::Key key)
             m_battleMapSceneSection->setIndexFirstRowSceneSection(m_battleMapSceneSection->getIndexFirstRowSceneSection() + 1U);
 
             /* center graphics view on new position of scene center if border of Battle Map scene section is moved outside the viewport */
-            qreal difference = static_cast<qreal>((m_battleMapSceneSection->getIndexFirstRowSceneSection() + m_battleMapSceneSection->getNumberRowsSceneSection()) * CONFIG_BATTLEMAPSQUARE_SIZE) -
+            qreal difference = static_cast<qreal>((m_battleMapSceneSection->getIndexFirstRowSceneSection() + m_battleMapSceneSection->getNumberRowsSceneSection()) * BATTLEMAPSQUARE_SIZE) -
                     m_graphicsView->mapToScene(m_graphicsView->viewport()->rect().bottomRight()).y();
 
             if (0 < difference)
@@ -901,8 +901,8 @@ void MasterScreenHandler::updateBattleMapSquareGraphicsItems()
 void MasterScreenHandler::updateBattleMapSceneSection()
 {
     /* update rect that frames the Battle Map scene section to be displayed on the player screen */
-    m_sceneSectionRect.setRect(QRectF(QPointF(m_battleMapSceneSection->getIndexFirstColumnSceneSection(), m_battleMapSceneSection->getIndexFirstRowSceneSection()) * CONFIG_BATTLEMAPSQUARE_SIZE,
-                                      QSize(m_battleMapSceneSection->getNumberColumnsSceneSection(), m_battleMapSceneSection->getNumberRowsSceneSection()) * CONFIG_BATTLEMAPSQUARE_SIZE));
+    m_sceneSectionRect.setRect(QRectF(QPointF(m_battleMapSceneSection->getIndexFirstColumnSceneSection(), m_battleMapSceneSection->getIndexFirstRowSceneSection()) * BATTLEMAPSQUARE_SIZE,
+                                      QSize(m_battleMapSceneSection->getNumberColumnsSceneSection(), m_battleMapSceneSection->getNumberRowsSceneSection()) * BATTLEMAPSQUARE_SIZE));
 
     for (quint32 rowIdx = 0U; rowIdx < m_battleMap->getNumberRows(); rowIdx++)
     {
