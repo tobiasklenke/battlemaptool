@@ -97,7 +97,7 @@ public:
      * \brief   This function initializes the Battle Map image without showing it.                                                                  *
      *                                                                                                                                              *
      * \details This function resets the Battle Map scene and adds all the Battle Map squares from the Battle Map to the Battle Map scene after it  *
-     *          positions the Battle Map squares on theBattle Map scene, makes the Battle Map squares invisible and puts the Battle Map squares     *
+     *          positions the Battle Map squares on the Battle Map scene, makes the Battle Map squares invisible and puts the Battle Map squares    *
      *          graphics items to the background so that the wind rose graphics item is completely visible. Afterwards, it initializes the Battle   *
      *          Map scene rect according to the Battle Map scene section. Finally, it initializes the member variables m_deleteRowsOnUpdate and     *
      *          m_deleteColumnsOnUpdate, adds and positions the wind rose graphics item and puts it to the foreground.                              *
@@ -397,11 +397,6 @@ private:
      * \brief This is the variable contaiting the graphics item of the wind rose.
      */
     QGraphicsPixmapItem m_windRoseGraphicsItem;
-
-    /*!
-     * \brief This is the edge length of a Battle Map square in pixels.
-     */
-    quint32 m_edgeLengthInPixels;
 
     /*!
      * \brief This is the information whether the deletion of some Battle Map squares is required due to newly deleted Battle Map squares.
