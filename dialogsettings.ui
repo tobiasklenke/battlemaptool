@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>DialogSettings</class>
+ <widget class="QDialog" name="DialogSettings">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>600</width>
+    <height>450</height>
+   </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>599</width>
+    <height>450</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>600</width>
+    <height>450</height>
+   </size>
+  </property>
+  <property name="baseSize">
+   <size>
+    <width>600</width>
+    <height>450</height>
+   </size>
+  </property>
+  <property name="mouseTracking">
+   <bool>true</bool>
+  </property>
+  <property name="windowTitle">
+   <string>Settings</string>
+  </property>
+  <property name="layoutDirection">
+   <enum>Qt::LeftToRight</enum>
+  </property>
+  <property name="autoFillBackground">
+   <bool>false</bool>
+  </property>
+  <widget class="QTabWidget" name="tabWidget">
+   <property name="geometry">
+    <rect>
+     <x>25</x>
+     <y>25</y>
+     <width>550</width>
+     <height>375</height>
+    </rect>
+   </property>
+   <property name="autoFillBackground">
+    <bool>false</bool>
+   </property>
+   <property name="tabPosition">
+    <enum>QTabWidget::North</enum>
+   </property>
+   <property name="tabShape">
+    <enum>QTabWidget::Rounded</enum>
+   </property>
+   <property name="currentIndex">
+    <number>0</number>
+   </property>
+   <property name="elideMode">
+    <enum>Qt::ElideNone</enum>
+   </property>
+   <property name="documentMode">
+    <bool>false</bool>
+   </property>
+   <property name="tabsClosable">
+    <bool>false</bool>
+   </property>
+   <property name="movable">
+    <bool>false</bool>
+   </property>
+   <property name="tabBarAutoHide">
+    <bool>false</bool>
+   </property>
+   <widget class="QWidget" name="tabPlayerScreen">
+    <attribute name="title">
+     <string>Player Screen</string>
+    </attribute>
+    <widget class="QLabel" name="labelDiagonal">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>25</y>
+       <width>150</width>
+       <height>25</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Diagonal</string>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="lineEditDiagonal">
+     <property name="geometry">
+      <rect>
+       <x>275</x>
+       <y>25</y>
+       <width>100</width>
+       <height>25</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="lineEditResolutionWidth">
+     <property name="geometry">
+      <rect>
+       <x>275</x>
+       <y>55</y>
+       <width>100</width>
+       <height>25</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+     </property>
+    </widget>
+    <widget class="QLabel" name="labelResolutionWidth">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>55</y>
+       <width>150</width>
+       <height>25</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Resolution width</string>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="lineEditResolutionHeight">
+     <property name="geometry">
+      <rect>
+       <x>275</x>
+       <y>85</y>
+       <width>100</width>
+       <height>25</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+     </property>
+    </widget>
+    <widget class="QLabel" name="labelResolutionHeight">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>85</y>
+       <width>150</width>
+       <height>25</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Resolution height</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="labelInch">
+     <property name="geometry">
+      <rect>
+       <x>380</x>
+       <y>25</y>
+       <width>25</width>
+       <height>25</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>in</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="labelPixels1">
+     <property name="geometry">
+      <rect>
+       <x>380</x>
+       <y>55</y>
+       <width>25</width>
+       <height>25</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>px</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="labelPixels2">
+     <property name="geometry">
+      <rect>
+       <x>380</x>
+       <y>85</y>
+       <width>25</width>
+       <height>25</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>px</string>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QWidget" name="tabTodo">
+    <attribute name="title">
+     <string>TODO</string>
+    </attribute>
+   </widget>
+  </widget>
+  <widget class="QDialogButtonBox" name="dialogButtonBox">
+   <property name="geometry">
+    <rect>
+     <x>25</x>
+     <y>400</y>
+     <width>550</width>
+     <height>50</height>
+    </rect>
+   </property>
+   <property name="orientation">
+    <enum>Qt::Horizontal</enum>
+   </property>
+   <property name="standardButtons">
+    <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
+   </property>
+   <property name="centerButtons">
+    <bool>false</bool>
+   </property>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
