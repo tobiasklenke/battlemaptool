@@ -23,8 +23,7 @@ DialogNewBattleMap::DialogNewBattleMap(QWidget *parent) :
     m_userInterface->setupUi(this);
 
     /* set background color of graphics view to window color */
-    QPalette palette;
-    m_userInterface->graphicsViewNewBattleMap->setBackgroundBrush(QBrush(palette.color(QPalette::Window)));
+    m_userInterface->graphicsViewNewBattleMap->setBackgroundRole(QPalette::Window);
 
     /* connect signals and slots of user interface widgets */
     connect(m_userInterface->radioButtonSourceBattleMap, SIGNAL(toggled(bool)), this, SLOT(toggledRadioButtonSourceBattleMap(bool)));
@@ -202,7 +201,7 @@ void DialogNewBattleMap::releasedPushButtonSelectSource()
  */
 void DialogNewBattleMap::editingFinishedLineEditNumberRows()
 {
-    /* check text string for valid format (decimal number) */
+    /* check text string for valid format (integer number) */
     bool validNumber;
     qint32 inputValue = m_userInterface->lineEditNumberRows->text().toInt(&validNumber, 10);
 
@@ -256,7 +255,7 @@ void DialogNewBattleMap::editingFinishedLineEditNumberRows()
  */
 void DialogNewBattleMap::editingFinishedLineEditNumberColumns()
 {
-    /* check text string for valid format (decimal number) */
+    /* check text string for valid format (integer number) */
     bool validNumber;
     qint32 inputValue = m_userInterface->lineEditNumberColumns->text().toInt(&validNumber, 10);
 
