@@ -36,6 +36,16 @@
  */
 #define PLAYERSCREEN_DIAGONAL_DECIMAL_PLACES               1
 
+/*!
+ * \brief This is the minimum number of inches for the diagonal of the player screen.
+ */
+#define PLAYERSCREEN_MINIMUMDIAGONAL                       0.1
+
+/*!
+ * \brief This is the minimum number of pixels for the resolution width and height of the player screen.
+ */
+#define PLAYERSCREEN_MINIMUMNUMBERPIXELS                   1
+
 /* Scaling parameters */
 
 /*!
