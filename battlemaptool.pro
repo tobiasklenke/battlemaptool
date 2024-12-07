@@ -19,6 +19,7 @@ SOURCES += \
     customgraphicspixmapitem.cpp \
     customgraphicsview.cpp \
     dialognewbattlemap.cpp \
+    dialogsettings.cpp \
     main.cpp \
     mainwindow.cpp \
     masterscreenhandler.cpp \
@@ -48,6 +49,7 @@ HEADERS += \
     customgraphicsview.h \
     defines.h \
     dialognewbattlemap.h \
+    dialogsettings.h \
     mainwindow.h \
     masterscreenhandler.h \
     playerscreenhandler.h \
@@ -66,6 +68,7 @@ HEADERS += \
 
 FORMS += \
     dialognewbattlemap.ui \
+    dialogsettings.ui \
     mainwindow.ui
 
 # Default rules for deployment.
