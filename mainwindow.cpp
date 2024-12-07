@@ -83,6 +83,9 @@ MainWindow::MainWindow(QGraphicsView *playerWindow, QWidget *parent) :
     connect(m_userInterface->modeCoverBattleMap, SIGNAL(toggled(bool)), this, SLOT(toggledModeCoverBattleMap(bool)));
     connect(m_userInterface->modeUncoverBattleMap, SIGNAL(toggled(bool)), this, SLOT(toggledModeUncoverBattleMap(bool)));
 
+    /* connect signals and slots of actions from menu Settings */
+    connect(m_userInterface->actionOpenSettings, SIGNAL(triggered()), this, SLOT(triggeredActionOpenSettings()));
+
     /* connect signals and slots of actions from menu shown on right mouse button click */
     connect(m_userInterface->actionCoverBattleMap, SIGNAL(triggered()), this, SLOT(triggeredActionCoverBattleMap()));
     connect(m_userInterface->actionUncoverBattleMap, SIGNAL(triggered()), this, SLOT(triggeredActionUncoverBattleMap()));
@@ -219,7 +222,7 @@ void MainWindow::acceptedDialogNewBattleMap()
 }
 
 /*!
- * \brief This function handles the rejection of the dialog Dialog_NewBattleMap.
+ * \brief This function handles the rejection of the dialog DialogNewBattleMap.
  */
 void MainWindow::rejectedDialogNewBattleMap()
 {
@@ -452,6 +455,45 @@ void MainWindow::triggeredActionUncoverBattleMap()
 {
     /* uncover selected Battle Map squares on master screen */
     m_masterScreenHandler.handleCoverBattleMap(false);
+}
+
+/*!
+ * \brief This function handles the action actionOpenSettings.
+ */
+void MainWindow::triggeredActionOpenSettings()
+{
+    /* create dialog DialogSettings */
+    m_dialogSettings = new DialogSettings(this);
+
+    /* connect signals and slots of the dialog button box actions of the dialog DialogSettings */
+    connect(m_dialogSettings, SIGNAL(accepted()), this, SLOT(acceptedDialogSettings()));
+    connect(m_dialogSettings, SIGNAL(rejected()), this, SLOT(rejectedDialogSettings()));
+
+    /* open dialog DialogSettings */
+    m_dialogSettings->open();
+}
+
+/*!
+ * \brief This function handles the acceptance of the dialog DialogSettings.
+ */
+void MainWindow::acceptedDialogSettings()
+{
+    if (m_dialogSettings->getSettingsChanged())
+    {
+        //TODO: handle changed settings
+    }
+
+    /* delete dialog DialogSettings */
+    delete m_dialogSettings;
+}
+
+/*!
+ * \brief This function handles the rejection of the dialog DialogSettings.
+ */
+void MainWindow::rejectedDialogSettings()
+{
+    /* delete dialog DialogSettings */
+    delete m_dialogSettings;
 }
 
 /*!

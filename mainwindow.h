@@ -13,6 +13,7 @@
 #include "battlemap.h"
 #include "battlemapscenesection.h"
 #include "dialognewbattlemap.h"
+#include "dialogsettings.h"
 #include "playerscreenhandler.h"
 #include "masterscreenhandler.h"
 #include "undocommanddeletecolumnleft.h"
@@ -288,6 +289,34 @@ private slots:
     void triggeredActionUncoverBattleMap();
 
     /*! *********************************************************************************************************************************************
+     * \brief   This function handles the action actionOpenSettings.                                                                                *
+     *                                                                                                                                              *
+     * \details This function creates the dialog DialogSettings and connects the signals and slots of the dialog button box actions of the dialog   *
+     *          DialogSettings. Afterwards, it opens the dialog DialogSettings.                                                                     *
+     *                                                                                                                                              *
+     * \return  This function does not have any return value.                                                                                       *
+     ************************************************************************************************************************************************/
+    void triggeredActionOpenSettings();
+
+    /*! *********************************************************************************************************************************************
+     * \brief   This function handles the acceptance of the dialog DialogSettings.                                                                  *
+     *                                                                                                                                              *
+     * \details This function first checks whether the settings have been changed and deletes the dialog DialogSettings afterwards.                 *
+     *                                                                                                                                              *
+     * \return  This function does not have any return value.                                                                                       *
+     ************************************************************************************************************************************************/
+    void acceptedDialogSettings();
+
+    /*! *********************************************************************************************************************************************
+     * \brief   This function handles the rejection of the dialog DialogSettings.                                                                   *
+     *                                                                                                                                              *
+     * \details This function deletes the dialog DialogSettings.                                                                                    *
+     *                                                                                                                                              *
+     * \return  This function does not have any return value.                                                                                       *
+     ************************************************************************************************************************************************/
+    void rejectedDialogSettings();
+
+    /*! *********************************************************************************************************************************************
      * \brief   This function updates the label that shows the value of the scale factor.                                                           *
      *                                                                                                                                              *
      * \details -                                                                                                                                   *
@@ -357,6 +386,11 @@ private:
      * \brief This is a pointer to the user interface of the class DialogNewBattleMap.
      */
     DialogNewBattleMap *m_dialogNewBattleMap;
+
+    /*!
+     * \brief This is a pointer to the user interface of the class DialogSettings.
+     */
+    DialogSettings *m_dialogSettings;
 
     /*!
      * \brief This is a pointer to the Battle Map.

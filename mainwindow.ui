@@ -603,6 +603,9 @@
    <property name="text">
     <string>Open Settings</string>
    </property>
+   <property name="shortcut">
+    <string>Ctrl+S</string>
+   </property>
   </action>
  </widget>
  <customwidgets>
