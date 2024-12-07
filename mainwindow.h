@@ -73,6 +73,17 @@ public:
      ************************************************************************************************************************************************/
     ~MainWindow();
 
+    /*! *********************************************************************************************************************************************
+     * \brief   This function updates the Battle Map scene section.                                                                                 *
+     *                                                                                                                                              *
+     * \details This function resets the indexes of the first row and column of the Battle Map scene section, checks whether the number of rows     *
+     *          respectively columns displayable on the player screen is less than the total number of rows respectively columns of the Battle Map  *
+     *          and sets the number of rows respectively columns of the Battle Map scene section to the less number.                                *
+     *                                                                                                                                              *
+     * \return  This function does not have any return value.                                                                                       *
+     ************************************************************************************************************************************************/
+    void updateBattleManSceneSection();
+
 protected: /* - */
 
 signals: /* - */
@@ -93,13 +104,11 @@ private slots:
      * \brief   This function handles the acceptance of the dialog DialogNewBattleMap.                                                              *
      *                                                                                                                                              *
      * \details This function first sets the wait cursor as the following process may take some time, stores the Battle Map from the accepted       *
-     *          dialog DialogNewBattleMap and deletes the dialog afterwards. Then, it resets the indexes of the first row and column of the Battle  *
-     *          Map scene section, checks whether the number of rows respectively columns displayable on the player screen is less than the total   *
-     *          number of rows respectively columns of the Battle Map and sets the number of rows respectively columns of the Battle Map scene      *
-     *          section to the less number. It shares the Battle Map with the screen handlers, shows the Battle Map image on the master screen and  *
-     *          initializes the Battle Map image on the player screen. Afterwards, it enables the actions that shall only be available when the     *
-     *          Battle Map is shared with the screen handlers and it also makes the label labelScaleFactor visible so that it is shown when Battle  *
-     *          Map is shared with the screen handlers. Finally, it resets the arrow cursor as the process which takes some time is completed.      *
+     *          dialog DialogNewBattleMap and deletes the dialog afterwards. Then, it updates the Battle Map scene section. It shares the Battle    *
+     *          Map with the screen handlers, shows the Battle Map image on the master screen and initializes the Battle Map image on the player    *
+     *          screen. Afterwards, it enables the actions that shall only be available when the Battle Map is shared with the screen handlers and  *
+     *          it also makes the label labelScaleFactor visible so that it is shown when Battle Map is shared with the screen handlers. Finally,   *
+     *          it resets the arrow cursor as the process which takes some time is completed.                                                       *
      *                                                                                                                                              *
      * \return  This function does not have any return value.                                                                                       *
      ************************************************************************************************************************************************/
@@ -301,7 +310,9 @@ private slots:
     /*! *********************************************************************************************************************************************
      * \brief   This function handles the acceptance of the dialog DialogSettings.                                                                  *
      *                                                                                                                                              *
-     * \details This function first checks whether the settings have been changed and deletes the dialog DialogSettings afterwards.                 *
+     * \details This function first checks whether the settings have been changed and, if this is the case, updates the Battle Map scene section,   *
+     *          shows the Battle Map image on the master screen and initializes the Battle Map image on the player screen and updates the wind rose *
+     *          image position on the player screen. Finally, it deletes the dialog DialogSettings.                                                 *
      *                                                                                                                                              *
      * \return  This function does not have any return value.                                                                                       *
      ************************************************************************************************************************************************/

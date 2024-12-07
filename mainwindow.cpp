@@ -115,6 +115,40 @@ MainWindow::~MainWindow()
     delete m_battleMap;
 }
 
+/*!
+ * \brief This function updates the Battle Map scene section.
+ */
+void MainWindow::updateBattleManSceneSection()
+{
+    QSettings settings;
+
+    /* reset indexes of first row and column of Battle Map scene section */
+    m_battleMapSceneSection.setIndexFirstRowSceneSection(0U);
+    m_battleMapSceneSection.setIndexFirstColumnSceneSection(0U);
+
+    /* check whether number of rows displayable on player screen is less than total number of rows of Battle Map and set number of rows of Battle Map scene section to less number */
+    quint32 numberRowsOnPlayerScreen = static_cast<quint32>(calcScreenHeightInInches(settings.value(CONFIGKEY_PLAYERSCREEN_DIAGONAL).toReal(), settings.value(CONFIGKEY_PLAYERSCREEN_RESOLUTION_HEIGHT).toUInt(), settings.value(CONFIGKEY_PLAYERSCREEN_RESOLUTION_WIDTH).toUInt()));
+    if (numberRowsOnPlayerScreen < m_battleMap->getNumberRows())
+    {
+        m_battleMapSceneSection.setNumberRowsSceneSection(numberRowsOnPlayerScreen);
+    }
+    else
+    {
+        m_battleMapSceneSection.setNumberRowsSceneSection(m_battleMap->getNumberRows());
+    }
+
+    /* check whether number of columns displayable on player screen is less than total number of columns of Battle Map and set number of columns of Battle Map scene section to less number */
+    quint32 numberColumnsOnPlayerScreen = static_cast<quint32>(calcScreenWidthInInches(settings.value(CONFIGKEY_PLAYERSCREEN_DIAGONAL).toReal(), settings.value(CONFIGKEY_PLAYERSCREEN_RESOLUTION_HEIGHT).toUInt(), settings.value(CONFIGKEY_PLAYERSCREEN_RESOLUTION_WIDTH).toUInt()));
+    if (numberColumnsOnPlayerScreen < m_battleMap->getNumberColumns())
+    {
+        m_battleMapSceneSection.setNumberColumnsSceneSection(numberColumnsOnPlayerScreen);
+    }
+    else
+    {
+        m_battleMapSceneSection.setNumberColumnsSceneSection(m_battleMap->getNumberColumns());
+    }
+}
+
 /****************************************************************************************************************************************************
  * DEFINITION OF PROTECTED FUNCTIONS                                                                                                                *
  ****************************************************************************************************************************************************/
@@ -146,8 +180,6 @@ void MainWindow::triggeredActionNewBattleMap()
  */
 void MainWindow::acceptedDialogNewBattleMap()
 {
-    QSettings settings;
-
     /* set wait cursor as the following process may take some time */
     setCursor(Qt::WaitCursor);
 
@@ -156,31 +188,8 @@ void MainWindow::acceptedDialogNewBattleMap()
     m_battleMap = new BattleMap(*m_dialogNewBattleMap->getBattleMap());
     delete m_dialogNewBattleMap;
 
-    /* reset indexes of first row and column of Battle Map scene section */
-    m_battleMapSceneSection.setIndexFirstRowSceneSection(0U);
-    m_battleMapSceneSection.setIndexFirstColumnSceneSection(0U);
-
-    /* check whether number of rows displayable on player screen is less than total number of rows of Battle Map and set number of rows of Battle Map scene section to less number */
-    quint32 numberRowsOnPlayerScreen = static_cast<quint32>(calcScreenHeightInInches(settings.value(CONFIGKEY_PLAYERSCREEN_DIAGONAL).toReal(), settings.value(CONFIGKEY_PLAYERSCREEN_RESOLUTION_HEIGHT).toUInt(), settings.value(CONFIGKEY_PLAYERSCREEN_RESOLUTION_WIDTH).toUInt()));
-    if (numberRowsOnPlayerScreen < m_battleMap->getNumberRows())
-    {
-        m_battleMapSceneSection.setNumberRowsSceneSection(numberRowsOnPlayerScreen);
-    }
-    else
-    {
-        m_battleMapSceneSection.setNumberRowsSceneSection(m_battleMap->getNumberRows());
-    }
-
-    /* check whether number of columns displayable on player screen is less than total number of columns of Battle Map and set number of columns of Battle Map scene section to less number */
-    quint32 numberColumnsOnPlayerScreen = static_cast<quint32>(calcScreenWidthInInches(settings.value(CONFIGKEY_PLAYERSCREEN_DIAGONAL).toReal(), settings.value(CONFIGKEY_PLAYERSCREEN_RESOLUTION_HEIGHT).toUInt(), settings.value(CONFIGKEY_PLAYERSCREEN_RESOLUTION_WIDTH).toUInt()));
-    if (numberColumnsOnPlayerScreen < m_battleMap->getNumberColumns())
-    {
-        m_battleMapSceneSection.setNumberColumnsSceneSection(numberColumnsOnPlayerScreen);
-    }
-    else
-    {
-        m_battleMapSceneSection.setNumberColumnsSceneSection(m_battleMap->getNumberColumns());
-    }
+    /* update Battle Map scene section */
+    updateBattleManSceneSection();
 
     /* share Battle Map with screen handlers */
     m_masterScreenHandler.setBattleMap(m_battleMap);
@@ -480,7 +489,15 @@ void MainWindow::acceptedDialogSettings()
 {
     if (m_dialogSettings->getSettingsChanged())
     {
-        //TODO: handle changed settings
+        /* update Battle Map scene section */
+        updateBattleManSceneSection();
+
+        /* show Battle Map image on master screen and initialize Battle Map image on player screen */
+        m_masterScreenHandler.showBattleMapImage();
+        m_playerScreenHandler.initBattleMapImage();
+
+        /* update wind rose image position on player screen */
+        triggeredActionWindRoseOrientation();
     }
 
     /* delete dialog DialogSettings */
