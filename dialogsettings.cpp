@@ -14,14 +14,13 @@
  */
 DialogSettings::DialogSettings(QWidget *parent) :
     QDialog(parent),
-    m_userInterface(new Ui::DialogSettings)
+    m_userInterface(new Ui::DialogSettings),
+    m_settingsChanged(false)
 {
     QSettings settings;
 
     /* set up the user interface */
     m_userInterface->setupUi(this);
-
-    //TODO: style tabs
 
     /* connect signals and slots of user interface widgets */
     connect(m_userInterface->lineEditDiagonal, SIGNAL(editingFinished()), this, SLOT(editingFinishedLineEditDiagonal()));
