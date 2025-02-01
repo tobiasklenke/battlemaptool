@@ -15,14 +15,20 @@
 MainWindow::MainWindow(QGraphicsView *playerWindow, QWidget *parent) :
     QMainWindow(parent),
     m_userInterface(new Ui::MainWindow),
+    m_playerWindow(playerWindow),
     m_undoStack(new QUndoStack(this)),
     m_operationModeActionGroup(new QActionGroup(this)),
     m_windRoseOrientationActionGroup(new QActionGroup(this)),
     m_dialogNewBattleMap(nullptr),
     m_battleMap(new BattleMap())
 {
+    QSettings settings;
+
     /* set up the user interface */
     m_userInterface->setupUi(this);
+
+    /* move player window to respective screen */
+    m_playerWindow->move(QGuiApplication::screens().at(MASTERSCREEN_INDEX)->size().width(), 0);
 
     /* add undo stack actions to menu */
     m_undoAction = m_undoStack->createUndoAction(this, "Undo");
@@ -36,7 +42,7 @@ MainWindow::MainWindow(QGraphicsView *playerWindow, QWidget *parent) :
     /* pass graphics views and Battle Map scene sections to master and player screen handlers */
     m_masterScreenHandler.setGraphicsView(m_userInterface->graphicsViewBattleMapMasterScreen);
     m_masterScreenHandler.setBattleMapSceneSection(&m_battleMapSceneSection);
-    m_playerScreenHandler.setGraphicsView(playerWindow);
+    m_playerScreenHandler.setGraphicsView(m_playerWindow);
     m_playerScreenHandler.setBattleMapSceneSection(&m_battleMapSceneSection);
 
     /* create action group for operation mode */
@@ -51,6 +57,10 @@ MainWindow::MainWindow(QGraphicsView *playerWindow, QWidget *parent) :
     m_windRoseOrientationActionGroup->addAction(m_userInterface->actionWindRoseOrientationSouth);
     m_windRoseOrientationActionGroup->addAction(m_userInterface->actionWindRoseOrientationWest);
     m_windRoseOrientationActionGroup->setExclusionPolicy(QActionGroup::ExclusionPolicy::ExclusiveOptional);
+
+    /* connect signals of QGuiApplication and slots */
+    connect(QGuiApplication::instance(), SIGNAL(screenAdded(QScreen*)), this, SLOT(screenAdded(QScreen*)));
+    connect(QGuiApplication::instance(), SIGNAL(screenRemoved(QScreen*)), this, SLOT(screenRemoved(QScreen*)));
 
     /* connect signals and slots of actions from menu File */
     connect(m_userInterface->actionNewBattleMap, SIGNAL(triggered()), this, SLOT(triggeredActionNewBattleMap()));
@@ -101,6 +111,27 @@ MainWindow::MainWindow(QGraphicsView *playerWindow, QWidget *parent) :
     /* make labels transparent for mouse events so that they do not process them instead of the graphics view */
     m_userInterface->labelWindRose->setAttribute(Qt::WA_TransparentForMouseEvents);
     m_userInterface->labelScaleFactor->setAttribute(Qt::WA_TransparentForMouseEvents);
+
+    /* check whether application is initially configured */
+    if (!settings.value(CONFIGKEY_GENERAL_INITIALLY_CONFIGURED).toBool())
+    {
+        /* check whether player screen is available */
+        if (FULLNUMBER_SCREENS <= QGuiApplication::screens().count())
+        {
+            /* apply settings of player screen */
+            applyPlayerScreenSettings();
+        }
+        else
+        {
+            /* apply default settings */
+            settings.setValue(CONFIGKEY_PLAYERSCREEN_RESOLUTION_WIDTH, DEFAULTVALUE_PLAYERSCREEN_RESOLUTION_WIDTH);
+            settings.setValue(CONFIGKEY_PLAYERSCREEN_RESOLUTION_HEIGHT, DEFAULTVALUE_PLAYERSCREEN_RESOLUTION_HEIGHT);
+            settings.setValue(CONFIGKEY_PLAYERSCREEN_DIAGONAL, DEFAULTVALUE_PLAYERSCREEN_DIAGONAL);
+        }
+
+        /* set configuration parameter containing information whether application is initially configured */
+        settings.setValue(CONFIGKEY_GENERAL_INITIALLY_CONFIGURED, true);
+    }
 }
 
 /*!
@@ -115,40 +146,6 @@ MainWindow::~MainWindow()
     delete m_battleMap;
 }
 
-/*!
- * \brief This function updates the Battle Map scene section.
- */
-void MainWindow::updateBattleManSceneSection()
-{
-    QSettings settings;
-
-    /* reset indexes of first row and column of Battle Map scene section */
-    m_battleMapSceneSection.setIndexFirstRowSceneSection(0U);
-    m_battleMapSceneSection.setIndexFirstColumnSceneSection(0U);
-
-    /* check whether number of rows displayable on player screen is less than total number of rows of Battle Map and set number of rows of Battle Map scene section to less number */
-    quint32 numberRowsOnPlayerScreen = static_cast<quint32>(calcScreenHeightInInches(settings.value(CONFIGKEY_PLAYERSCREEN_DIAGONAL).toReal(), settings.value(CONFIGKEY_PLAYERSCREEN_RESOLUTION_HEIGHT).toUInt(), settings.value(CONFIGKEY_PLAYERSCREEN_RESOLUTION_WIDTH).toUInt()));
-    if (numberRowsOnPlayerScreen < m_battleMap->getNumberRows())
-    {
-        m_battleMapSceneSection.setNumberRowsSceneSection(numberRowsOnPlayerScreen);
-    }
-    else
-    {
-        m_battleMapSceneSection.setNumberRowsSceneSection(m_battleMap->getNumberRows());
-    }
-
-    /* check whether number of columns displayable on player screen is less than total number of columns of Battle Map and set number of columns of Battle Map scene section to less number */
-    quint32 numberColumnsOnPlayerScreen = static_cast<quint32>(calcScreenWidthInInches(settings.value(CONFIGKEY_PLAYERSCREEN_DIAGONAL).toReal(), settings.value(CONFIGKEY_PLAYERSCREEN_RESOLUTION_HEIGHT).toUInt(), settings.value(CONFIGKEY_PLAYERSCREEN_RESOLUTION_WIDTH).toUInt()));
-    if (numberColumnsOnPlayerScreen < m_battleMap->getNumberColumns())
-    {
-        m_battleMapSceneSection.setNumberColumnsSceneSection(numberColumnsOnPlayerScreen);
-    }
-    else
-    {
-        m_battleMapSceneSection.setNumberColumnsSceneSection(m_battleMap->getNumberColumns());
-    }
-}
-
 /****************************************************************************************************************************************************
  * DEFINITION OF PROTECTED FUNCTIONS                                                                                                                *
  ****************************************************************************************************************************************************/
@@ -158,6 +155,61 @@ void MainWindow::updateBattleManSceneSection()
 /****************************************************************************************************************************************************
  * DEFINITION OF PRIVATE SLOT FUNCTIONS                                                                                                             *
  ****************************************************************************************************************************************************/
+
+/*!
+ * \brief This function handles the addition of a screen.
+ */
+void MainWindow::screenAdded(QScreen *screen)
+{
+    QSettings settings;
+
+    /* move player window to respective screen */
+    m_playerWindow->move(QGuiApplication::screens().at(MASTERSCREEN_INDEX)->size().width(), 0);
+
+    if (PLAYERSCREEN_INDEX == QGuiApplication::screens().indexOf(screen))
+    {
+        /* determine resolution and size values of screen associated with the windowing system the application is connected to */
+        int addedScreenResolutionWidth = QGuiApplication::screens().at(PLAYERSCREEN_INDEX)->size().width();
+        int addedScreenResolutionHeight = QGuiApplication::screens().at(PLAYERSCREEN_INDEX)->size().height();
+        int addedScreenSizeWidth = QGuiApplication::screens().at(PLAYERSCREEN_INDEX)->physicalSize().width();
+        int addedScreenSizeHeight = QGuiApplication::screens().at(PLAYERSCREEN_INDEX)->physicalSize().height();
+        qreal addedScreenDiagonal = roundToDecimalPlaces(calcScreenDiagonalInInches(addedScreenSizeWidth, addedScreenSizeHeight), PLAYERSCREEN_DIAGONAL_DECIMAL_PLACES);
+
+        /* check whether settings of added screen differ from current player screen settings */
+        if ((addedScreenDiagonal != settings.value(CONFIGKEY_PLAYERSCREEN_DIAGONAL).toReal()) ||
+            (addedScreenResolutionWidth != settings.value(CONFIGKEY_PLAYERSCREEN_RESOLUTION_WIDTH).toInt()) ||
+            (addedScreenResolutionHeight != settings.value(CONFIGKEY_PLAYERSCREEN_RESOLUTION_HEIGHT).toInt()))
+        {
+            /* show message box informing user that settings of added screen differ from current player screen settings and asking user whether settings of added screen shall be applied */
+            QMessageBox msgBox(this);
+            msgBox.setWindowTitle("Apply settings of added screen");
+            msgBox.setText("The settings of the added screen differ from the current settings of the player screen.\n\nWould you like to apply these changes?");
+            msgBox.setIcon(QMessageBox::Question);
+            msgBox.setStandardButtons(QMessageBox::Apply | QMessageBox::Cancel);
+            msgBox.setDefaultButton(QMessageBox::Apply);
+
+            if (QMessageBox::Apply == msgBox.exec())
+            {
+                /* apply settings of player screen */
+                applyPlayerScreenSettings();
+            }
+        }
+    }
+
+    /* enable action that shall only be available when Battle Map is initialized and player screen is available */
+    m_userInterface->actionUpdatePlayerScreen->setEnabled(m_battleMap->getInitialized() && (FULLNUMBER_SCREENS <= QGuiApplication::screens().count()));
+}
+
+/*!
+ * \brief This function handles the removal of a screen.
+ */
+void MainWindow::screenRemoved(QScreen *screen)
+{
+    Q_UNUSED(screen);
+
+    /* enable action that shall only be available when Battle Map is initialized and player screen is available */
+    m_userInterface->actionUpdatePlayerScreen->setEnabled(m_battleMap->getInitialized() && (FULLNUMBER_SCREENS <= QGuiApplication::screens().count()));
+}
 
 /*!
  * \brief This function handles the action actionNewBattleMap.
@@ -186,10 +238,11 @@ void MainWindow::acceptedDialogNewBattleMap()
     /* store Battle Map from accepted dialog DialogNewBattleMap and delete dialog afterwards */
     delete m_battleMap;
     m_battleMap = new BattleMap(*m_dialogNewBattleMap->getBattleMap());
+    m_battleMap->setInitialized();
     delete m_dialogNewBattleMap;
 
     /* update Battle Map scene section */
-    updateBattleManSceneSection();
+    updateBattleMapSceneSection();
 
     /* share Battle Map with screen handlers */
     m_masterScreenHandler.setBattleMap(m_battleMap);
@@ -199,32 +252,32 @@ void MainWindow::acceptedDialogNewBattleMap()
     m_masterScreenHandler.showBattleMapImage();
     m_playerScreenHandler.initBattleMapImage();
 
-    /* enable actions that shall only be available when Battle Map is shared with screen handlers */
-    m_userInterface->submenuExpandBattleMap->setEnabled(true);
-    m_userInterface->actionInsertRowAbove->setEnabled(true);
-    m_userInterface->actionInsertRowBelow->setEnabled(true);
-    m_userInterface->actionInsertColumnLeft->setEnabled(true);
-    m_userInterface->actionInsertColumnRight->setEnabled(true);
-    m_userInterface->submenuReduceBattleMap->setEnabled(true);
-    m_userInterface->actionDeleteRowAbove->setEnabled(true);
-    m_userInterface->actionDeleteRowBelow->setEnabled(true);
-    m_userInterface->actionDeleteColumnLeft->setEnabled(true);
-    m_userInterface->actionDeleteColumnRight->setEnabled(true);
-    m_userInterface->actionRotateBattleMapLeft->setEnabled(true);
-    m_userInterface->actionRotateBattleMapRight->setEnabled(true);
-    m_userInterface->actionUpdatePlayerScreen->setEnabled(true);
-    m_userInterface->submenuWindRoseOrientation->setEnabled(true);
+    /* enable actions that shall only be available when Battle Map is initialized */
+    m_userInterface->submenuExpandBattleMap->setEnabled(m_battleMap->getInitialized());
+    m_userInterface->actionInsertRowAbove->setEnabled(m_battleMap->getInitialized());
+    m_userInterface->actionInsertRowBelow->setEnabled(m_battleMap->getInitialized());
+    m_userInterface->actionInsertColumnLeft->setEnabled(m_battleMap->getInitialized());
+    m_userInterface->actionInsertColumnRight->setEnabled(m_battleMap->getInitialized());
+    m_userInterface->submenuReduceBattleMap->setEnabled(m_battleMap->getInitialized());
+    m_userInterface->actionDeleteRowAbove->setEnabled(m_battleMap->getInitialized());
+    m_userInterface->actionDeleteRowBelow->setEnabled(m_battleMap->getInitialized());
+    m_userInterface->actionDeleteColumnLeft->setEnabled(m_battleMap->getInitialized());
+    m_userInterface->actionDeleteColumnRight->setEnabled(m_battleMap->getInitialized());
+    m_userInterface->actionRotateBattleMapLeft->setEnabled(m_battleMap->getInitialized());
+    m_userInterface->actionRotateBattleMapRight->setEnabled(m_battleMap->getInitialized());
+    m_userInterface->actionUpdatePlayerScreen->setEnabled(m_battleMap->getInitialized() && (FULLNUMBER_SCREENS <= QGuiApplication::screens().count()));
+    m_userInterface->submenuWindRoseOrientation->setEnabled(m_battleMap->getInitialized());
     for (QAction *action : m_windRoseOrientationActionGroup->actions())
     {
-        action->setEnabled(true);
+        action->setEnabled(m_battleMap->getInitialized());
     }
     for (QAction *action : m_operationModeActionGroup->actions())
     {
-        action->setEnabled(true);
+        action->setEnabled(m_battleMap->getInitialized());
     }
 
-    /* make label labelScaleFactor visible so that it is shown when Battle Map is shared with screen handlers */
-    m_userInterface->labelScaleFactor->setVisible(true);
+    /* make label labelScaleFactor visible so that it is shown when Battle Map is initialized */
+    m_userInterface->labelScaleFactor->setVisible(m_battleMap->getInitialized());
 
     /* reset arrow cursor as the process which takes some time is completed */
     setCursor(Qt::ArrowCursor);
@@ -489,12 +542,16 @@ void MainWindow::acceptedDialogSettings()
 {
     if (m_dialogSettings->getSettingsChanged())
     {
-        /* update Battle Map scene section */
-        updateBattleManSceneSection();
+        /* check if valid Battle Map is initialized */
+        if(m_battleMap->getInitialized())
+        {
+            /* update Battle Map scene section */
+            updateBattleMapSceneSection();
 
-        /* show Battle Map image on master screen and initialize Battle Map image on player screen */
-        m_masterScreenHandler.showBattleMapImage();
-        m_playerScreenHandler.initBattleMapImage();
+            /* show Battle Map image on master screen and initialize Battle Map image on player screen */
+            m_masterScreenHandler.showBattleMapImage();
+            m_playerScreenHandler.initBattleMapImage();
+        }
 
         /* update wind rose image position on player screen */
         triggeredActionWindRoseOrientation();
@@ -559,4 +616,56 @@ void MainWindow::changedSelection(bool selectionCopyable)
  * DEFINITION OF PRIVATE FUNCTIONS                                                                                                                  *
  ****************************************************************************************************************************************************/
 
-/* - */
+/*!
+ * \brief This function updates the Battle Map scene section.
+ */
+void MainWindow::updateBattleMapSceneSection()
+{
+    QSettings settings;
+
+    /* reset indexes of first row and column of Battle Map scene section */
+    m_battleMapSceneSection.setIndexFirstRowSceneSection(0U);
+    m_battleMapSceneSection.setIndexFirstColumnSceneSection(0U);
+
+    /* check whether number of rows displayable on player screen is less than total number of rows of Battle Map and set number of rows of Battle Map scene section to less number */
+    quint32 numberRowsOnPlayerScreen = static_cast<quint32>(calcScreenHeightInInches(settings.value(CONFIGKEY_PLAYERSCREEN_DIAGONAL).toReal(), settings.value(CONFIGKEY_PLAYERSCREEN_RESOLUTION_HEIGHT).toUInt(), settings.value(CONFIGKEY_PLAYERSCREEN_RESOLUTION_WIDTH).toUInt()));
+    if (numberRowsOnPlayerScreen < m_battleMap->getNumberRows())
+    {
+        m_battleMapSceneSection.setNumberRowsSceneSection(numberRowsOnPlayerScreen);
+    }
+    else
+    {
+        m_battleMapSceneSection.setNumberRowsSceneSection(m_battleMap->getNumberRows());
+    }
+
+    /* check whether number of columns displayable on player screen is less than total number of columns of Battle Map and set number of columns of Battle Map scene section to less number */
+    quint32 numberColumnsOnPlayerScreen = static_cast<quint32>(calcScreenWidthInInches(settings.value(CONFIGKEY_PLAYERSCREEN_DIAGONAL).toReal(), settings.value(CONFIGKEY_PLAYERSCREEN_RESOLUTION_HEIGHT).toUInt(), settings.value(CONFIGKEY_PLAYERSCREEN_RESOLUTION_WIDTH).toUInt()));
+    if (numberColumnsOnPlayerScreen < m_battleMap->getNumberColumns())
+    {
+        m_battleMapSceneSection.setNumberColumnsSceneSection(numberColumnsOnPlayerScreen);
+    }
+    else
+    {
+        m_battleMapSceneSection.setNumberColumnsSceneSection(m_battleMap->getNumberColumns());
+    }
+}
+
+/*!
+ * \brief This function applies the settings of the screen associated with the windowing system the application is connected to.
+ */
+void MainWindow::applyPlayerScreenSettings()
+{
+    QSettings settings;
+
+    /* determine resolution and size values of screen associated with the windowing system the application is connected to */
+    int playerScreenResolutionWidth = QGuiApplication::screens().at(PLAYERSCREEN_INDEX)->size().width();
+    int playerScreenResolutionHeight = QGuiApplication::screens().at(PLAYERSCREEN_INDEX)->size().height();
+    int playerScreenSizeWidth = QGuiApplication::screens().at(PLAYERSCREEN_INDEX)->physicalSize().width();
+    int playerScreenSizeHeight = QGuiApplication::screens().at(PLAYERSCREEN_INDEX)->physicalSize().height();
+    qreal playerScreenDiagonal = roundToDecimalPlaces(calcScreenDiagonalInInches(playerScreenSizeWidth, playerScreenSizeHeight), PLAYERSCREEN_DIAGONAL_DECIMAL_PLACES);
+
+    /* apply settings of player screen size */
+    settings.setValue(CONFIGKEY_PLAYERSCREEN_RESOLUTION_WIDTH, playerScreenResolutionWidth);
+    settings.setValue(CONFIGKEY_PLAYERSCREEN_RESOLUTION_HEIGHT, playerScreenResolutionHeight);
+    settings.setValue(CONFIGKEY_PLAYERSCREEN_DIAGONAL, playerScreenDiagonal);
+}

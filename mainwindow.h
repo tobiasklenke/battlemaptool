@@ -53,9 +53,10 @@ public:
      *                                                                                                                                              *
      * \details This function sets up the user interface, adds the undo stack actions to the menu, passes the graphics views and Battle Map scene   *
      *          sections to the master and player screen handlers and creates the action groups for the operation mode and the wind rose            *
-     *          orientation. Afterwards, it connects several signals and slots. Finally, it makes the labels invisible so that they are not shown   *
+     *          orientation. Afterwards, it connects several signals and slots and it makes the labels invisible so that they are not shown         *
      *          initially when there is no Battle Map and also makes the labels transparent for mouse events so that they do not process them       *
-     *          instead of the graphics view.                                                                                                       *
+     *          instead of the graphics view. Finally, it is checked whether the application is initially configured. If this is not the case, the  *
+     *          settings of the player screen or the default settings are applied, depending on a player screen being available.                    *
      *                                                                                                                                              *
      * \param   playerWindow                  Address of the graphics view to display the players window                                            *
      * \param   parent                        Parent of the class MainWindow                                                                        *
@@ -73,22 +74,35 @@ public:
      ************************************************************************************************************************************************/
     ~MainWindow();
 
-    /*! *********************************************************************************************************************************************
-     * \brief   This function updates the Battle Map scene section.                                                                                 *
-     *                                                                                                                                              *
-     * \details This function resets the indexes of the first row and column of the Battle Map scene section, checks whether the number of rows     *
-     *          respectively columns displayable on the player screen is less than the total number of rows respectively columns of the Battle Map  *
-     *          and sets the number of rows respectively columns of the Battle Map scene section to the less number.                                *
-     *                                                                                                                                              *
-     * \return  This function does not have any return value.                                                                                       *
-     ************************************************************************************************************************************************/
-    void updateBattleManSceneSection();
-
 protected: /* - */
 
 signals: /* - */
 
 private slots:
+
+    /*! *********************************************************************************************************************************************
+     * \brief   This function handles the addition of a screen.                                                                                     *
+     *                                                                                                                                              *
+     * \details This function moves the player window to the respective screen. Afterwards, it determines the resolution and size values of the     *
+     *          screen associated with the windowing system the application is connected to and it checks whether the settings of the added screen  *
+     *          differ from the current player screen settings. If this is the case, it shows a message box informing the user that the settings of *
+     *          the added screen differ from the current player screen settings and asking the user whether the settings of the added screen shall  *
+     *          be applied. If the user confirms, it applies the settings of the player screen. Finally, it enables or disables the action          *
+     *          actionUpdatePlayerScreen, depending on whether the Battle Map is initialized and a player screen is available.                      *
+     *                                                                                                                                              *
+     * \return  This function does not have any return value.                                                                                       *
+     ************************************************************************************************************************************************/
+    void screenAdded(QScreen *screen);
+
+    /*! *********************************************************************************************************************************************
+     * \brief   This function handles the removal of a screen.                                                                                      *
+     *                                                                                                                                              *
+     * \details This function enables or disables the action actionUpdatePlayerScreen, depending on whether the Battle Map is initialized and a     *
+     *          player screen is available.                                                                                                         *
+     *                                                                                                                                              *
+     * \return  This function does not have any return value.                                                                                       *
+     ************************************************************************************************************************************************/
+    void screenRemoved(QScreen *screen);
 
     /*! *********************************************************************************************************************************************
      * \brief   This function handles the action actionNewBattleMap.                                                                                *
@@ -106,9 +120,9 @@ private slots:
      * \details This function first sets the wait cursor as the following process may take some time, stores the Battle Map from the accepted       *
      *          dialog DialogNewBattleMap and deletes the dialog afterwards. Then, it updates the Battle Map scene section. It shares the Battle    *
      *          Map with the screen handlers, shows the Battle Map image on the master screen and initializes the Battle Map image on the player    *
-     *          screen. Afterwards, it enables the actions that shall only be available when the Battle Map is shared with the screen handlers and  *
-     *          it also makes the label labelScaleFactor visible so that it is shown when Battle Map is shared with the screen handlers. Finally,   *
-     *          it resets the arrow cursor as the process which takes some time is completed.                                                       *
+     *          screen. Afterwards, it enables the actions that shall only be available when the Battle Map is initialized and it also makes the    *
+     *          label labelScaleFactor visible so that it is shown when the Battle Map is initialized. Finally, it resets the arrow cursor as the   *
+     *          process which takes some time is completed.                                                                                         *
      *                                                                                                                                              *
      * \return  This function does not have any return value.                                                                                       *
      ************************************************************************************************************************************************/
@@ -363,10 +377,36 @@ private slots:
 
 private:
 
+    /*! *********************************************************************************************************************************************
+     * \brief   This function updates the Battle Map scene section.                                                                                 *
+     *                                                                                                                                              *
+     * \details This function resets the indexes of the first row and column of the Battle Map scene section, checks whether the number of rows     *
+     *          respectively columns displayable on the player screen is less than the total number of rows respectively columns of the Battle Map  *
+     *          and sets the number of rows respectively columns of the Battle Map scene section to the less number.                                *
+     *                                                                                                                                              *
+     * \return  This function does not have any return value.                                                                                       *
+     ************************************************************************************************************************************************/
+    void updateBattleMapSceneSection();
+
+    /*! *********************************************************************************************************************************************
+     * \brief   This function applies the settings of the screen associated with the windowing system the application is connected to.              *
+     *                                                                                                                                              *
+     * \details This function determines the resolution and size values of the screen associated with the windowing system the application is       *
+     *          connected to and applies the settings of the player screen.                                                                         *
+     *                                                                                                                                              *
+     * \return  This function does not have any return value.                                                                                       *
+     ************************************************************************************************************************************************/
+    void applyPlayerScreenSettings();
+
     /*!
      * \brief This is a pointer to the user interface of the class MainWindow.
      */
     Ui::MainWindow *m_userInterface;
+
+    /*!
+     * \brief This is a pointer to the graphics view of the player window.
+     */
+    QGraphicsView *m_playerWindow;
 
     /*!
      * \brief This is a pointer to the undo stack that maintains a stack of commands that have been applied to the Battle Map.
