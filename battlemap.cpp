@@ -54,6 +54,22 @@ BattleMap::~BattleMap()
 }
 
 /*!
+ * \brief This function returns the value of the member variable m_initialized.
+ */
+bool BattleMap::getInitialized() const
+{
+    return m_initialized;
+}
+
+/*!
+ * \brief This function sets the value of the member variable m_initialized to true.
+ */
+void BattleMap::setInitialized()
+{
+    m_initialized = true;
+}
+
+/*!
  * \brief This function returns the value of the member variable m_numberRows.
  */
 quint32 BattleMap::getNumberRows() const

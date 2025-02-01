@@ -50,6 +50,24 @@ public:
     ~BattleMap();
 
     /*! *********************************************************************************************************************************************
+     * \brief   This function returns the value of the member variable m_initialized.                                                               *
+     *                                                                                                                                              *
+     * \details -                                                                                                                                   *
+     *                                                                                                                                              *
+     * \return  This function returns the value of the member variable m_initialized.                                                               *
+     ************************************************************************************************************************************************/
+    bool getInitialized() const;
+
+    /*! *********************************************************************************************************************************************
+     * \brief   This function sets the value of the member variable m_initialized to true.                                                          *
+     *                                                                                                                                              *
+     * \details -                                                                                                                                   *
+     *                                                                                                                                              *
+     * \return  This function does not have any return value.                                                                                       *
+     ************************************************************************************************************************************************/
+    void setInitialized();
+
+    /*! *********************************************************************************************************************************************
      * \brief   This function returns the value of the member variable m_numberRows.                                                                *
      *                                                                                                                                              *
      * \details -                                                                                                                                   *
@@ -274,6 +292,11 @@ signals: /* - */
 private slots: /* - */
 
 private:
+
+    /*!
+     * \brief This is the information whether the Battle Map has been initialized.
+     */
+    bool m_initialized = false;
 
     /*!
      * \brief This is the number of rows of the Battle Map.
