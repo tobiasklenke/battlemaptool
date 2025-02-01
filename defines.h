@@ -22,14 +22,29 @@
 #define CONFIGKEY_PLAYERSCREEN_DIAGONAL                    "Playerscreen/diagonal"
 
 /*!
+ * \brief This is the default value of the configuration parameter for the diagonal of the player screen.
+ */
+#define DEFAULTVALUE_PLAYERSCREEN_DIAGONAL                 42
+
+/*!
  * \brief This is the key of the configuration parameter for the resolution height of the player screen.
  */
 #define CONFIGKEY_PLAYERSCREEN_RESOLUTION_HEIGHT           "Playerscreen/resolution/height"
 
 /*!
+ * \brief This is the default value of the configuration parameter for the resolution height of the player screen.
+ */
+#define DEFAULTVALUE_PLAYERSCREEN_RESOLUTION_HEIGHT        2160
+
+/*!
  * \brief This is the key of the configuration parameter for the resolution width of the player screen.
  */
 #define CONFIGKEY_PLAYERSCREEN_RESOLUTION_WIDTH            "Playerscreen/resolution/width"
+
+/*!
+ * \brief This is the default value of the configuration parameter for the resolution width of the player screen.
+ */
+#define DEFAULTVALUE_PLAYERSCREEN_RESOLUTION_WIDTH         3840
 
 /*!
  * \brief This is the number of decimal places of the configuration parameter for the diagonal of the player screen.
@@ -185,6 +200,21 @@
 #define UNCOVERBATTLEMAPICON_SOURCE                        ":/icons/icons/uncoverbattlemap.png"
 
 /* Miscellaneous */
+
+/*!
+ * \brief This is the index of the master screen.
+ */
+#define MASTERSCREEN_INDEX                                 0
+
+/*!
+ * \brief This is the index of the player screen.
+ */
+#define PLAYERSCREEN_INDEX                                 1
+
+/*!
+ * \brief This is the full number of screens required by the application.
+ */
+#define FULLNUMBER_SCREENS                                 2
 
 /*!
  * \brief This is the size of custom pixmap cursors.
