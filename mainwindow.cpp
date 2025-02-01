@@ -192,6 +192,20 @@ void MainWindow::screenAdded(QScreen *screen)
             {
                 /* apply settings of player screen */
                 applyPlayerScreenSettings();
+
+                /* check if valid Battle Map is initialized */
+                if(m_battleMap->getInitialized())
+                {
+                    /* update Battle Map scene section */
+                    updateBattleMapSceneSection();
+
+                    /* show Battle Map image on master screen and initialize Battle Map image on player screen */
+                    m_masterScreenHandler.showBattleMapImage();
+                    m_playerScreenHandler.initBattleMapImage();
+                }
+
+                /* update wind rose image position on player screen */
+                triggeredActionWindRoseOrientation();
             }
         }
     }

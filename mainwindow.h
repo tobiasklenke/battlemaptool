@@ -87,8 +87,10 @@ private slots:
      *          screen associated with the windowing system the application is connected to and it checks whether the settings of the added screen  *
      *          differ from the current player screen settings. If this is the case, it shows a message box informing the user that the settings of *
      *          the added screen differ from the current player screen settings and asking the user whether the settings of the added screen shall  *
-     *          be applied. If the user confirms, it applies the settings of the player screen. Finally, it enables or disables the action          *
-     *          actionUpdatePlayerScreen, depending on whether the Battle Map is initialized and a player screen is available.                      *
+     *          be applied. If the user confirms, it applies the settings of the player screen, updates the Battle Map scene section, shows the     *
+     *          Battle Map image on the master screen, initializes the Battle Map image on the player screen and updates the wind rose image        *
+     *          position on the player screen. Finally, it enables or disables the action actionUpdatePlayerScreen, depending on whether the Battle *
+     *          Map is initialized and a player screen is available.                                                                                *
      *                                                                                                                                              *
      * \return  This function does not have any return value.                                                                                       *
      ************************************************************************************************************************************************/
