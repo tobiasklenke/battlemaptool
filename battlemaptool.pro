@@ -18,7 +18,6 @@ SOURCES += \
     battlemapsquare.cpp \
     customgraphicspixmapitem.cpp \
     customgraphicsview.cpp \
-    dialognewbattlemap.cpp \
     dialogsettings.cpp \
     main.cpp \
     mainwindow.cpp \
@@ -35,7 +34,8 @@ SOURCES += \
     undocommandinsertrowbelow.cpp \
     undocommandpaste.cpp \
     undocommandrotatebattlemapleft.cpp \
-    undocommandrotatebattlemapright.cpp
+    undocommandrotatebattlemapright.cpp \
+    wizardnewbattlemap.cpp
 
 HEADERS += \
     battlemap.h \
@@ -48,7 +48,6 @@ HEADERS += \
     customgraphicspixmapitem.h \
     customgraphicsview.h \
     defines.h \
-    dialognewbattlemap.h \
     dialogsettings.h \
     mainwindow.h \
     masterscreenhandler.h \
@@ -64,12 +63,13 @@ HEADERS += \
     undocommandinsertrowbelow.h \
     undocommandpaste.h \
     undocommandrotatebattlemapleft.h \
-    undocommandrotatebattlemapright.h
+    undocommandrotatebattlemapright.h \
+    wizardnewbattlemap.h
 
 FORMS += \
-    dialognewbattlemap.ui \
     dialogsettings.ui \
-    mainwindow.ui
+    mainwindow.ui \
+    wizardnewbattlemap.ui \
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
