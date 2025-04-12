@@ -19,7 +19,7 @@ MainWindow::MainWindow(QGraphicsView *playerWindow, QWidget *parent) :
     m_undoStack(new QUndoStack(this)),
     m_operationModeActionGroup(new QActionGroup(this)),
     m_windRoseOrientationActionGroup(new QActionGroup(this)),
-    m_dialogNewBattleMap(nullptr),
+    m_wizardNewBattleMap(nullptr),
     m_battleMap(new BattleMap())
 {
     QSettings settings;
@@ -64,6 +64,7 @@ MainWindow::MainWindow(QGraphicsView *playerWindow, QWidget *parent) :
 
     /* connect signals and slots of actions from menu File */
     connect(m_userInterface->actionNewBattleMap, SIGNAL(triggered()), this, SLOT(triggeredActionNewBattleMap()));
+    connect(m_userInterface->actionOpenBattleMap, SIGNAL(triggered()), this, SLOT(triggeredActionOpenBattleMap()));
     connect(m_userInterface->actionQuit, SIGNAL(triggered()), QApplication::instance(), SLOT(quit()));
 
     /* connect signals and slots of actions from menu Edit */
@@ -139,7 +140,7 @@ MainWindow::MainWindow(QGraphicsView *playerWindow, QWidget *parent) :
  */
 MainWindow::~MainWindow()
 {
-    /* delete objects created in the constructor except m_dialogNewBattleMap */
+    /* delete objects created in the constructor except m_wizardNewBattleMap */
     delete m_userInterface;
     delete m_operationModeActionGroup;
     delete m_windRoseOrientationActionGroup;
@@ -230,30 +231,30 @@ void MainWindow::screenRemoved(QScreen *screen)
  */
 void MainWindow::triggeredActionNewBattleMap()
 {
-    /* create dialog DialogNewBattleMap */
-    m_dialogNewBattleMap = new DialogNewBattleMap(this);
+    /* create wizard WizardNewBattleMap */
+    m_wizardNewBattleMap = new WizardNewBattleMap(this);
 
-    /* connect signals and slots of the dialog button box actions of the dialog DialogNewBattleMap */
-    connect(m_dialogNewBattleMap, SIGNAL(accepted()), this, SLOT(acceptedDialogNewBattleMap()));
-    connect(m_dialogNewBattleMap, SIGNAL(rejected()), this, SLOT(rejectedDialogNewBattleMap()));
+    /* connect signals and slots of the wizard WizardNewBattleMap */
+    connect(m_wizardNewBattleMap, SIGNAL(accepted()), this, SLOT(acceptedWizardNewBattleMap()));
+    connect(m_wizardNewBattleMap, SIGNAL(rejected()), this, SLOT(rejectedWizardNewBattleMap()));
 
-    /* open dialog DialogNewBattleMap */
-    m_dialogNewBattleMap->open();
+    /* open wizard WizardNewBattleMap */
+    m_wizardNewBattleMap->open();
 }
 
 /*!
- * \brief This function handles the acceptance of the dialog DialogNewBattleMap.
+ * \brief This function handles the acceptance of the wizard WizardNewBattleMap.
  */
-void MainWindow::acceptedDialogNewBattleMap()
+void MainWindow::acceptedWizardNewBattleMap()
 {
     /* set wait cursor as the following process may take some time */
     setCursor(Qt::WaitCursor);
 
-    /* store Battle Map from accepted dialog DialogNewBattleMap and delete dialog afterwards */
+    /* store Battle Map from accepted wizard WizardNewBattleMap and delete wizard afterwards */
     delete m_battleMap;
-    m_battleMap = new BattleMap(*m_dialogNewBattleMap->getBattleMap());
+    m_battleMap = new BattleMap(*m_wizardNewBattleMap->getBattleMap());
     m_battleMap->setInitialized();
-    delete m_dialogNewBattleMap;
+    delete m_wizardNewBattleMap;
 
     /* update Battle Map scene section */
     updateBattleMapSceneSection();
@@ -298,12 +299,38 @@ void MainWindow::acceptedDialogNewBattleMap()
 }
 
 /*!
- * \brief This function handles the rejection of the dialog DialogNewBattleMap.
+ * \brief This function handles the rejection of the wizard WizardNewBattleMap.
  */
-void MainWindow::rejectedDialogNewBattleMap()
+void MainWindow::rejectedWizardNewBattleMap()
 {
-    /* delete dialog DialogNewBattleMap */
-    delete m_dialogNewBattleMap;
+    /* delete wizard QizardNewBattleMap */
+    delete m_wizardNewBattleMap;
+}
+
+/*!
+ * \brief This function handles the action actionOpenBattleMap.
+ */
+void MainWindow::triggeredActionOpenBattleMap()
+{
+    qDebug() << __func__;
+}
+
+/*!
+ * \brief This function handles the acceptance of the wizard WizardOpenBattleMap.
+ */
+void MainWindow::acceptedWizardOpenBattleMap()
+{
+    qDebug() << __func__;
+}
+
+/*!
+ * \brief This function handles the rejection of the wizard WizardOpenBattleMap.
+ */
+void MainWindow::rejectedWizardOpenBattleMap()
+{
+    qDebug() << __func__;
+
+    /* delete wizard WizardOpenBattleMap */
 }
 
 /*!

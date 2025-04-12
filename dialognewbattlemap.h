@@ -1,11 +1,7 @@
-#ifndef DIALOGNEWBATTLEMAP_H
-#define DIALOGNEWBATTLEMAP_H
+#ifndef WIZARDNEWBATTLEMAP_H
+#define WIZARDNEWBATTLEMAP_H
 
-/****************************************************************************************************************************************************
- * INCLUDES                                                                                                                                         *
- ****************************************************************************************************************************************************/
-
-#include <QDialog>
+#include <QWizard>
 #include <QFileDialog>
 #include <QFrame>
 #include <QGraphicsScene>
@@ -24,39 +20,39 @@
 
 namespace Ui
 {
-    class DialogNewBattleMap;
+    class WizardNewBattleMap;
 }
 
 /*!
  * \brief This class implements the functionality needed for the creation of a new Battle Map.
  */
-class DialogNewBattleMap : public QDialog
+class WizardNewBattleMap : public QWizard
 {
     Q_OBJECT
 
 public:
 
     /*! *********************************************************************************************************************************************
-     * \brief   This function is the constructor of the class DialogNewBattleMap.                                                                   *
+     * \brief   This function is the constructor of the class WizardNewBattleMap.                                                                   *
      *                                                                                                                                              *
      * \details This function sets up the user interface, sets the background color of the graphics view to the window color and connects the       *
-	 *          signals and slots of the user interface widgets. Afterwards, it handles the toggle of radioButtonSourceBattleMap as                 *
-	 *          radioButtonSourceBattleMap is checked by default.                                                                                   *
+     *          signals and slots of the user interface widgets. Afterwards, it handles the toggle of radioButtonSourceBattleMap as                 *
+     *          radioButtonSourceBattleMap is checked by default.                                                                                   *
      *                                                                                                                                              *
-     * \param   parent                        Parent of the class DialogNewBattleMap                                                                *
+     * \param   parent                        Parent of the class WizardNewBattleMap                                                                *
      *                                                                                                                                              *
      * \return  This function does not have any return value.                                                                                       *
      ************************************************************************************************************************************************/
-    DialogNewBattleMap(QWidget *parent = nullptr);
+    WizardNewBattleMap(QWidget *parent = nullptr);
 
     /*! *********************************************************************************************************************************************
-     * \brief   This function is the destructor of the class DialogNewBattleMap.                                                                    *
+     * \brief   This function is the destructor of the class WizardNewBattleMap.                                                                    *
      *                                                                                                                                              *
      * \details This function deletes the objects created in the constructor.                                                                       *
      *                                                                                                                                              *
      * \return  This function does not have any return value.                                                                                       *
      ************************************************************************************************************************************************/
-    ~DialogNewBattleMap();
+    ~WizardNewBattleMap();
 
     /*! *********************************************************************************************************************************************
      * \brief   This function returns the address of the newly created Battle Map object.                                                           *
@@ -77,8 +73,8 @@ private slots:
      * \brief   This function handles a toggle of radioButtonSourceBattleMap.                                                                       *
      *                                                                                                                                              *
      * \details If radioButtonSourceBattleMap is checked, this function enables, disables and resets the widgets according to their functional role *
-	 *          for the Battle Map image source selection. Afterwards, it resets and reconnects the Battle Map scene, sets the Battle Map scene to  *
-	 *          the graphics view and adds a text asking the user to select a source.                                                               *
+     *          for the Battle Map image source selection. Afterwards, it resets and reconnects the Battle Map scene, sets the Battle Map scene to  *
+     *          the graphics view and adds a text asking the user to select a source.                                                               *
      *                                                                                                                                              *
      * \param   checked                       State of radioButtonSourceBattleMap                                                                   *
      *                                                                                                                                              *
@@ -90,8 +86,8 @@ private slots:
      * \brief   This function handles a toggle of radioButtonEmptyBattleMap.                                                                        *
      *                                                                                                                                              *
      * \details If radioButtonEmptyBattleMap is checked, this function enables, disables and resets the widgets according to their functional role  *
-	 *          for the creation of an empty Battle Map. Afterwards, the function calculates the maximum number of rows and columns displayable on  *
-	 *          the player screen and shows the corresponding empty Battle Map image.                                                               *
+     *          for the creation of an empty Battle Map. Afterwards, the function calculates the maximum number of rows and columns displayable on  *
+     *          the player screen and shows the corresponding empty Battle Map image.                                                               *
      *                                                                                                                                              *
      * \param   checked                       State of radioButtonEmptyBattleMap                                                                    *
      *                                                                                                                                              *
@@ -113,7 +109,7 @@ private slots:
      * \brief   This function handles a click on pushButtonSelectSource.                                                                            *
      *                                                                                                                                              *
      * \details This function selects a source via a file dialog, synchronises the file path of the selected source with the text string of         *
-	 *          lineEditSource and handles the editing of lineEditSource afterwards.                                                                *
+     *          lineEditSource and handles the editing of lineEditSource afterwards.                                                                *
      *                                                                                                                                              *
      * \return  This function does not have any return value.                                                                                       *
      ************************************************************************************************************************************************/
@@ -124,10 +120,10 @@ private slots:
      *                                                                                                                                              *
      * \details This function checks the text string of lineEditNumberRows for a valid format and updates the number of rows according to the input *
      *          value if the text string is interpretable as positive number. In case of an invalid format or a not positive number, it shows a     *
-	 *          message box. Afterwards, it enables or disables the push button for decrement depending on the current number of rows. If           *
-	 *          radioButtonSourceBattleMap is checked, it corrects the number of columns considering the Battle Map image aspect ratio, checks if   *
-	 *          the Battle Map grid covers the complete Battle Map image (which affects push button with AcceptRole) and draws the Battle Map grid. *
-     *          Otherwise, it shows the empty Battle Map image.                                                                                     *
+     *          message box. Afterwards, it enables or disables the push button for decrement depending on the current number of rows. If           *
+     *          radioButtonSourceBattleMap is checked, it corrects the number of columns considering the Battle Map image aspect ratio, checks if   *
+     *          the Battle Map grid covers the complete Battle Map image (which affects the next and the finish button) and draws the Battle Map    *
+     *          grid. Otherwise, it shows the empty Battle Map image.                                                                               *
      *                                                                                                                                              *
      * \return  This function does not have any return value.                                                                                       *
      ************************************************************************************************************************************************/
@@ -138,9 +134,9 @@ private slots:
      *                                                                                                                                              *
      * \details This function checks the text string of lineEditNumberColumns for a valid format and updates the number of columns according to the *
      *          input value if the text string is interpretable as positive number. In case of an invalid format or a not positive number, it shows *
-	 *          a message box. Afterwards, it enables or disables the push button for decrement depending on the current number of columns. If      *
-	 *          radioButtonSourceBattleMap is checked, it corrects the number of rows considering the Battle Map image aspect ratio, checks if the  *
-	 *          Battle Map grid covers the complete Battle Map image (which affects push button with AcceptRole) and draws the Battle Map grid.     *
+     *          a message box. Afterwards, it enables or disables the push button for decrement depending on the current number of columns. If      *
+     *          radioButtonSourceBattleMap is checked, it corrects the number of rows considering the Battle Map image aspect ratio, checks if the  *
+     *          Battle Map grid covers the complete Battle Map image (which affects the next and the finish button) and draws the Battle Map grid.  *
      *          Otherwise, it shows the empty Battle Map image.                                                                                     *
      *                                                                                                                                              *
      * \return  This function does not have any return value.                                                                                       *
@@ -151,9 +147,9 @@ private slots:
      * \brief   This function handles a click on pushButtonDecrementNumberRows.                                                                     *
      *                                                                                                                                              *
      * \details This function decrements the number of rows. Afterwards, it enables or disables the push button for decrement depending on the      *
-	 *          current number of rows. If radioButtonSourceBattleMap is checked, it corrects the number of columns considering the Battle Map      *
-	 *          image aspect ratio, checks if the Battle Map grid covers the complete Battle Map image (which affects push button with AcceptRole)  *
-     *          and draws the Battle Map grid. Otherwise, it shows the empty Battle Map image.                                                      *
+     *          current number of rows. If radioButtonSourceBattleMap is checked, it corrects the number of columns considering the Battle Map      *
+     *          image aspect ratio, checks if the Battle Map grid covers the complete Battle Map image (which affects the next and the finish       *
+     *          button and draws the Battle Map grid. Otherwise, it shows the empty Battle Map image.                                               *
      *                                                                                                                                              *
      * \return  This function does not have any return value.                                                                                       *
      ************************************************************************************************************************************************/
@@ -164,8 +160,8 @@ private slots:
      *                                                                                                                                              *
      * \details This function increments the number of rows. Afterwards, it enables the push button for decrement. If radioButtonSourceBattleMap is *
      *          checked, it corrects the number of columns considering the Battle Map image aspect ratio, checks if the Battle Map grid covers the  *
-     *          complete Battle Map image (which affects push button with AcceptRole) and draws the Battle Map grid. Otherwise, it shows the empty  *
-     *          Battle Map image.                                                                                                                   *
+     *          complete Battle Map image (which affects the next and the finish button) and draws the Battle Map grid. Otherwise, it shows the     *
+     *          empty Battle Map image.                                                                                                             *
      *                                                                                                                                              *
      * \return  This function does not have any return value.                                                                                       *
      ************************************************************************************************************************************************/
@@ -175,9 +171,9 @@ private slots:
      * \brief   This function handles a click on pushButtonDecrementNumberColumns.                                                                  *
      *                                                                                                                                              *
      * \details This function decrements the number of columns. Afterwards, it enables or disables the push button for decrement depending on the   *
-	 *          current number of columns. If radioButtonSourceBattleMap is checked, it corrects the number of rows considering the Battle Map      *
-	 *          image aspect ratio, checks if the Battle Map grid covers the complete Battle Map image (which affects push button with AcceptRole)  *
-     *          and draws the Battle Map grid. Otherwise, it shows the empty Battle Map image.                                                      *
+     *          current number of columns. If radioButtonSourceBattleMap is checked, it corrects the number of rows considering the Battle Map      *
+     *          image aspect ratio, checks if the Battle Map grid covers the complete Battle Map image (which affects the next and the finish       *
+     *          button) and draws the Battle Map grid. Otherwise, it shows the empty Battle Map image.                                              *
      *                                                                                                                                              *
      * \return  This function does not have any return value.                                                                                       *
      ************************************************************************************************************************************************/
@@ -188,8 +184,8 @@ private slots:
      *                                                                                                                                              *
      * \details This function increments the number of columns. Afterwards, it enables the push button for decrement. If radioButtonSourceBattleMap *
      *          is checked, it corrects the number of rows considering the Battle Map image aspect ratio, checks if the Battle Map grid covers the  *
-     *          complete Battle Map image (which affects push button with AcceptRole) and draws the Battle Map grid. Otherwise, it shows the empty  *
-     *          Battle Map image.                                                                                                                   *
+     *          complete Battle Map image (which affects the next and the finish button) and draws the Battle Map grid. Otherwise, it shows the     *
+     *          empty Battle Map image.                                                                                                             *
      *                                                                                                                                              *
      * \return  This function does not have any return value.                                                                                       *
      ************************************************************************************************************************************************/
@@ -199,19 +195,19 @@ private slots:
      * \brief   This function handles the selection of a Battle Map square.                                                                         *
      *                                                                                                                                              *
      * \details This function calculates the average edge length of the selected Battle Map square and initializes the average edge length and      *
-	 *          counter values for increment and decrement optimization. If the average edge length is not greater 0, no valid Battle Map square    *
-     *          has been selected and the function resets the numbers of rows and columns and the corresponding widgets, disables the push button   *
-     *          from DialogButtonBox with AcceptRole and removes the Battle Map grid. Otherwise, if a valid Battle Map square has been selected, it *
-	 *          optimizes the edge length by performing a modulo operation with the height of the Battle Map image and the edge length with the     *
-	 *          goal of minimizing the residual to 0. This is done twice by incrementing and decrementing the edge length. The edge length that     *
-     *          results from the optimization with fewer iterations is kept. Afterwards, the function updates the numbers of rows and columns       *
-     *          according to the optimized edge length of the Battle Map squares and checks if the calculated numbers of rows and columns are       *
-     *          reasonable. If this is not the case, a reselection of the source is required and the function shows a message box asking the user   *
-     *          to check the resolution accuracy of the selected Battle Map image. Otherwise, it enables the widgets for the editing of numbers of  *
-     *          rows and columns for readjustment, checks if the Battle Map grid covers the complete Battle Map image (which affects push button    *
-     *          with AcceptRole) and draws Battle Map grid. Finally, the function shows a message box asking the user to check the Battle Map grid  *
-     *          and readjust the numbers of rows and columns in case of a mismatch.                                                                 *
-	 *                                                                                                                                              *
+     *          counter values for increment and decrement optimization. If the average edge length is not greater 0, no valid Battle Map square    *
+     *          has been selected and the function resets the numbers of rows and columns and the corresponding widgets, disables the next and the  *
+     *          finish button and removes the Battle Map grid. Otherwise, if a valid Battle Map square has been selected, it optimizes the edge     *
+     *          length by performing a modulo operation with the height of the Battle Map image and the edge length with the goal of minimizing the *
+     *          residual to 0. This is done twice by incrementing and decrementing the edge length. The edge length that results from the           *
+     *          optimization with fewer iterations is kept. Afterwards, the function updates the numbers of rows and columns according to the       *
+     *          optimized edge length of the Battle Map squares and checks if the calculated numbers of rows and columns are reasonable. If this is *
+     *          not the case, a reselection of the source is required and the function shows a message box asking the user to check the resolution  *
+     *          accuracy of the selected Battle Map image. Otherwise, it enables the widgets for the editing of numbers of rows and columns for     *
+     *          readjustment, checks if the Battle Map grid covers the complete Battle Map image (which affects the next and the finish button) and *
+     *          draws Battle Map grid. Finally, the function shows a message box asking the user to check the Battle Map grid and readjust the      *
+     *          numbers of rows and columns in case of a mismatch.                                                                                  *
+     *                                                                                                                                              *
      * \return  This function does not have any return value.                                                                                       *
      ************************************************************************************************************************************************/
     void selectedBattleMapSquare();
@@ -220,44 +216,14 @@ private slots:
      * \brief   This function draws the Battle Map grid.                                                                                            *
      *                                                                                                                                              *
      * \details This function removes the current Battle Map grid and sets the pen properties according to the state of checkBoxDrawBattleMapGrid.  *
-	 *          If the number of rows and columns are both greater than 0, it draws the horizontal and vertical Battle Map lines and adds them to   *
-	 *          the Battle Map scene.                                                                                                               *
-	 *                                                                                                                                              *
-	 * \param   state                         State of checkBoxDrawBattleMapGrid (unused, only for convenience when used as private slot function)  *
+     *          If the number of rows and columns are both greater than 0, it draws the horizontal and vertical Battle Map lines and adds them to   *
+     *          the Battle Map scene.                                                                                                               *
+     *                                                                                                                                              *
+     * \param   state                         State of checkBoxDrawBattleMapGrid (unused, only for convenience when used as private slot function)  *
      *                                                                                                                                              *
      * \return  This function does not have any return value.                                                                                       *
      ************************************************************************************************************************************************/
     void drawBattleMapGrid(int state = 0);
-
-    /*! *********************************************************************************************************************************************
-     * \brief   This function handles a click on the push button from dialogButtonBox with AcceptRole.                                              *
-     *                                                                                                                                              *
-     * \details This function first sets the wait cursor as the following process may take some time. If the widget checkBoxDrawBattleMapGrid is    *
-	 *          checked, it draws the Battle Map grid on theBattle Map image. Afterwards, it extracts the pixmap of each Battle Map square from the *
-	 *          Battle Map image, scales it to the configured size and adds it to the Battle Map. Finally, the function emits the signal            *
-	 *          accepted().                                                                                                                         *
-     *                                                                                                                                              *
-     * \return  This function does not have any return value.                                                                                       *
-     ************************************************************************************************************************************************/
-    void acceptedDialogButtonBox();
-
-    /*! *********************************************************************************************************************************************
-     * \brief   This function handles a click on the push button from dialogButtonBox with RejectRole.                                              *
-     *                                                                                                                                              *
-     * \details This function emits the signal rejected().                                                                                          *
-     *                                                                                                                                              *
-     * \return  This function does not have any return value.                                                                                       *
-     ************************************************************************************************************************************************/
-    void rejectedDialogButtonBox();
-
-    /*! *********************************************************************************************************************************************
-     * \brief   This function handles a click on the close button.                                                                                  *
-     *                                                                                                                                              *
-     * \details This function handles a click on the close button as a click on the push button from dialogButtonBox with RejectRole.               *
-     *                                                                                                                                              *
-     * \return  This function does not have any return value.                                                                                       *
-     ************************************************************************************************************************************************/
-    void reject();
 
     /*! *********************************************************************************************************************************************
      * \brief   This function updates the member variable m_scaleFactor and redraws the Battle Map grid.                                            *
@@ -267,6 +233,22 @@ private slots:
      * \return  This function does not have any return value.                                                                                       *
      ************************************************************************************************************************************************/
     void changedScaleFactor(qreal scaleFactor);
+
+protected:
+
+    /*! *********************************************************************************************************************************************
+     * \brief   This function handles the closure and emits the respective signals.                                                                 *
+     *                                                                                                                                              *
+     * \details If the wizard has been accepted, this function sets the wait cursor as the following process may take some time. If the widget      *
+     *          checkBoxDrawBattleMapGrid is checked, it draws the Battle Map grid on theBattle Map image. Afterwards, it extracts the pixmap of    *
+     *          each Battle Map square from the Battle Map image, scales it to the configured size and adds it to the Battle Map. Finally, the      *
+     *          function emits the signal accepted(). Otherwise, if the wizard has been rejected, the function emits the signal rejected().         *
+     *                                                                                                                                              *
+     * \param   r                             Result code of the closure                                                                            *
+     *                                                                                                                                              *
+     * \return  This function does not have any return value.                                                                                       *
+     ************************************************************************************************************************************************/
+    void done(int r) override;
 
 private:
 
@@ -288,8 +270,8 @@ private:
      * \details This function resets and reconnects the Battle Map scene and resets the graphics view. Afterwards, it loads the Battle Map image    *
      *          from the selected source and checks it for validity. If the loaded file is no image, a reselection of the source is required and    *
      *          the function shows a message box both informing the user that the selected source file is no image file. Otherwise, it prepares the *
-	 *          graphics view for the selection of a Battle Map square, adds the Battle Map image to the Battle Map scene and shows a message box   *
-	 *          asking the user to select a Battle Map square in order to determine the number of rows and columns of the Battle Map. Finally, it   *
+     *          graphics view for the selection of a Battle Map square, adds the Battle Map image to the Battle Map scene and shows a message box   *
+     *          asking the user to select a Battle Map square in order to determine the number of rows and columns of the Battle Map. Finally, it   *
      *          enables the event processing of the graphics view as soon as the Battle Map image is shown.                                         *
      *                                                                                                                                              *
      * \return  This function does not have any return value.                                                                                       *
@@ -321,11 +303,11 @@ private:
      *                                                                                                                                              *
      * \details This function calculates the height and width of the Battle Map squares and checks them for equality. If they are unequal, the      *
      *          aspect ratio of the Battle Map squares is invalid, and the function sets the background color of lineEditNumberRows and             *
-	 *          lineEditNumberColumns to red. Otherwise, if the aspect ratio of the Battle Map squares is valid, it checks if the number of rows    *
-	 *          and columns match the Battle Map image size. If the number of rows or columns does not match the Battle Map image size, the         *
-	 *          function sets the background color of lineEditNumberRows or lineEditNumberColumns to red. Otherwise, it resets the background color *
-	 *          of lineEditNumberRows or lineEditNumberColumns. Finally, the function enables or disables the push button with AcceptRole depending *
-	 *          on whether the Battle Map grid is valid or not.                                                                                     *
+     *          lineEditNumberColumns to red. Otherwise, if the aspect ratio of the Battle Map squares is valid, it checks if the number of rows    *
+     *          and columns match the Battle Map image size. If the number of rows or columns does not match the Battle Map image size, the         *
+     *          function sets the background color of lineEditNumberRows or lineEditNumberColumns to red. Otherwise, it resets the background color *
+     *          of lineEditNumberRows or lineEditNumberColumns. Finally, the function enables or disables the next and the finish button depending  *
+     *          on whether the Battle Map grid is valid or not.                                                                                     *
      *                                                                                                                                              *
      * \return  This function does not have any return value.                                                                                       *
      ************************************************************************************************************************************************/
@@ -335,7 +317,7 @@ private:
      * \brief   This function removes the Battle Map grid.                                                                                          *
      *                                                                                                                                              *
      * \details This function removes all graphics items of m_battleMapLinesToDraw from the Battle Map scene and clears m_battleMapLinesToDraw      *
-	 *          afterwards.                                                                                                                         *
+     *          afterwards.                                                                                                                         *
      *                                                                                                                                              *
      * \return  This function does not have any return value.                                                                                       *
      ************************************************************************************************************************************************/
@@ -345,16 +327,16 @@ private:
      * \brief   This function deletes the Battle Map scene.                                                                                         *
      *                                                                                                                                              *
      * \details This function removes the Battle Map grid and all remaining graphics items from the Battle Map scene and deletes m_battleMapScene   *
-	 *          afterwards.                                                                                                                         *
+     *          afterwards.                                                                                                                         *
      *                                                                                                                                              *
      * \return  This function does not have any return value.                                                                                       *
      ************************************************************************************************************************************************/
     void deleteBattleMapScene();
 
     /*!
-     * \brief This is a pointer to the user interface of the class DialogNewBattleMap.
+     * \brief This is a pointer to the user interface of the class WizardNewBattleMap.
      */
-    Ui::DialogNewBattleMap *m_userInterface;
+    Ui::WizardNewBattleMap *m_userInterface;
 
     /*!
      * \brief This is a pointer to the Battle Map scene that is set to GraphicsViewBattleMap.
@@ -387,4 +369,4 @@ private:
     BattleMap *m_battleMap;
 };
 
-#endif // DIALOGNEWBATTLEMAP_H
+#endif // WIZARDNEWBATTLEMAP_H

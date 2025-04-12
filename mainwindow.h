@@ -68,7 +68,7 @@ public:
     /*! *********************************************************************************************************************************************
      * \brief   This function is the destructor of the class MainWindow.                                                                            *
      *                                                                                                                                              *
-     * \details This function deletes the objects created in the constructor except m_dialogNewBattleMap.                                           *
+     * \details This function deletes the objects created in the constructor except m_wizardNewBattleMap.                                           *
      *                                                                                                                                              *
      * \return  This function does not have any return value.                                                                                       *
      ************************************************************************************************************************************************/
@@ -109,18 +109,18 @@ private slots:
     /*! *********************************************************************************************************************************************
      * \brief   This function handles the action actionNewBattleMap.                                                                                *
      *                                                                                                                                              *
-     * \details This function creates the dialog DialogNewBattleMap and connects the signals and slots of the dialog button box actions of the      *
-     *          dialog DialogNewBattleMap. Afterwards, it opens the dialog DialogNewBattleMap.                                                      *
+     * \details This function creates the wizard WizardNewBattleMap and connects the signals and slots of the wizard WizardNewBattleMap.            *
+     *          Afterwards, it opens the wizard WizardNewBattleMap.                                                                                 *
      *                                                                                                                                              *
      * \return  This function does not have any return value.                                                                                       *
      ************************************************************************************************************************************************/
     void triggeredActionNewBattleMap();
 
     /*! *********************************************************************************************************************************************
-     * \brief   This function handles the acceptance of the dialog DialogNewBattleMap.                                                              *
+     * \brief   This function handles the acceptance of the wizard WizardNewBattleMap.                                                              *
      *                                                                                                                                              *
      * \details This function first sets the wait cursor as the following process may take some time, stores the Battle Map from the accepted       *
-     *          dialog DialogNewBattleMap and deletes the dialog afterwards. Then, it updates the Battle Map scene section. It shares the Battle    *
+     *          wizard WizardNewBattleMap and deletes the wizard afterwards. Then, it updates the Battle Map scene section. It shares the Battle    *
      *          Map with the screen handlers, shows the Battle Map image on the master screen and initializes the Battle Map image on the player    *
      *          screen. Afterwards, it enables the actions that shall only be available when the Battle Map is initialized and it also makes the    *
      *          label labelScaleFactor visible so that it is shown when the Battle Map is initialized. Finally, it resets the arrow cursor as the   *
@@ -128,16 +128,43 @@ private slots:
      *                                                                                                                                              *
      * \return  This function does not have any return value.                                                                                       *
      ************************************************************************************************************************************************/
-    void acceptedDialogNewBattleMap();
+    void acceptedWizardNewBattleMap();
 
     /*! *********************************************************************************************************************************************
-     * \brief   This function handles the rejection of the dialog DialogNewBattleMap.                                                               *
+     * \brief   This function handles the rejection of the wizard WizardNewBattleMap.                                                               *
      *                                                                                                                                              *
-     * \details This function deletes the dialog m_dialogNewBattleMap.                                                                              *
+     * \details This function deletes the wizard m_wizardNewBattleMap.                                                                              *
      *                                                                                                                                              *
      * \return  This function does not have any return value.                                                                                       *
      ************************************************************************************************************************************************/
-    void rejectedDialogNewBattleMap();
+    void rejectedWizardNewBattleMap();
+
+    /*! *********************************************************************************************************************************************
+     * \brief   This function handles the action actionOpenBattleMap.                                                                               *
+     *                                                                                                                                              *
+     * \details TODO                                                                                                                                *
+     *                                                                                                                                              *
+     * \return  This function does not have any return value.                                                                                       *
+     ************************************************************************************************************************************************/
+    void triggeredActionOpenBattleMap();
+
+    /*! *********************************************************************************************************************************************
+     * \brief   This function handles the acceptance of the wizard WizardOpenBattleMap.                                                             *
+     *                                                                                                                                              *
+     * \details TODO                                                                                                                                *
+     *                                                                                                                                              *
+     * \return  This function does not have any return value.                                                                                       *
+     ************************************************************************************************************************************************/
+    void acceptedWizardOpenBattleMap();
+
+    /*! *********************************************************************************************************************************************
+     * \brief   This function handles the rejection of the wizard WizardOpenBattleMap.                                                              *
+     *                                                                                                                                              *
+     * \details This function deletes the wizard m_wizardOpenBattleMap.                                                                             *
+     *                                                                                                                                              *
+     * \return  This function does not have any return value.                                                                                       *
+     ************************************************************************************************************************************************/
+    void rejectedWizardOpenBattleMap();
 
     /*! *********************************************************************************************************************************************
      * \brief   This function handles the action actionCopy.                                                                                        *
@@ -436,9 +463,9 @@ private:
     QActionGroup *m_windRoseOrientationActionGroup;
 
     /*!
-     * \brief This is a pointer to the user interface of the class DialogNewBattleMap.
+     * \brief This is a pointer to the user interface of the class WizardOpenBattleMap.
      */
-    DialogNewBattleMap *m_dialogNewBattleMap;
+    WizardNewBattleMap *m_wizardNewBattleMap;
 
     /*!
      * \brief This is a pointer to the user interface of the class DialogSettings.
