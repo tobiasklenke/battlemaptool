@@ -12,7 +12,6 @@
 
 #include "battlemap.h"
 #include "battlemapscenesection.h"
-#include "dialognewbattlemap.h"
 #include "dialogsettings.h"
 #include "playerscreenhandler.h"
 #include "masterscreenhandler.h"
@@ -27,6 +26,7 @@
 #include "undocommandpaste.h"
 #include "undocommandrotatebattlemapleft.h"
 #include "undocommandrotatebattlemapright.h"
+#include "wizardnewbattlemap.h"
 
 /****************************************************************************************************************************************************
  * CLASS DECLARATION                                                                                                                                *
