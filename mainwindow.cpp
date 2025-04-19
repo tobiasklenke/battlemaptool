@@ -239,7 +239,7 @@ void MainWindow::triggeredActionNewBattleMap()
     connect(m_wizardNewBattleMap, SIGNAL(rejected()), this, SLOT(rejectedWizardNewBattleMap()));
 
     /* open wizard WizardNewBattleMap */
-    m_wizardNewBattleMap->open();
+    m_wizardNewBattleMap->exec();
 }
 
 /*!
@@ -248,13 +248,13 @@ void MainWindow::triggeredActionNewBattleMap()
 void MainWindow::acceptedWizardNewBattleMap()
 {
     /* set wait cursor as the following process may take some time */
-    setCursor(Qt::WaitCursor);
+    QApplication::setOverrideCursor(Qt::WaitCursor);
 
     /* store Battle Map from accepted wizard WizardNewBattleMap and delete wizard afterwards */
     delete m_battleMap;
     m_battleMap = new BattleMap(*m_wizardNewBattleMap->getBattleMap());
     m_battleMap->setInitialized();
-    delete m_wizardNewBattleMap;
+    m_wizardNewBattleMap->deleteLater();
 
     /* update Battle Map scene section */
     updateBattleMapSceneSection();
@@ -295,7 +295,7 @@ void MainWindow::acceptedWizardNewBattleMap()
     m_userInterface->labelScaleFactor->setVisible(m_battleMap->getInitialized());
 
     /* reset arrow cursor as the process which takes some time is completed */
-    setCursor(Qt::ArrowCursor);
+    QApplication::restoreOverrideCursor();
 }
 
 /*!
