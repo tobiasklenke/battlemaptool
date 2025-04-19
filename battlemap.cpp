@@ -43,7 +43,14 @@ BattleMap::BattleMap(BattleMap &battleMap) :
  */
 BattleMap::~BattleMap()
 {
-    /* delete all Battle Map squares */
+    deleteBattleMapSquares();
+}
+
+/*!
+ * \brief This function deletes the Battle Map squares.
+ */
+void BattleMap::deleteBattleMapSquares()
+{
     for (quint32 rowIdx = 0U; rowIdx < m_battleMapSquares.count(); rowIdx++)
     {
         for (quint32 columnIdx = 0U; columnIdx < m_battleMapSquares[rowIdx].count(); columnIdx++)
@@ -51,6 +58,7 @@ BattleMap::~BattleMap()
             delete m_battleMapSquares[rowIdx][columnIdx];
         }
     }
+    m_battleMapSquares.clear();
 }
 
 /*!
