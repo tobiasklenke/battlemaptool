@@ -35,7 +35,9 @@ SOURCES += \
     undocommandpaste.cpp \
     undocommandrotatebattlemapleft.cpp \
     undocommandrotatebattlemapright.cpp \
-    wizardnewbattlemap.cpp
+    wizardnewbattlemap.cpp \
+    wizardpagenewbattlemapdisguise.cpp \
+    wizardpagenewbattlemaporiginal.cpp
 
 HEADERS += \
     battlemap.h \
@@ -64,12 +66,16 @@ HEADERS += \
     undocommandpaste.h \
     undocommandrotatebattlemapleft.h \
     undocommandrotatebattlemapright.h \
-    wizardnewbattlemap.h
+    wizardnewbattlemap.h \
+    wizardpagenewbattlemapdisguise.h \
+    wizardpagenewbattlemaporiginal.h
 
 FORMS += \
     dialogsettings.ui \
     mainwindow.ui \
     wizardnewbattlemap.ui \
+    wizardpagenewbattlemapdisguise.ui \
+    wizardpagenewbattlemaporiginal.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
