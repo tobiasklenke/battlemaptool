@@ -160,6 +160,11 @@
  */
 #define BATTLEMAPSQUARECOVERED_COLOR                       QColor(0, 0, 0, 150)
 
+/*!
+ * \brief This is the opacity of undisguisable Battle Map squares.
+ */
+#define BATTLEMAPSQUAREUNDISGUISABLE_OPACITY               0.5
+
 /* Image resource paths */
 
 /*!
@@ -250,6 +255,11 @@
  * \brief This is the wind rose size in Battle Map squares.
  */
 #define WINDROSESIZE_BATTLEMAPSQUARES                      3
+
+/*!
+ * \brief This is the timer interval for toggling the original and disguise pixmaps of Battle Map squares.
+ */
+#define TIMERINTERVAL_TOGGLEBATTLEMAPSQUAREPIXMAPS         1000
 
 /****************************************************************************************************************************************************
  * MACROS                                                                                                                                           *
