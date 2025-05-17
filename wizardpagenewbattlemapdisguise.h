@@ -163,6 +163,13 @@ private:
      ************************************************************************************************************************************************/
     void showBattleMapImages();
 
+    /*! *********************************************************************************************************************************************
+     * \brief   This function checks whether the Battle Map is disguisable.                                                                         *
+     *                                                                                                                                              *
+     * \return  This function returns true if the Battle Map is disguisable. Otherwise, it returns false.                                           *
+     ************************************************************************************************************************************************/
+    bool checkForDisguise();
+
     /*!
      * \brief This is a pointer to the user interface of the class WizardPageNewBattleMapDisguise.
      */

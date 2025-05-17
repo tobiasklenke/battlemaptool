@@ -175,6 +175,16 @@ void WizardPageNewBattleMapDisguise::editingFinishedLineEditSource()
 
                 showBattleMapImages();
 
+                if (!checkForDisguise())
+                {
+                    /* show message box informing user that selected source file is equal to original Battle Map image */
+                    QMessageBox msgBox(this);
+                    msgBox.setWindowTitle("Missing disguise");
+                    msgBox.setText("Selected image file is equal to original Battle Map image.");
+                    msgBox.setIcon(QMessageBox::Information);
+                    msgBox.exec();
+                }
+
                 /* enable event processing of graphics view as soon as Battle Map image is shown */
                 m_userInterface->graphicsViewNewBattleMap->setInteractive(true);
                 m_userInterface->graphicsViewNewBattleMap->setEventProcessingEnabled(true);
@@ -390,4 +400,26 @@ void WizardPageNewBattleMapDisguise::showBattleMapImages()
 
     /* start timer for toggling the original and disguise pixmaps of Battle Map squares */
     m_pixmapToggleTimer.start();
+}
+
+/*!
+ * \brief This function checks whether the Battle Map is disguisable.
+ */
+bool WizardPageNewBattleMapDisguise::checkForDisguise()
+{
+    bool foundDisguisableBattleMapSquare = false;
+
+    for (quint32 rowIdx = 0U; rowIdx < m_battleMap->getNumberRows(); rowIdx++)
+    {
+        for (quint32 columnIdx = 0U; columnIdx < m_battleMap->getNumberColumns(); columnIdx++)
+        {
+            if (m_battleMap->getBattleMapSquareDisguisable(rowIdx, columnIdx))
+            {
+                foundDisguisableBattleMapSquare = true;
+                break;
+            }
+        }
+    }
+
+    return foundDisguisableBattleMapSquare;
 }
