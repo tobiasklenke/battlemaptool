@@ -28,12 +28,15 @@ BattleMap::BattleMap(BattleMap &battleMap) :
     m_battleMapSquares(QList<QList<BattleMapSquare*>>()),
     m_orientation(ORIENTATION_0_DEGREES)
 {
+    initBattleMapSquares();
+
     /* copy pixmaps of all Battle Map squares */
     for (quint32 rowIdx = 0U; rowIdx < m_numberRows; rowIdx++)
     {
         for (quint32 columnIdx = 0U; columnIdx < m_numberColumns; columnIdx++)
         {
-            setBattleMapSquarePixmap(rowIdx, battleMap.getBattleMapSquarePixmap(rowIdx, columnIdx));
+            setBattleMapSquareOriginalPixmap(rowIdx, columnIdx, battleMap.getBattleMapSquareOriginalPixmap(rowIdx, columnIdx));
+            setBattleMapSquareDisguisePixmap(rowIdx, columnIdx, battleMap.getBattleMapSquareDisguisePixmap(rowIdx, columnIdx));
         }
     }
 }
@@ -44,6 +47,26 @@ BattleMap::BattleMap(BattleMap &battleMap) :
 BattleMap::~BattleMap()
 {
     deleteBattleMapSquares();
+}
+
+/*!
+ * \brief This function initializes the entries of the member variable m_battleMapSquares.
+ */
+void BattleMap::initBattleMapSquares()
+{
+    for (quint32 rowIdx = 0U; rowIdx < m_numberRows; rowIdx++)
+    {
+        m_battleMapSquares.append(QList<BattleMapSquare*>());
+
+        for (quint32 columnIdx = 0U; columnIdx < m_numberColumns; columnIdx++)
+        {
+            /* construct new Battle Map square object */
+            BattleMapSquare * battleMapSquare = new BattleMapSquare(m_orientation);
+
+            /* append Battle Map square to row of nested QList member variable m_battleMapSquares */
+            m_battleMapSquares[rowIdx].append(battleMapSquare);
+        }
+    }
 }
 
 /*!
@@ -110,38 +133,35 @@ void BattleMap::setNumberColumns(quint32 numberColumns)
 }
 
 /*!
- * \brief This function returns the pixmap of an entry of the member variable m_battleMapSquares.
+ * \brief This function returns the original pixmap of an entry of the member variable m_battleMapSquares.
  */
-QPixmap BattleMap::getBattleMapSquarePixmap(quint32 rowIdx, quint32 columnIdx) const
+QPixmap BattleMap::getBattleMapSquareOriginalPixmap(quint32 rowIdx, quint32 columnIdx) const
 {
-    return m_battleMapSquares[rowIdx][columnIdx]->getBattleMapSquarePixmap();
+    return m_battleMapSquares[rowIdx][columnIdx]->getBattleMapSquareOriginalPixmap();
 }
 
 /*!
- * \brief This function sets the pixmap of an entry of the member variable m_battleMapSquares.
+ * \brief This function sets the original pixmap of an entry of the member variable m_battleMapSquares.
  */
-void BattleMap::setBattleMapSquarePixmap(quint32 rowIdx, QPixmap battleMapSquarePixmap)
+void BattleMap::setBattleMapSquareOriginalPixmap(quint32 rowIdx, quint32 columnIdx, QPixmap battleMapSquareOriginalPixmap)
 {
-    /* append row to nested QList member variable m_battleMapSquares if row does not already exist */
-    if (rowIdx + 1 > m_battleMapSquares.count())
-    {
-        m_battleMapSquares.append(QList<BattleMapSquare*>());
-    }
-
-    /* construct new Battle Map square object and set pixmap */
-    BattleMapSquare * battleMapSquare = new BattleMapSquare(m_orientation);
-    battleMapSquare->setBattleMapSquarePixmap(battleMapSquarePixmap);
-
-    /* append Battle Map square to row of nested QList member variable m_battleMapSquares */
-    m_battleMapSquares[rowIdx].append(battleMapSquare);
+    m_battleMapSquares[rowIdx][columnIdx]->setBattleMapSquareOriginalPixmap(battleMapSquareOriginalPixmap);
 }
 
 /*!
- * \brief This function scales the pixmap of an entry of the member variable m_battleMapSquares.
+ * \brief This function returns the disguise pixmap of an entry of the member variable m_battleMapSquares.
  */
-void BattleMap::scaleBattleMapSquarePixmap(quint32 rowIdx, quint32 columnIdx, quint32 newSize)
+QPixmap BattleMap::getBattleMapSquareDisguisePixmap(quint32 rowIdx, quint32 columnIdx) const
 {
-    m_battleMapSquares[rowIdx][columnIdx]->scaleBattleMapSquarePixmap(newSize);
+    return m_battleMapSquares[rowIdx][columnIdx]->getBattleMapSquareDisguisePixmap();
+}
+
+/*!
+ * \brief This function sets the disguise pixmap of an entry of the member variable m_battleMapSquares.
+ */
+void BattleMap::setBattleMapSquareDisguisePixmap(quint32 rowIdx, quint32 columnIdx, QPixmap battleMapSquareDisguisePixmap)
+{
+    m_battleMapSquares[rowIdx][columnIdx]->setBattleMapSquareDisguisePixmap(battleMapSquareDisguisePixmap);
 }
 
 /*!
@@ -161,9 +181,33 @@ void BattleMap::setBattleMapSquareCovered(quint32 rowIdx, quint32 columnIdx, boo
 }
 
 /*!
- * \brief This function changes the pixmaps of entries of the member variable m_battleMapSquares.
+ * \brief This function returns the disguise state of an entry of the member variable m_battleMapSquares.
  */
-void BattleMap::changeBattleMapSquarePixmaps(quint32 firstRowIdx, quint32 firstColumnIdx, QList<QList<QPixmap>> battleMapSquarePixmaps)
+bool BattleMap::getBattleMapSquareDisguised(quint32 rowIdx, quint32 columnIdx) const
+{
+    return m_battleMapSquares[rowIdx][columnIdx]->getDisguised();
+}
+
+/*!
+ * \brief This function sets the disguise state of an entry of the member variable m_battleMapSquares.
+ */
+void BattleMap::setBattleMapSquareDisguised(quint32 rowIdx, quint32 columnIdx, bool disguised)
+{
+    m_battleMapSquares[rowIdx][columnIdx]->setDisguised(disguised);
+}
+
+/*!
+ * \brief This function returns the disguisability of an entry of the member variable m_battleMapSquares.
+ */
+bool BattleMap::getBattleMapSquareDisguisable(quint32 rowIdx, quint32 columnIdx) const
+{
+    return m_battleMapSquares[rowIdx][columnIdx]->getDisguisable();
+}
+
+/*!
+ * \brief This function changes the original pixmaps of entries of the member variable m_battleMapSquares.
+ */
+void BattleMap::changeBattleMapSquareOriginalPixmaps(quint32 firstRowIdx, quint32 firstColumnIdx, QList<QList<QPixmap>> battleMapSquarePixmaps)
 {
     for (quint32 rowIdx = 0U; rowIdx < battleMapSquarePixmaps.count(); rowIdx++)
     {
@@ -172,7 +216,25 @@ void BattleMap::changeBattleMapSquarePixmaps(quint32 firstRowIdx, quint32 firstC
             if ((firstRowIdx + rowIdx < m_numberRows) && (firstColumnIdx + columnIdx < m_numberColumns))
             {
                 /* change pixmaps of entries of member variable m_battleMapSquares */
-                m_battleMapSquares[firstRowIdx + rowIdx][firstColumnIdx + columnIdx]->setBattleMapSquarePixmap(battleMapSquarePixmaps[rowIdx][columnIdx]);
+                m_battleMapSquares[firstRowIdx + rowIdx][firstColumnIdx + columnIdx]->setBattleMapSquareOriginalPixmap(battleMapSquarePixmaps[rowIdx][columnIdx]);
+            }
+        }
+    }
+}
+
+/*!
+ * \brief This function changes the disguise pixmaps of entries of the member variable m_battleMapSquares.
+ */
+void BattleMap::changeBattleMapSquareDisguisePixmaps(quint32 firstRowIdx, quint32 firstColumnIdx, QList<QList<QPixmap>> battleMapSquarePixmaps)
+{
+    for (quint32 rowIdx = 0U; rowIdx < battleMapSquarePixmaps.count(); rowIdx++)
+    {
+        for (quint32 columnIdx = 0U; columnIdx < battleMapSquarePixmaps.first().count(); columnIdx++)
+        {
+            if ((firstRowIdx + rowIdx < m_numberRows) && (firstColumnIdx + columnIdx < m_numberColumns))
+            {
+                /* change pixmaps of entries of member variable m_battleMapSquares */
+                m_battleMapSquares[firstRowIdx + rowIdx][firstColumnIdx + columnIdx]->setBattleMapSquareDisguisePixmap(battleMapSquarePixmaps[rowIdx][columnIdx]);
             }
         }
     }
@@ -368,8 +430,10 @@ void BattleMap::rotateLeft()
         for (quint32 columnIdx = 0U; columnIdx < newNumberColumns; columnIdx++)
         {
             /* rotate Battle Map square left */
-            QPixmap newBattleMapSquarePixmap = m_battleMapSquares[columnIdx][newNumberRows - rowIdx - 1U]->getBattleMapSquarePixmap().transformed(QTransform().rotate(ORIENTATION_270_DEGREES));
-            m_battleMapSquares[columnIdx][newNumberRows - rowIdx - 1U]->setBattleMapSquarePixmap(newBattleMapSquarePixmap);
+            QPixmap newBattleMapSquareOriginalPixmap = m_battleMapSquares[columnIdx][newNumberRows - rowIdx - 1U]->getBattleMapSquareOriginalPixmap().transformed(QTransform().rotate(ORIENTATION_270_DEGREES));
+            m_battleMapSquares[columnIdx][newNumberRows - rowIdx - 1U]->setBattleMapSquareOriginalPixmap(newBattleMapSquareOriginalPixmap);
+            QPixmap newBattleMapSquareDisguisePixmap = m_battleMapSquares[columnIdx][newNumberRows - rowIdx - 1U]->getBattleMapSquareDisguisePixmap().transformed(QTransform().rotate(ORIENTATION_270_DEGREES));
+            m_battleMapSquares[columnIdx][newNumberRows - rowIdx - 1U]->setBattleMapSquareDisguisePixmap(newBattleMapSquareDisguisePixmap);
 
             newBattleMapSquares.last().append(m_battleMapSquares[columnIdx][newNumberRows - rowIdx - 1U]);
         }
@@ -402,8 +466,10 @@ void BattleMap::rotateRight()
         for (quint32 columnIdx = 0U; columnIdx < newNumberColumns; columnIdx++)
         {
             /* rotate Battle Map square left */
-            QPixmap newBattleMapSquarePixmap = m_battleMapSquares[newNumberColumns - columnIdx - 1U][rowIdx]->getBattleMapSquarePixmap().transformed(QTransform().rotate(ORIENTATION_90_DEGREES));
-            m_battleMapSquares[newNumberColumns - columnIdx - 1U][rowIdx]->setBattleMapSquarePixmap(newBattleMapSquarePixmap);
+            QPixmap newBattleMapSquareOriginalPixmap = m_battleMapSquares[newNumberColumns - columnIdx - 1U][rowIdx]->getBattleMapSquareOriginalPixmap().transformed(QTransform().rotate(ORIENTATION_90_DEGREES));
+            m_battleMapSquares[newNumberColumns - columnIdx - 1U][rowIdx]->setBattleMapSquareOriginalPixmap(newBattleMapSquareOriginalPixmap);
+            QPixmap newBattleMapSquareDisguisePixmap = m_battleMapSquares[newNumberColumns - columnIdx - 1U][rowIdx]->getBattleMapSquareDisguisePixmap().transformed(QTransform().rotate(ORIENTATION_90_DEGREES));
+            m_battleMapSquares[newNumberColumns - columnIdx - 1U][rowIdx]->setBattleMapSquareDisguisePixmap(newBattleMapSquareDisguisePixmap);
 
             newBattleMapSquares.last().append(m_battleMapSquares[newNumberColumns - columnIdx - 1U][rowIdx]);
         }

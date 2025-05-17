@@ -31,10 +31,9 @@ public:
     /*! *********************************************************************************************************************************************
      * \brief   This function is the copy constructor of the class BattleMap.                                                                       *
      *                                                                                                                                              *
-     * \details This function copies the pixmaps of all the Battle Map squares.                                                                     *
+     * \details This function initializes the Battle Map squares and copies the pixmaps of all the Battle Map squares.                              *
      *                                                                                                                                              *
      * \param   battleMap                     Battle Map to be copied                                                                               *
-     *                                                                                                                                              *
      *                                                                                                                                              *
      * \return  This function does not have any return value.                                                                                       *
      ************************************************************************************************************************************************/
@@ -48,6 +47,13 @@ public:
      * \return  This function does not have any return value.                                                                                       *
      ************************************************************************************************************************************************/
     ~BattleMap();
+
+    /*! *********************************************************************************************************************************************
+     * \brief   This function initializes the entries of the member variable m_battleMapSquares.                                                    *
+     *                                                                                                                                              *
+     * \return  This function does not have any return value.                                                                                       *
+     ************************************************************************************************************************************************/
+    void initBattleMapSquares();
 
     /*! *********************************************************************************************************************************************
      * \brief   This function deletes the Battle Map squares.                                                                                       *
@@ -117,44 +123,54 @@ public:
     void setNumberColumns(quint32 numberColumns);
 
     /*! *********************************************************************************************************************************************
-     * \brief   This function returns the pixmap of an entry of the member variable m_battleMapSquares.                                             *
+     * \brief   This function returns the original pixmap of an entry of the member variable m_battleMapSquares.                                    *
      *                                                                                                                                              *
      * \details -                                                                                                                                   *
      *                                                                                                                                              *
      * \param   rowIdx                        Index of the row                                                                                      *
      * \param   columnIdx                     Index of the column                                                                                   *
      *                                                                                                                                              *
-     * \return  This function returns the pixmap of an entry of the member variable m_battleMapSquares.                                             *
+     * \return  This function returns the original pixmap of an entry of the member variable m_battleMapSquares.                                    *
      ************************************************************************************************************************************************/
-    QPixmap getBattleMapSquarePixmap(quint32 rowIdx, quint32 columnIdx) const;
+    QPixmap getBattleMapSquareOriginalPixmap(quint32 rowIdx, quint32 columnIdx) const;
 
     /*! *********************************************************************************************************************************************
-     * \brief   This function sets the pixmap of an entry of the member variable m_battleMapSquares.                                                *
-     *                                                                                                                                              *
-     * \details This function checks if the parameter rowIdx exceeds the current number of rows in the nested QList member variable                 *
-     *          m_battleMapSquares and appends a new row if this is the case. Afterwards, the function constructs a new Battle Map square object    *
-     *          and sets its pixmap according to the parameter battleMapSquarePixmap. Finally, the function appends this newly created Battle Map   *
-     *          square to the row indicated by the parameter rowIdx.                                                                                *
-     *                                                                                                                                              *
-     * \param   rowIdx                        Index of the row                                                                                      *
-     * \param   battleMapSquarePixmap         Pixmap of the Battle Map square                                                                       *
-     *                                                                                                                                              *
-     * \return  This function does not have any return value.                                                                                       *
-     ************************************************************************************************************************************************/
-    void setBattleMapSquarePixmap(quint32 rowIdx, QPixmap battleMapSquarePixmap);
-
-    /*! *********************************************************************************************************************************************
-     * \brief   This function scales the pixmap of an entry of the member variable m_battleMapSquares.                                              *
+     * \brief   This function sets the original pixmap of an entry of the member variable m_battleMapSquares.                                       *
      *                                                                                                                                              *
      * \details -                                                                                                                                   *
      *                                                                                                                                              *
      * \param   rowIdx                        Index of the row                                                                                      *
      * \param   columnIdx                     Index of the column                                                                                   *
-     * \param   newSize                       New size of the pixmap of the Battle Map square                                                       *
+     * \param   battleMapSquareOriginalPixmap Original pixmap of the Battle Map square                                                              *
      *                                                                                                                                              *
      * \return  This function does not have any return value.                                                                                       *
      ************************************************************************************************************************************************/
-    void scaleBattleMapSquarePixmap(quint32 rowIdx, quint32 columnIdx, quint32 newSize);
+    void setBattleMapSquareOriginalPixmap(quint32 rowIdx, quint32 columnIdx, QPixmap battleMapSquareOriginalPixmap);
+
+    /*! *********************************************************************************************************************************************
+     * \brief   This function returns the disguise pixmap of an entry of the member variable m_battleMapSquares.                                    *
+     *                                                                                                                                              *
+     * \details -                                                                                                                                   *
+     *                                                                                                                                              *
+     * \param   rowIdx                        Index of the row                                                                                      *
+     * \param   columnIdx                     Index of the column                                                                                   *
+     *                                                                                                                                              *
+     * \return  This function returns the disguise pixmap of an entry of the member variable m_battleMapSquares.                                    *
+     ************************************************************************************************************************************************/
+    QPixmap getBattleMapSquareDisguisePixmap(quint32 rowIdx, quint32 columnIdx) const;
+
+    /*! *********************************************************************************************************************************************
+     * \brief   This function sets the disguise pixmap of an entry of the member variable m_battleMapSquares.                                       *
+     *                                                                                                                                              *
+     * \details -                                                                                                                                   *
+     *                                                                                                                                              *
+     * \param   rowIdx                        Index of the row                                                                                      *
+     * \param   columnIdx                     Index of the column                                                                                   *
+     * \param   battleMapSquareDisguisePixmap Disguise pixmap of the Battle Map square                                                              *
+     *                                                                                                                                              *
+     * \return  This function does not have any return value.                                                                                       *
+     ************************************************************************************************************************************************/
+    void setBattleMapSquareDisguisePixmap(quint32 rowIdx, quint32 columnIdx, QPixmap battleMapSquareDisguisePixmap);
 
     /*! *********************************************************************************************************************************************
      * \brief   This function returns the coverage state of an entry of the member variable m_battleMapSquares.                                     *
@@ -182,7 +198,44 @@ public:
     void setBattleMapSquareCovered(quint32 rowIdx, quint32 columnIdx, bool covered);
 
     /*! *********************************************************************************************************************************************
-     * \brief   This function changes the pixmaps of entries of the member variable m_battleMapSquares.                                             *
+     * \brief   This function returns the disguise state of an entry of the member variable m_battleMapSquares.                                     *
+     *                                                                                                                                              *
+     * \details -                                                                                                                                   *
+     *                                                                                                                                              *
+     * \param   rowIdx                        Index of the row                                                                                      *
+     * \param   columnIdx                     Index of the column                                                                                   *
+     *                                                                                                                                              *
+     * \return  This function returns the disguise state of an entry of the nested QList member variable m_battleMapSquares.                        *
+     ************************************************************************************************************************************************/
+    bool getBattleMapSquareDisguised(quint32 rowIdx, quint32 columnIdx) const;
+
+    /*! *********************************************************************************************************************************************
+     * \brief   This function sets the disguise state of an entry of the member variable m_battleMapSquares.                                        *
+     *                                                                                                                                              *
+     * \details -                                                                                                                                   *
+     *                                                                                                                                              *
+     * \param   rowIdx                        Index of the row                                                                                      *
+     * \param   columnIdx                     Index of the column                                                                                   *
+     * \param   disguised                     Disguise state                                                                                        *
+     *                                                                                                                                              *
+     * \return  This function does not have any return value.                                                                                       *
+     ************************************************************************************************************************************************/
+    void setBattleMapSquareDisguised(quint32 rowIdx, quint32 columnIdx, bool disguised);
+
+    /*! *********************************************************************************************************************************************
+     * \brief   This function returns the disguisability of an entry of the member variable m_battleMapSquares.                                     *
+     *                                                                                                                                              *
+     * \details -                                                                                                                                   *
+     *                                                                                                                                              *
+     * \param   rowIdx                        Index of the row                                                                                      *
+     * \param   columnIdx                     Index of the column                                                                                   *
+     *                                                                                                                                              *
+     * \return  This function returns the disguisability of an entry of the nested QList member variable m_battleMapSquares.                        *
+     ************************************************************************************************************************************************/
+    bool getBattleMapSquareDisguisable(quint32 rowIdx, quint32 columnIdx) const;
+
+    /*! *********************************************************************************************************************************************
+     * \brief   This function changes the original pixmaps of entries of the member variable m_battleMapSquares.                                    *
      *                                                                                                                                              *
      * \details -                                                                                                                                   *
      *                                                                                                                                              *
@@ -192,7 +245,20 @@ public:
      *                                                                                                                                              *
      * \return  This function does not have any return value.                                                                                       *
      ************************************************************************************************************************************************/
-    void changeBattleMapSquarePixmaps(quint32 firstRowIdx, quint32 firstColumnIdx, QList<QList<QPixmap>> battleMapSquarePixmaps);
+    void changeBattleMapSquareOriginalPixmaps(quint32 firstRowIdx, quint32 firstColumnIdx, QList<QList<QPixmap>> battleMapSquarePixmaps);
+
+    /*! *********************************************************************************************************************************************
+     * \brief   This function changes the disguise pixmaps of entries of the member variable m_battleMapSquares.                                    *
+     *                                                                                                                                              *
+     * \details -                                                                                                                                   *
+     *                                                                                                                                              *
+     * \param   firstRowIdx                   Index of the first row                                                                                *
+     * \param   firstColumnIdx                Index of the first column                                                                             *
+     * \param   battleMapSquarePixmaps        Pixmaps of the Battle Map squares                                                                     *
+     *                                                                                                                                              *
+     * \return  This function does not have any return value.                                                                                       *
+     ************************************************************************************************************************************************/
+    void changeBattleMapSquareDisguisePixmaps(quint32 firstRowIdx, quint32 firstColumnIdx, QList<QList<QPixmap>> battleMapSquarePixmaps);
 
     /*! *********************************************************************************************************************************************
      * \brief   This function inserts a new row above the Battle Map.                                                                               *

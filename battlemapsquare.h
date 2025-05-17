@@ -5,6 +5,7 @@
  * INCLUDES                                                                                                                                         *
  ****************************************************************************************************************************************************/
 
+#include <QCryptographicHash>
 #include <QPainter>
 #include <QPixmap>
 
@@ -26,8 +27,7 @@ public:
      * \brief   This function is the constructor of the class BattleMapSquare.                                                                      *
      *                                                                                                                                              *
      * \details This function initializes the Battle Map square with the image of an empty Battle Map square that is rotated according to the       *
-     *          Battle Map orientation and draws the Battle Map grid around                                                                         *
-     *          the Battle Map square.                                                                                                              *
+     *          Battle Map orientation and draws the Battle Map grid around the Battle Map square.                                                  *
      *                                                                                                                                              *
      * \param   orientation                   Orientation of the Battle Map square                                                                  *
      *                                                                                                                                              *
@@ -45,16 +45,17 @@ public:
     ~BattleMapSquare();
 
     /*! *********************************************************************************************************************************************
-     * \brief   This function returns the pixmap of the member variable pBattleMapSquarePixmap.                                                     *
+     * \brief   This function returns the pixmap of the member variable m_battleMapSquareOriginalPixmap.                                            *
      *                                                                                                                                              *
      * \details -                                                                                                                                   *
      *                                                                                                                                              *
-     * \return  This function returns the pixmap of the member variable pBattleMapSquarePixmap.                                                     *
+     * \return  This function returns the pixmap of the member variable m_battleMapSquareOriginalPixmap.                                            *
      ************************************************************************************************************************************************/
-    QPixmap getBattleMapSquarePixmap() const;
+    QPixmap getBattleMapSquareOriginalPixmap() const;
 
     /*! *********************************************************************************************************************************************
-     * \brief   This function sets the pixmap of the member variable pBattleMapSquarePixmap.                                                        *
+     * \brief   This function sets the pixmap of the member variable m_battleMapSquareOriginalPixmap and ascertains whether the Battle Map square   *
+     *          is disguisable.                                                                                                                     *
      *                                                                                                                                              *
      * \details -                                                                                                                                   *
      *                                                                                                                                              *
@@ -62,18 +63,28 @@ public:
      *                                                                                                                                              *
      * \return  This function does not have any return value.                                                                                       *
      ************************************************************************************************************************************************/
-    void setBattleMapSquarePixmap(QPixmap battleMapSquarePixmap);
+    void setBattleMapSquareOriginalPixmap(QPixmap battleMapSquarePixmap);
 
     /*! *********************************************************************************************************************************************
-     * \brief   This function scales the pixmap of the member variable pBattleMapSquarePixmap.                                                      *
+     * \brief   This function returns the pixmap of the member variable m_battleMapSquareDisguisePixmap.                                            *
      *                                                                                                                                              *
      * \details -                                                                                                                                   *
      *                                                                                                                                              *
-     * \param   newSize                       New size of the pixmap of the Battle Map square                                                       *
+     * \return  This function returns the pixmap of the member variable m_battleMapSquareDisguisePixmap.                                            *
+     ************************************************************************************************************************************************/
+    QPixmap getBattleMapSquareDisguisePixmap() const;
+
+    /*! *********************************************************************************************************************************************
+     * \brief   This function sets the pixmap of the member variable m_battleMapSquareOriginalPixmap and ascertains whether the Battle Map square   *
+     *          is disguisable.                                                                                                                     *
+     *                                                                                                                                              *
+     * \details -                                                                                                                                   *
+     *                                                                                                                                              *
+     * \param   battleMapSquarePixmap         Pixmap of the Battle Map square                                                                       *
      *                                                                                                                                              *
      * \return  This function does not have any return value.                                                                                       *
      ************************************************************************************************************************************************/
-    void scaleBattleMapSquarePixmap(quint32 newSize);
+    void setBattleMapSquareDisguisePixmap(QPixmap battleMapSquarePixmap);
 
     /*! *********************************************************************************************************************************************
      * \brief   This function returns the value of the member variable m_covered.                                                                   *
@@ -95,6 +106,35 @@ public:
      ************************************************************************************************************************************************/
     void setCovered(bool covered);
 
+    /*! *********************************************************************************************************************************************
+     * \brief   This function returns the value of the member variable m_disguised.                                                                 *
+     *                                                                                                                                              *
+     * \details -                                                                                                                                   *
+     *                                                                                                                                              *
+     * \return  This function returns the value of the member variable m_disguised.                                                                 *
+     ************************************************************************************************************************************************/
+    bool getDisguised() const;
+
+    /*! *********************************************************************************************************************************************
+     * \brief   This function sets the value of the member variable m_disguised.                                                                    *
+     *                                                                                                                                              *
+     * \details -                                                                                                                                   *
+     *                                                                                                                                              *
+     * \param   disguised                     Information whether the Battle Map square is disguised                                                *
+     *                                                                                                                                              *
+     * \return  This function does not have any return value.                                                                                       *
+     ************************************************************************************************************************************************/
+    void setDisguised(bool disguised);
+
+    /*! *********************************************************************************************************************************************
+     * \brief   This function returns the value of the member variable m_disguisable.                                                               *
+     *                                                                                                                                              *
+     * \details -                                                                                                                                   *
+     *                                                                                                                                              *
+     * \return  This function returns the value of the member variable m_disguisable.                                                               *
+     ************************************************************************************************************************************************/
+    bool getDisguisable() const;
+
 protected: /* - */
 
 signals: /* - */
@@ -103,15 +143,40 @@ private slots: /* - */
 
 private:
 
+    /*! *********************************************************************************************************************************************
+     * \brief   This function ascertains whether the Battle Map square is disguisable and sets the value of the member variable m_disguisable       *
+     *          accordingly.                                                                                                                        *
+     *                                                                                                                                              *
+     * \details -                                                                                                                                   *
+     *                                                                                                                                              *
+     * \return  This function does not have any return value.                                                                                       *
+     ************************************************************************************************************************************************/
+    void ascertainDisguisable();
+
     /*!
-     * \brief This is the pixmap of the Battle Map square.
+     * \brief This is the original pixmap of the Battle Map square.
      */
-    QPixmap m_battleMapSquarePixmap;
+    QPixmap m_battleMapSquareOriginalPixmap;
+
+    /*!
+     * \brief This is the disguise pixmap of the Battle Map square.
+     */
+    QPixmap m_battleMapSquareDisguisePixmap;
 
     /*!
      * \brief This is the information whether the Battle Map square is covered.
      */
     bool m_covered;
+
+    /*!
+     * \brief This is the information whether the Battle Map square is disguised.
+     */
+    bool m_disguised;
+
+    /*!
+     * \brief This is the information whether the Battle Map square is disguisable.
+     */
+    bool m_disguisable;
 };
 
 #endif // BATTLEMAPSQUARE_H
