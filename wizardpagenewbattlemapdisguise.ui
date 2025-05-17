@@ -6,40 +6,102 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1200</width>
-    <height>900</height>
+    <width>1182</width>
+    <height>837</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>WizardPage</string>
   </property>
-  <widget class="QLabel" name="label">
+  <widget class="QLineEdit" name="lineEditSource">
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
    <property name="geometry">
     <rect>
-     <x>490</x>
-     <y>180</y>
-     <width>66</width>
-     <height>17</height>
+     <x>300</x>
+     <y>0</y>
+     <width>768</width>
+     <height>25</height>
     </rect>
    </property>
-   <property name="text">
-    <string>Disguise</string>
-   </property>
   </widget>
-  <widget class="QPushButton" name="pushButton">
+  <widget class="CustomGraphicsView" name="graphicsViewNewBattleMap">
    <property name="geometry">
     <rect>
-     <x>810</x>
-     <y>180</y>
-     <width>88</width>
+     <x>0</x>
+     <y>175</y>
+     <width>1178</width>
+     <height>650</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <bold>false</bold>
+    </font>
+   </property>
+   <property name="mouseTracking">
+    <bool>false</bool>
+   </property>
+   <property name="autoFillBackground">
+    <bool>false</bool>
+   </property>
+   <property name="frameShape">
+    <enum>QFrame::Box</enum>
+   </property>
+   <property name="frameShadow">
+    <enum>QFrame::Plain</enum>
+   </property>
+   <property name="lineWidth">
+    <number>1</number>
+   </property>
+   <property name="verticalScrollBarPolicy">
+    <enum>Qt::ScrollBarAlwaysOff</enum>
+   </property>
+   <property name="horizontalScrollBarPolicy">
+    <enum>Qt::ScrollBarAlwaysOff</enum>
+   </property>
+   <property name="interactive">
+    <bool>false</bool>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButtonSelectSource">
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
+   <property name="geometry">
+    <rect>
+     <x>1078</x>
+     <y>0</y>
+     <width>100</width>
      <height>25</height>
     </rect>
    </property>
    <property name="text">
-    <string>PushButton</string>
+    <string>Select source</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>0</y>
+     <width>270</width>
+     <height>25</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Battle Map image from source</string>
    </property>
   </widget>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>CustomGraphicsView</class>
+   <extends>QGraphicsView</extends>
+   <header location="global">customgraphicsview.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>
