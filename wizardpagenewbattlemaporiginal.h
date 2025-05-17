@@ -5,8 +5,8 @@
  * INCLUDES                                                                                                                                         *
  ****************************************************************************************************************************************************/
 
-#include <QMessageBox>
 #include <QFileDialog>
+#include <QMessageBox>
 #include <QSettings>
 #include <QWizardPage>
 

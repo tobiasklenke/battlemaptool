@@ -23,6 +23,9 @@ WizardPageNewBattleMapOriginal::WizardPageNewBattleMapOriginal(BattleMap *battle
     /* set up the user interface */
     m_userInterface->setupUi(this);
 
+    /* register field checkBoxDrawBattleMapGrid */
+    registerField("checkBoxDrawBattleMapGrid", m_userInterface->checkBoxDrawBattleMapGrid);
+
     /* set background color of graphics view to window color */
     m_userInterface->graphicsViewNewBattleMap->setBackgroundRole(QPalette::Window);
 
@@ -884,6 +887,7 @@ void WizardPageNewBattleMapOriginal::extractBattleMap()
 
     quint32 edgeLength = m_battleMapImagePixMap.pixmap().height() / m_battleMap->getNumberRows();
 
+    m_battleMap->initBattleMapSquares();
     for (quint32 rowIdx = 0U; rowIdx < m_battleMap->getNumberRows(); rowIdx++)
     {
         for (quint32 columnIdx = 0U; columnIdx < m_battleMap->getNumberColumns(); columnIdx++)
@@ -893,8 +897,8 @@ void WizardPageNewBattleMapOriginal::extractBattleMap()
             temporaryPixmap = m_battleMapImagePixMap.pixmap().copy(QRect(columnIdx * edgeLength, rowIdx * edgeLength, edgeLength, edgeLength));
             temporaryPixmap = temporaryPixmap.scaled(QSize(BATTLEMAPSQUARE_SIZE, BATTLEMAPSQUARE_SIZE));
 
-            /* add Battle Map square pixmap to Battle Map */
-            m_battleMap->setBattleMapSquarePixmap(rowIdx, temporaryPixmap);
+            /*  Add pixmaps to Battle Map */
+            m_battleMap->setBattleMapSquareOriginalPixmap(rowIdx, columnIdx, temporaryPixmap);
         }
     }
 

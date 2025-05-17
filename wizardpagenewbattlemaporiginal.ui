@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1200</width>
-    <height>900</height>
+    <width>1182</width>
+    <height>837</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -18,7 +18,7 @@
     <rect>
      <x>0</x>
      <y>30</y>
-     <width>250</width>
+     <width>290</width>
      <height>25</height>
     </rect>
    </property>
@@ -34,7 +34,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>250</width>
+     <width>290</width>
      <height>25</height>
     </rect>
    </property>
@@ -48,7 +48,7 @@
   <widget class="QPushButton" name="pushButtonDecrementNumberColumns">
    <property name="geometry">
     <rect>
-     <x>380</x>
+     <x>410</x>
      <y>140</y>
      <width>25</width>
      <height>25</height>
@@ -64,7 +64,7 @@
    </property>
    <property name="geometry">
     <rect>
-     <x>1050</x>
+     <x>1078</x>
      <y>0</y>
      <width>100</width>
      <height>25</height>
@@ -77,7 +77,7 @@
   <widget class="QPushButton" name="pushButtonIncrementNumberColumns">
    <property name="geometry">
     <rect>
-     <x>410</x>
+     <x>445</x>
      <y>140</y>
      <width>25</width>
      <height>25</height>
@@ -92,7 +92,7 @@
     <rect>
      <x>0</x>
      <y>175</y>
-     <width>1150</width>
+     <width>1178</width>
      <height>650</height>
     </rect>
    </property>
@@ -131,7 +131,7 @@
     <rect>
      <x>20</x>
      <y>110</y>
-     <width>150</width>
+     <width>270</width>
      <height>25</height>
     </rect>
    </property>
@@ -142,7 +142,7 @@
   <widget class="QLineEdit" name="lineEditNumberColumns">
    <property name="geometry">
     <rect>
-     <x>275</x>
+     <x>300</x>
      <y>140</y>
      <width>100</width>
      <height>25</height>
@@ -160,7 +160,7 @@
     <rect>
      <x>20</x>
      <y>140</y>
-     <width>150</width>
+     <width>270</width>
      <height>25</height>
     </rect>
    </property>
@@ -171,7 +171,7 @@
   <widget class="QLineEdit" name="lineEditNumberRows">
    <property name="geometry">
     <rect>
-     <x>275</x>
+     <x>300</x>
      <y>110</y>
      <width>100</width>
      <height>25</height>
@@ -187,7 +187,7 @@
   <widget class="QPushButton" name="pushButtonDecrementNumberRows">
    <property name="geometry">
     <rect>
-     <x>380</x>
+     <x>410</x>
      <y>110</y>
      <width>25</width>
      <height>25</height>
@@ -203,9 +203,9 @@
    </property>
    <property name="geometry">
     <rect>
-     <x>275</x>
+     <x>300</x>
      <y>0</y>
-     <width>750</width>
+     <width>768</width>
      <height>25</height>
     </rect>
    </property>
@@ -215,7 +215,7 @@
     <rect>
      <x>0</x>
      <y>70</y>
-     <width>250</width>
+     <width>290</width>
      <height>25</height>
     </rect>
    </property>
@@ -226,7 +226,7 @@
   <widget class="QPushButton" name="pushButtonIncrementNumberRows">
    <property name="geometry">
     <rect>
-     <x>410</x>
+     <x>445</x>
      <y>110</y>
      <width>25</width>
      <height>25</height>
