@@ -32,7 +32,7 @@ UndoCommandPaste::~UndoCommandPaste()
 void UndoCommandPaste::undo()
 {
     /* paste pixmaps of overwritten Battle Map squares to Battle Map */
-    m_battleMap->changeBattleMapSquarePixmaps(m_firstRowIdx, m_firstColumnIdx, m_overwrittenPixmaps);
+    m_battleMap->changeBattleMapSquareOriginalPixmaps(m_firstRowIdx, m_firstColumnIdx, m_overwrittenPixmaps);
 
     /* update pixmaps of overwritten Battle Map squares according to Battle Map */
     m_masterScreenHandler->updatePixmapsAccordingBattleMap();
@@ -59,7 +59,7 @@ void UndoCommandPaste::redo()
                 /* append new pixmap to row */
                 if ((m_firstRowIdx + rowIdx < m_battleMap->getNumberRows()) && (m_firstColumnIdx + columnIdx < m_battleMap->getNumberColumns()))
                 {
-                    m_overwrittenPixmaps.last().append(m_battleMap->getBattleMapSquarePixmap(m_firstRowIdx + rowIdx, m_firstColumnIdx + columnIdx));
+                    m_overwrittenPixmaps.last().append(m_battleMap->getBattleMapSquareOriginalPixmap(m_firstRowIdx + rowIdx, m_firstColumnIdx + columnIdx));
                 }
             }
 
@@ -72,7 +72,7 @@ void UndoCommandPaste::redo()
     }
 
     /* paste pixmaps of copied Battle Map squares to Battle Map */
-    m_battleMap->changeBattleMapSquarePixmaps(m_firstRowIdx, m_firstColumnIdx, m_copiedPixmaps);
+    m_battleMap->changeBattleMapSquareOriginalPixmaps(m_firstRowIdx, m_firstColumnIdx, m_copiedPixmaps);
 
     /* update pixmaps of copied Battle Map squares according to Battle Map */
     m_masterScreenHandler->updatePixmapsAccordingBattleMap();

@@ -229,7 +229,7 @@ void PlayerScreenHandler::insertRowAbove()
         else
         {
             /* append graphics item of Battle Map square to row */
-            QPixmap scaledPixmap = m_battleMap->getBattleMapSquarePixmap(0U, columnIdx).scaled(QSize(edgeLengthInPixels, edgeLengthInPixels));
+            QPixmap scaledPixmap = m_battleMap->getBattleMapSquareOriginalPixmap(0U, columnIdx).scaled(QSize(edgeLengthInPixels, edgeLengthInPixels));
             m_battleMapSquareGraphicsItems.first().append(new CustomGraphicsPixmapItem(scaledPixmap));
             m_battleMapSquareGraphicsItems.first()[totalColumnIdx]->setVisible(false);
 
@@ -278,7 +278,7 @@ void PlayerScreenHandler::insertRowBelow()
         else
         {
             /* append graphics item of Battle Map square to row */
-            QPixmap scaledPixmap = m_battleMap->getBattleMapSquarePixmap(m_battleMap->getNumberRows() - 1U, columnIdx).scaled(QSize(edgeLengthInPixels, edgeLengthInPixels));
+            QPixmap scaledPixmap = m_battleMap->getBattleMapSquareOriginalPixmap(m_battleMap->getNumberRows() - 1U, columnIdx).scaled(QSize(edgeLengthInPixels, edgeLengthInPixels));
             m_battleMapSquareGraphicsItems.last().append(new CustomGraphicsPixmapItem(scaledPixmap));
             m_battleMapSquareGraphicsItems.last()[totalColumnIdx]->setVisible(false);
 
@@ -325,7 +325,7 @@ void PlayerScreenHandler::insertColumnLeft()
         else
         {
             /* prepend graphics item of Battle Map square to column */
-            QPixmap scaledPixmap = m_battleMap->getBattleMapSquarePixmap(rowIdx, 0U).scaled(QSize(edgeLengthInPixels, edgeLengthInPixels));
+            QPixmap scaledPixmap = m_battleMap->getBattleMapSquareOriginalPixmap(rowIdx, 0U).scaled(QSize(edgeLengthInPixels, edgeLengthInPixels));
             m_battleMapSquareGraphicsItems[totalRowIdx].prepend(new CustomGraphicsPixmapItem(scaledPixmap));
             m_battleMapSquareGraphicsItems[totalRowIdx].first()->setVisible(false);
 
@@ -372,7 +372,7 @@ void PlayerScreenHandler::insertColumnRight()
         else
         {
             /* append graphics item of Battle Map square to column */
-            QPixmap scaledPixmap = m_battleMap->getBattleMapSquarePixmap(rowIdx, m_battleMap->getNumberColumns() - 1U).scaled(QSize(edgeLengthInPixels, edgeLengthInPixels));
+            QPixmap scaledPixmap = m_battleMap->getBattleMapSquareOriginalPixmap(rowIdx, m_battleMap->getNumberColumns() - 1U).scaled(QSize(edgeLengthInPixels, edgeLengthInPixels));
             m_battleMapSquareGraphicsItems[totalRowIdx].append(new CustomGraphicsPixmapItem(scaledPixmap));
             m_battleMapSquareGraphicsItems[totalRowIdx].last()->setVisible(false);
 
@@ -710,7 +710,7 @@ void PlayerScreenHandler::updateBattleMapSquareGraphicsItems()
         for (quint32 columnIdx = 0U; columnIdx < m_battleMap->getNumberColumns(); columnIdx++)
         {
             /* append graphics item of Battle Map square to row of nested QList member variable m_battleMapSquaresGraphicsItems */
-            QPixmap scaledPixmap = m_battleMap->getBattleMapSquarePixmap(rowIdx, columnIdx).scaled(QSize(edgeLengthInPixels, edgeLengthInPixels));
+            QPixmap scaledPixmap = m_battleMap->getBattleMapSquareOriginalPixmap(rowIdx, columnIdx).scaled(QSize(edgeLengthInPixels, edgeLengthInPixels));
             m_battleMapSquareGraphicsItems[rowIdx].append(new CustomGraphicsPixmapItem(scaledPixmap));
         }
     }
@@ -745,7 +745,7 @@ void PlayerScreenHandler::updateBattleMapSquaresPixmaps()
         for (quint32 columnIdx = 0U; columnIdx < m_battleMap->getNumberColumns(); columnIdx++)
         {
             /* update pixmaps of Battle Map squares */
-            QPixmap scaledPixmap = m_battleMap->getBattleMapSquarePixmap(rowIdx, columnIdx).scaled(QSize(edgeLengthInPixels, edgeLengthInPixels));
+            QPixmap scaledPixmap = m_battleMap->getBattleMapSquareOriginalPixmap(rowIdx, columnIdx).scaled(QSize(edgeLengthInPixels, edgeLengthInPixels));
             m_battleMapSquareGraphicsItems[rowIdx][columnIdx]->setPixmap(scaledPixmap);
         }
     }
