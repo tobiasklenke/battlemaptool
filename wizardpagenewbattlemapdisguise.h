@@ -186,7 +186,7 @@ private:
     /*!
      * \brief This is the pixmap of the Battle Map image.
      */
-    QGraphicsPixmapItem m_battleMapImagePixMap;
+    QGraphicsPixmapItem m_battleMapImagePixmap;
 
     /*!
      * \brief This is a list of Battle Map lines building the Battle Map grid to be drawn for control purposes.
@@ -199,7 +199,7 @@ private:
     QList<QList<QGraphicsPixmapItem*>> m_battleMapSquareGraphicsItems;
 
     /*!
-     * \brief TODO
+     * \brief This is the timer variable for the toggle of the original and the disguise pixmaps.
      */
     QTimer m_pixmapToggleTimer;
 

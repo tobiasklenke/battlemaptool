@@ -462,7 +462,7 @@ void WizardPageNewBattleMapOriginal::selectedBattleMapSquare()
         /* optimize the edge length by performing a modulo operation with the height of the Battle Map image and the edge length */
         do
         {
-            residual = (m_battleMapImagePixMap.pixmap().height() % averageEdgeLengthIncrement);
+            residual = (m_battleMapImagePixmap.pixmap().height() % averageEdgeLengthIncrement);
 
             if (0U != residual)
             {
@@ -474,7 +474,7 @@ void WizardPageNewBattleMapOriginal::selectedBattleMapSquare()
         } while (0U != residual);
         do
         {
-            residual = (m_battleMapImagePixMap.pixmap().height() % averageEdgeLengthDecrement);
+            residual = (m_battleMapImagePixmap.pixmap().height() % averageEdgeLengthDecrement);
 
             if (0U != residual)
             {
@@ -496,8 +496,8 @@ void WizardPageNewBattleMapOriginal::selectedBattleMapSquare()
         }
 
         /* update number of rows and columns according to optimized edge length of Battle Map squares */
-        m_battleMap->setNumberRows(m_battleMapImagePixMap.pixmap().height() / averageEdgeLength);
-        m_battleMap->setNumberColumns(m_battleMapImagePixMap.pixmap().width() / averageEdgeLength);
+        m_battleMap->setNumberRows(m_battleMapImagePixmap.pixmap().height() / averageEdgeLength);
+        m_battleMap->setNumberColumns(m_battleMapImagePixmap.pixmap().width() / averageEdgeLength);
         m_userInterface->lineEditNumberRows->setText(QString::number(m_battleMap->getNumberRows()));
         m_userInterface->lineEditNumberColumns->setText(QString::number(m_battleMap->getNumberColumns()));
 
@@ -587,7 +587,7 @@ void WizardPageNewBattleMapOriginal::drawBattleMapGrid(int state)
     if (0U < m_battleMap->getNumberRows() && 0U < m_battleMap->getNumberColumns())
     {
         /* draw horizontal Battle Map lines and add them to Battle Map scene */
-        quint32 edgeLengthRows = m_battleMapImagePixMap.pixmap().height() / m_battleMap->getNumberRows();
+        quint32 edgeLengthRows = m_battleMapImagePixmap.pixmap().height() / m_battleMap->getNumberRows();
         for (quint32 rowIdx = 0U; rowIdx < m_battleMap->getNumberRows() + 1; rowIdx++)
         {
             QGraphicsLineItem * battleMapLineToDraw = new QGraphicsLineItem(QLineF(0, rowIdx * edgeLengthRows, m_battleMap->getNumberColumns() * edgeLengthRows, rowIdx * edgeLengthRows));
@@ -597,7 +597,7 @@ void WizardPageNewBattleMapOriginal::drawBattleMapGrid(int state)
         }
 
         /* draw vertical Battle Map lines and add them to Battle Map scene */
-        quint32 edgeLengthColumns = m_battleMapImagePixMap.pixmap().width() / m_battleMap->getNumberColumns();
+        quint32 edgeLengthColumns = m_battleMapImagePixmap.pixmap().width() / m_battleMap->getNumberColumns();
         for (quint32 columnIdx = 0U; columnIdx < m_battleMap->getNumberColumns() + 1; columnIdx++)
         {
             QGraphicsLineItem * battleMapLineToDraw = new QGraphicsLineItem(QLineF(columnIdx * edgeLengthColumns, 0, columnIdx * edgeLengthColumns, m_battleMap->getNumberRows() * edgeLengthColumns));
@@ -678,9 +678,9 @@ void WizardPageNewBattleMapOriginal::showEmptyBattleMapImage()
     delete painter;
 
     /* add Battle Map pixmap to Battle Map scene */
-    m_battleMapImagePixMap.setPixmap(temporaryPixmap);
-    m_battleMapScene->addItem(&m_battleMapImagePixMap);
-    m_battleMapScene->setSceneRect(0, 0, m_battleMapImagePixMap.pixmap().width(), m_battleMapImagePixMap.pixmap().height());
+    m_battleMapImagePixmap.setPixmap(temporaryPixmap);
+    m_battleMapScene->addItem(&m_battleMapImagePixmap);
+    m_battleMapScene->setSceneRect(0, 0, m_battleMapImagePixmap.pixmap().width(), m_battleMapImagePixmap.pixmap().height());
 
     drawBattleMapGrid();
 
@@ -726,9 +726,9 @@ void WizardPageNewBattleMapOriginal::showSourceBattleMapImage()
         m_userInterface->graphicsViewNewBattleMap->setToolTip("Select Battle Map square");
 
         /* add Battle Map pixmap to Battle Map scene */
-        m_battleMapImagePixMap.setPixmap(QPixmap::fromImage(battleMapImage));
-        m_battleMapScene->addItem(&m_battleMapImagePixMap);
-        m_battleMapScene->setSceneRect(0, 0, m_battleMapImagePixMap.pixmap().width(), m_battleMapImagePixMap.pixmap().height());
+        m_battleMapImagePixmap.setPixmap(QPixmap::fromImage(battleMapImage));
+        m_battleMapScene->addItem(&m_battleMapImagePixmap);
+        m_battleMapScene->setSceneRect(0, 0, m_battleMapImagePixmap.pixmap().width(), m_battleMapImagePixmap.pixmap().height());
 
         /* show message box asking user to select Battle Map square */
         QMessageBox msgBox(this);
@@ -748,8 +748,8 @@ void WizardPageNewBattleMapOriginal::showSourceBattleMapImage()
 void WizardPageNewBattleMapOriginal::correctNumberRows()
 {
     /* correct number of rows considering Battle Map squares aspect ratio */
-    quint32 edgeLength = m_battleMapImagePixMap.pixmap().width() / m_battleMap->getNumberColumns();
-    quint32 numberRows = m_battleMapImagePixMap.pixmap().height() / edgeLength;
+    quint32 edgeLength = m_battleMapImagePixmap.pixmap().width() / m_battleMap->getNumberColumns();
+    quint32 numberRows = m_battleMapImagePixmap.pixmap().height() / edgeLength;
 
     /* do not decrement number of rows to 0 */
     if (0U < numberRows)
@@ -768,8 +768,8 @@ void WizardPageNewBattleMapOriginal::correctNumberRows()
 void WizardPageNewBattleMapOriginal::correctNumberColumns()
 {
     /* correct number of columns considering Battle Map squares aspect ratio */
-    quint32 edgeLength = m_battleMapImagePixMap.pixmap().height() / m_battleMap->getNumberRows();
-    quint32 numberColumns = m_battleMapImagePixMap.pixmap().width() / edgeLength;
+    quint32 edgeLength = m_battleMapImagePixmap.pixmap().height() / m_battleMap->getNumberRows();
+    quint32 numberColumns = m_battleMapImagePixmap.pixmap().width() / edgeLength;
 
     /* do not decrement number of columns to 0 */
     if (0U < numberColumns)
@@ -790,12 +790,12 @@ void WizardPageNewBattleMapOriginal::checkBattleMapGrid()
     bool validBattleMapGrid = true;
 
     /* calculate height and width of Battle Map squares */
-    quint32 edgeLengthHeigth = m_battleMapImagePixMap.pixmap().height() / m_battleMap->getNumberRows();
-    quint32 edgeLengthWidth = m_battleMapImagePixMap.pixmap().width() / m_battleMap->getNumberColumns();
+    quint32 edgeLengthHeigth = m_battleMapImagePixmap.pixmap().height() / m_battleMap->getNumberRows();
+    quint32 edgeLengthWidth = m_battleMapImagePixmap.pixmap().width() / m_battleMap->getNumberColumns();
 
     if (edgeLengthHeigth == edgeLengthWidth)
     {
-        if ((edgeLengthHeigth * m_battleMap->getNumberRows()) != static_cast<quint32>(m_battleMapImagePixMap.pixmap().height()))
+        if ((edgeLengthHeigth * m_battleMap->getNumberRows()) != static_cast<quint32>(m_battleMapImagePixmap.pixmap().height()))
         {
             /* set background color of lineEditNumberRows to red if number of rows does not match Battle Map image size */
             m_userInterface->lineEditNumberRows->setStyleSheet(QString("#%1 { background-color: red; }").arg(m_userInterface->lineEditNumberRows->objectName()));
@@ -807,7 +807,7 @@ void WizardPageNewBattleMapOriginal::checkBattleMapGrid()
             m_userInterface->lineEditNumberRows->setStyleSheet("");
         }
 
-        if ((edgeLengthWidth * m_battleMap->getNumberColumns()) != static_cast<quint32>(m_battleMapImagePixMap.pixmap().width()))
+        if ((edgeLengthWidth * m_battleMap->getNumberColumns()) != static_cast<quint32>(m_battleMapImagePixmap.pixmap().width()))
         {
             /* set background color of lineEditNumberColumns to red if number of columns does not match Battle Map image size */
             m_userInterface->lineEditNumberColumns->setStyleSheet(QString("#%1 { background-color: red; }").arg(m_userInterface->lineEditNumberColumns->objectName()));
@@ -874,7 +874,7 @@ void WizardPageNewBattleMapOriginal::extractBattleMap()
     if (m_userInterface->checkBoxDrawBattleMapGrid->isChecked())
     {
         /* draw Battle Map grid on Battle Map image */
-        QPixmap temporaryPixmap(m_battleMapImagePixMap.pixmap());
+        QPixmap temporaryPixmap(m_battleMapImagePixmap.pixmap());
         QPainter *painter = new QPainter(&temporaryPixmap);
         painter->setPen(QPen(BATTLEMAPGRID_COLOR, BATTLEMAPGRID_LINEWIDTH, Qt::SolidLine));
         for (QGraphicsLineItem * item : m_battleMapLinesToDraw)
@@ -882,10 +882,10 @@ void WizardPageNewBattleMapOriginal::extractBattleMap()
             painter->drawLine(item->line());
         }
         delete painter;
-        m_battleMapImagePixMap.setPixmap(temporaryPixmap);
+        m_battleMapImagePixmap.setPixmap(temporaryPixmap);
     }
 
-    quint32 edgeLength = m_battleMapImagePixMap.pixmap().height() / m_battleMap->getNumberRows();
+    quint32 edgeLength = m_battleMapImagePixmap.pixmap().height() / m_battleMap->getNumberRows();
 
     m_battleMap->initBattleMapSquares();
     for (quint32 rowIdx = 0U; rowIdx < m_battleMap->getNumberRows(); rowIdx++)
@@ -894,7 +894,7 @@ void WizardPageNewBattleMapOriginal::extractBattleMap()
         {
             /* extract pixmap of Battle Map square from Battle Map image and scale it to configured size */
             QPixmap temporaryPixmap;
-            temporaryPixmap = m_battleMapImagePixMap.pixmap().copy(QRect(columnIdx * edgeLength, rowIdx * edgeLength, edgeLength, edgeLength));
+            temporaryPixmap = m_battleMapImagePixmap.pixmap().copy(QRect(columnIdx * edgeLength, rowIdx * edgeLength, edgeLength, edgeLength));
             temporaryPixmap = temporaryPixmap.scaled(QSize(BATTLEMAPSQUARE_SIZE, BATTLEMAPSQUARE_SIZE));
 
             /*  Add pixmaps to Battle Map */

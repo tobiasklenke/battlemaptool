@@ -135,7 +135,7 @@ void WizardPageNewBattleMapDisguise::editingFinishedLineEditSource()
 
         /* load Battle Map image from selected source */
         QImage battleMapImage(m_userInterface->lineEditSource->text());
-        m_battleMapImagePixMap.setPixmap(QPixmap::fromImage(battleMapImage));
+        m_battleMapImagePixmap.setPixmap(QPixmap::fromImage(battleMapImage));
 
         if (battleMapImage.isNull())
         {
@@ -336,7 +336,7 @@ void WizardPageNewBattleMapDisguise::extractBattleMap()
     if (field("checkBoxDrawBattleMapGrid").toBool())
     {
         /* draw Battle Map grid on Battle Map image */
-        QPixmap temporaryPixmap(m_battleMapImagePixMap.pixmap());
+        QPixmap temporaryPixmap(m_battleMapImagePixmap.pixmap());
         QPainter *painter = new QPainter(&temporaryPixmap);
         painter->setPen(QPen(BATTLEMAPGRID_COLOR, BATTLEMAPGRID_LINEWIDTH, Qt::SolidLine));
         for (QGraphicsLineItem * item : m_battleMapLinesToDraw)
@@ -344,10 +344,10 @@ void WizardPageNewBattleMapDisguise::extractBattleMap()
             painter->drawLine(item->line());
         }
         delete painter;
-        m_battleMapImagePixMap.setPixmap(temporaryPixmap);
+        m_battleMapImagePixmap.setPixmap(temporaryPixmap);
     }
 
-    quint32 edgeLength = m_battleMapImagePixMap.pixmap().height() / m_battleMap->getNumberRows();
+    quint32 edgeLength = m_battleMapImagePixmap.pixmap().height() / m_battleMap->getNumberRows();
 
     for (quint32 rowIdx = 0U; rowIdx < m_battleMap->getNumberRows(); rowIdx++)
     {
@@ -355,7 +355,7 @@ void WizardPageNewBattleMapDisguise::extractBattleMap()
         {
             /* extract pixmap of Battle Map square from Battle Map image and scale it to configured size */
             QPixmap temporaryPixmap;
-            temporaryPixmap = m_battleMapImagePixMap.pixmap().copy(QRect(columnIdx * edgeLength, rowIdx * edgeLength, edgeLength, edgeLength));
+            temporaryPixmap = m_battleMapImagePixmap.pixmap().copy(QRect(columnIdx * edgeLength, rowIdx * edgeLength, edgeLength, edgeLength));
             temporaryPixmap = temporaryPixmap.scaled(QSize(BATTLEMAPSQUARE_SIZE, BATTLEMAPSQUARE_SIZE));
 
             /* add Battle Map square pixmap to Battle Map */
