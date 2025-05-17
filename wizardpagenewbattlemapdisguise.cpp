@@ -109,7 +109,9 @@ void WizardPageNewBattleMapDisguise::releasedWizardPushButtonBack()
         /* stop timer for toggling the original and disguise pixmaps of Battle Map squares */
         m_pixmapToggleTimer.stop();
 
-        /* delete Battle Map squares */
+        /* reset Battle Map */
+        m_battleMap->setNumberRows(0U);
+        m_battleMap->setNumberColumns(0U);
         m_battleMap->deleteBattleMapSquares();
 
         /* reset complete page since back button has been released */

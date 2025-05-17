@@ -134,11 +134,11 @@ void WizardPageNewBattleMapOriginal::toggledRadioButtonSourceBattleMap(bool chec
 
         /* reset widgets according to their functional role for the Battle Map image source selection */
         m_userInterface->lineEditSource->setText("");
-        m_battleMap->setNumberRows(0U);
-        m_userInterface->lineEditNumberRows->setText(QString::number(m_battleMap->getNumberRows()));
+        m_userInterface->lineEditNumberRows->setText("0");
+        m_userInterface->lineEditNumberRows->setProperty("lastValid", m_userInterface->lineEditNumberRows->text());
         m_userInterface->lineEditNumberRows->setStyleSheet("");
-        m_battleMap->setNumberColumns(0U);
-        m_userInterface->lineEditNumberColumns->setText(QString::number(m_battleMap->getNumberRows()));
+        m_userInterface->lineEditNumberColumns->setText("0");
+        m_userInterface->lineEditNumberColumns->setProperty("lastValid", m_userInterface->lineEditNumberColumns->text());
         m_userInterface->lineEditNumberColumns->setStyleSheet("");
         m_userInterface->checkBoxDrawBattleMapGrid->setCheckState(Qt::Unchecked);
         m_userInterface->graphicsViewNewBattleMap->setInteractive(false);
@@ -204,10 +204,10 @@ void WizardPageNewBattleMapOriginal::toggledRadioButtonEmptyBattleMap(bool check
         /* calculate maximum number of rows and columns displayable on the player screen (each square is one inch high and one inch wide) */
         quint32 maximumNumberRows = static_cast<quint32>(calcScreenHeightInInches(settings.value(CONFIGKEY_PLAYERSCREEN_DIAGONAL).toReal(), settings.value(CONFIGKEY_PLAYERSCREEN_RESOLUTION_HEIGHT).toUInt(), settings.value(CONFIGKEY_PLAYERSCREEN_RESOLUTION_WIDTH).toUInt()));
         quint32 maximumNumberColumns = static_cast<quint32>(calcScreenWidthInInches(settings.value(CONFIGKEY_PLAYERSCREEN_DIAGONAL).toReal(), settings.value(CONFIGKEY_PLAYERSCREEN_RESOLUTION_HEIGHT).toUInt(), settings.value(CONFIGKEY_PLAYERSCREEN_RESOLUTION_WIDTH).toUInt()));
-        m_battleMap->setNumberRows(maximumNumberRows);
-        m_battleMap->setNumberColumns(maximumNumberColumns);
-        m_userInterface->lineEditNumberRows->setText(QString::number(m_battleMap->getNumberRows()));
-        m_userInterface->lineEditNumberColumns->setText(QString::number(m_battleMap->getNumberColumns()));
+        m_userInterface->lineEditNumberRows->setText(QString::number(maximumNumberRows));
+        m_userInterface->lineEditNumberRows->setProperty("lastValid", m_userInterface->lineEditNumberRows->text());
+        m_userInterface->lineEditNumberColumns->setText(QString::number(maximumNumberColumns));
+        m_userInterface->lineEditNumberColumns->setProperty("lastValid", m_userInterface->lineEditNumberColumns->text());
 
         showEmptyBattleMapImage();
     }
@@ -221,10 +221,10 @@ void WizardPageNewBattleMapOriginal::editingFinishedLineEditSource()
     if (!m_userInterface->lineEditSource->text().isEmpty())
     {
         /* reset number of Battle Map rows and columns */
-        m_battleMap->setNumberRows(0U);
-        m_battleMap->setNumberColumns(0U);
-        m_userInterface->lineEditNumberRows->setText(QString::number(m_battleMap->getNumberRows()));
-        m_userInterface->lineEditNumberColumns->setText(QString::number(m_battleMap->getNumberRows()));
+        m_userInterface->lineEditNumberRows->setText("0");
+        m_userInterface->lineEditNumberRows->setProperty("lastValid", m_userInterface->lineEditNumberRows->text());
+        m_userInterface->lineEditNumberColumns->setText("0");
+        m_userInterface->lineEditNumberColumns->setProperty("lastValid", m_userInterface->lineEditNumberColumns->text());
 
         showSourceBattleMapImage();
     }
@@ -262,16 +262,11 @@ void WizardPageNewBattleMapOriginal::editingFinishedLineEditNumberRows()
         msgBox.exec();
 
         /* reset text to last valid number of rows */
-        m_userInterface->lineEditNumberRows->setText(QString::number(m_battleMap->getNumberRows()));
-    }
-    else
-    {
-        /* update number of rows according to input value */
-        m_battleMap->setNumberRows(inputValue);
+        m_userInterface->lineEditNumberRows->setText(m_userInterface->lineEditNumberRows->property("lastValid").toString());
     }
 
     /* enable or disable push button for decrement depending on current number of rows */
-    m_userInterface->pushButtonDecrementNumberRows->setEnabled(!(BATTLEMAP_MINIMUMNUMBERROWSANDCOLUMNS == m_battleMap->getNumberRows()));
+    m_userInterface->pushButtonDecrementNumberRows->setEnabled(!(BATTLEMAP_MINIMUMNUMBERROWSANDCOLUMNS == m_userInterface->lineEditNumberRows->text().toUInt()));
 
     if (m_userInterface->radioButtonSourceBattleMap->isChecked())
     {
@@ -307,16 +302,11 @@ void WizardPageNewBattleMapOriginal::editingFinishedLineEditNumberColumns()
         msgBox.exec();
 
         /* reset text to last valid number of columns */
-        m_userInterface->lineEditNumberColumns->setText(QString::number(m_battleMap->getNumberColumns()));;
-    }
-    else
-    {
-        /* update number of columns according to input value */
-        m_battleMap->setNumberColumns(inputValue);
+        m_userInterface->lineEditNumberColumns->setText(m_userInterface->lineEditNumberColumns->property("lastValid").toString());
     }
 
     /* enable or disable push button for decrement depending on current number of columns */
-    m_userInterface->pushButtonDecrementNumberColumns->setEnabled(!(BATTLEMAP_MINIMUMNUMBERROWSANDCOLUMNS == m_battleMap->getNumberColumns()));
+    m_userInterface->pushButtonDecrementNumberColumns->setEnabled(!(BATTLEMAP_MINIMUMNUMBERROWSANDCOLUMNS == m_userInterface->lineEditNumberColumns->text().toUInt()));
 
     if (m_userInterface->radioButtonSourceBattleMap->isChecked())
     {
@@ -339,11 +329,11 @@ void WizardPageNewBattleMapOriginal::editingFinishedLineEditNumberColumns()
 void WizardPageNewBattleMapOriginal::releasedPushButtonDecrementNumberRows()
 {
     /* decrement number of rows */
-    m_battleMap->setNumberRows(m_battleMap->getNumberRows() - 1);
-    m_userInterface->lineEditNumberRows->setText(QString::number(m_battleMap->getNumberRows()));
+    m_userInterface->lineEditNumberRows->setText(QString::number(m_userInterface->lineEditNumberRows->text().toUInt() - 1U));
+    m_userInterface->lineEditNumberRows->setProperty("lastValid", m_userInterface->lineEditNumberRows->text());
 
     /* enable or disable push button for decrement depending on current number of rows */
-    m_userInterface->pushButtonDecrementNumberRows->setEnabled(!(BATTLEMAP_MINIMUMNUMBERROWSANDCOLUMNS == m_battleMap->getNumberRows()));
+    m_userInterface->pushButtonDecrementNumberRows->setEnabled(!(BATTLEMAP_MINIMUMNUMBERROWSANDCOLUMNS == m_userInterface->lineEditNumberRows->text().toUInt()));
 
     if (m_userInterface->radioButtonSourceBattleMap->isChecked())
     {
@@ -366,8 +356,8 @@ void WizardPageNewBattleMapOriginal::releasedPushButtonDecrementNumberRows()
 void WizardPageNewBattleMapOriginal::releasedPushButtonIncrementNumberRows()
 {
     /* increment number of rows */
-    m_battleMap->setNumberRows(m_battleMap->getNumberRows() + 1);
-    m_userInterface->lineEditNumberRows->setText(QString::number(m_battleMap->getNumberRows()));
+    m_userInterface->lineEditNumberRows->setText(QString::number(m_userInterface->lineEditNumberRows->text().toUInt() + 1U));
+    m_userInterface->lineEditNumberRows->setProperty("lastValid", m_userInterface->lineEditNumberRows->text());
 
     /* enable push button for decrement */
     m_userInterface->pushButtonDecrementNumberRows->setEnabled(true);
@@ -393,11 +383,11 @@ void WizardPageNewBattleMapOriginal::releasedPushButtonIncrementNumberRows()
 void WizardPageNewBattleMapOriginal::releasedPushButtonDecrementNumberColumns()
 {
     /* decrement number of columns */
-    m_battleMap->setNumberColumns(m_battleMap->getNumberColumns() - 1);
-    m_userInterface->lineEditNumberColumns->setText(QString::number(m_battleMap->getNumberColumns()));
+    m_userInterface->lineEditNumberColumns->setText(QString::number(m_userInterface->lineEditNumberColumns->text().toUInt() - 1U));
+    m_userInterface->lineEditNumberColumns->setProperty("lastValid", m_userInterface->lineEditNumberColumns->text());
 
     /* enable or disable push button for decrement depending on current number of columns */
-    m_userInterface->pushButtonDecrementNumberColumns->setEnabled(!(BATTLEMAP_MINIMUMNUMBERROWSANDCOLUMNS == m_battleMap->getNumberColumns()));
+    m_userInterface->pushButtonDecrementNumberColumns->setEnabled(!(BATTLEMAP_MINIMUMNUMBERROWSANDCOLUMNS == m_userInterface->lineEditNumberColumns->text().toUInt()));
 
     if (m_userInterface->radioButtonSourceBattleMap->isChecked())
     {
@@ -420,8 +410,8 @@ void WizardPageNewBattleMapOriginal::releasedPushButtonDecrementNumberColumns()
 void WizardPageNewBattleMapOriginal::releasedPushButtonIncrementNumberColumns()
 {
     /* increment number of columns */
-    m_battleMap->setNumberColumns(m_battleMap->getNumberColumns() + 1);
-    m_userInterface->lineEditNumberColumns->setText(QString::number(m_battleMap->getNumberColumns()));
+    m_userInterface->lineEditNumberColumns->setText(QString::number(m_userInterface->lineEditNumberColumns->text().toUInt() + 1U));
+    m_userInterface->lineEditNumberColumns->setProperty("lastValid", m_userInterface->lineEditNumberColumns->text());
 
     /* enable push button for decrement */
     m_userInterface->pushButtonDecrementNumberColumns->setEnabled(true);
@@ -496,13 +486,13 @@ void WizardPageNewBattleMapOriginal::selectedBattleMapSquare()
         }
 
         /* update number of rows and columns according to optimized edge length of Battle Map squares */
-        m_battleMap->setNumberRows(m_battleMapImagePixmap.pixmap().height() / averageEdgeLength);
-        m_battleMap->setNumberColumns(m_battleMapImagePixmap.pixmap().width() / averageEdgeLength);
-        m_userInterface->lineEditNumberRows->setText(QString::number(m_battleMap->getNumberRows()));
-        m_userInterface->lineEditNumberColumns->setText(QString::number(m_battleMap->getNumberColumns()));
+        m_userInterface->lineEditNumberRows->setText(QString::number(m_battleMapImagePixmap.pixmap().height() / averageEdgeLength));
+        m_userInterface->lineEditNumberRows->setProperty("lastValid", m_userInterface->lineEditNumberRows->text());
+        m_userInterface->lineEditNumberColumns->setText(QString::number(m_battleMapImagePixmap.pixmap().width() / averageEdgeLength));
+        m_userInterface->lineEditNumberColumns->setProperty("lastValid", m_userInterface->lineEditNumberColumns->text());
 
         /* check if calculated numbers of rows and columns are reasonable */
-        if (BATTLEMAPSELECTION_MAXIMUMNUMBERROWS < m_battleMap->getNumberRows() || BATTLEMAPSELECTION_MAXIMUMNUMBERCOLUMNS < m_battleMap->getNumberColumns())
+        if (BATTLEMAPSELECTION_MAXIMUMNUMBERROWS < m_userInterface->lineEditNumberRows->text().toUInt() || BATTLEMAPSELECTION_MAXIMUMNUMBERCOLUMNS < m_userInterface->lineEditNumberColumns->text().toUInt())
         {
             /* handle toggle of radioButtonSourceBattleMap as error in number of rows or columns requires reselection of source */
             toggledRadioButtonSourceBattleMap(true);
@@ -539,11 +529,11 @@ void WizardPageNewBattleMapOriginal::selectedBattleMapSquare()
     else
     {
         /* reset number of rows and columns and corresponding widgets as no valid Battle Map square has been selected */
-        m_battleMap->setNumberRows(0U);
-        m_userInterface->lineEditNumberRows->setText(QString::number(m_battleMap->getNumberRows()));
+        m_userInterface->lineEditNumberRows->setText("0");
+        m_userInterface->lineEditNumberRows->setProperty("lastValid", m_userInterface->lineEditNumberRows->text());
         m_userInterface->lineEditNumberRows->setStyleSheet("");
-        m_battleMap->setNumberColumns(0U);
-        m_userInterface->lineEditNumberColumns->setText(QString::number(m_battleMap->getNumberColumns()));
+        m_userInterface->lineEditNumberColumns->setText("0");
+        m_userInterface->lineEditNumberColumns->setProperty("lastValid", m_userInterface->lineEditNumberColumns->text());
         m_userInterface->lineEditNumberColumns->setStyleSheet("");
 
         /* disable widgets for editing of numbers of rows and columns for readjustment */
@@ -584,23 +574,23 @@ void WizardPageNewBattleMapOriginal::drawBattleMapGrid(int state)
         pen = QPen(BATTLEMAPGRID_COLOR, BATTLEMAPGRID_LINEWIDTH * (1 / m_scaleFactor), Qt::DotLine);
     }
 
-    if (0U < m_battleMap->getNumberRows() && 0U < m_battleMap->getNumberColumns())
+    if (0U < m_userInterface->lineEditNumberRows->text().toUInt() && 0U < m_userInterface->lineEditNumberColumns->text().toUInt())
     {
         /* draw horizontal Battle Map lines and add them to Battle Map scene */
-        quint32 edgeLengthRows = m_battleMapImagePixmap.pixmap().height() / m_battleMap->getNumberRows();
-        for (quint32 rowIdx = 0U; rowIdx < m_battleMap->getNumberRows() + 1; rowIdx++)
+        quint32 edgeLengthRows = m_battleMapImagePixmap.pixmap().height() / m_userInterface->lineEditNumberRows->text().toUInt();
+        for (quint32 rowIdx = 0U; rowIdx < m_userInterface->lineEditNumberRows->text().toUInt() + 1; rowIdx++)
         {
-            QGraphicsLineItem * battleMapLineToDraw = new QGraphicsLineItem(QLineF(0, rowIdx * edgeLengthRows, m_battleMap->getNumberColumns() * edgeLengthRows, rowIdx * edgeLengthRows));
+            QGraphicsLineItem * battleMapLineToDraw = new QGraphicsLineItem(QLineF(0, rowIdx * edgeLengthRows, m_userInterface->lineEditNumberColumns->text().toUInt() * edgeLengthRows, rowIdx * edgeLengthRows));
             battleMapLineToDraw->setPen(pen);
             m_battleMapLinesToDraw.append(battleMapLineToDraw);
             m_battleMapScene->addItem(m_battleMapLinesToDraw.last());
         }
 
         /* draw vertical Battle Map lines and add them to Battle Map scene */
-        quint32 edgeLengthColumns = m_battleMapImagePixmap.pixmap().width() / m_battleMap->getNumberColumns();
-        for (quint32 columnIdx = 0U; columnIdx < m_battleMap->getNumberColumns() + 1; columnIdx++)
+        quint32 edgeLengthColumns = m_battleMapImagePixmap.pixmap().width() / m_userInterface->lineEditNumberColumns->text().toUInt();
+        for (quint32 columnIdx = 0U; columnIdx < m_userInterface->lineEditNumberColumns->text().toUInt() + 1; columnIdx++)
         {
-            QGraphicsLineItem * battleMapLineToDraw = new QGraphicsLineItem(QLineF(columnIdx * edgeLengthColumns, 0, columnIdx * edgeLengthColumns, m_battleMap->getNumberRows() * edgeLengthColumns));
+            QGraphicsLineItem * battleMapLineToDraw = new QGraphicsLineItem(QLineF(columnIdx * edgeLengthColumns, 0, columnIdx * edgeLengthColumns, m_userInterface->lineEditNumberRows->text().toUInt() * edgeLengthColumns));
             battleMapLineToDraw->setPen(pen);
             m_battleMapLinesToDraw.append(battleMapLineToDraw);
             m_battleMapScene->addItem(m_battleMapLinesToDraw.last());
@@ -664,11 +654,11 @@ void WizardPageNewBattleMapOriginal::showEmptyBattleMapImage()
     emptyBattleMapSquare = emptyBattleMapSquare.scaledToWidth(BATTLEMAPSQUARE_SIZE);
 
     /* construct empty Battle Map image from number of empty Battle Map squares according to number of rows and columns */
-    QPixmap temporaryPixmap(QSize(m_battleMap->getNumberColumns()* BATTLEMAPSQUARE_SIZE, m_battleMap->getNumberRows() * BATTLEMAPSQUARE_SIZE));
+    QPixmap temporaryPixmap(QSize(m_userInterface->lineEditNumberColumns->text().toUInt()* BATTLEMAPSQUARE_SIZE, m_userInterface->lineEditNumberRows->text().toUInt() * BATTLEMAPSQUARE_SIZE));
     QPainter *painter = new QPainter(&temporaryPixmap);
-    for (quint32 rowIdx = 0U; rowIdx < m_battleMap->getNumberRows(); rowIdx++)
+    for (quint32 rowIdx = 0U; rowIdx < m_userInterface->lineEditNumberRows->text().toUInt(); rowIdx++)
     {
-        for (quint32 columnIdx = 0U; columnIdx < m_battleMap->getNumberColumns(); columnIdx++)
+        for (quint32 columnIdx = 0U; columnIdx < m_userInterface->lineEditNumberColumns->text().toUInt(); columnIdx++)
         {
             QRect targetRect = QRect(columnIdx * BATTLEMAPSQUARE_SIZE, rowIdx * BATTLEMAPSQUARE_SIZE, BATTLEMAPSQUARE_SIZE, BATTLEMAPSQUARE_SIZE);
             QRect sourceRect = emptyBattleMapSquare.rect();
@@ -748,17 +738,17 @@ void WizardPageNewBattleMapOriginal::showSourceBattleMapImage()
 void WizardPageNewBattleMapOriginal::correctNumberRows()
 {
     /* correct number of rows considering Battle Map squares aspect ratio */
-    quint32 edgeLength = m_battleMapImagePixmap.pixmap().width() / m_battleMap->getNumberColumns();
+    quint32 edgeLength = m_battleMapImagePixmap.pixmap().width() / m_userInterface->lineEditNumberColumns->text().toUInt();
     quint32 numberRows = m_battleMapImagePixmap.pixmap().height() / edgeLength;
 
     /* do not decrement number of rows to 0 */
     if (0U < numberRows)
     {
-        m_battleMap->setNumberRows(numberRows);
-        m_userInterface->lineEditNumberRows->setText(QString::number(m_battleMap->getNumberRows()));
+        m_userInterface->lineEditNumberRows->setText(QString::number(numberRows));
+        m_userInterface->lineEditNumberRows->setProperty("lastValid", m_userInterface->lineEditNumberRows->text());
 
         /* enable or disable push button for decrement depending on current number of rows */
-        m_userInterface->pushButtonDecrementNumberRows->setEnabled(!(BATTLEMAP_MINIMUMNUMBERROWSANDCOLUMNS == m_battleMap->getNumberRows()));
+        m_userInterface->pushButtonDecrementNumberRows->setEnabled(!(BATTLEMAP_MINIMUMNUMBERROWSANDCOLUMNS == m_userInterface->lineEditNumberRows->text().toUInt()));
     }
 }
 
@@ -768,17 +758,17 @@ void WizardPageNewBattleMapOriginal::correctNumberRows()
 void WizardPageNewBattleMapOriginal::correctNumberColumns()
 {
     /* correct number of columns considering Battle Map squares aspect ratio */
-    quint32 edgeLength = m_battleMapImagePixmap.pixmap().height() / m_battleMap->getNumberRows();
+    quint32 edgeLength = m_battleMapImagePixmap.pixmap().height() / m_userInterface->lineEditNumberRows->text().toUInt();
     quint32 numberColumns = m_battleMapImagePixmap.pixmap().width() / edgeLength;
 
     /* do not decrement number of columns to 0 */
     if (0U < numberColumns)
     {
-        m_battleMap->setNumberColumns(numberColumns);
-        m_userInterface->lineEditNumberColumns->setText(QString::number(m_battleMap->getNumberColumns()));
+        m_userInterface->lineEditNumberColumns->setText(QString::number(numberColumns));
+        m_userInterface->lineEditNumberColumns->setProperty("lastValid", m_userInterface->lineEditNumberColumns->text());
 
         /* enable or disable push button for decrement depending on current number of columns */
-        m_userInterface->pushButtonDecrementNumberColumns->setEnabled(!(BATTLEMAP_MINIMUMNUMBERROWSANDCOLUMNS == m_battleMap->getNumberColumns()));
+        m_userInterface->pushButtonDecrementNumberColumns->setEnabled(!(BATTLEMAP_MINIMUMNUMBERROWSANDCOLUMNS == m_userInterface->lineEditNumberColumns->text().toUInt()));
     }
 }
 
@@ -790,12 +780,12 @@ void WizardPageNewBattleMapOriginal::checkBattleMapGrid()
     bool validBattleMapGrid = true;
 
     /* calculate height and width of Battle Map squares */
-    quint32 edgeLengthHeigth = m_battleMapImagePixmap.pixmap().height() / m_battleMap->getNumberRows();
-    quint32 edgeLengthWidth = m_battleMapImagePixmap.pixmap().width() / m_battleMap->getNumberColumns();
+    quint32 edgeLengthHeigth = m_battleMapImagePixmap.pixmap().height() / m_userInterface->lineEditNumberRows->text().toUInt();
+    quint32 edgeLengthWidth = m_battleMapImagePixmap.pixmap().width() / m_userInterface->lineEditNumberColumns->text().toUInt();
 
     if (edgeLengthHeigth == edgeLengthWidth)
     {
-        if ((edgeLengthHeigth * m_battleMap->getNumberRows()) != static_cast<quint32>(m_battleMapImagePixmap.pixmap().height()))
+        if ((edgeLengthHeigth * m_userInterface->lineEditNumberRows->text().toUInt()) != static_cast<quint32>(m_battleMapImagePixmap.pixmap().height()))
         {
             /* set background color of lineEditNumberRows to red if number of rows does not match Battle Map image size */
             m_userInterface->lineEditNumberRows->setStyleSheet(QString("#%1 { background-color: red; }").arg(m_userInterface->lineEditNumberRows->objectName()));
@@ -807,7 +797,7 @@ void WizardPageNewBattleMapOriginal::checkBattleMapGrid()
             m_userInterface->lineEditNumberRows->setStyleSheet("");
         }
 
-        if ((edgeLengthWidth * m_battleMap->getNumberColumns()) != static_cast<quint32>(m_battleMapImagePixmap.pixmap().width()))
+        if ((edgeLengthWidth * m_userInterface->lineEditNumberColumns->text().toUInt()) != static_cast<quint32>(m_battleMapImagePixmap.pixmap().width()))
         {
             /* set background color of lineEditNumberColumns to red if number of columns does not match Battle Map image size */
             m_userInterface->lineEditNumberColumns->setStyleSheet(QString("#%1 { background-color: red; }").arg(m_userInterface->lineEditNumberColumns->objectName()));
@@ -885,7 +875,10 @@ void WizardPageNewBattleMapOriginal::extractBattleMap()
         m_battleMapImagePixmap.setPixmap(temporaryPixmap);
     }
 
-    quint32 edgeLength = m_battleMapImagePixmap.pixmap().height() / m_battleMap->getNumberRows();
+    quint32 edgeLength = m_battleMapImagePixmap.pixmap().height() / m_userInterface->lineEditNumberRows->text().toUInt();
+
+    m_battleMap->setNumberRows(m_userInterface->lineEditNumberRows->text().toUInt());
+    m_battleMap->setNumberColumns(m_userInterface->lineEditNumberColumns->text().toUInt());
 
     m_battleMap->initBattleMapSquares();
     for (quint32 rowIdx = 0U; rowIdx < m_battleMap->getNumberRows(); rowIdx++)
