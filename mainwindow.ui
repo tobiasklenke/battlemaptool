@@ -193,6 +193,7 @@
      <addaction name="actionWindRoseOrientationWest"/>
     </widget>
     <addaction name="actionUpdatePlayerScreen"/>
+    <addaction name="actionResetPlayerScreen"/>
     <addaction name="separator"/>
     <addaction name="submenuWindRoseOrientation"/>
     <addaction name="separator"/>
@@ -605,6 +606,21 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+S</string>
+   </property>
+  </action>
+  <action name="actionResetPlayerScreen">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="icons.qrc">
+     <normaloff>:/icons/icons/resetplayerscreen.png</normaloff>:/icons/icons/resetplayerscreen.png</iconset>
+   </property>
+   <property name="text">
+    <string>Reset Player Screen</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+R</string>
    </property>
   </action>
  </widget>

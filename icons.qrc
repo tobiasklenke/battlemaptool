@@ -25,6 +25,7 @@
         <file>icons/rotateleft.png</file>
         <file>icons/rotateright.png</file>
         <file>icons/opensettings.png</file>
+        <file>icons/resetplayerscreen.png</file>
     </qresource>
     <qresource prefix="/"/>
 </RCC>

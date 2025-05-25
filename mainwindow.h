@@ -285,6 +285,15 @@ private slots:
     void triggeredActionUpdatePlayerScreen();
 
     /*! *********************************************************************************************************************************************
+     * \brief   This function handles the action actionResetPlayerScreen.                                                                           *
+     *                                                                                                                                              *
+     * \details -                                                                                                                                   *
+     *                                                                                                                                              *
+     * \return  This function does not have any return value.                                                                                       *
+     ************************************************************************************************************************************************/
+    void triggeredActionResetPlayerScreen();
+
+    /*! *********************************************************************************************************************************************
      * \brief   This function handles the actions actionWindRoseOrientationNorth to actionWindRoseOrientationWest.                                  *
      *                                                                                                                                              *
      * \details This function chooses the wind rose orientation depending on the action and updates the visibility of the wind rose on master and   *

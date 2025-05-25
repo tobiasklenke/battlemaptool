@@ -86,6 +86,7 @@ MainWindow::MainWindow(QGraphicsView *playerWindow, QWidget *parent) :
 
     /* connect signals and slots of actions from menu View */
     connect(m_userInterface->actionUpdatePlayerScreen, &QAction::triggered, this, &MainWindow::triggeredActionUpdatePlayerScreen);
+    connect(m_userInterface->actionResetPlayerScreen, &QAction::triggered, this, &MainWindow::triggeredActionResetPlayerScreen);
     connect(m_userInterface->actionWindRoseOrientationNorth, &QAction::triggered, this, &MainWindow::triggeredActionWindRoseOrientation);
     connect(m_userInterface->actionWindRoseOrientationEast, &QAction::triggered, this, &MainWindow::triggeredActionWindRoseOrientation);
     connect(m_userInterface->actionWindRoseOrientationSouth, &QAction::triggered, this, &MainWindow::triggeredActionWindRoseOrientation);
@@ -452,8 +453,21 @@ void MainWindow::triggeredActionUpdatePlayerScreen()
     /*  update Battle Map image on player screen */
     m_playerScreenHandler.updateBattleMapImage();
 
+    m_userInterface->actionResetPlayerScreen->setEnabled(true);
+
     /* clear undo stack */
     m_undoStack->clear();
+}
+
+/*!
+ * \brief This function handles the action actionResetPlayerScreen.
+ */
+void MainWindow::triggeredActionResetPlayerScreen()
+{
+    /*  reset Battle Map image on player screen */
+    m_playerScreenHandler.initBattleMapImage();
+
+    m_userInterface->actionResetPlayerScreen->setEnabled(false);
 }
 
 /*!
