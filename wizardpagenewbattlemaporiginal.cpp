@@ -30,18 +30,18 @@ WizardPageNewBattleMapOriginal::WizardPageNewBattleMapOriginal(BattleMap *battle
     m_userInterface->graphicsViewNewBattleMap->setBackgroundRole(QPalette::Window);
 
     /* connect signals and slots of user interface widgets */
-    connect(m_userInterface->radioButtonSourceBattleMap, SIGNAL(toggled(bool)), this, SLOT(toggledRadioButtonSourceBattleMap(bool)));
-    connect(m_userInterface->radioButtonEmptyBattleMap, SIGNAL(toggled(bool)), this, SLOT(toggledRadioButtonEmptyBattleMap(bool)));
-    connect(m_userInterface->lineEditSource, SIGNAL(editingFinished()), this, SLOT(editingFinishedLineEditSource()));
-    connect(m_userInterface->pushButtonSelectSource, SIGNAL(released()), this, SLOT(releasedPushButtonSelectSource()));
-    connect(m_userInterface->lineEditNumberRows, SIGNAL(editingFinished()), this, SLOT(editingFinishedLineEditNumberRows()));
-    connect(m_userInterface->lineEditNumberColumns, SIGNAL(editingFinished()), this, SLOT(editingFinishedLineEditNumberColumns()));
-    connect(m_userInterface->pushButtonDecrementNumberRows, SIGNAL(released()), this, SLOT(releasedPushButtonDecrementNumberRows()));
-    connect(m_userInterface->pushButtonIncrementNumberRows, SIGNAL(released()), this, SLOT(releasedPushButtonIncrementNumberRows()));
-    connect(m_userInterface->pushButtonDecrementNumberColumns, SIGNAL(released()), this, SLOT(releasedPushButtonDecrementNumberColumns()));
-    connect(m_userInterface->pushButtonIncrementNumberColumns, SIGNAL(released()), this, SLOT(releasedPushButtonIncrementNumberColumns()));
-    connect(m_userInterface->checkBoxDrawBattleMapGrid, SIGNAL(stateChanged(int)), this, SLOT(drawBattleMapGrid(int)));
-    connect(m_userInterface->graphicsViewNewBattleMap, SIGNAL(changedScaleFactor(qreal)), this, SLOT(changedScaleFactor(qreal)));
+    connect(m_userInterface->radioButtonSourceBattleMap, &QRadioButton::toggled, this, &WizardPageNewBattleMapOriginal::toggledRadioButtonSourceBattleMap);
+    connect(m_userInterface->radioButtonEmptyBattleMap, &QRadioButton::toggled, this, &WizardPageNewBattleMapOriginal::toggledRadioButtonEmptyBattleMap);
+    connect(m_userInterface->lineEditSource, &QLineEdit::editingFinished, this, &WizardPageNewBattleMapOriginal::editingFinishedLineEditSource);
+    connect(m_userInterface->pushButtonSelectSource, &QPushButton::released, this, &WizardPageNewBattleMapOriginal::releasedPushButtonSelectSource);
+    connect(m_userInterface->lineEditNumberRows, &QLineEdit::editingFinished, this, &WizardPageNewBattleMapOriginal::editingFinishedLineEditNumberRows);
+    connect(m_userInterface->lineEditNumberColumns, &QLineEdit::editingFinished, this, &WizardPageNewBattleMapOriginal::editingFinishedLineEditNumberColumns);
+    connect(m_userInterface->pushButtonDecrementNumberRows, &QPushButton::released, this, &WizardPageNewBattleMapOriginal::releasedPushButtonDecrementNumberRows);
+    connect(m_userInterface->pushButtonIncrementNumberRows, &QPushButton::released, this, &WizardPageNewBattleMapOriginal::releasedPushButtonIncrementNumberRows);
+    connect(m_userInterface->pushButtonDecrementNumberColumns, &QPushButton::released, this, &WizardPageNewBattleMapOriginal::releasedPushButtonDecrementNumberColumns);
+    connect(m_userInterface->pushButtonIncrementNumberColumns, &QPushButton::released, this, &WizardPageNewBattleMapOriginal::releasedPushButtonIncrementNumberColumns);
+    connect(m_userInterface->checkBoxDrawBattleMapGrid, &QCheckBox::stateChanged, this, &WizardPageNewBattleMapOriginal::drawBattleMapGrid);
+    connect(m_userInterface->graphicsViewNewBattleMap, &CustomGraphicsView::changedScaleFactor, this, &WizardPageNewBattleMapOriginal::changedScaleFactor);
 
     toggledRadioButtonSourceBattleMap(true);
 }
@@ -62,8 +62,8 @@ WizardPageNewBattleMapOriginal::~WizardPageNewBattleMapOriginal()
 void WizardPageNewBattleMapOriginal::initializePage()
 {
     /* connect signals and slots of push buttons of wizard */
-    connect(wizard()->button(QWizard::NextButton), SIGNAL(released()), this, SLOT(releasedWizardPushButtonNext()));
-    connect(wizard()->button(QWizard::FinishButton), SIGNAL(released()), this, SLOT(releasedWizardPushButtonFinish()));
+    connect(wizard()->button(QWizard::NextButton), &QAbstractButton::released, this, &WizardPageNewBattleMapOriginal::releasedWizardPushButtonNext);
+    connect(wizard()->button(QWizard::FinishButton), &QAbstractButton::released, this, &WizardPageNewBattleMapOriginal::releasedWizardPushButtonFinish);
 }
 
 /*!
@@ -151,7 +151,7 @@ void WizardPageNewBattleMapOriginal::toggledRadioButtonSourceBattleMap(bool chec
         /* reset and reconnect Battle Map scene */
         deleteBattleMapScene();
         m_battleMapScene = new BattleMapSceneSquareSelection();
-        connect(m_battleMapScene, SIGNAL(selectedBattleMapSquare()), this, SLOT(selectedBattleMapSquare()));
+        connect(m_battleMapScene, &BattleMapSceneSquareSelection::selectedBattleMapSquare, this, &WizardPageNewBattleMapOriginal::selectedBattleMapSquare);
 
         /* set Battle Map scene to graphics view and add text asking user to select source */
         m_userInterface->graphicsViewNewBattleMap->setScene(m_battleMapScene);
@@ -686,7 +686,7 @@ void WizardPageNewBattleMapOriginal::showSourceBattleMapImage()
     /* reset and reconnect Battle Map scene */
     deleteBattleMapScene();
     m_battleMapScene = new BattleMapSceneSquareSelection();
-    connect(m_battleMapScene, SIGNAL(selectedBattleMapSquare()), this, SLOT(selectedBattleMapSquare()));
+    connect(m_battleMapScene, &BattleMapSceneSquareSelection::selectedBattleMapSquare, this, &WizardPageNewBattleMapOriginal::selectedBattleMapSquare);
     m_userInterface->graphicsViewNewBattleMap->setScene(m_battleMapScene);
 
     /* reset graphics view */

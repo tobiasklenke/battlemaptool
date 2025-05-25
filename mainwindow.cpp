@@ -59,51 +59,51 @@ MainWindow::MainWindow(QGraphicsView *playerWindow, QWidget *parent) :
     m_windRoseOrientationActionGroup->setExclusionPolicy(QActionGroup::ExclusionPolicy::ExclusiveOptional);
 
     /* connect signals of QGuiApplication and slots */
-    connect(QGuiApplication::instance(), SIGNAL(screenAdded(QScreen*)), this, SLOT(screenAdded(QScreen*)));
-    connect(QGuiApplication::instance(), SIGNAL(screenRemoved(QScreen*)), this, SLOT(screenRemoved(QScreen*)));
+    connect(static_cast<QGuiApplication*>(QGuiApplication::instance()), &QGuiApplication::screenAdded, this, &MainWindow::screenAdded);
+    connect(static_cast<QGuiApplication*>(QGuiApplication::instance()), &QGuiApplication::screenRemoved, this, &MainWindow::screenRemoved);
 
     /* connect signals and slots of actions from menu File */
-    connect(m_userInterface->actionNewBattleMap, SIGNAL(triggered()), this, SLOT(triggeredActionNewBattleMap()));
-    connect(m_userInterface->actionOpenBattleMap, SIGNAL(triggered()), this, SLOT(triggeredActionOpenBattleMap()));
-    connect(m_userInterface->actionQuit, SIGNAL(triggered()), QApplication::instance(), SLOT(quit()));
+    connect(m_userInterface->actionNewBattleMap, &QAction::triggered, this, &MainWindow::triggeredActionNewBattleMap);
+    connect(m_userInterface->actionOpenBattleMap, &QAction::triggered, this, &MainWindow::triggeredActionOpenBattleMap);
+    connect(m_userInterface->actionQuit, &QAction::triggered, QApplication::instance(), &QCoreApplication::quit);
 
     /* connect signals and slots of actions from menu Edit */
-    connect(m_userInterface->actionCopy, SIGNAL(triggered()), this, SLOT(triggeredActionCopy()));
-    connect(m_userInterface->actionPaste, SIGNAL(triggered()), this, SLOT(triggeredActionPaste()));
-    connect(m_userInterface->actionInsertRowAbove, SIGNAL(triggered()), this, SLOT(triggeredActionInsertRowAbove()));
-    connect(m_userInterface->actionInsertRowBelow, SIGNAL(triggered()), this, SLOT(triggeredActionInsertRowBelow()));
-    connect(m_userInterface->actionInsertColumnLeft, SIGNAL(triggered()), this, SLOT(triggeredActionInsertColumnLeft()));
-    connect(m_userInterface->actionInsertColumnRight, SIGNAL(triggered()), this, SLOT(triggeredActionInsertColumnRight()));
-    connect(m_userInterface->actionDeleteRowAbove, SIGNAL(triggered()), this, SLOT(triggeredActionDeleteRowAbove()));
-    connect(m_userInterface->actionDeleteRowBelow, SIGNAL(triggered()), this, SLOT(triggeredActionDeleteRowBelow()));
-    connect(m_userInterface->actionDeleteColumnLeft, SIGNAL(triggered()), this, SLOT(triggeredActionDeleteColumnLeft()));
-    connect(m_userInterface->actionDeleteColumnRight, SIGNAL(triggered()), this, SLOT(triggeredActionDeleteColumnRight()));
-    connect(m_userInterface->actionRotateBattleMapLeft, SIGNAL(triggered()), this, SLOT(triggeredActionRotateBattleMapLeft()));
-    connect(m_userInterface->actionRotateBattleMapRight, SIGNAL(triggered()), this, SLOT(triggeredActionRotateBattleMapRight()));
+    connect(m_userInterface->actionCopy, &QAction::triggered, this, &MainWindow::triggeredActionCopy);
+    connect(m_userInterface->actionPaste, &QAction::triggered, this, &MainWindow::triggeredActionPaste);
+    connect(m_userInterface->actionInsertRowAbove, &QAction::triggered, this, &MainWindow::triggeredActionInsertRowAbove);
+    connect(m_userInterface->actionInsertRowBelow, &QAction::triggered, this, &MainWindow::triggeredActionInsertRowBelow);
+    connect(m_userInterface->actionInsertColumnLeft, &QAction::triggered, this, &MainWindow::triggeredActionInsertColumnLeft);
+    connect(m_userInterface->actionInsertColumnRight, &QAction::triggered, this, &MainWindow::triggeredActionInsertColumnRight);
+    connect(m_userInterface->actionDeleteRowAbove, &QAction::triggered, this, &MainWindow::triggeredActionDeleteRowAbove);
+    connect(m_userInterface->actionDeleteRowBelow, &QAction::triggered, this, &MainWindow::triggeredActionDeleteRowBelow);
+    connect(m_userInterface->actionDeleteColumnLeft, &QAction::triggered, this, &MainWindow::triggeredActionDeleteColumnLeft);
+    connect(m_userInterface->actionDeleteColumnRight, &QAction::triggered, this, &MainWindow::triggeredActionDeleteColumnRight);
+    connect(m_userInterface->actionRotateBattleMapLeft, &QAction::triggered, this, &MainWindow::triggeredActionRotateBattleMapLeft);
+    connect(m_userInterface->actionRotateBattleMapRight, &QAction::triggered, this, &MainWindow::triggeredActionRotateBattleMapRight);
 
     /* connect signals and slots of master screen handler */
-    connect(&m_masterScreenHandler, SIGNAL(changedSelection(bool)), this, SLOT(changedSelection(bool)));
+    connect(&m_masterScreenHandler, &MasterScreenHandler::changedSelection, this, &MainWindow::changedSelection);
 
     /* connect signals and slots of actions from menu View */
-    connect(m_userInterface->actionUpdatePlayerScreen, SIGNAL(triggered()), this, SLOT(triggeredActionUpdatePlayerScreen()));
-    connect(m_userInterface->actionWindRoseOrientationNorth, SIGNAL(triggered()), this, SLOT(triggeredActionWindRoseOrientation()));
-    connect(m_userInterface->actionWindRoseOrientationEast, SIGNAL(triggered()), this, SLOT(triggeredActionWindRoseOrientation()));
-    connect(m_userInterface->actionWindRoseOrientationSouth, SIGNAL(triggered()), this, SLOT(triggeredActionWindRoseOrientation()));
-    connect(m_userInterface->actionWindRoseOrientationWest, SIGNAL(triggered()), this, SLOT(triggeredActionWindRoseOrientation()));
-    connect(m_userInterface->modeSelect, SIGNAL(toggled(bool)), this, SLOT(toggledModeSelect(bool)));
-    connect(m_userInterface->modeCoverBattleMap, SIGNAL(toggled(bool)), this, SLOT(toggledModeCoverBattleMap(bool)));
-    connect(m_userInterface->modeUncoverBattleMap, SIGNAL(toggled(bool)), this, SLOT(toggledModeUncoverBattleMap(bool)));
+    connect(m_userInterface->actionUpdatePlayerScreen, &QAction::triggered, this, &MainWindow::triggeredActionUpdatePlayerScreen);
+    connect(m_userInterface->actionWindRoseOrientationNorth, &QAction::triggered, this, &MainWindow::triggeredActionWindRoseOrientation);
+    connect(m_userInterface->actionWindRoseOrientationEast, &QAction::triggered, this, &MainWindow::triggeredActionWindRoseOrientation);
+    connect(m_userInterface->actionWindRoseOrientationSouth, &QAction::triggered, this, &MainWindow::triggeredActionWindRoseOrientation);
+    connect(m_userInterface->actionWindRoseOrientationWest, &QAction::triggered, this, &MainWindow::triggeredActionWindRoseOrientation);
+    connect(m_userInterface->modeSelect, &QAction::toggled, this, &MainWindow::toggledModeSelect);
+    connect(m_userInterface->modeCoverBattleMap, &QAction::toggled, this, &MainWindow::toggledModeCoverBattleMap);
+    connect(m_userInterface->modeUncoverBattleMap, &QAction::toggled, this, &MainWindow::toggledModeUncoverBattleMap);
 
     /* connect signals and slots of actions from menu Settings */
-    connect(m_userInterface->actionOpenSettings, SIGNAL(triggered()), this, SLOT(triggeredActionOpenSettings()));
+    connect(m_userInterface->actionOpenSettings, &QAction::triggered, this, &MainWindow::triggeredActionOpenSettings);
 
     /* connect signals and slots of actions from menu shown on right mouse button click */
-    connect(m_userInterface->actionCoverBattleMap, SIGNAL(triggered()), this, SLOT(triggeredActionCoverBattleMap()));
-    connect(m_userInterface->actionUncoverBattleMap, SIGNAL(triggered()), this, SLOT(triggeredActionUncoverBattleMap()));
+    connect(m_userInterface->actionCoverBattleMap, &QAction::triggered, this, &MainWindow::triggeredActionCoverBattleMap);
+    connect(m_userInterface->actionUncoverBattleMap, &QAction::triggered, this, &MainWindow::triggeredActionUncoverBattleMap);
 
     /* connect signals and slots of other user interface widges */
-    connect(m_userInterface->graphicsViewBattleMapMasterScreen, SIGNAL(changedScaleFactor(qreal)), this, SLOT(changedScaleFactor(qreal)));
-    connect(m_userInterface->graphicsViewBattleMapMasterScreen, SIGNAL(pressedRightMouseButton(QPoint)), this, SLOT(pressedRightMouseButton(QPoint)));
+    connect(m_userInterface->graphicsViewBattleMapMasterScreen, &CustomGraphicsView::changedScaleFactor, this, &MainWindow::changedScaleFactor);
+    connect(m_userInterface->graphicsViewBattleMapMasterScreen, &CustomGraphicsView::pressedRightMouseButton, this, &MainWindow::pressedRightMouseButton);
 
     /* make labels invisible so that they are not shown initially when there is no Battle Map */
     m_userInterface->labelWindRose->setVisible(false);
@@ -235,8 +235,8 @@ void MainWindow::triggeredActionNewBattleMap()
     m_wizardNewBattleMap = new WizardNewBattleMap(this);
 
     /* connect signals and slots of the wizard WizardNewBattleMap */
-    connect(m_wizardNewBattleMap, SIGNAL(accepted()), this, SLOT(acceptedWizardNewBattleMap()));
-    connect(m_wizardNewBattleMap, SIGNAL(rejected()), this, SLOT(rejectedWizardNewBattleMap()));
+    connect(m_wizardNewBattleMap, &WizardNewBattleMap::accepted, this, &MainWindow::acceptedWizardNewBattleMap);
+    connect(m_wizardNewBattleMap, &WizardNewBattleMap::rejected, this, &MainWindow::rejectedWizardNewBattleMap);
 
     /* open wizard WizardNewBattleMap */
     m_wizardNewBattleMap->exec();
@@ -569,8 +569,8 @@ void MainWindow::triggeredActionOpenSettings()
     m_dialogSettings = new DialogSettings(this);
 
     /* connect signals and slots of the dialog button box actions of the dialog DialogSettings */
-    connect(m_dialogSettings, SIGNAL(accepted()), this, SLOT(acceptedDialogSettings()));
-    connect(m_dialogSettings, SIGNAL(rejected()), this, SLOT(rejectedDialogSettings()));
+    connect(m_dialogSettings, &DialogSettings::accepted, this, &MainWindow::acceptedDialogSettings);
+    connect(m_dialogSettings, &DialogSettings::rejected, this, &MainWindow::rejectedDialogSettings);
 
     /* open dialog DialogSettings */
     m_dialogSettings->open();

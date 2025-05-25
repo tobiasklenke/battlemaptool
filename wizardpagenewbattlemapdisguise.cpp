@@ -28,11 +28,11 @@ WizardPageNewBattleMapDisguise::WizardPageNewBattleMapDisguise(BattleMap *battle
     m_userInterface->graphicsViewNewBattleMap->setBackgroundRole(QPalette::Window);
 
     /* connect signals and slots of user interface widgets */
-    connect(m_userInterface->lineEditSource, SIGNAL(editingFinished()), this, SLOT(editingFinishedLineEditSource()));
-    connect(m_userInterface->pushButtonSelectSource, SIGNAL(released()), this, SLOT(releasedPushButtonSelectSource()));
+    connect(m_userInterface->lineEditSource, &QLineEdit::editingFinished, this, &WizardPageNewBattleMapDisguise::editingFinishedLineEditSource);
+    connect(m_userInterface->pushButtonSelectSource, &QPushButton::released, this, &WizardPageNewBattleMapDisguise::releasedPushButtonSelectSource);
 
     /* connect signals and slots of timer for toggling the original and disguise pixmaps of Battle Map squares */
-    connect(&m_pixmapToggleTimer, SIGNAL(timeout()), this, SLOT(togglePixmaps()));
+    connect(&m_pixmapToggleTimer, &QTimer::timeout, this, &WizardPageNewBattleMapDisguise::togglePixmaps);
 
     /* initialize timer for toggling the original and disguise pixmaps of Battle Map squares */
     m_pixmapToggleTimer.setInterval(TIMERINTERVAL_TOGGLEBATTLEMAPSQUAREPIXMAPS);
@@ -60,7 +60,7 @@ WizardPageNewBattleMapDisguise::~WizardPageNewBattleMapDisguise()
 void WizardPageNewBattleMapDisguise::initializePage()
 {
     /* connect signals and slots of push buttons of wizard */
-    connect(wizard()->button(QWizard::BackButton), SIGNAL(released()), this, SLOT(releasedWizardPushButtonBack()));
+    connect(wizard()->button(QWizard::BackButton), &QAbstractButton::released, this, &WizardPageNewBattleMapDisguise::releasedWizardPushButtonBack);
 }
 
 /*!

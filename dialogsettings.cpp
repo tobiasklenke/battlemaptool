@@ -23,11 +23,11 @@ DialogSettings::DialogSettings(QWidget *parent) :
     m_userInterface->setupUi(this);
 
     /* connect signals and slots of user interface widgets */
-    connect(m_userInterface->lineEditDiagonal, SIGNAL(editingFinished()), this, SLOT(editingFinishedLineEditDiagonal()));
-    connect(m_userInterface->lineEditResolutionWidth, SIGNAL(editingFinished()), this, SLOT(editingFinishedLineEditResolutionWidth()));
-    connect(m_userInterface->lineEditResolutionHeight, SIGNAL(editingFinished()), this, SLOT(editingFinishedLineEditResolutionHeight()));
-    connect(m_userInterface->dialogButtonBox, SIGNAL(accepted()), this, SLOT(acceptedDialogButtonBox()));
-    connect(m_userInterface->dialogButtonBox, SIGNAL(rejected()), this, SLOT(rejectedDialogButtonBox()));
+    connect(m_userInterface->lineEditDiagonal, &QLineEdit::editingFinished, this, &DialogSettings::editingFinishedLineEditDiagonal);
+    connect(m_userInterface->lineEditResolutionWidth, &QLineEdit::editingFinished, this, &DialogSettings::editingFinishedLineEditResolutionWidth);
+    connect(m_userInterface->lineEditResolutionHeight, &QLineEdit::editingFinished, this, &DialogSettings::editingFinishedLineEditResolutionHeight);
+    connect(m_userInterface->dialogButtonBox, &QDialogButtonBox::accepted, this, &DialogSettings::acceptedDialogButtonBox);
+    connect(m_userInterface->dialogButtonBox, &QDialogButtonBox::rejected, this, &DialogSettings::rejectedDialogButtonBox);
 
     /* initialize edit fields and member variables with current settings */
     m_userInterface->lineEditDiagonal->setText(QString::number(settings.value(CONFIGKEY_PLAYERSCREEN_DIAGONAL).toReal()));

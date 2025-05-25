@@ -41,9 +41,9 @@ void MasterScreenHandler::setGraphicsView(CustomGraphicsView *graphicsView)
     m_graphicsView = graphicsView;
 
     /* connect signals and slots of graphics view */
-    connect(m_graphicsView, SIGNAL(changedScaleFactor(qreal)), this, SLOT(changedScaleFactor(qreal)));
-    connect(m_graphicsView, SIGNAL(pressedKey(Qt::Key)), this, SLOT(pressedKey(Qt::Key)));
-    connect(m_graphicsView, SIGNAL(pressedRightMouseButton(QPoint)), this, SLOT(pressedRightMouseButton(QPoint)));
+    connect(m_graphicsView, &CustomGraphicsView::changedScaleFactor, this, &MasterScreenHandler::changedScaleFactor);
+    connect(m_graphicsView, &CustomGraphicsView::pressedKey, this, &MasterScreenHandler::pressedKey);
+    connect(m_graphicsView, &CustomGraphicsView::pressedRightMouseButton, this, &MasterScreenHandler::pressedRightMouseButton);
 
     /* set background color of graphics view to window color */
     QPalette palette;
@@ -165,8 +165,8 @@ void MasterScreenHandler::showBattleMapImage()
     /* reset and reconnect Battle Map scene */
     deleteBattleMapScene();
     m_battleMapScene = new BattleMapSceneMasterScreen();
-    connect(m_battleMapScene, SIGNAL(selectedBattleMapSquares()), this, SLOT(selectedBattleMapSquares()));
-    connect(m_battleMapScene, SIGNAL(unselectedBattleMapSquares()), this, SLOT(unselectedBattleMapSquares()));
+    connect(m_battleMapScene, &BattleMapSceneMasterScreen::selectedBattleMapSquares, this, &MasterScreenHandler::selectedBattleMapSquares);
+    connect(m_battleMapScene, &BattleMapSceneMasterScreen::unselectedBattleMapSquares, this, &MasterScreenHandler::unselectedBattleMapSquares);
     m_graphicsView->setScene(m_battleMapScene);
 
     /* reset scaling of graphics view */
